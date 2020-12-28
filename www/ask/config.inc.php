@@ -35,9 +35,9 @@ $htmlopen = 0; 			// 静态页生成开关 0=关闭, 1=打开
 //UCenter 配置参数
 define('UC_CONNECT', 'mysql'); 		// 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
 //数据库相关 (mysql 连接时, 并且没有设置 UC_DBLINK 时, 需要配置以下变量)
-define('UC_DBHOST', getenv('SALSA17_MYSQL_HOST')); 	// UCenter 数据库主机
-define('UC_DBUSER', getenv('SALSA17_MYSQL_USER'));		// UCenter 数据库用户名
-define('UC_DBPW', getenv('SALSA17_MYSQL_PASS')); 			// UCenter 数据库密码
+define('UC_DBHOST', getenv('SALSA17_MYSQL_HOST')); // UCenter 数据库主机
+define('UC_DBUSER', getenv('SALSA17_MYSQL_USER')); // UCenter 数据库用户名
+define('UC_DBPW',   getenv('SALSA17_MYSQL_PASS')); // UCenter 数据库密码
 define('UC_DBNAME', '17salsa'); 	// UCenter 数据库名称
 
 define('UC_DBCHARSET', 'utf8'); 		// UCenter 数据库字符集
