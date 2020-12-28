@@ -494,7 +494,7 @@ class cls_template
                 case 'insert' :
                     $t = $this->get_para(substr($tag, 7), false);
 
-                    $out = "<?php \n" . '$k = ' . preg_replace("/(\'\\$[^,]+)/e" , "stripslashes(trim('\\1','\''));", var_export($t, true)) . ";\n";
+                    $out = "<?php \n" . '$k = ' . preg_replace_callback("/(\'\\$[^,]+)/" , function ($m) { return stripslashes(trim($m[1],'\'')); }, var_export($t, true)) . ";\n";
                     $out .= 'echo $this->_echash . $k[\'name\'] . \'|\' . serialize($k) . $this->_echash;' . "\n?>";
 
                     return $out;
@@ -553,7 +553,11 @@ class cls_template
     {
         if (strrpos($val, '[') !== false)
         {
-            $val = preg_replace("/\[([^\[\]]*)\]/eis", "'.'.str_replace('$','\$','\\1')", $val);
+            $val = preg_replace_callback(
+                "/\[([^\[\]]*)\]/is",
+                function ($m) { return '.'.str_replace('$','\$',$m[1]); },
+                $val
+            );
         }
 
         if (strrpos($val, '|') !== false)
@@ -1070,9 +1074,9 @@ class cls_template
         if ($file_type == '.dwt')
         {
             /* 将模板中所有library替换为链接 */
-            $pattern     = '/<!--\s#BeginLibraryItem\s\"\/(.*?)\"\s-->.*?<!--\s#EndLibraryItem\s-->/se';
-            $replacement = "'{include file='.strtolower('\\1'). '}'";
-            $source      = preg_replace($pattern, $replacement, $source);
+            $pattern     = '/<!--\s#BeginLibraryItem\s\"\/(.*?)\"\s-->.*?<!--\s#EndLibraryItem\s-->/s';
+            $replacement = function ($m) { return '{include file='.strtolower($m[1]). '}'; };
+            $source      = preg_replace_callback($pattern, $replacement, $source);
 
             /* 检查有无动态库文件，如果有为其赋值 */
             $dyna_libs = get_dyna_libs($GLOBALS['_CFG']['template'], $this->_current_file);
