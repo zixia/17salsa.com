@@ -23,6 +23,10 @@ run:
 		--entrypoint bash \
 		17salsa.com
 
+.PHONY: pull
+pull:
+	docker pull ghcr.io/zixia/17salsa.com
+
 .PHONY: clean
 clean:
 	docker rmi 17salsa.com
