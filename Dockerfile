@@ -1,6 +1,13 @@
 FROM bylexus/apache-php56
 MAINTAINER Huan <zixia@zixia.net>
 
+RUN apt update \
+  && apt install -y \
+    vim \
+  && apt-get autoremove -y \
+  && apt-get clean \
+  && rm -fr /tmp/*
+
 COPY conf/000-default.conf /etc/apache2/sites-available/
 
 RUN a2enmod rewrite
