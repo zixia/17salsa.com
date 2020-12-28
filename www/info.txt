@@ -1,0 +1,15 @@
+
+# Contact info submission
+
+url: 17salsa.com/
+site_owner: Abu
+address1: 
+address2: 
+city: Beijing
+state: 
+country: China
+postal_code: 100001
+phone_number: 400-633-1733
+display_email: salsa@17salsa.org
+site_name: 一起salsa网
+site_description: 全球华人最大salsa舞爱好者社区
