@@ -1,0 +1,49 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--商品分类-->
+	<div id="categoryTree" class="left_box_1">
+  <h1>商品分类</h1>
+  <!-- {foreach from=$categories item=cat} -->
+  <div class="toggleblock">
+    <h5 class="toggletitle"><!-- {if $cat.children} --><span><img src="../images/icon_list_up.gif" alt="-" /></span><!-- {/if} --><a href="{$cat.url}">{$cat.name|escape:html}</a></h5>
+    <!-- {if $cat.cat_id} -->
+    <p>
+      <!-- {foreach from=$cat.cat_id item=child} -->
+      <a href="{$child.url}">{$child.name|escape:html}</a><br />
+      <!-- {/foreach} -->
+    </p>
+    <!-- {/if} -->
+  </div>
+  <!-- {/foreach} -->
+</div>
+<script type="text/javascript">
+//<![CDATA[
+  function getElementsByClassName(id,cls){
+    var o=document.getElementById(id);
+    var aelem=[],
+    oaelem=o.getElementsByTagName("*");
+    for(var i=0;i<oaelem.length;i++){
+      if (oaelem[i].className==cls ){
+        aelem[aelem.length]=oaelem[i];
+      }
+    }
+    return aelem;
+  }
+  function slideshow(obj){
+	  obj.parentNode.parentNode.getElementsByTagName("h5")[0].className = "hbg";
+    obj.parentNode.parentNode.getElementsByTagName("p")[0].style.display = "";
+    obj.innerHTML = "<img src='../images/icon_list_up.gif' alt='-' />";
+    obj.onclick = new Function("slidehidden(this)");
+  }
+  function slidehidden(obj){
+	  obj.parentNode.parentNode.getElementsByTagName("h5")[0].className = "hbb";
+    obj.parentNode.parentNode.getElementsByTagName("p")[0].style.display = "none";
+    obj.innerHTML = "<img src='../images/icon_list_down.gif' alt='+' />";
+    obj.onclick = new Function("slideshow(this)");
+  }
+  var a=getElementsByClassName("categoryTree","toggleblock");
+  for(var n=0;n<a.length;n++){
+    var olink=a[n].getElementsByTagName("h5")[0].firstChild;
+    olink.onclick = new Function("slidehidden(this)");
+  }
+//]]>
+</script>

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<regions>
+  <file name="activity.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="article.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+    </region>
+  </file>
+  <file name="article_cat.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>article_category_tree</lib>
+    </region>
+  </file>
+  <file name="article_pro.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="auction.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="auction_list.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="brand.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="brand_list.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="catalog.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="category.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="compare.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="exchange_goods.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+    </region>
+    <region name="商品标签区域">
+      <lib>goods_tags</lib>
+      <lib>relatetag</lib>
+    </region>
+  </file>
+  <file name="exchange_list.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="flow.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="gallery.dwt"/>
+  <file name="goods.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+    </region>
+    <region name="商品标签区域">
+      <lib>goods_tags</lib>
+      <lib>relatetag</lib>
+    </region>
+  </file>
+  <file name="group_buy_goods.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="group_buy_list.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="index.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>cart</lib>
+      <lib>category_tree</lib>
+      <lib>promotion_info</lib>
+      <lib>order_query</lib>
+      <lib>invoice_query</lib>
+      <lib>brands</lib>
+      <lib>email_list</lib>
+      <lib>vote_list</lib>
+    </region>
+    <region name="右边区域">
+      <lib>recommend_promotion</lib>
+      <lib>recommend_best</lib>
+      <lib>recommend_hot</lib>
+      <lib>recommend_new</lib>
+      <lib>group_buy</lib>
+      <lib>auction</lib>
+      <lib>help</lib>
+    </region>
+  </file>
+  <file name="message.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="message_board.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="myship.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="pick_out.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="quotation.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="receive.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="respond.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="search.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>category_tree</lib>
+      <lib>history</lib>
+      <lib>goods_attrlinked</lib>
+      <lib>filter_attr</lib>
+    </region>
+  </file>
+  <file name="snatch.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="style.css"/>
+  <file name="tag_cloud.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="Thumbs.db"/>
+  <file name="topic.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="user_clips.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>user_menu</lib>
+    </region>
+    <region name="右边区域">
+      <lib>pages</lib>
+      <lib>pages</lib>
+      <lib>pages</lib>
+    </region>
+  </file>
+  <file name="user_passport.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+  <file name="user_transaction.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+    <region name="左边区域">
+      <lib>user_menu</lib>
+    </region>
+  </file>
+  <file name="wholesale_list.dwt">
+    <region name="当前位置">
+      <lib>ur_here</lib>
+    </region>
+  </file>
+</regions>

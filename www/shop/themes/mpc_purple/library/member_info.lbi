@@ -1,0 +1,93 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $user_info}
+<div class="comment u_info">
+<div>{$lang.hello}，<b>{$user_info.username}</b>, {$lang.welcome_return}！</div>
+<div>{$lang.now_account} <b>{$user_info.user_money}</b> {$lang.balance}，<b>{$user_info.user_points}</b>{$lang.along_with} <b>{$user_info.user_bonus}</b> {$lang.preferential}</div>
+<div align="right">
+<a href="user.php"><span class="f_red">{$lang.user_center}</span></a> | <a href="user.php?act=logout"><span class="f_red">{$lang.user_logout}</span></a>
+</div>
+</div>
+{else}
+ <form id="ECS_LOGINFORM" name="ECS_LOGINFORM" method="post" action="javascript:signIn()" style="position:relative;">
+		<div class="comment">
+		<input name="username" type="text" class="input w190"  tabindex="1" value="{$ecs_username|escape}"/><br />
+		<input name="password" class="input w190" type="password" tabindex="2" /><br />
+		<!-- 判断是否启用验证码{if $enabled_captcha} -->
+		<input type="text" size="5" name="captcha" class="textbox-light" tabindex="3" style="width:60px;" />
+		<img src="captcha.php?is_login=1&{$rand}" alt="captcha" style="vertical-align: middle;cursor: pointer;" onClick="this.src='captcha.php?is_login=1&'+Math.random()" /><br />
+		<!--{/if}-->
+		</div>
+		<div  class="comment login">
+		 <a href="javascript:signIn()" class="login_sub" title="登录"></a>
+		 <a href="user.php?act=register">注册</a> <a href="user.php?act=get_password">忘记密码？</a>
+		</div>
+		</form>
+{literal}
+<script type="text/javascript">
+/**
+ * 会员登录
+ */
+function signIn()
+{
+  var frm = document.forms['ECS_LOGINFORM'];
+
+  if (frm)
+  {
+    var username = frm.elements['username'].value;
+    var password = frm.elements['password'].value;
+    var captcha = '';
+    if (frm.elements['captcha'])
+    {
+      captcha = frm.elements['captcha'].value;
+    }
+
+    if (username.length == 0 || password.length == 0)
+    {
+{/literal}
+       alert("{$lang.empty_username_password}");
+{literal}
+        return;
+    }
+    else
+    {
+       Ajax.call('user.php?act=signin', 'username=' + username + '&password=' + encodeURIComponent(password) + '&captcha=' + captcha, signinResponse, "POST", "TEXT");
+    }
+  }
+  else
+  {
+    alert('Template error!');
+  }
+}
+
+function signinResponse(result)
+{
+  var userName = document.forms['ECS_LOGINFORM'].elements['username'].value;
+  var mzone = document.getElementById("ECS_MEMBERZONE");
+  var res   = result.parseJSON();
+
+  if (res.error > 0)
+  {
+    // 登录失败
+    alert(res.content);
+    if(res.html)
+	{
+      mzone.innerHTML = res.html;
+	  document.forms['ECS_LOGINFORM'].elements['username'].value = userName;
+	}
+  }
+  else
+  {
+    if (mzone)
+    {
+      mzone.innerHTML = res.content;
+			evalscript(res.ucdata);
+    }
+    else
+    {
+      alert("Template Error!");
+    }
+  }
+}
+</script>
+{/literal}
+{/if}

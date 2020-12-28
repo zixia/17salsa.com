@@ -1,0 +1,20 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="common_box w718 w716">
+	<div class="tag_title"><h4>{$lang.message_board}</h4></div>
+	 <div class="common_box_1">
+	  <!--{foreach name=message_lists from=$msg_lists key=key item=msg}-->
+		<div class="f_l">
+		<b class="font-weight f_red">{$msg.msg_type}</b>&nbsp;&nbsp;<b class="font-weight">{$msg.user_name}</b>&nbsp;&nbsp;<!-- {if $msg.user_name eq ''} -->{$lang.anonymous}<!-- {/if} -->：<!-- {if $msg.id_value gt 0} -->{$lang.feed_user_comment}<b class="f_red"><a href="{$msg.goods_url}" target="_blank" title="{$msg.goods_name}">{$msg.goods_name}</a></b><!-- {/if} --><font class="w718">{$msg.msg_title}</font> ({$msg.msg_time})<!-- {if $msg.comment_rank gt 0} --><img style="position:absolute; right:6px;" src="../images/stars{$msg.comment_rank}.gif" alt="{$msg.comment_rank}" /><!-- {/if} -->
+		</div>
+		
+		<div class="msgBottomBorder">
+		{$msg.msg_content}<br />
+		 <!-- {if $msg.re_msg_content} -->
+       <b class="font-weight">{$lang.shopman_reply}</b>
+       {$msg.re_msg_content}
+      <!-- {/if} -->
+		</div>
+		<!-- {/foreach} -->
+		
+	 </div>
+</div>

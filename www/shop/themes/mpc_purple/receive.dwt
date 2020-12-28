@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+</head>
+<body>
+<div class="global" style="height:870px;">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="bock ur_here">
+<!-- TemplateBeginEditable name="当前位置" -->
+<!-- #BeginLibraryItem "/library/ur_here.lbi" -->
+{$lang.ur_here} {$ur_here}
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable --> 
+</div>
+<!--当前位置 end-->
+<div class="bock">
+  <div class="common_box">
+	<div class="common_box_1" align="center" style="padding:50px 0px;">
+	 <span class="font-weight f_red" style="text-decoration:none;">{$msg}</span>
+	</div>
+</div>
+</div>
+<!--copyright start-->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</div>
+</body>
+</html>

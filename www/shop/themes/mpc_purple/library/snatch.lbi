@@ -1,0 +1,64 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $myprice.is_end eq false} -->
+	<div class="common_box w718 w716">
+	  <div class="tag_title"><h4>我要出价</h4></div>
+	  <div class="common_box_1">
+  <form action="javascript:bid()" method="post" name="formBid" id="formBid">
+   {$lang.my_integral}：
+    {$myprice.pay_points}<br />
+    {$lang.bid}：
+    <!--<input type="hidden" name="snatch_id" value="{$id}" /><input name="price" type="text" id="price" />-->
+		<input type="hidden" name="snatch_id" value="{$id}" /><input name="price" type="text" class="input" >
+    <input type="submit" name="Submit" class="submit" value="{$lang.me_bid}" />
+  </form>
+	</div>
+</div>
+<div class="common_box w718 w716">
+	  <div class="tag_title"><h4>我的出价</h4></div>
+	  <div class="common_box_1">
+  <ul>
+    <!--{foreach from=$myprice.bid_price item=item}-->
+    <li>{$item.price}
+      <!--{if $item.is_only}-->
+      ({$lang.only_price})
+      <!--{/if}-->
+    </li>
+    <!--{/foreach}-->
+  </ul>
+	</div>
+</div>
+<!-- {else} -->
+<div class="common_box w718 w716">
+	  <div class="tag_title"><h4>{$lang.view_snatch_result}</h4></div>
+	  <div class="common_box_1">
+<!--{if $result}-->
+<form name="buy" action="snatch.php" method="get">
+<table width="100%" border="0" cellpadding="8" cellspacing="1" bgcolor="#B0D8FF" class="table">
+  <tr>
+    <td bgcolor="#FFFFFF">{$lang.victory_user}
+</td>
+    <td bgcolor="#FFFFFF">{$result.user_name}
+      <input type="hidden" name="act" value="buy" />
+      <input type="hidden" name="id" value="{$id}" />
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">{$lang.price_bid}</td>
+    <td bgcolor="#FFFFFF">{$result.formated_bid_price} &nbsp;&nbsp;
+    <!-- {if $result.order_count eq 0 and $result.user_id eq $smarty.session.user_id} -->
+      <input type="submit" name="bug" class="submit" title="{$lang.button_buy}" style="letter-spacing:-2px;" />
+    <!--{/if}-->
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#FFFFFF">{$lang.bid_time}</td>
+    <td bgcolor="#FFFFFF">{$result.bid_time}</td>
+  </tr>
+</table>
+</form>
+<!--{else}-->
+{$lang.not_victory_user}
+<!--{/if}-->
+</div>
+</div>
+<!-- {/if} -->

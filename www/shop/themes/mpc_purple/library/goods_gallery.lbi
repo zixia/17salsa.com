@@ -1,0 +1,9 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<h1>商品相册</h1>
+<div class="left_box_1" align="center">
+	<!-- {foreach from=$pictures item=picture}-->
+	<a href="gallery.php?id={$id}&amp;img={$picture.img_id}" target="_blank"><img src="{if $picture.thumb_url}{$picture.thumb_url}{else}{$picture.img_url}{/if}" alt="{$goods.goods_name}" style="border:1px solid #5db0dc;" /></a><br />
+		 <span style="color:#0a54ad;">{$picture.img_desc|escape:html}</span><br />
+	<!--{/foreach}-->
+</div>
+<div class="padd"></div>

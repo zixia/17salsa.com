@@ -1,0 +1,12 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--{if $invoice_list}-->
+<h1>发货查询</h1>
+		<div class="left_box_1">
+		  <!-- 发货单查询{foreach from=$invoice_list item=invoice} -->
+		  <div class="q_list">
+			<span class="font1">{$lang.order_number}</span> {$invoice.order_sn}<br />
+      <span class="font1">{$lang.consignment} {$invoice.invoice_no}</span>
+			</div>
+			<!-- 结束发货单查询{/foreach}-->
+		</div>
+<!-- {/if} -->

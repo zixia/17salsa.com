@@ -1,0 +1,21 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $brand_list} -->
+<h1>品牌推荐</h1>
+<div class="left_box_1" align="center">
+<div class="left_box_2">
+<!-- {foreach from=$brand_list item=brand name="brand_foreach"} -->
+    {if $smarty.foreach.brand_foreach.index <= 4}
+    <!-- {if $brand.brand_logo} -->
+		<div  style="height:60px; width:160px; overflow:hidden;">
+    <a href="{$brand.url}"><img src="data/brandlogo/{$brand.brand_logo}" alt="{$brand.brand_name|escape:html} ({$brand.goods_num})" /></a>
+		</div>
+    <!-- {else} -->
+    <div><a href="{$brand.url}"><span class="f_red">{$brand.brand_name|escape:html} {if $brand.goods_num}({$brand.goods_num}){/if}</span></a></div>
+    <!-- {/if} -->
+     {/if}
+  <!-- {/foreach} -->
+	<div class="f_right"><a href="../brand.php" class="submit" style="display:block; color:#fff; text-align:center;">更多品牌</a></div>
+	<div class="padd"></div>
+	</div>
+</div>		
+<!-- {/if} -->

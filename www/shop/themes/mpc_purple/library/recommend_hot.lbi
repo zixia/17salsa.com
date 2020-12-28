@@ -1,0 +1,36 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $hot_goods} -->
+<!-- {if $cat_rec_sign neq 1} -->
+<div id="best">
+	   <div id="itemHot" class="tag_title itemTit clearfix">
+		 <h3>{$lang.hot_goods}</h3>
+		  {if $cat_rec[1]}
+      <h2><a href="javascript:void(0)" onclick="change_tab_style('itemHot', 'h2', this);get_cat_recommend(3, 0);">{$lang.all_goods}</a></h2>
+      {foreach from=$cat_rec[1] item=rec_data}
+      <h2 class="h2bg"><a href="javascript:void(0)" onclick="change_tab_style('itemHot', 'h2', this);get_cat_recommend(3, {$rec_data.cat_id})">{$rec_data.cat_name}</a>      </h2>
+      {/foreach}
+      {/if}
+		 <a href="../search.php?intro=hot">more</a>
+		</div>
+		<div id="show_hot_area" class="com_v clearfix">
+		<!-- {/if} -->
+		<!--{foreach from=$hot_goods item=goods}-->
+			<div class="ent">
+			 <a href="{$goods.url}" class="brief">
+			 <img src="{$goods.thumb}" class="img" />
+			 </a>
+			 <a href="{$goods.url}" title="{$goods.name|escape:html}"><font class="font_ie6">{$goods.short_style_name}</font></a><br />
+			<!-- {if $goods.promote_price neq ""} -->
+			<span class="market">{$lang.market_price}{$goods.promote_price}</span><br />
+							<!-- {else}-->
+			<span class="shop">{$lang.shop_prices}{$goods.shop_price}</span><br />
+							<!--{/if}-->
+			<a href="javascript:collect({$goods.id})"><img src="images/bnt_c.gif" /></a> 
+			<a href="javascript:addToCart({$goods.id})"><img src="images/bnt_buy.gif" /></a>
+			</div>
+		<!--{/foreach}-->
+		<!-- {if $cat_rec_sign neq 1} -->
+		</div>
+</div>
+<!-- {/if} -->
+<!-- {/if} -->

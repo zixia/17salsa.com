@@ -1,0 +1,71 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+<div id="append_parent"></div>
+<div id="header">
+ <!--顶部导航 start-->
+ <ul class="nav_top">
+ <!-- {foreach name=nav_top_list from=$navigator_list.top item=nav} -->
+      <li><a href="{$nav.url}" <!-- {if $nav.opennew eq 1} -->target="_blank"<!-- {/if} -->>{$nav.name}</a></li>
+    <!-- {/foreach} -->     
+ </ul>
+ <!--顶部导航 end-->
+ <!--logo&search start-->
+ <div id="w650">
+	 <a href="../index.php"><img src="images/logo.gif" width="202" height="81" alt="logo" class="logo" /></a>
+	 <div>
+	 <form id="searchForm" name="searchForm" method="get" action="search.php" onSubmit="return checkSearchForm()" style=" position:relative\9; top:-10px\9;">
+	 <select name="category" id="category" class="border" style="width:160px;">
+      <option value="0">{$lang.all_category}</option>
+      {$category_list}
+    </select>
+	 <input name="keywords" type="text" id="keyword" value="{$search_keywords|escape}" class="input w190"/>
+	 <input name="imageField" type="submit" value="" class="search_sub" />
+	 <a href="search.php?act=advanced_search"><span class="f_red">{$lang.advanced_search}</span></a>
+	 </form>
+	 <div class="key">
+	 {if $searchkeywords}
+	 {$lang.hot_search} ： 
+	 {foreach from=$searchkeywords item=val}
+   <a href="search.php?keywords={$val|escape}">{$val}</a>
+   {/foreach}
+	 {/if}
+	 <script type="text/javascript">
+		{literal}
+		<!--
+		function checkSearchForm()
+		{
+				if(document.getElementById('keyword').value)
+				{
+						return true;
+				}
+				else
+				{
+						return false;
+				}
+		}
+		-->
+		{/literal}
+		</script>
+		</div>
+		</div>
+ </div>
+ <!--logo&search end-->
+ <!--登录开始-->
+ <div id="w316">
+ {insert_scripts files='transport.js,utils.js'}
+ <div id="ECS_MEMBERZONE">{* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'} </div>
+ </div>
+ <!--登录结束-->
+</div>
+<!--页面主导航 start-->
+<div id="nav" class="bock">
+ <ul>
+ <li{if $navigator_list.config.index eq 1} id="cur"{/if}><a href="../index.php">网店首页</a></li>
+ <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+ <li{if $nav.active eq 1} id="cur"{/if}><a href="{$nav.url}" <!-- {if $nav.opennew eq 1} -->target="_blank"<!-- {/if} -->>{$nav.name}</a></li>
+ <!-- {/foreach} -->
+ </ul>
+</div>
+<!--页面主导航 end-->

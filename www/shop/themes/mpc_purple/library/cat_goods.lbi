@@ -1,0 +1,29 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="tag_title"><h2><a href="{$goods_cat.url}">{$goods_cat.name|escape:html}</a></h2></div>
+	<div class="common_box" style="width:716px;">
+	 <div class="common_box_1" style="padding:3px 0px;">
+<!--{foreach from=$cat_goods item=goods}-->
+<div class="ent">
+ <a href="{$goods.url}" class="brief">
+ <img src="{$goods.thumb}" class="img" />
+ </a>
+ <a href="{$goods.url}" title="{$goods.name|escape:html}"><font class="font_ie6">{$goods.short_style_name|truncate:8:"..."true}</font></a>
+				
+	<!-- {if $goods.promote_price neq ""} -->
+	<span class="market">{$goods.promote_price}</span><br />
+	<!-- {else}-->
+ <span class="shop">{$goods.shop_price}</span><br />
+	<!--{/if}-->
+	<span class="shop">{$goods.last_price}</span><br />
+				
+<a href="javascript:collect({$goods.id})"><img src="images/bnt_c.gif" /></a> 
+<a href="javascript:addToCart({$goods.id})"><img src="images/bnt_buy.gif" /></a>
+</div>
+<!--{/foreach}-->
+<div class="padd"></div>
+<div class="more"><a href="group_buy.php"><img src="images/more.gif" /></a></div>
+<div class="padd"></div>
+
+
+ </div>
+</div>

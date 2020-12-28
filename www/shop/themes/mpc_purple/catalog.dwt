@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+</head>
+<body>
+<div class="global" style="height:870px;">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="bock ur_here">
+<!-- TemplateBeginEditable name="当前位置" -->
+<!-- #BeginLibraryItem "/library/ur_here.lbi" -->
+{$lang.ur_here} {$ur_here}
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable --> 
+</div>
+<!--当前位置 end-->
+<div class="bock">
+  <div class="common_box">
+	<div class="tag_title"><h4>所有分类</h4></div>
+	<div class="common_box_1">
+	 <!--{foreach from=$cat_list item=cat}-->
+		<a href="{$cat.url}" style=" color:#0a54ad;">{$cat.cat_name}({$cat.goods_num})</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	<!--{/foreach}-->
+	</div>
+	</div>
+	
+	<div class="common_box">
+	<div class="tag_title"><h4>所有品牌</h4></div>
+	<div class="common_box_1">
+	 <!--{foreach from = $brand_list item = brand}-->
+	<a href="{$brand.url}" style=" color:#0a54ad;">{$brand.brand_name}({$brand.goods_num})</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	<!--{/foreach}-->
+	</div>
+	</div>
+</div>
+
+<!--copyright start-->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+</div>
+</body>
+</html>

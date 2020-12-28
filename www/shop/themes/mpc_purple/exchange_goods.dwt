@@ -1,0 +1,424 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='common.js'}
+<script type="text/javascript">
+function $(element) {
+	return document.getElementById(element);
+}
+//切屏--是按钮，_v是内容平台，_h是内容库
+function reg(str){
+	var bt=$(str+"_b").getElementsByTagName("h2");
+	for(var i=0;i<bt.length;i++){
+		bt[i].subj=str;
+		bt[i].pai=i;
+		bt[i].style.cursor="pointer";
+		bt[i].onclick=function(){
+			$(this.subj+"_v").innerHTML=$(this.subj+"_h").getElementsByTagName("blockquote")[this.pai].innerHTML;
+			for(var j=0;j<$(this.subj+"_b").getElementsByTagName("h2").length;j++){
+				var _bt=$(this.subj+"_b").getElementsByTagName("h2")[j];
+				var ison=j==this.pai;
+				_bt.className=(ison?"":"h2bg");
+			}
+		}
+	}
+	$(str+"_h").className="none";
+	$(str+"_v").innerHTML=$(str+"_h").getElementsByTagName("blockquote")[0].innerHTML;
+}
+</script>
+</head>
+<body>
+<div class="global">
+<!-- #BeginLibraryItem "/library/page_header.lbi" --><!-- #EndLibraryItem -->
+<!--当前位置 start-->
+<div class="bock ur_here">
+<!-- TemplateBeginEditable name="当前位置" -->
+<!-- #BeginLibraryItem "/library/ur_here.lbi" -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{$lang.ur_here} {$ur_here}
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+</div>
+<!--当前位置 end-->
+<div class="bock">
+ <!--左边部分-->
+ <div id="left">
+ <!-- TemplateBeginEditable name="左边区域" -->
+<!-- #BeginLibraryItem "/library/category_tree.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/history.lbi" --><!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/goods_attrlinked.lbi" --><!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+ </div>
+ <!--左边部分 end-->
+ <!--右边部分-->
+ <div id="right">
+  <!--商品详情 start-->
+	<div class="common_box w718 w716">
+	  <div class="tag_title">
+	  <h4>商品详情</h4>
+	  </div>
+	  <div class="common_box_1">
+		 <dl>
+			 <dt class="f_left goodsImg">
+			  <a href="javascript:;" onclick="window.open('gallery.php?id={$goods.goods_id}'); return false;">
+				<img src="{$goods.goods_img}" alt="{$goods.goods_name|escape:html}" class="goodsImg_v"/>
+			  </a>
+				<p>
+				<!-- {if $goods.watermark_img eq watermark_promote} -->
+				<img src="images/watermark_promote.png" alt="" />
+				<!-- {else} -->
+				<!-- {if $goods.watermark_img eq watermark_new} -->
+				<img src="images/watermark_new.png" alt="" />
+				<!-- {else} -->
+				<!-- {if $goods.watermark_img eq watermark_hot} -->
+				<img src="images/watermark_hot.png" alt="" />
+				<!-- {else} -->
+				<!-- {if $goods.watermark_img eq watermark_best} -->
+				<img src="images/watermark_best.png" alt="" />
+				<!-- {/if} -->
+				<!-- {/if} -->
+				<!-- {/if} -->
+				<!-- {/if} -->
+				</p>
+			 </dt>
+			 <dt class="f_left">
+       <form action="exchange.php?act=buy" method="post" name="ECS_FORMBUY" id="ECS_FORMBUY" style="margin-left:8px;">
+			<span class="font-weight">{$goods.goods_style_name}</span>
+			<!-- 商品销售排名{if $goods_rank}-->
+			<img src="images/rank_{$goods_rank}.gif" alt="{$goods_rank}" />
+			<!-- {/if} --><br />
+			<!-- {foreach from=$promotion item=item key=key} -->
+			<div class="f_red font-weight" >
+			{$lang.activity}
+			<!-- {if $item.type eq "snatch"} -->
+			<a href="snatch.php" title="{$lang.snatch}" style="font-size: 12px; font-weight: bold; color: red;">[{$lang.snatch}]</a>
+			<!-- {elseif $item.type eq "group_buy"} -->
+			<a href="group_buy.php" title="{$lang.group_buy}" style="font-size: 12px; font-weight: bold; color: red;">[{$lang.group_buy}]</a>
+			<!-- {elseif $item.type eq "auction"} -->
+			<a href="auction.php" title="{$lang.auction}" style="font-size: 12px; font-weight: bold; color: red;">[{$lang.auction}]</a>
+			<!-- {elseif $item.type eq "favourable"} -->
+			<a href="activity.php" title="{$lang.favourable}" style="font-size: 12px; font-weight: bold; color: red;">[{$lang.favourable}]</a>
+			<!-- {/if} -->
+			<a href="{$item.url}" title="{$lang.$item.type} {$item.act_name}{$item.time}" style="font-size: 12px; font-weight: bold; color: red;">{$item.act_name}</a>
+			</div>
+			<!-- {/foreach} -->
+			<!-- {if $cfg.show_goodssn} -->
+			<!-- 显示商品货号 -->
+			<span class="font-weight">{$lang.goods_sn}</span>{$goods.goods_sn}<br />
+			<!-- {/if} -->
+			<!-- {if $goods.goods_brand neq "" and $cfg.show_brand} -->
+			<!-- 显示商品品牌 -->
+      <span class="font-weight">{$lang.goods_brand}</span><a href="{$goods.goods_brand_url}" >{$goods.goods_brand}</a><br />
+			<!--{/if}-->
+			<!-- {if $cfg.show_goodsweight} -->
+      <span class="font-weight">{$lang.goods_weight}</span>{$goods.goods_weight}<br />
+			<!-- {/if} -->
+      <span class="font-weight">{$lang.exchange_integral}</span>{$goods.exchange_integral}<br />
+			<!-- {* 开始循环所有可选属性 *} -->
+      <!-- {foreach from=$specification item=spec key=spec_key} -->
+      <span class="font-weight">{$spec.name}:</span><br />
+        <!-- {* 判断属性是复选还是单选 *} -->
+                    <!-- {if $spec.attr_type eq 1} -->
+                      <!-- {if $cfg.goodsattr_style eq 1} -->
+                        <!-- {foreach from=$spec.values item=value key=key} -->
+                        <label for="spec_value_{$value.id}">
+                        <input type="radio" name="spec_{$spec_key}" value="{$value.id}" id="spec_value_{$value.id}" {if $key eq 0}checked{/if}/>
+                        {$value.label} [{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}] </label><br />
+                        <!-- {/foreach} -->
+                        <input type="hidden" name="spec_list" value="{$key}" />
+                        <!-- {else} -->
+                        <select name="spec_{$spec_key}">
+                          <!-- {foreach from=$spec.values item=value key=key} -->
+                          <option label="{$value.label}" value="{$value.id}">{$value.label} {if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if}{if $value.price neq 0}{$value.format_price}{/if}</option>
+                          <!-- {/foreach} -->
+                        </select>
+                        <input type="hidden" name="spec_list" value="{$key}" />
+                      <!-- {/if} -->
+                    <!-- {else} -->
+                      <!-- {foreach from=$spec.values item=value key=key} -->
+                      <label for="spec_value_{$value.id}">
+                      <input type="checkbox" name="spec_{$spec_key}" value="{$value.id}" id="spec_value_{$value.id}"/>
+                      {$value.label} [{if $value.price gt 0}{$lang.plus}{elseif $value.price lt 0}{$lang.minus}{/if} {$value.format_price|abs}] </label><br />
+                      <!-- {/foreach} -->
+                      <input type="hidden" name="spec_list" value="{$key}" />
+                    <!-- {/if} -->
+      <!-- {/foreach} -->
+      <!-- {* 结束循环可选属性 *} -->
+				<input type="hidden" name="goods_id" value="{$goods.goods_id}" />
+            <input type="submit" value="" style="width:122px; height:35px; cursor:pointer; background:url(images/ljdh.jpg) no-repeat 0 0; border:none;"/>
+	</form>
+			 </dt>
+		 </dl>
+		 <div class="padd"></div>
+		</div>
+		</div>
+	<!--商品详情 END-->
+	 <!--精品，新品，热卖，特价 start-->
+	<div id="best">
+	   <div id="com_b" class="tag_title">
+		 <!-- {if $goods.goods_desc} --><h2>商品描述</h2><!-- {/if} -->
+		 <!-- {if $properties} --><h2 class="h2bg">商品属性</h2><!-- {/if} -->
+		 <!-- {if $fittings} --><h2 class="h2bg">相关配件</h2><!-- {/if} -->
+		 <!-- {if $related_goods} --><h2 class="h2bg">相关商品</h2><!-- {/if} -->
+		 <!-- {if $goods_article_list} --><h2 class="h2bg">相关文章</h2><!-- {/if} -->
+		 <!-- {if $pictures} --><h2 class="h2bg">商品相册</h2><!-- {/if} -->
+		</div>
+		<div id="com_v"></div>
+		<div id="com_h">
+		 <!-- {if $goods.goods_desc} -->
+		 <blockquote>
+			<div class="shop" style="padding:8px;">{$goods.goods_desc}</div>
+		 </blockquote>
+		 <!-- {/if} -->
+		 <!-- {if $properties} -->
+		 <blockquote>
+			<table width="96%" border="0" cellpadding="0" cellspacing="1" bgcolor="#B0D8FF" class="table" style="color:#0a54ad; margin:8px;">
+				<!-- {foreach from=$properties item=property_group key=key} -->
+				<tr>
+					<th colspan="2" bgcolor="#FFFFFF">{$key|escape}</th>
+				</tr>
+				<!-- {foreach from=$property_group item=property} -->
+				<tr>
+					<th bgcolor="#FFFFFF" align="left" width="30%">[ {$property.name|escape:html} ] :</th>
+					<td bgcolor="#FFFFFF" align="left" width="70%">{$property.value|escape:html}</td>
+				</tr>
+				<!-- {/foreach}-->
+				<!-- {/foreach}-->
+			</table>
+		 </blockquote>
+		 		<!-- {/if} -->
+				<!-- {if $fittings} -->
+		 <blockquote>
+		 <!-- {foreach from=$fittings item=goods} -->
+		   <div class="ent">
+			 <a href="{$goods.url}" target="_blank"><img src="{$goods.goods_thumb}" alt="{$goods.name|escape:html}" class="img" /></a><br />
+			 <a href="{$goods.url}" target="_blank" title="{$goods.name|escape:html}">{$goods.short_name|escape:html}</a><br />
+			 <span style="letter-spacing:-2px;">{$lang.shop_price}</span><span class="shop">{$goods.shop_price}</span><br />
+       <span style="letter-spacing:-2px;">{$lang.fittings_price}</span><span class="shop">{$goods.fittings_price}</span><br />
+			</div>
+			<!-- {/foreach} -->
+			<div class="padd"></div>
+		 </blockquote>
+		 	<!-- {/if} -->
+			<!-- {if $related_goods} -->
+			<blockquote>
+			<!--{foreach from=$related_goods item=goods}-->
+				<div class="ent">
+				<a href="{$goods.url}" target="_blank"><img src="{$goods.goods_thumb}" border="0" alt="{$goods.goods_name}" class="img"  /></a><br />
+				<a href="{$goods.url}" title="{$goods.goods_name}">{$goods.short_name}</a><br />
+				<!-- {if $goods.promote_price neq 0} -->
+						{$lang.promote_price} <span class="market_price">{$goods.formated_promote_price}</span><br />
+						<!-- {else} -->
+						{$lang.shop_price} <span class="shop_price">{$goods.shop_price}</span><br />
+						<!-- {/if} -->
+				</div>
+			<!--{/foreach}-->
+			<div class="padd"></div>
+			</blockquote>
+			<!-- {/if} -->
+			<!-- {if $goods_article_list} -->
+			<blockquote>
+			<div style="padding:10px 8px 8px 20px;">
+			<!-- {foreach from=$goods_article_list item=article} 相关文章 -->
+			<img src="images/icon_list_arrow02.gif" style="position:relative;bottom:2px;" /> <a href="{$article.url}" title="{$article.title|escape:html}"  style="color:#0a54ad;">{$article.short_title}</a><br>
+			<!--{/foreach}-->
+			</div>
+			</blockquote>
+			<!-- {/if} -->
+			<!-- {if $pictures} -->
+		 <blockquote>
+		  <!-- {foreach from=$pictures item=picture}-->
+		  <div class="ent" style="height:140px;">
+	<a href="gallery.php?id={$id}&amp;img={$picture.img_id}" target="_blank"><img src="{if $picture.thumb_url}{$picture.thumb_url}{else}{$picture.img_url}{/if}" alt="{$goods.goods_name}" style="border:1px solid #5db0dc;" /></a><br />
+		 <span style="color:#0a54ad;">{$picture.img_desc|escape:html}</span><br />
+			</div>
+				<!--{/foreach}-->
+			<div class="padd"></div>
+		 </blockquote>
+		 <!-- {/if} -->
+		</div>
+		<script type="text/javascript">
+	  <!--
+	  reg("com");
+	  //-->
+	  </script>
+	</div>
+	<!--精品，新品，热卖，特价 end-->
+	<!-- TemplateBeginEditable name="商品标签区域" -->
+<!-- #BeginLibraryItem "/library/goods_tags.lbi" -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<div class="common_box w718 w716">
+	 <div class="tag_title"><h4>商品标签</h4></div>
+	 <div class="common_box_1">
+	  <form name="tagForm" action="javascript:;" onSubmit="return submitTag(this)" id="tagForm">
+				<p id="ECS_TAGS">
+					<!-- 标记{foreach from=$tags item=tag}-->
+					<a href="search.php?keywords={$tag.tag_words|escape:url}">{$tag.tag_words|escape:html}[{$tag.tag_count}]</a>
+					<!-- 结束标记{/foreach} -->
+				</p>
+				<p>
+					<input type="text" name="tag" id="tag" class="input w190" />
+					<input type="submit" value="{$lang.button_submit_tag}" class="submit" style="letter-spacing:-1px;" />
+					<input type="hidden" name="goods_id" value="{$goods.goods_id}"  />
+				</p>
+                <script type="text/javascript">
+                //<![CDATA[
+                {literal}
+                /**
+                 * 用户添加标记的处理函数
+                 */
+                function submitTag(frm)
+                {
+                  try
+                  {
+                    var tag = frm.elements['tag'].value;
+                    var idx = frm.elements['goods_id'].value;
+
+                    if (tag.length > 0 && parseInt(idx) > 0)
+                    {
+                      Ajax.call('user.php?act=add_tag', "id=" + idx + "&tag=" + tag, submitTagResponse, "POST", "JSON");
+                    }
+                  }
+                  catch (e) { alert(e); }
+
+                  return false;
+                }
+
+                function submitTagResponse(result)
+                {
+                  var div = document.getElementById('ECS_TAGS');
+
+                  if (result.error > 0)
+                  {
+                    alert(result.message);
+                  }
+                  else
+                  {
+                    try
+                    {
+                      div.innerHTML = '';
+                      var tags = result.content;
+
+                      for (i = 0; i < tags.length; i++)
+                      {
+                        div.innerHTML += '<a href="search.php?keywords='+tags[i].word+'">' +tags[i].word + '[' + tags[i].count + ']<\/a>&nbsp;&nbsp; ';
+                      }
+                    }
+                    catch (e) { alert(e); }
+                  }
+                }
+                {/literal}
+                //]]>
+                </script>
+              </form>
+	 </div>
+	</div>
+ <!-- #EndLibraryItem -->
+<!-- #BeginLibraryItem "/library/relatetag.lbi" -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+{if $tag_nums }
+<!--{foreach from=$tag_list item=data key=key}-->
+{if $key neq $appid}
+{if $data.type eq "ecshop"}
+	<div class="common_box w718">
+	<div class="tag_title"><h4>{$data.name}</h4></div>
+	<div class="common_box_1">
+<!--{foreach from=$data.data item=tag key=key}-->
+		<img src="{$tag.image}" /><br />
+		<a href="{$tag.url}">{$tag.goods_name}</a>
+		<!--{/foreach}-->
+	</div>
+	</div>
+{elseif $data.type eq "discuz"}
+	<div class="common_box w718">
+	<div class="tag_title"><h4>{$data.name}</h4></div>
+	<div class="common_box_1">
+<!--{foreach from=$data.data item=tag key=key}-->
+	  <a href="{$tag.url}">{$tag.subject}</a><br />
+	  <!--{/foreach}-->
+	</div>
+	</div>
+{/if}
+{/if}
+<!--{/foreach}-->
+{/if}
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+	<!-- {if $fittings} -->
+	<div class="common_box w718 w716">
+	 <div class="tag_title"><h4>{$lang.shopping_and_other}</h4></div>
+	 <div class="common_box_1" style="height:1%; padding:8px 3px;">
+	 <!-- {foreach from=$fittings item=goods} -->
+		  <div class="ent">
+			 <a href="{$goods.url}" target="_blank"><img src="{$goods.goods_thumb}"  class="img" alt="{$goods.name|escape:html}" /></a><br />
+		   <a href="{$goods.url}" target="_blank" title="{$goods.name|escape:html}">{$goods.short_name|escape:html}</a><br />
+			 {$lang.fittings_price}{$goods.fittings_price}<br />
+		   <a href="javascript:addToCart({$goods.goods_id},{$goods_id})"><img src="images/bnt_buy.gif" /></a>
+			 </div>
+		  <!-- {/foreach} -->
+			<div class="padd"></div>
+	 </div>
+	</div>
+	<!-- {/if} -->
+	<!-- #BeginLibraryItem "/library/comments.lbi" -->
+{insert_scripts files='transport.js,utils.js'}
+<div id="ECS_COMMENT"> {* ECSHOP 提醒您：动态载入comments_list.lbi，显示评论列表和评论表单 *}{insert name='comments' type=$type id=$id}</div>
+<!-- #EndLibraryItem -->
+ </div>
+ <!--右边部分 end-->
+</div>
+<div class="padd"></div>
+
+<!--copyright start-->
+<!-- #BeginLibraryItem "/library/page_footer.lbi" --><!-- #EndLibraryItem -->
+
+</div>
+</body>
+</html>
+<div id="tag_box" style="z-index:9999; position:absolute;top:100px; right:5px;"></div>
+<script type="text/javascript">
+function get_tag(goods_id)
+{
+  Ajax.call('tag_cloud.php?action=relatetag', 'goodsid=' + goods_id.toJSONString(), push_tag, 'POST', 'JSON');
+}
+
+function push_tag(res)
+{
+  if (res.error.length > 0)
+  {
+    alert(res.error);
+  }
+  else
+  {
+    if(document.getElementById('tag_box'))
+      {
+        document.getElementById('tag_box').innerHTML = res.content;
+      }
+  }
+}
+</script>
+<script type="text/javascript">
+var goodsattr_style = {$cfg.goodsattr_style|default:1};
+var gmt_end_time = {$promote_end_time|default:0};
+{foreach from=$lang.goods_js item=item key=key}
+var {$key} = "{$item}";
+{/foreach}
+var goodsId = {$goods_id};
+
+<!-- {literal} -->
+onload = function(){
+  fixpng();
+  try { onload_leftTime(); }
+  catch (e) {}
+}
+</script>

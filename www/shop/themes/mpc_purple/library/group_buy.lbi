@@ -1,0 +1,24 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $group_buy_goods} --> 
+<div id="best">
+	 <div class="tag_title itemTit clearfix">
+		 <h3>{$lang.group_buy_goods}</h3>
+		 <a href="group_buy.php">more</a>
+	</div>
+	<div class="com_v clearfix">	 
+  <!--{foreach from=$group_buy_goods item=goods}-->	 
+  <div class="ent">
+  <a href="{$goods.url}" class="brief"><img src="{$goods.thumb}" class="img" /></a>
+  <a href="{$goods.url}" title="{$goods.name|escape:html}"><font class="font_ie6">{$goods.short_style_name|truncate:8:"..."true}</font></a>
+				
+	<!-- {if $goods.promote_price neq ""} -->
+	<span class="market">{$goods.promote_price}</span><br />
+	<!-- {else}-->
+  <span class="shop">{$goods.shop_price}</span><br />
+	<!--{/if}-->
+	<span class="shop">{$goods.last_price}</span><br />
+  </div>
+  <!--{/foreach}-->
+ </div>
+</div>
+<!-- {/if} -->

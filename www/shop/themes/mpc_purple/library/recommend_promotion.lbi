@@ -1,0 +1,26 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $promotion_goods} -->
+<div id="best">
+	   <div class="tag_title itemTit clearfix">
+		 <h3>{$lang.promotion_goods}</h3>
+		 <a href="../search.php?intro=promotion">more</a>
+		</div>
+		<div class="com_v clearfix">
+		<!--{foreach from=$promotion_goods item=goods}-->
+		<div class="ent">
+		 <a href="{$goods.url}" class="brief">
+		 <img src="{$goods.thumb}" class="img" />
+		 </a>
+		 <a href="{$goods.url}" title="{$goods.name|escape:html}"><font class="font_ie6">{$goods.short_style_name}</font></a><br />
+		<!-- {if $goods.promote_price neq ""} -->
+		<span class="shop">{$lang.promote_price}{$goods.promote_price}</span><br />
+						<!-- {else}-->
+		<span class="shop">{$lang.shop_price}{$goods.shop_price}</span><br />
+						<!--{/if}-->
+		<a href="javascript:collect({$goods.id})"><img src="images/bnt_c.gif" /></a> 
+		<a href="javascript:addToCart({$goods.id})"><img src="images/bnt_buy.gif" /></a>
+		</div>
+    <!--{/foreach}-->
+		</div>
+</div>
+<!-- {/if} -->

@@ -1,0 +1,41 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--{if empty($order_query)}-->
+<h1>订单查询</h1>
+<div class="left_box_1">
+		<script>var invalid_order_sn = "{$lang.invalid_order_sn}"</script>
+		<form name="ecsOrderQuery">
+		<input type="text" name="order_sn"  class="input_1" />
+		<!--<a href="#"><img src="images/btn_order.gif" width="102" height="20" /></a>-->
+		<input name="name" type="button" value="" style="cursor:pointer;"  onclick="orderQuery()" class="order_sub" />
+		</form>
+		<div id="ECS_ORDER_QUERY">
+		<!--{else}-->
+    <p>
+    <!--{if $order_query.user_id}-->
+      {$lang.order_number}:
+     <a href="user.php?act=order_detail&order_id={$order_query.order_id}">{$order_query.order_sn}</a><br>
+    <!--{else}-->
+     {$lang.order_number}:
+      {$order_query.order_sn}<br>
+    
+    <!--{/if}-->
+    
+     {$lang.order_status}:<br>
+      {$order_query.order_status}<br>
+    
+    <!--{if $order_query.invoice_no }-->
+   
+      {$lang.consignment}:<br>
+      {$order_query.invoice_no}<br>
+    
+    <!--{/if}-->
+     <!--{if $order_query.shipping_date}-->
+    
+      {$lang.shipping_date}:<br>
+      {$order_query.shipping_date}
+   
+    <!--{/if}-->
+   </p>
+<!--{/if}-->
+		</div>	
+</div>

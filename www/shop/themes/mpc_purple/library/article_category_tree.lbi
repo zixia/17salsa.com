@@ -1,0 +1,12 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<h1>文章分类</h1>
+	<ul>
+	<!--{foreach from=$article_categories item=cat}-->
+	<li> <span class="parent-cat"><a href="{$cat.url}">{$cat.name|escape:html}</a></span><br />
+		<!--{foreach from=$cat.children item=child}-->
+		<span style="white-space:nowrap;"><a href="{$child.url}">{$child.name|escape:html}</a></span>
+		<!--{/foreach}-->
+	</li>
+	<!--{/foreach}-->
+</ul>
+

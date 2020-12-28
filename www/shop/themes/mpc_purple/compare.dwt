@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="Keywords" content="{$keywords}" />
+<meta name="Description" content="{$description}" />
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>{$page_title}</title>
+<!-- TemplateEndEditable --><!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<link rel="shortcut icon" href="favicon.ico" />
+<link rel="icon" href="animated_favicon.gif" type="image/gif" />
+<link href="{$ecs_css_path}" rel="stylesheet" type="text/css" />
+{* 包含脚本文件 *}
+{insert_scripts files='transport.js,common.js,utils.js'}
+<script language="javascript">
+function remove(id, url)
+{
+  if (document.getCookie("compareItems") != null)
+  {
+    var obj = document.getCookie("compareItems").parseJSON();
+    delete obj[id];
+    var date = new Date();
+    date.setTime(date.getTime() + 99999999);
+    document.setCookie("compareItems", obj.toJSONString());
+  }
+}
+
+var compare_no_goods = "{$lang.compare_no_goods}";
+var btn_buy = "{$lang.btn_buy}";
+var is_cancel = "{$lang.is_cancel}";
+var select_spe = "{$lang.select_spe}";
+</script>
+
+<style type="text/css">
+.table tr, .table td{ color:#0a54ad; }
+</style>
+
+</head>
+<body>
+<div class="global"><!-- #BeginLibraryItem "/library/page_header.lbi" -->
+<div id="header_bock">
+ <div id="header_logo"><!--logo,search start-->
+	 <a href="../mpc/index.php" name="top" id="top"><img src="../mpc/images/logo.gif" width="190" height="68" alt="logo" class="logo" /></a>
+	 <form id="searchForm" name="searchForm" method="get" action="../mpc/library/search.php" onsubmit="return checkSearchForm()" style="margin:15px 0px 10px 0px;">
+	 <select name="category" id="category" class="border">
+      <option value="0">{$lang.all_category}</option>
+      {$category_list}
+    </select>
+	 <div class="search_text">
+	 <img src="../mpc/library/images/dot_search.gif" class="search_text_img" />
+	 <input name="keywords" class="textbox" type="text" id="keyword" value="{$search_keywords|escape}" style="width:188px; height:18px;" />
+	 </div>
+	 <input type="image" name="imageField" src="../mpc/images/btn_search.gif" style="position:relative;top:4px;" />
+	 <a href="../mpc/library/search.php?act=advanced_search"><img src="../mpc/library/images/btn_ad_search.gif" style="position:relative;top:4px;" /></a>
+	 </form>
+	 {if $searchkeywords}
+	 {$lang.hot_search} ：
+	 {foreach from=$searchkeywords item=val}
+   <a href="../mpc/library/search.php?keywords={$val|escape}">{$val}</a>
+   {/foreach}
+	 {/if}
+<script type="text/javascript">
+{literal}
+<!--
+function checkSearchForm()
+{
+    if(document.getElementById('keyword').value)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+-->
+{/literal}
+</script>
+  </div><!--logo,search end-->
+ <div id="header_login"><!--login start-->
+   <div id="nav_start">
+	 <span><a href="../mpc/user.php">{$lang.user_center}</a></span>
+	 <span><a href="../mpc/group_buy.php">{$lang.group_buy_goods}</a></span>
+	 <span><a href="../mpc/pick_out.php">{$lang.pick_out}</a></span>
+	 <span><a href="../mpc/snatch.php">{$lang.snatch}</a></span>
+	 <div class="padd"></div>
+	 </div>
+	 <div id="user">
+		{insert_scripts files='transport.js,utils.js'}
+    <div id="ECS_MEMBERZONE">{* ECSHOP 提醒您：根据用户id来调用member_info.lbi显示不同的界面  *}{insert name='member_info'}</div>
+	 </div>
+ </div><!--login end-->
+</div>
+<div  class="bock"><!--页面导航开始-->
+  <div id="nav_left">
+	  <ul>
+		<li{if $navigator_list.config.index eq 1} id="first"{/if}><a href="../mpc/index.php">网店首页</a></li>
+		 <!-- {foreach name=nav_middle_list from=$navigator_list.middle item=nav} -->
+    <li{if $nav.active eq 1} id="first"{/if}><a href="{$nav.url}" <!-- {if $nav.opennew eq 1} -->target=&quot;_blank&quot;<!-- {/if} -->&gt;{$nav.name}</a></li>
+    <!-- {/foreach} -->
+		</ul>
+	</div>
+	<div id="nav_right">
+	 <ul>
+	 <li class="ie6_1"><a href="../mpc/flow.php" class="car_bg">{$lang.view_cart}</a></li>
+	 <li class="ie6_2"><a href="../mpc/tag_cloud.php" class="tag_bg">{$lang.tag_cloud}</a></li>
+	 <li class="ie6_3"><a href="../mpc/activity.php" class="list_bg">{$lang.favourable}</a></li>
+	 </ul>
+	</div>
+	<div style="clear:left;"></div>
+</div><!--页面导航结束--><!-- #EndLibraryItem --><!--当前位置 start-->
+<div class="bock ur_here">
+<!-- TemplateBeginEditable name="当前位置" -->
+<!-- #BeginLibraryItem "/library/ur_here.lbi" -->
+{$lang.ur_here} {$ur_here}
+ <!-- #EndLibraryItem -->
+<!-- TemplateEndEditable -->
+</div>
+<!--当前位置 end-->
+<div class="bock">
+ <div class="common_box">
+	<div class="tag_title">
+	<h4>商品比较</h4>
+	</div>
+	<div class="common_box_1">
+	 <table  width="100%" border="0" cellpadding="0" cellspacing="1" class="table" bgcolor="#547388">
+              <tr>
+                <th width="120" align="center" bgcolor="#ffffff">{$lang.goods_name}</th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td align="center" bgcolor="#ffffff" {if $smarty.foreach.goods_list.total gt 3}width="200"{else}{/if}> {$goods.goods_name}</td>
+                <!-- {/foreach} -->
+              </tr>
+              <tr>
+                <th align="left" bgcolor="#ffffff"></th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td  align="center" bgcolor="#ffffff" style="padding:5px;"><a href="{$goods.url}"><img src="{$goods.goods_thumb}" alt="{$goods.goods_name}" class="ent_img" /></a></td>
+                <!-- {/foreach} -->
+              </tr>
+              <!-- {if $smarty.foreach.goods_list.total gt 2} -->
+              <tr>
+                <td bgcolor="#ffffff">&nbsp;</td>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <th bgcolor="#ffffff">
+                  <a href="compare.php?{$goods.ids}" onClick="return remove({$goods.goods_id});">{$lang.compare_remove}</a>                </th>
+                <!-- {/foreach} -->
+              </tr>
+              <!-- {/if} -->
+              <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;{$lang.brand}</th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">&nbsp;&nbsp;{$goods.brand_name}</td>
+                <!-- {/foreach} -->
+              </tr>
+              <tr>
+              <th align="left" bgcolor="#ffffff">  {$lang.shop_price}</th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">  {$goods.rank_price}</td>
+                <!-- {/foreach} -->
+              </tr>
+              <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;{$lang.goods_weight}</th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">&nbsp;&nbsp;{$goods.goods_weight}</td>
+                <!-- {/foreach} -->
+              </tr>
+              <!-- {foreach key=key from=$attribute item=val} -->
+              <tr>
+                <th align="left" bgcolor="#ffffff">&nbsp;&nbsp;{$val}</th>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">&nbsp;&nbsp;
+                  <!-- {foreach from=$goods.properties item=property key=k} -->
+                  <!-- {if $k eq $key} -->
+                  {$property.value}
+                  <!-- {/if} -->
+                  <!-- {/foreach} -->                </td>
+                <!-- {/foreach} -->
+              </tr>
+              <!-- {/foreach} -->
+              <tr>
+                <td align="left" bgcolor="#ffffff">&nbsp;&nbsp;<strong>{$lang.goods_rank}</strong></td>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">&nbsp;&nbsp;<span class="goods-price"><img src="images/stars{$goods.comment_rank}.gif" width="64" height="12" alt="comment rank {$goods.comment_rank}" /></span><br /></td>
+                <!-- {/foreach} -->
+              </tr>
+              <tr>
+                <td align="left" bgcolor="#ffffff">&nbsp;&nbsp;<strong>{$lang.brief}</strong></td>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td bgcolor="#ffffff">&nbsp;&nbsp;<a href="{$goods.url}" target="_blank"> {$goods.goods_brief}</a></td>
+                <!-- {/foreach} -->
+              </tr>
+              <tr>
+                <td bgcolor="#ffffff">&nbsp;</td>
+                <!-- {foreach name="goods_list" from=$goods_list item=goods} -->
+                <td align='center' bgcolor="#ffffff"><a href="javascript:collect({$goods.goods_id});"><img src="images/btn_addfav.gif" alt="{$lang.collect}"  style="margin:2px auto;"/></a>
+                <a href="javascript:addToCart({$goods.goods_id})"><img src="images/btn_addcart.gif" alt="{$lang.add_to_cart}"  style="margin:2px auto;"/></a></td>
+                <!-- {/foreach} -->
+              </tr>
+  </table>
+	</div>
+</div>
+<div class="padd"></div>
+<!--copyright start--><!-- #BeginLibraryItem "/library/page_footer.lbi" -->
+<div class="bock">
+<div id="copyright">
+<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0">
+  <tr>
+
+    <td> {$copyright}<br />
+      {$shop_address} {$shop_postcode} <br />
+      <!-- 客服电话{if $service_phone} -->
+      Tel: {$service_phone}
+      <!-- 结束客服电话{/if} -->
+      <!-- QQ 号码 {foreach from=$qq item=im} -->
+      <!-- {if $im} -->
+      <a href="http://wpa.qq.com/msgrd?V=1&amp;Uin={$im}&amp;Site={$shop_name}&amp;Menu=yes" target="_blank"><img src="http://wpa.qq.com/pa?p=1:{$im}:4" height="16" border="0" alt="QQ" /> {$im}</a>
+      <!-- {/if} -->
+      <!-- {/foreach} 结束QQ号码 -->
+      <!-- 淘宝旺旺 {foreach from=$ww item=im} -->
+      <!-- {if $im} -->
+      <a href="http://amos1.taobao.com/msg.ww?v=2&amp;uid={$im|escape:url}&amp;s=2" target="_blank"><img src="http://amos1.taobao.com/online.ww?v=2&amp;uid={$im|escape:url}&amp;s=2" width="16" height="16" border="0" alt="淘宝旺旺" /> {$im}</a>
+      <!-- {/if} -->
+      <!--{/foreach} 结束淘宝旺旺 -->
+      <!-- Yahoo Messenger {foreach from=$ym item=im} -->
+      <!-- {if $im} -->
+      <a href="http://edit.yahoo.com/config/send_webmesg?.target={$im}n&amp;.src=pg" target="_blank"><img src="../mpc/images/yahoo.gif" width="18" height="17" border="0" alt="Yahoo Messenger" /> {$im}</a>
+      <!-- {/if} -->
+      <!-- {/foreach} 结束Yahoo Messenger -->
+      <!-- MSN Messenger {foreach from=$msn item=im} -->
+      <!-- {if $im} -->
+      <img src="../mpc/images/msn.gif" width="18" height="17" border="0" alt="MSN" /> <a href="msnim:chat?contact={$im}">{$im}</a>
+      <!-- {/if} -->
+      <!-- {/foreach} 结束MSN Messenger -->
+      <!-- Skype {foreach from=$skype item=im} -->
+      <!-- {if $im} -->
+      <img src="http://mystatus.skype.com/smallclassic/{$im|escape:url}" alt="Skype" /><a href="skype:{$im|escape:url}?call">{$im}</a>
+      <!-- {/if} -->
+      <!-- {/foreach} -->
+      <!-- {if $navigator_list.bottom} -->
+      <div class="cop_nav">
+        <!-- {foreach name=nav_bottom_list from=$navigator_list.bottom item=nav} -->
+        <a href="{$nav.url}" <!-- {if $nav.opennew eq 1} --> target=&quot;_blank&quot; <!-- {/if} -->&gt;{$nav.name}</a>
+        <!-- {if !$smarty.foreach.nav_bottom_list.last} -->
+        |
+        <!-- {/if} -->
+      <!-- {/foreach} -->
+      </div>
+      <!-- {/if} -->
+      <!-- ICP 证书{if $icp_number} -->
+      <div> {$lang.icp_number}:<a href="http://www.miibeian.gov.cn/" target="_blank">{$icp_number}</a> </div>
+      <!-- 结束ICP 证书{/if} -->
+      {insert name='query_info'}<br />
+      Powered by <span class="cop_nav">ECShop{$ecs_version}</span></a><br />    </td>
+  </tr>
+</table>
+ </div>
+</div>
+{if $stats_code}
+<div align="center">{$stats_code}</div>
+{/if}
+
+<script type="text/javascript">
+var process_request = "{$lang.process_request}";
+</script>
+
+<!-- #EndLibraryItem --></div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $auction_list} -->
+<div id="best">
+	 <div class="tag_title itemTit clearfix">
+		 <h3>{$lang.auction_goods}</h3>
+		 <a href="auction.php">more</a>
+	</div>
+	<div class="com_v clearfix">	
+  <!--{foreach from=$auction_list item=auction}--> 
+<div class="ent">
+ <a href="{$auction.url}" class="brief">
+ <img src="{$auction.thumb}" class="img"alt="{$goods.name|escape:html}" />
+ </a>
+ <a href="{$auction.url}" title="{$auction.goods_name|escape:html}"><font class="font_ie6">{$auction.short_style_name|truncate:8:"..."true}</font></a><br />	
+	<span class="shop">{$auction.formated_start_price}</span>		
+</div>
+<!--{/foreach}-->
+  </div>
+</div>
+<!-- {/if} -->

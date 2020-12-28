@@ -1,0 +1,90 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- {if $vote} -->
+<h1>{$lang.online_vote}</h1>
+<div class="left_box_1" align="center">
+    <div class="left_box_2">
+{insert_scripts files='transport.js'}
+		<!-- {foreach from=$vote item=title} -->
+		<div align="center">{$title.vote_name}<br />
+		({$lang.vote_times}:{$title.vote_count})</div>
+		<!-- {/foreach} -->
+		<form id="formvote" name="ECS_VOTEFORM" method="post" action="javascript:submit_vote()">
+		<!-- {foreach from=$vote item=title} -->
+          <!-- {foreach from=$title.options item=item} -->
+            <!-- {if $title.can_multi eq 0} -->
+            <input type="checkbox" name="option_id" value="{$item.option_id}" />
+            {$item.option_name} ({$item.percent}%)<br />
+            <!-- {else} -->
+            <input type="radio" name="option_id" value="{$item.option_id}" />
+            {$item.option_name} ({$item.percent}%)<br />
+            <!-- {/if} -->
+            <!-- {/foreach} -->
+            <input type="hidden" name="type" value="{$title.can_multi}" />
+          <!-- {/foreach} -->
+		<div align="center">
+		<br class="h_br">
+		<input type="hidden" name="id" value="{$vote_id}" />
+    <input type="submit" name="submit" value="{$lang.submit_vote}"  class="submit"  />
+    <input type="reset" value="{$lang.submit_reset}"  class="reset" />
+		</div>
+		</form>
+  </div>
+</div>		
+
+<script type="text/javascript">
+{literal}
+
+function submit_vote()
+{
+  var frm     = document.forms['ECS_VOTEFORM'];
+  var type    = frm.elements['type'].value;
+  var vote_id = frm.elements['id'].value;
+  var option_id = 0;
+
+  if (frm.elements['option_id'].checked)
+  {
+    option_id = frm.elements['option_id'].value;
+  }
+  else
+  {
+    for (i=0; i<frm.elements['option_id'].length; i++ )
+    {
+      if (frm.elements['option_id'][i].checked)
+      {
+        option_id = (type == 0) ? option_id + "," + frm.elements['option_id'][i].value : frm.elements['option_id'][i].value;
+      }
+    }
+  }
+
+  if (option_id == 0)
+  {
+    return;
+  }
+  else
+  {
+    Ajax.call('vote.php', 'vote=' + vote_id + '&options=' + option_id + "&type=" + type, voteResponse, 'POST', 'JSON');
+  }
+}
+
+/**
+ * ????
+ */
+function voteResponse(result)
+{
+  if (result.message.length > 0)
+  {
+    alert(result.message);
+  }
+  if (result.error == 0)
+  {
+    var layer = document.getElementById('ECS_VOTE');
+
+    if (layer)
+    {
+      layer.innerHTML = result.content;
+    }
+  }
+}
+{/literal}
+</script>
+<!-- {/if} -->
