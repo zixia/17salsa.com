@@ -23,15 +23,15 @@ $_SC['cookiepre'] 		= 'uchome_'; //COOKIE前缀
 $_SC['cookiedomain'] 	= ''; //COOKIE作用域
 $_SC['cookiepath'] 		= '/'; //COOKIE作用路径
 $_SC['attachdir']		= './attachment/'; //附件本地保存位置(服务器路径, 属性 777, 必须为 web 可访问到的目录, 相对目录务必以 "./" 开头, 末尾加 "/")
-$_SC['attachurl']		= 'http://cdn.17salsa.com/home/attachment/'; //附件本地URL地址(可为当前 URL 下的相对地址或 http:// 开头的绝对地址, 末尾加 "/")
+$_SC['attachurl']		= 'https://17salsa.com/home/attachment/'; //附件本地URL地址(可为当前 URL 下的相对地址或 http:// 开头的绝对地址, 末尾加 "/")
 $_SC['tplrefresh']		= 0; //判断模板是否更新的效率等级，数值越大，效率越高; 设置为0则永久不判断
 
 //UCenter 配置参数
 define('UC_CONNECT', 'mysql'); // 连接 UCenter 的方式: mysql/NULL, 默认为空时为 fscoketopen(), mysql 是直接连接的数据库, 为了效率, 建议采用 mysql
 //数据库相关 (mysql 连接时, 并且没有设置 UC_DBLINK 时, 需要配置以下变量)
-define('UC_DBHOST', 'localhost'); // UCenter 数据库主机
-define('UC_DBUSER', '17salsa'); // UCenter 数据库用户名
-define('UC_DBPW', '13911833788'); // UCenter 数据库密码
+define('UC_DBHOST', getenv('SALSA17_MYSQL_HOST')); // UCenter 数据库主机
+define('UC_DBUSER', getenv('SALSA17_MYSQL_USER')); // UCenter 数据库用户名
+define('UC_DBPW', getenv('SALSA17_MYSQL_PASS')); // UCenter 数据库密码
 define('UC_DBNAME', '17salsa'); // UCenter 数据库名称
 define('UC_DBCHARSET', 'utf8'); // UCenter 数据库字符集
 define('UC_DBTABLEPRE', '`17salsa`.uc_'); // UCenter 数据库表前缀
