@@ -6,6 +6,27 @@
 
 17SALSA is a salsa social network for salsa, bachata, merengue dancers
 
+## History
+
+### v0.20 (Dec 28, 2020)
+
+Website online again.
+
+1. GitHub at <https://github.com/zixia/17salsa.com>
+1. Dockerized at <https://github.com/orgs/zixia/packages/container/package/17salsa.com>
+1. Cloudified at <https://Azure.com>
+    1. Azure Virtual Machine
+    1. Azure Database for MySQL Server
+    1. Azure Disk
+
+### 2005 - 2020
+
+Server hardware failed and website offline.
+
+### v0.0.1 (Sep 12, 2008)
+
+1. [一起Salsa社区上线内部测试啦！](https://17salsa.com/home/space-1-do-blog-id-1.html)
+
 ## Maintainer
 
 [Huan](https://github.com/huan) [(阿布)](http://17salsa.com/home/abu), Chairman of [17SALSA](h
