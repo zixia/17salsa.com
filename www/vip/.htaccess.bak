@@ -1,0 +1,4 @@
+AuthName "VIP Card Under Construction..."
+AuthType Basic
+AuthUserFile /750/xfs/vhost/17salsa.com/vip/.htpasswd
+Require valid-user
