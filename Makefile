@@ -11,17 +11,7 @@ build:
 
 .PHONY: run
 run:
-	docker run \
-		--name 17salsa.com \
-		--rm \
-		-ti \
-		-e SALSA17_MYSQL_HOST \
-		-e SALSA17_MYSQL_USER \
-		-e SALSA17_MYSQL_PASS \
-		-p 8080:80 \
-		-v /tmp:/var/www/admin/UploadFiles/ \
-		--entrypoint bash \
-		17salsa.com
+	./scripts/run.sh
 
 .PHONY: pull
 pull:

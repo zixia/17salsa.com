@@ -4,6 +4,10 @@
 
 17SALSA is a salsa social network for salsa, bachata, merengue dancers
 
+## Resources
+
+- [简单两步解决UCenter忘记创始人UCenter Administrator密码](https://blog.csdn.net/wwppp987/article/details/96651185)
+
 ## Maintainer
 
 [Huan](https://github.com/huan) [(阿布)](http://17salsa.com/home/abu), Chairman of [17SALSA](h

@@ -13,7 +13,9 @@ docker run \
   -v /data/17salsa.com/home/attachment:/www/home/attachment \
   -v /data/17salsa.com/center/data:/www/center/data \
   -p 8080:80 \
-  -e VIRTUAL_HOST=17salsa.com,www.17salsa.com,cdn.17salsa.com,17salsa.net,www.17salsa.net,17salsa.org,www.17salsa.org \
+  -e VIRTUAL_HOST=17salsa.com,*.17salsa.com,17salsa.net,*.17salsa.net,17salsa.org,*.17salsa.org \
+  -e LETSENCRYPT_HOST=17salsa.com,www.17salsa.com,cdn.17salsa.com,abu.17salsa.com,17salsa.net,www.17salsa.net,17salsa.org,www.17salsa.org \
+  -e HTTPS_METHOD=noredirect \
   --entrypoint bash \
   17salsa.com
 
