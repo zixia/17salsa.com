@@ -18,7 +18,6 @@ run:
 		-e SALSA17_MYSQL_HOST \
 		-e SALSA17_MYSQL_USER \
 		-e SALSA17_MYSQL_PASS \
-		-e SALSA17_MYSQL_DATABASE \
 		-p 8080:80 \
 		-v /tmp:/var/www/admin/UploadFiles/ \
 		--entrypoint bash \
