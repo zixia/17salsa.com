@@ -12,6 +12,8 @@ docker run \
   -v /data/17salsa.com/home/data:/www/home/data \
   -v /data/17salsa.com/home/attachment:/www/home/attachment \
   -v /data/17salsa.com/center/data:/www/center/data \
+  -v /data/17salsa.com/wiki/data:/www/wiki/data \
+  -v /data/17salsa.com/wiki/uploads:/www/wiki/uploads \
   -p 8080:80 \
   -e VIRTUAL_HOST=17salsa.com,*.17salsa.com,17salsa.net,*.17salsa.net,17salsa.org,*.17salsa.org \
   -e LETSENCRYPT_HOST=17salsa.com,www.17salsa.com,cdn.17salsa.com,abu.17salsa.com,17salsa.net,www.17salsa.net,17salsa.org,www.17salsa.org \
