@@ -1,9 +1,10 @@
 <?php
-!defined('IN_HDWIKI') && exit('Access Denied');
+!defined('IN_HDWIKI') && exit('Access Denied');
+
 class control extends base{
 	
 	function control(& $get,& $post){
-		$this->base( & $get,& $post);
+		$this->base($get, $post);
 		$this->load('pic');
 		$this->load('comment');
 		$this->view->assign('isimage',true);

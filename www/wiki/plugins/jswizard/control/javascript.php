@@ -3,7 +3,7 @@
 class control extends base{
 	var $pluginid;
 	function control(& $get,& $post){
-		$this->base( & $get,& $post);
+		$this->base($get, $post);
 		$this->load('plugin');
 		$this->load('setting');
 		$this->loadplugin('jswizard');
