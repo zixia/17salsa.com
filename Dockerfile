@@ -13,8 +13,9 @@ COPY conf/000-default.conf /etc/apache2/sites-available/
 RUN a2enmod rewrite
 COPY www /www
 COPY VERSION /www
+COPY bin/entrypoint.sh /
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+ENTRYPOINT ["entrypoint.sh"]
 
 EXPOSE 80/tcp
 
