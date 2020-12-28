@@ -30,10 +30,10 @@ include "header.inc.php";
 <ul id="idNum" class="num"></ul>
 </div>
 <p><script src="js/pic.js" type="text/javascript"></script></p>
-<p><embed src="http://player.youku.com/player.php/sid/XMTQ1ODIyMjk2/v.swf" quality="high" width="265" height="246" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed></p>
+<p><embed src="https://player.youku.com/player.php/sid/XMTQ1ODIyMjk2/v.swf" quality="high" width="265" height="246" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed></p>
 <p>Oliver与鸵鸟门美女的示范</p>
 <br />
-<p><embed src="http://player.youku.com/player.php/sid/XODU2MDEzMzI=/v.swf" quality="high" width="265" height="246" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed></a></p>
+<p><embed src="https://player.youku.com/player.php/sid/XODU2MDEzMzI=/v.swf" quality="high" width="265" height="246" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash"></embed></a></p>
 <p>CUBAMEMUCHO 2009 CHINA RUEDA TEAM IN MUNICH</p>
 </div>
 		   <div id="main">
