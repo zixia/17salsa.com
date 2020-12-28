@@ -45,7 +45,7 @@ define('UC_DBTABLEPRE', '`17salsa`.uc_'); 	// UCenter 数据库表前缀
 define('UC_DBCONNECT', '0'); 		// UCenter 数据库持久连接 0=关闭, 1=打开
 //通信相关
 define('UC_KEY', '0fW4k4Y0C9Wc2eMcS7Z6B8ubs1ca0aC4cdieQdPc4aV85e78k3rf65paYav3g1kf'); 	// 与 UCenter 的通信密钥, 要与 UCenter 保持一致
-define('UC_API', 'http://17salsa.com/center'); // UCenter 的 URL 地址, 在调用头像时依赖此常量
+define('UC_API', 'https://17salsa.com/center'); // UCenter 的 URL 地址, 在调用头像时依赖此常量
 define('UC_CHARSET', 'utf-8'); 		// UCenter 的字符集
 define('UC_IP', '211.99.222.57'); 				// UCenter 的 IP, 当 UC_CONNECT 为非 mysql 方式时, 并且当前应用服务器解析域名有问题时, 请设置此值
 define('UC_APPID', '7'); 			// 当前应用的 ID
