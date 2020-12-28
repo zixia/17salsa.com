@@ -5,5 +5,5 @@ set -o pipefail
 
 cat /www/VERSION
 
-apachectl stop > /dev/null 2>&1
-apachectl -D FOREGROUND
+rm -f /var/run/apache2/apache2.pid
+exec apachectl -DFOREGROUND "$@"
