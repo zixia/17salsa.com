@@ -7,12 +7,13 @@
 $_SC = array();
 
 //Ucenter Home 配置参数
-$_SC['dbhost']  		= 'localhost'; //服务器地址
-$_SC['dbuser']  		= '17salsa'; //用户
-$_SC['dbpw'] 	 		= '13911833788'; //密码
+$_SC['dbhost']  		= getenv('SALSA17_MYSQL_HOST'); //服务器地址
+$_SC['dbuser']  		= getenv('SALSA17_MYSQL_USER'); //用户
+$_SC['dbpw'] 	 		= getenv('SALSA17_MYSQL_PASS'); //密码
+$_SC['dbname']  		= '17salsa'; //数据库
+
 $_SC['dbcharset'] 		= 'utf8'; //字符集
 $_SC['pconnect'] 		= 0; //是否持续连接
-$_SC['dbname']  		= '17salsa'; //数据库
 $_SC['tablepre'] 		= 'uchome_'; //表名前缀
 $_SC['charset'] 		= 'utf-8'; //页面字符集
 $_SC['gzipcompress'] 	= 0; //启用gzip
