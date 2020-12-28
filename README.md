@@ -2,6 +2,8 @@
 
 ![Docker](https://github.com/zixia/17salsa.com/workflows/Docker/badge.svg)
 
+![17SALSA.com](docs/images/17salsa-website.webp)
+
 17SALSA is a salsa social network for salsa, bachata, merengue dancers
 
 ## Maintainer
