@@ -30,8 +30,7 @@ Website online again.
 
 ## Maintainer
 
-[Huan](https://github.com/huan) [(阿布)](http://17salsa.com/home/abu), Chairman of [17SALSA](h
-ttps://www.17salsa.com), <abu@17salsa.com>
+[Huan](https://github.com/huan) [(阿布)](https://abu.17salsa.com), Chairman of [17SALSA](https://www.17salsa.com), <abu@17salsa.com>
 
 [![Profile of Huan LI (李卓桓) on StackOverflow](https://stackoverflow.com/users/flair/1123955.png)](https://stackoverflow.com/users/1123955/huan)
 
