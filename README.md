@@ -19,9 +19,10 @@ Website online again.
     1. Azure Database for MySQL Server
     1. Azure Disk
 
-### 2005 - 2020
+### 2018 - 2020
 
-Server hardware failed and website offline.
+1. Server hardware failed
+1. Website offline
 
 ### v0.0.1 (Sep 12, 2008)
 
