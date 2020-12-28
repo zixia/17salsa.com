@@ -15,7 +15,7 @@ COPY www /www
 COPY VERSION /www
 COPY bin/entrypoint.sh /
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 80/tcp
 
