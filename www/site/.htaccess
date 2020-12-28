@@ -1,0 +1,15 @@
+### 将 RewriteEngine 模式打开
+RewriteEngine On
+### 修改以下语句中的 /SupeSite 修改为你的SupeSite目录地址，如果程序放在根目录中，请将 /SupeSite 修改为 /
+RewriteBase /site
+### Rewrite 系统规则请勿修改
+RewriteRule ^([0-9]+)/spacelist(.+)$ index.php?uid/$1/action/spacelist/type$2 [L]
+RewriteRule ^([0-9]+)/viewspace(.+)$ index.php?uid/$1/action/viewspace/itemid$2 [L]
+RewriteRule ^([0-9]+)/viewbbs(.+)$ index.php?uid/$1/action/viewbbs/tid$2 [L]
+RewriteRule ^([0-9]+)/(.*)$ index.php?uid/$1/$2 [L]
+RewriteRule ^([0-9]+)$ index.php?uid/$1 [L]
+RewriteRule ^action(.+)$ index.php?action$1 [L]
+RewriteRule ^category(.+)$ index.php?action/category/catid$1 [L]
+RewriteRule ^viewnews(.+)$ index.php?action/viewnews/itemid$1 [L]
+RewriteRule ^viewthread(.+)$ index.php?action/viewthread/tid$1 [L]
+RewriteRule ^mygroup(.+)$ index.php?action/mygroup/gid$1 [L]

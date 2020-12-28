@@ -1,0 +1,65 @@
+<table summary="" id="pagehead" cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<td><h1>$alang[uchome_setting]</h1></td>
+	</tr>
+</table>
+<form method="post" name="thevalueform" id="theform"action="$formurl" enctype="multipart/form-data" >
+
+<div class="colorarea01">
+<table cellspacing="2" cellpadding="2" class="helptable"><tr><td><ul>
+<li>您需要填写UCenter Home的数据库的信息后才能聚合日志和相册。</li>
+</ul></td></tr></table>
+</div>
+
+<div class="colorarea02">
+<h2>UCenter Home数据库设置</h2>
+<table cellspacing="0" cellpadding="0" width="100%"  class="maintable">
+<tr>
+<th>数据库服务器</th>
+<td><input name="dbhost_uch" type="text" id="dbhost_uch" <!--{if $_GET['error'] == 'db'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC[dbhost_uch]" /></td>
+</tr>
+<tr>
+<th>数据库用户名</th>
+<td><input name="dbuser_uch" type="text" id="dbuser_uch" <!--{if $_GET['error'] == 'db'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC[dbuser_uch]" /></td>
+</tr>
+<tr>
+<th>数据库密码</th>
+<td><input name="dbpw_uch" type="password" id="dbpw_uch" <!--{if $_GET['error'] == 'db'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC[dbpw_uch]" /></td>
+</tr>
+<tr>
+<th>数据库名</th>
+<td><input name="dbname_uch" type="text" id="dbname_uch" <!--{if $_GET['error'] == 'dbname'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC[dbname_uch]" /></td>
+</tr>
+<tr>
+<th>数据库表名前缀</th>
+<td><input name="tablepre_uch" type="text" id="tablepre_uch" <!--{if $_GET['error'] == 'tablepre'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC[tablepre_uch]" /></td>
+</tr>
+<tr>
+<th>数据库字符集</th>
+<td><input name="dbcharset_uch" type="text" id="dbcharset_uch" size="30" value="$_SC[dbcharset_uch]" /></td>
+</tr>
+<tr>
+<th>数据库是否使用永久连接</th>
+<td><!--{if $_SC['pconnect_uch']}-->
+		<input type="checkbox" name="pconnect_uch" value="true" checked="checked" />
+	<!--{else}-->
+		<input type="checkbox" name="pconnect_uch" value="true" />
+	<!--{/if}-->
+	</td>
+</tr>
+<tr>
+<th>UCenter Home路径</th>
+<td><input name="uchurl" type="text" id="uchurl" <!--{if $_GET['error'] == 'uchurl'}-->style="border:1px solid #ff1133;" <!--{/if}--> size="30" value="$_SC['uchurl']" /> (结尾不要加 “/”)</td>
+</tr>
+<tr>
+<th>UCenter Home附件目录</th>
+<td><input name="uchattachurl" type="text" id="uchattachurl" size="30" value="$_SC[uchattachurl]" /></td>
+</tr>
+</table>
+</div>
+
+<div class="buttons">
+<input type="submit" name="thevaluesubmit" value="提交保存" class="submit" onclick="this.form.action+='&subtype=other';">
+<input type="reset" name="thevaluereset" value="重置">
+</div></form>
+
