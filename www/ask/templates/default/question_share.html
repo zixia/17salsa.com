@@ -1,0 +1,93 @@
+{template header}
+<div id="middle">
+<div id="path"><a href="{$web_path}">{$site_name}</a> &gt;&gt; {$toplink}</div>
+<div id="left2">
+<div class="t3 bcg"><div class="t3t bgg">{lang menu_knowledge_sharing}</div></div>
+<div class="b3 bcg mb12">
+<div class="w100">
+<div class="f14b">{$ques_title}</div>
+<br />
+<div class="f14">{$ques_supplement}</div>
+<div class="f13" align="right">{lang share_user}: {$ques_user} &nbsp;{lang menu_share_time}: {$ques_asktime} &nbsp;</div>
+</div>
+</div>
+<!--{if $answer_count}-->
+<div class="t3 bcg"><div class="t3t bgg">{lang menu_share_comment} ( {$answer_count} )</div></div>
+<div class="b3 bcg mb12">
+<div class="w100">
+<!--{loop $answer_list $answer}-->
+<div class="f14">{$answer['answer']}</div>
+<div class="f13" align="right"><a href="{$web_path}member.php?uid={$answer['uid']}" target="_blank"><u>{$answer['username']}</u></a>&nbsp;&nbsp;{lang menu_comment_time}：{$answer['time']}&nbsp;</div>
+<div class="f12"><hr size=1 color="#cccccc" width="99%"></div>
+<!--{/loop}-->
+</div>
+</div>
+<!--{/if}-->
+<div class="b4 bcg mb12">
+<div class="w100">
+<script type="text/javascript">
+<!--
+function check_answer(f,des,limit_len,min_len)
+{
+	if(!cyask_user)
+	{
+			document.getElementById("msgtip").innerHTML ="<font size=\"2\" color=\"red\">{lang warning_nologin_note}</font>";
+			return false;
+	}
+	if(f.content.value=="")
+	{
+		document.getElementById("msgtip").innerHTML = "<font size=\"2\" color=\"red\">{lang warning_write_info}</font>";
+		return false;
+	}
+	if(f.content.value.length<min_len)
+	{
+		document.getElementById("msgtip").innerHTML = "<font size=\"2\" color=\"red\">{lang warning_info_short}</font>";
+		return false;
+	}
+}
+-->
+</script>
+<form name="answerForm" action="{$web_path}comment.php" method="post" enctype="multipart/form-data" onsubmit="return check_answer(this,'{lang ques_content_answer}',10000,2);">
+<table cellspacing="0" cellpadding="0" width="100%" border="0">
+<tr><td class="f14" width="15%">&nbsp;</td><td width="85%"><span id="msgtip"></span></td></tr>
+<tr valign="top"><td class="f14" width="15%" align="right"><a name="reply"></a>{lang button_to_response}：&nbsp;</td>
+<td width="85%" align="left">
+<input type="hidden" name="content" value="">
+<script type="text/javascript" src="cyaskeditor/CyaskEditor.js"></script>
+<script type="text/javascript">
+<!--
+var editor = new CyaskEditor("editor");
+editor.hiddenName = "content";
+editor.editorType = "simple";
+editor.editorWidth = "500px";
+editor.editorHeight = "200px";
+editor.show();
+function cyaskeditorsubmit(){editor.data();}
+-->
+</script>
+<span id="tip2"></span><br /><br /></td></tr>
+<tr><td class="f14" width="15%">&nbsp;</td>
+<td width="85%">
+<input type="hidden" name="command" value="share_comment" />
+<input type="hidden" name="qid" value="{$qid}" />
+<input type="hidden" name="askername" value="{$askername}" />
+<input type="hidden" name="formhash" value="{echo form_hash()}" />
+<input type="submit" name="dosubmit" value="{lang button_submit_response}" onclick="cyaskeditorsubmit()" class="bnsrh" /></td></tr>
+</table>
+</form>
+<br />
+</div>
+</div>
+</div>
+<div id="right2">
+<div class="t3 bcb"><div class="t3t bgb">{lang menu_hot_ques}</div></div>
+<div class="b3 bcb mb12">
+<div class="w100">
+<!--{loop $hotques_list $hotquestion}-->
+&#8226; <span class="f13"><a class="ql" href="{$web_path}{$hotquestion['qid']}" target="_blank" title="{$hotquestion['title']}">{$hotquestion['stitle']}</a></span><br />
+<!--{/loop}-->
+</div>
+</div>
+</div>
+</div>
+{template footer}
