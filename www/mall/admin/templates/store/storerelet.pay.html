@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?act=jslang"></script>
+{script src="ecmall,ui.utils,validator"}
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.confirm_and_pay}</h1>
+    <div class="link">[<a href="admin.php?app=storerelet&amp;act=view">{$lang.list_relet_order}</a>]</div>
+    <div id="desc"></div>
+  </li>
+  <li>
+    <form method="post" action="admin.php?app=storerelet&amp;act=do_pay&amp;id={$order.order_id}" target="_blank" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.your_order_sn}:</td>
+              <td><p>{$order.order_sn}</p></td>
+            </tr>
+      <tr>
+        <td class="label" >{$lang.your_rent_scheme}:</td>
+        <td>{$goods.goods_name}</td>
+        </tr>
+      <tr>
+              <td class="label" >{$lang.your_payment}:</td>
+        <td><p>{$order.pay_name}</p>
+            <p>{$order.pay_desc}</p></td>
+        </tr>
+      {if $order.is_online}
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="pay" value="{$lang.pay_on_line}" /></td>
+      </tr>
+      {/if}
+          </table>
+        </div>
+      </div>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

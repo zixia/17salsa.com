@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ui.datagrid,ajax,validator,ui.dropdownmenu,ui.calendar,ui.dialog,ui.tip"}
+  <script type="text/javascript" src="admin.php?act=jslang"></script>
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <link href="js/ui.tip/style.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript">
+  var grid = null;
+  Event.observe(window, "load", function() {
+     grid = new ui.DataGrid($("orderListGrid"));
+     grid.action = 'set_status';
+     $("start_date").onclick = function() {
+       if(!$("start_date").calendar) {
+         $("start_date").calendar = new ui.calendar(this, $('start_date'));
+       } else {
+         $("start_date").calendar.show();
+       }
+     };
+     $("end_date").onclick = function() {
+       if(!$("end_date").calendar) {
+         $("end_date").calendar = new ui.calendar(this, $('end_date'));
+       } else {
+         $("end_date").calendar.show();
+       }
+     };
+     var tip = new ui.tip($('search_keywords'));
+     tip.setText('{$lang.tip}', '{$lang.search_keywords_tip}');
+     tip.width = 200;
+     tip.height = 80;
+     tip.show();
+     tip.hide(5000);
+  });
+  function advSearch(){
+    _href = "admin.php?app=order&act=view&";
+    window.location.href="admin.php?app=order&act=view&";
+  }
+  var detailLayer = null;
+  function showDetail(detail, obj){
+    detailLayer = new ui.tip(obj, true);
+    detailLayer.setText(lang.tip, detail);
+    detailLayer.height = 300;
+    detailLayer.width = 350;
+    detailLayer.show();
+    detailLayer.hide(8000);
+  }
+  function hiddenDetail(){
+    if (detailLayer !== null)
+    {
+      detailLayer.hide();
+    }
+  }
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.view_order}</h1>
+      <div class="link">
+        {if $special eq 1}
+        [<a href="admin.php?app=order&amp;act=processing_order">{$lang.all_processing_order}</a>]
+        {else}
+        [<a href="admin.php?app=order&amp;act=view">{$lang.all_order}</a>]
+        {/if}
+      </div>
+      <div id="desc">
+        <div id="page-selector">
+          {page_selector from=$page_info url=$url_format}
+        </div>
+        <span>{$order_stats}</span>
+      </div>
+    </li>
+    <li id="tips" style="border-bottom:1px solid #dadada">
+      <form method="get" name="queryForm">
+        {$lang.keyword}: <input type="text" name="keywords" value="{$smarty.get.keywords}" id="search_keywords" />&nbsp;&nbsp;
+      <select name="order_status">
+        <option value="-1">{$lang.order_status_all}</option>
+        {html_options options=$order_status selected=$search_by_status}
+      </select>
+      <!--<input type="button" value="Search" onclick="Dialog.show({content:$('adv_search').innerHTML,title:'test',icon:null,onOK:advSearch})" />-->
+      {$lang.order_add_time}:
+      <input type="input" name="start_date" id="start_date" value="{$smarty.get.start_date}" size="8" /> <span>-</span> <input type="input" name="end_date" value="{$smarty.get.end_date}" id="end_date" size="8" />
+      {$lang.order_amount}:
+      <input type="input" name="order_amount_start" value="{$smarty.get.order_amount_start}" size="5" /> <span>-</span> <input type="input" name="order_amount_end" value="{$smarty.get.order_amount_end}" size="5" /> &nbsp;&nbsp;
+      <input type="hidden" name="app" value="order" />
+      <input type="hidden" name="act" value="view" />
+      <input type="submit" value="{$lang.button_search}" />
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="orderListGrid">
+        <tr>
+          <th class="first-cell"><input type="checkbox" class="checkAll" /> {sort_link by=order_sn text=$lang.order_sn}</th>
+          <th>{sort_link by=add_time text=$lang.order_add_time}</th>
+          <th>{sort_link by=order_amount text=$lang.order_amount}</th>
+          <th>{sort_link by=order_status text=$lang.order_status}</th>
+          <th>{sort_link by=consignee text=$lang.order_consignee}</th>
+          <th>{sort_link by=pay_id text=$lang.order_payment}</th>
+          <th>{sort_link by=user_name text=$lang.order_user_name}</th>
+          <th>{$lang.handle}</th>
+        </tr>
+        {foreach from=$orders item=order}
+        <tr>
+          <td class="first-cell"><input type="checkbox" name="id" value="{$order.order_id}" /><a href="admin.php?app=order&amp;act=change_status&amp;order_id={$order.order_id}">{$order.order_sn}</a>
+          {if $order.extension_code eq 'GROUPBUY'}
+            [<a href="javascript:parent.openFrame('{$lang.groupbuy_label_title}', 'groupbuy', 'view_log', '&amp;act_id={$order.extension_id}');" class="ext_groupbuy">{$lang.groupbuy}</a>]
+          {/if}</td>
+          <td>{$order.add_time}</td>
+          <td>{$order.order_amount|price}</td>
+          <td>{$lang.$order.status}</td>
+          <td><a href="javascript:;" onclick="hiddenDetail();showDetail('{$lang.order_region}:&nbsp;[{$order.region}]<br />{$lang.order_address}:&nbsp;{$order.address}[{$order.zipcode}]<br />{if $order.home_phone}{$lang.order_home_phone}:&nbsp;{$order.home_phone}<br />{/if}{if $order.mobile_phone}{$lang.order_mobile_phone}:&nbsp;{$order.mobile_phone}{/if}', this);">{$order.consignee}</a></td>
+          <td>{$order.pay_name}</td>
+          <td>
+          {if $order.user_name}
+          <a href="?app=order&act=view&user_id={$order.user_id}" title="{$lang.search_order_by_user_name}">{$order.user_name}</a>
+          {else}
+          <span style="color:#bbb;">{$lang.anonymous}</span>
+          {/if}
+          </td>
+          <td class="handlelist" align="right">
+            <a href="admin.php?app=order&amp;act=edit&amp;order_id={$order.order_id}">{$lang.edit_charge_info}</a>
+            {if $order.order_status eq ORDER_STATUS_INVALID}
+            |<a href="javascript:if(confirm('{$lang.del_confirm}'))window.location.href='admin.php?app=order&act=drop&order_ids={$order.order_id}'">
+            {$lang.delete}
+            </a>
+            {else}
+            |<a href="admin.php?app=order&amp;act=change_status&amp;order_id={$order.order_id}">
+            {if $order.order_status eq ORDER_STATUS_DELIVERED and $order.buyer_evaluation eq ORDER_EVALUATION_UNEVALUATED}
+            {$lang.evaluation}
+            {elseif $order.order_status lt ORDER_STATUS_DELIVERED}
+            {$lang.change_status}
+            {else}
+            {$lang.view}
+            {/if}</a>
+            {/if}
+          </td>
+        </tr>
+        {foreachelse}
+          <tr><td colspan="8" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="8">
+            <ul id="batch-links">
+              <li class="batch-link" action="print_order" param="print" style="link-height:20px;" title="{$lang.print_order}">{$lang.print_order}</li>
+              {if $search_by_status eq ORDER_STATUS_SUBMITTED}
+              <li class="batch-link" action="batch" param="confirm" style="line-height:20px;" title="{$lang.cod_only}">{$lang.confirm_order}</li>
+              {/if}
+              <li class="batch-link" action="batch" param="invalid" style="line-height:20px;" title="{$lang.cod_only}">{$lang.invalid_order}</li>
+              <li class="batch-link" action="batch" param="drop" style="line-height:20px;">{$lang.drop_order}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$page_info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

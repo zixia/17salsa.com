@@ -1,0 +1,25 @@
+<div id="message">
+  <div class="coltop"></div>
+  <div class="colboxcontent">
+    <dl class="icon_{$icon}">
+      <dt>{$message}</dt>
+        <!-- {if $err_file} -->
+        <dd>Error File: <strong>{$err_file}</strong> at <strong>{$err_line}</strong> line.</dd>
+        <!-- {/if} -->
+        <!-- {if $redirect} -->
+        <dd>{$lang.auto_redirect}</dd>
+        <!-- {/if} -->
+        <!-- {foreach from=$links item=item} -->
+        <dd><a href="{$item.href}">{$item.text}</a></dd>
+        <!-- {/foreach} -->
+    </dl>
+  </div>
+  <div class="colbtm"></div>
+</div>
+{if $redirect}
+<script type="text/javascript">
+<!--
+  window.setTimeout("{$redirect}", 3000);
+//-->
+</script>
+{/if}

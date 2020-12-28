@@ -1,0 +1,48 @@
+<div id="mc_repwd" class="mc_login clearfix">
+  <div class="coltop"></div>
+  <div class="column1">
+    <h3><img src="images/login_title_repwd.gif" alt="{$lang.repwd}" /></h3>
+    <form name="ECS_GETPWD" action="" method="post">
+      <table border="0" cellspacing="0" class="formtable">
+        <tr>
+          <th width="60">{$lang.user_name}:</th>
+          <td width="150">{$user_info.user_name}</td>
+        </tr>
+        <tr>
+          <th>{$lang.password}:</th>
+          <td><input name="password" type="password" size="30" class="sinput"  onkeyup="checkIntensity(this.value)" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.pwd_intensity}:</th>
+          <td>
+            <table border="0" cellspacing="0" width="150">
+              <tbody>
+                <tr align="center">
+                  <td id="pwd_lower" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_lower}</td>
+                  <td id="pwd_middle" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_middle}</td>
+                  <td id="pwd_high" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_high}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <th>{$lang.repeat_password}:</th>
+          <td><input name="repeat_password" type="password" size="30" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="{$lang.submit}" name="value_submit" class="sbtn" /> <input type="reset" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="column2">
+    <h4>{$lang.repwd_note}</h4>
+    <p>{$lang.repwd_note_message}</p><br />
+    <h4>{$lang.remember_pwd}</h4>
+    <p>{$lang.remember_pwd_intro}</p><br />
+    <p><a href="index.php?app=member&amp;act=login"><img src="images/btn_to_signin.gif" alt="{$anonymous_buy_alt}" /></a></p>
+  </div>
+  <div class="colbtm"></div>
+</div>

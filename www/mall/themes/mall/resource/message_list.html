@@ -1,0 +1,21 @@
+<div id="guestbook" class="colbox">
+  <h3>{$msg_title}</h3>
+  <div class="colboxcontent">
+    <table cellspacing="0">
+      <!-- {foreach from=$msg_list.data item=msg} -->
+      <tr>
+        <th class="name"><a href="#">{$msg.buyer_name}</a> <span class="time">{$msg.formated_add_time}</span></th>
+      </tr>
+      <tr>
+        <td class="content"><p>{$msg.message|escape|nl2br}</p>
+          <!-- {if $msg.reply} -->
+          <p class="recontent">{$lang.seller_reply}: {$msg.reply|escape|nl2br}</p>
+          <!-- {/if} -->
+        </td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+	<div class="pagechanger"> {page_links from=$msg_list.info url=$url_format} </div>
+  </div>
+  <div class="colbtm"></div>
+</div>

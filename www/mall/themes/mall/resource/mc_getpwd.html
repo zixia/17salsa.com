@@ -1,0 +1,30 @@
+<div id="mc_getpwd" class="mc_login clearfix">
+  <div class="coltop"></div>
+  <div class="column1">
+    <h3><img src="images/login_title_getpwd.gif" alt="{$lang.getpwd}" /></h3>
+    <form name="ECS_GETPWD" action="index.php?app=member&amp;act=getpwd" method="post">
+      <table border="0" cellspacing="0" class="formtable">
+        <tr>
+          <th width="60">{$lang.user_name}:</th>
+          <td width="150"><input type="text" size="30" class="sinput" name="user_name" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.email}:</th>
+          <td><input name="email" type="text" size="30" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="{$lang.submit}" name="value_submit" class="sbtn" /> <input type="reset" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="column2">
+    <h4>{$lang.getpwd_note}</h4>
+    <p>{$lang.getpwd_note_message}</p><br />
+    <h4>{$lang.remember_pwd}</h4>
+    <p>{$lang.remember_pwd_intro}</p><br />
+    <p><a href="index.php?app=member&amp;act=login"><img src="images/btn_to_signin.gif" alt="{$anonymous_buy_alt}" /></a></p>
+  </div>
+  <div class="colbtm"></div>
+</div>

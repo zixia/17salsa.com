@@ -1,0 +1,22 @@
+<div id="mc_menu">
+  <ul>
+    <li id="mc_welcome"{if $mc_selected eq 'welcome'} class="selected"{/if}><a href="index.php?app=member&amp;act=home">{$lang.welcome}</a></li>
+    <li id="mc_profile"{if $mc_selected eq 'profile'} class="selected"{/if}><a href="index.php?app=member&amp;act=profile">{$lang.profile}</a></li>
+    <li id="mc_order_view"{if $mc_selected eq 'order_view'} class="selected"{/if}><a href="index.php?app=member&amp;act=order_view">{$lang.order_view}</a></li>
+    <li id="mc_order_view"{if $mc_selected eq 'wanted_view' or $smarty.get.app eq 'wanted'} class="selected"{/if}><a href="index.php?app=member&amp;act=wanted_view">{$lang.my_wanted}</a></li>
+    <li id="mc_favorite"{if $mc_selected eq 'favorite'} class="selected"{/if}><a href="index.php?app=member&amp;act=favorite">{$lang.favorite}</a></li>
+    <li id="mc_my_message"{if $mc_selected eq 'my_message'} class="selected"{/if}><a href="index.php?app=member&amp;act=message">{$lang.my_message}</a></li>
+    <li id="mc_address"{if $mc_selected eq 'address'} class="selected"{/if}><a href="index.php?app=member&amp;act=address">{$lang.address_list}</a></li>
+    <li id="mc_credit"{if $mc_selected eq 'credit'} class="selected"{/if}><a href="index.php?app=member&amp;act=credit">{$lang.credit}</a></li>
+    <!-- {if $smarty.session.admin_store gt -1} -->
+    <li id="mc_store_entrance">
+        <a href="./admin.php" target="_blank">
+        <!-- {if $smarty.session.admin_store eq 0} -->
+            {$lang.mall_entrance}
+        <!-- {else} -->
+            {$lang.store_entrance}
+        <!-- {/if} -->
+        </a></li>
+    <!-- {/if} -->
+  </ul>
+</div>

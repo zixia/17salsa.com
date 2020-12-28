@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall - {$ecm_ver} </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <style type="text/css">
+  body { padding: 0px; margin: 0px; font: 12px Tahoma; background: #FBFDFF url(admin/images/body_bg.gif) repeat-y; }
+  h1 { font-size: 16px; line-height: 24px; margin-bottom: 10px; }
+  table { width: 100%; }
+  td { vertical-align: top; }
+  ul { margin: 0px; padding: 0px; list-style: none;  }
+
+  #topper { height: 68px;; background: url(admin/images/header_bg.gif) repeat-x; border-bottom: 4px solid #1F62B0; }
+  #logo { width: 153px; }
+  #top-menu { line-height: 36px; text-align: right; padding-right: 1em; }
+  #top-menu a { margin-right:10px; }
+  #top-menu #reload { background:url(admin/images/icon_reload.gif) no-repeat 0 center; padding-left:13px; }
+  #top-menu #logout { background:url(admin/images/icon_logout.gif) no-repeat 0 center; padding-left:13px; }
+  #top-menu #clearcache { background:url(admin/images/icon_clear.gif) no-repeat 0 center; padding-left:13px; }
+
+  #top-tabbar { position: relative; overflow:hidden; }
+  #top-tab { height: 32px; overflow:hidden; position:relative;text-align:center;}
+  #top-tab ul { position: relative; overflow:hidden;}
+  #top-tab li { color: #999; font-weight: bold; font-size: 12px; float: left; margin-right: 2px; width: 124px; height: 32px; line-height: 32px; background: url(admin/images/toptab_space.gif) no-repeat left; cursor: pointer; }
+  #top-tab li.actived { background: url(admin/images/toptab_active_bg.jpg) no-repeat; color: #FFF; }
+  #top-tab img { vertical-align: middle; margin: 11px 15px 2px 2px; float: right; }
+
+  #dropdown-botton { width: 25px }
+  #drop-menu { position: absolute; right: 0px; top: 53px; background: #FFF; padding: 2px; margin: 0px 5px; list-style: none; border: 1px solid #A6C1DB; display:none; }
+  #drop-menu li { padding: 3px 40px 3px 20px; cursor: pointer; }
+  #drop-menu li.hover { background: #185096; color: #FFF; }
+
+  #slide-menu { width: 154px; vertical-align: top; }
+  #slide-menu a:visited, #slide-menu a:link { text-decoration: none; color: #006699; }
+  #slide-menu a:hover, #slide-menu a:active { text-decoration: none; color: #FF6600; }
+  #menu-topper { width: 153px; text-align: center; font-weight: bold; color: #7B3E00; cursor: pointer; height: 36px; line-height: 36px; background: url(admin/images/nav_back_bg.jpg); margin-bottom: 22px; }
+  #menu-topper td { border-bottom: 1px solid #A7C1DB;  }
+  #menu-topper td.actived { color: #1A5499; background: url(admin/images/nav_active_bg.jpg); border-bottom: 1px solid #FFF; }
+  #menu-shortcut { width: 153px; display: none; }
+  #menu-shortcut li { margin: 0px; padding: 0px 0px 0px 15px; background: url(admin/images/nav_list_arrow.gif) no-repeat 120px center; border-bottom: 1px dotted #DBE9F6; line-height: 24px; height: 24px; }
+  #nav-normal { border-right: 1px solid #A7C1DB; }
+  .nav-item { line-height: 18px; }
+
+  .menu-group { width: 153px; margin: 0px; padding: 0px; background: url(admin/images/nav_list_arrow.gif) no-repeat 120px center; border-bottom: 1px dotted #DBE9F6;}
+  .menu-group dt { padding-left: 15px; line-height: 24px; height: 24px; cursor: pointer; }
+  .menu-group dd { display: none; }
+  .menu-group-actived { margin: 0px; border: none; background: #FEFBFF; background: url(admin/images/nav_list_bg.gif) repeat-y 5px; }
+  .menu-group-actived dt { padding-left: 15px; font-weight: bold; background: url(admin/images/nav_list_top.gif) no-repeat 5px top; padding-top: 12px; }
+  .menu-group-actived dd { margin: 0px; background: url(admin/images/nav_list_bottom.gif) no-repeat 5px bottom; padding: 5px 2px 10px 25px; display: block; }
+  </style>
+{script src="ecmall,json,ui.tabview,ajax,storage"}
+<script type="text/javascript" src="?act=jslang"></script>
+<script type="text/javascript">
+<!--
+  var currGroup = "";
+  var tab = null;
+
+  Event.observe(window, "load", function() {
+    $("drop-menu").onmouseover = menuMouseMove;
+    $("drop-menu").onmouseout = menuMouseMove;
+
+    if (top != self)
+    {
+      top.location.href = self.location.href;
+    }
+
+    tab = new tabView($('top-tabbar'), $('top-tab'), $('wrapper'), '{$smarty.session.admin_id}');
+    tab.init(lang.start_page, 'home', 'welcome');
+
+    if ($class("menu-group-actived").length > 0)
+    {
+       currGroup = $class("menu-group-actived")[0];
+    }
+  });
+  
+  function closeCurrentTab(){
+    tab.close(tab.items[tab.currIndex].key);
+  }
+  
+  Event.observe(document, "click", function(e) {
+    var evt = fixEvent(e);
+    if (evt.srcElement.id != "img-dropmenu") {
+      $("drop-menu").style.display = "none";
+    }
+  });
+
+  function toggleGroup (group) {
+    if (group != currGroup) {
+      if (currGroup != '') $(currGroup).className = 'menu-group';
+      $(group).className = 'menu-group-actived';
+      currGroup = group;
+    }}
+  function menuMouseMove (e) {
+    var evt = fixEvent(e);
+    var obj = evt.srcElement;
+    if (obj.tagName == "LI") {
+      var cls = obj.className;
+      obj.className = (cls != "hover") ? "hover" : "";
+    }
+  }
+  function toggleMenu () {
+    var mnu = $("drop-menu");
+    var obj = null;
+    mnu.innerHTML = "";
+
+    for (i=0; i<tab.items.length; i++) {
+      obj = $ce("li");
+
+      //if (tab.children[i].className == "actived") obj.style.listStyleType = "disc";
+      obj.innerHTML = tab.items[i].text;
+      obj.setAttribute("key", tab.items[i].key);
+      obj.onclick = function() { tab.active(this.getAttribute("key")); }
+      mnu.appendChild(obj);
+    }
+    mnu.style.display = (mnu.style.display != "block" ? "block" : "none");
+  }
+  function openFrame (txt, app, act, params, reload) {
+    tab.open(txt, app, act, params, reload);
+  }
+
+  /* ÇÐ»»×ó²à²Ëµ¥ */
+  Event.observe(window, "load", function() {
+    $("nav-shortcut").onclick = function() { toggleMenuGroup(1);};
+    $("nav-normal").onclick = function() { toggleMenuGroup(0);};
+
+    var visible = document.getCookie("ECM_NAVNORMAL") == "none" ? 1 : 0;
+
+    toggleMenuGroup(visible);
+  });
+
+  function toggleMenuGroup(key) {
+    var tabs = new Array($("nav-normal"), $("nav-shortcut"));
+    var mnus = new Array($("menu-normal"), $("menu-shortcut"));
+
+    tabs[key].className = "actived";
+    tabs[1-key].className = "";
+    mnus[key].style.display = "block";
+    mnus[1-key].style.display = "none";
+  }
+
+  Event.observe(window, "unload", function() {
+    today = new Date();
+    today.setFullYear(today.getFullYear() + 1);
+
+    document.setCookie("ECM_NAVNORMAL", $("menu-normal").style.display, today.toGMTString());
+  });
+
+  function clean_cache(){
+    Ajax.call('admin.php?app=home&act=mall_clean_cache', function(result){alert(result.msg);});
+  }
+//-->
+</script>
+ </head>
+
+ <body>
+  <table cellspacing="0" cellpadding="0" id="topper">
+    <tr>
+      <td rowspan="2" id="logo"><img src="admin/images/ecm_logo.gif" /></td>
+      <td id="top-menu" colspan="2">
+        {if $store_id eq '0'}
+        <a href="./" target="_blank">{$lang.browse_site}</a>
+        {else}
+        <a href="{$store_url}" target="_blank">{$lang.browse_store}
+        {/if}
+        <a href="javascript:;" onclick="openFrame('{$lang.about_us}', 'about', 'view');">{$lang.about_us}</a>
+        <a href="javascript:tab.reload()" id="reload">{$lang.refresh}</a>
+        {if $store_id eq '0'}
+        <a href="javascript:clean_cache();" id="clearcache">{$lang.clean_cache}</a>
+        {/if}
+        <a href="admin.php?app=profile&amp;act=logout" target="_parent" id="logout">{$lang.exit}</a>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div id="top-tabbar">
+          <ul id="top-tab"></ul>
+        </div>
+      </td>
+      <td id="dropdown-botton"><img id="img-dropmenu" src="admin/images/tab_dropdown.gif" onclick="toggleMenu()"/></td>
+    </tr>
+  </table>
+  <ul id="drop-menu"></ul>
+  <table cellspacing="0" cellpadding="0" id="container">
+    <tr>
+      <td id="slide-menu">
+        <table cellpadding="0" cellspacing="0" id="menu-topper">
+          <tr>
+            <td class="actived" id="nav-normal">{$lang.top_menu}</td>
+            <td id="nav-shortcut">{$lang.shortcut}</td>
+          </tr>
+        </table>
+        <div id="menu-normal">
+        <!-- {foreach from=$menu_data item=menu key=menugroup}  -->
+        <dl class="menu-group" id="{$menugroup}" onclick="toggleGroup('{$menugroup}')">
+          <dt>{$lang.$menugroup}</dt>
+          <dd class="nav-item">
+            <!-- {foreach from=$menu item=submenu key=menuname}  -->
+            <div class="{$submenu.app}"><a href="javascript:;" onclick="openFrame('{$lang.tab_labels[$submenu.app]}', '{$submenu.app}', '{$submenu.act}')">{$lang.$menuname}</a></div>
+            <!--{/foreach}-->
+          </dd>
+        </dl>
+        <!--{/foreach}-->
+        </div>
+        <div id="menu-shortcut">
+          <ul>
+            <!-- {foreach from=$menu_shortcut item=menu key=menuname}  -->
+            <li><a href="javascript:;" onclick="toggleMenu(this.parentNode); openFrame('{$lang.tab_labels[$menu.app]}', '{$menu.app}', '{$menu.act}')">{$lang.$menuname}</a></li>
+            <!--{/foreach}-->
+          </ul>
+        </div>
+      </td>
+      <td><!--hack for ie8--><div id="wrapper"></div></td>
+    </tr>
+  </table>
+ </body>
+</html>

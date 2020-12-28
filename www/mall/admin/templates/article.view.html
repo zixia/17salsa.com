@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src='ecmall,ui.datagrid,ui.dropdownmenu,ajax,json'}
+<script type="text/javascript" src="?act=jslang"></script>
+<script language="javascript" type="text/javascript">
+    var myDataGrid = null;
+    Event.observe(window, "load" ,function(){
+    myDataGrid = new ui.DataGrid($("myDataGrid"));
+    myDataGrid.action = "modify";
+  });
+  </script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_article}</h1>
+    <div class="link">[<a href="admin.php?app=article&amp;act=add">{$lang.add_article}</a>]</div>
+    <div id="desc">
+      <div id="page-selector"> {$lang.goto_page}{page_selector from=$list.info} </div>
+      <span>{$article_stats}</span> </div>
+  </li>
+  <li id="tips">
+    <form method="get" action="admin.php">
+      {$lang.article_title}:
+      {if $store_id eq '0'}
+      <select name="cate_id">
+        <option value="">{$lang.please_select_cate}</option>
+        {html_options options=$cate_list selected=$condition.cate_id}
+      </select>
+      {/if}
+      <input type="text" name="keywords" id="keywords" value="{$condition.keywords}"/>
+      <input type="submit" value="{$lang.button_search}">
+      <input name="if_show" type="checkbox" value="1" {if $condition.if_show eq '1'}checked{/if}/>
+      {$lang.if_show_yes}
+      <input name="app" type="hidden" value="article" />
+    </form>
+  </li>
+  <li id="wrapper">
+    <select id='myDropDownlist' style="display:none">
+
+    {html_options options=$cate_list}
+
+    </select>
+    <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+      <tr>
+        <th class="first-cell" readOnly=false columnName="title" dataType="string" required="true"> <input type="checkbox" class="checkAll">
+          {sort_link by=title text=$lang.article_title}</th>
+        {if $store_id eq 0}
+        <th readOnly=false columnName="cate_id" dataType="string" dropDownList="myDropDownlist">{sort_link by=cate_id text=$lang.article_cate}</th>
+        {/if}
+        <th readOnly=false columnName="if_show" dataType="bool">{sort_link by=if_show text=$lang.if_show}</th>
+        <th>{sort_link by=add_time text=$lang.add_time}</th>
+        <th readOnly=false columnName="is_top" dataType="integer">{sort_link by=is_top text=$lang.sort_order}</th>
+        <th>{$lang.handler}</th>
+      </tr>
+      {foreach from=$list.data item=art}
+      <tr id="{$art.article_id}">
+        <td class="first-cell"><input type="checkbox" name="id" value="{$art.article_id}">
+          <span>{$art.title|escape}</span></td>
+        {if $store_id eq 0}
+        <td><span>{$art.cate_name|escape}</span></td>
+        {/if}
+        <td>{img_yesorno value=$art.if_show dir=admin/images}</td>
+        <td>{$art.add_time}</td>
+        <td><span>{$art.is_top}</span></td>
+        <td class="handlelist"><a href="admin.php?app=article&amp;act=edit&amp;id={$art.article_id}">{$lang.edit}</a> | <a href="admin.php?app=article&amp;act=drop&amp;id={$art.article_id}" onclick="return confirm('{$lang.confirm_delete}');">{$lang.delete}</a></td>
+      </tr>
+      {foreachelse}
+      <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+      {/foreach}
+      <tr>
+        <td colspan="8"><ul id="batch-links" style="margin-top:5px;padding-top:5px;">
+            <li class="batch-link" action="batch" param="drop" style="line-height:20px;">{$lang.del_selected}</li>
+            <li class="batch-link" action="batch" param="set_show" style="line-height:20px;">{$lang.set_show}</li>
+          </ul></td>
+      </tr>
+    </table>
+    <div id="page-list" style="clear:both">{page_links from=$list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.calendar,validator"}
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+
+  function duplicateName (obj, id) {
+    Ajax.addVal('app', 'store');
+    Ajax.addVal('act', 'duplicate_name');
+    Ajax.addVal('store_id', id);
+    Ajax.addVal('store_name', obj.value);
+    var res = Ajax.call('admin.php', null, '', false);
+
+    if (res.done)
+      return true;
+    else
+      return res.msg;
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.user_edit}</h1>
+      <div class="link">[<a href="admin.php?app=user&amp;act=view">{$lang.user_view}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.user_edit}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.username}:</td><td><input type="text" disabled="true" value="{$user.user_name|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.email}:</td>
+              <td>{$user.email}</td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.user_gender}</td><td>{html_radios options=$lang.gender checked=$user.gender name=gender}</td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.birthday}:</td><td><input type="text" name="birthday" dataType="date" value="{$user.birthday|escape}"/></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.msn}:</td><td><input type="text" name="msn" size="40" dataType="email" value="{$user.msn|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.qq_num}:</td><td><input type="text" name="qq" size="20" dataType="int" value="{$user.qq|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.office_phone}:</td><td><input type="text" size="30" maxlength="20" name="office_phone" dataType="tel_num" value="{$user.office_phone|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.home_phone}:</td><td><input type="text" size="30" maxlength="20" name="home_phone" dataType="tel_num" value="{$user.home_phone|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.mobile_phone}:</td><td><input type="text" size="30" maxlength="20" name="mobile_phone" dataType="tel_num" value="{$user.mobile_phone|escape}" /></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+          <input type="hidden" name="id" value="{$user.user_id}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

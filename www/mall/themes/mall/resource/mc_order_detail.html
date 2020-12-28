@@ -1,0 +1,165 @@
+<div class="mc_box">
+  <h3><em class="more"><a href="index.php?app=member&amp;act=order_view&amp;page={$smarty.get.page}">{$lang.back_order_view}</a></em><span>{$lang.order_detail}</span></h3>
+  <div id="mc_order_detail" class="colbox flow">
+    <div class="mc_boxcontent">
+      <div id="mc_order_info">
+        <table border="0" class="mc_formtable">
+          <!-- {if $store_closed} -->
+          <tr>
+            <td colspan="4"><span class="cite">{$lang.store_is_closed}</span></td>
+          </tr>
+          <!-- {/if} -->
+          <tr>
+            <td width="80">{$lang.order_sn}:</td>
+            <td>
+              {$order.order_sn} <span class="cite">({$order.order_status|modifier:get_order_status_lang})</span>
+              <!-- {if $order.order_status eq ORDER_STATUS_PENDING} 待付款状态 -->
+              <!-- {if $order.is_online} 线上付款 -->
+                <form target="_blank" style="display:inline" onsubmit="showAskDialog('{$order.order_sn}');">
+                  <input type="hidden" name="app" value="shopping" />
+                  <input type="hidden" name="act" value="do_pay" />
+                  <input type="hidden" name="order_sn" value="{$order.order_sn}" />
+                  <input type="submit" value="{$lang.online_pay}" class="sbtn" />
+                </form>
+              <!-- {elseif !$order.is_cod} 线下付款-->
+              <link href="js/ui.tip/style.css" rel="stylesheet" type="text/css"  />
+              {script src="ui.tip"}
+              <script type="text/javascript">
+              var tip = null;
+              var tipTitle = "{$lang.payment_desc}";
+              var tipContent = "{$order.pay_desc|nl2br}";
+              showPaymentDesc = function() {
+                if (!tip)
+                {
+                  tip = new ui.tip($("payment_desc"), true);
+                  tip.setText(tipTitle, tipContent);
+                  tip.width = 400;
+                  tip.height = 50;
+                }
+                tip.show();
+              };
+              </script>
+              <a href="javascript:;" onclick="showPaymentDesc();" id="payment_desc">{$lang.view_payment_desc}</a>
+              <!-- {/if}-->
+              <!-- {elseif $order.order_status eq ORDER_STATUS_SHIPPED} 已发货状态-->
+              {script src="member"}
+              <input type="button" value="{$lang.delivered}" onclick="delivered({$order.order_id}, {$order.store_id});" class="sbtn" />
+              <!-- {/if} -->
+            </td>
+            <!-- {if $order.invoice_no} -->
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <!-- {/if} -->
+          </tr>
+          <tr>
+            <td>{$lang.order_add_time}:</td>
+            <td>{$order.add_time|date}</td>
+          </tr>
+          <tr>
+            <td>{$lang.order_ship_time}:</td>
+            <td>
+            <!-- {if $order.ship_time} -->{$order.ship_time|date}{else}{$lang.unshipped}<!-- {/if} -->&nbsp;
+            </td>
+            <!-- {if $order.invoice_no} -->
+            <td>{$lang.order_invoice_no}:</td>
+            <td>{$order.invoice_no}</td>
+            <!-- {/if} -->
+          </tr>
+        </table>
+      </div>
+      <h3>{$lang.order_info}</h3>
+      <div class="reviewinfo">
+        <table>
+          <tr>
+            <td>{$lang.receiver}</td>
+            <td>:</td>
+            <td>{$order.consignee|escape}</td>
+            <td>{$lang.shipping_method}</td>
+            <td>:</td>
+            <td>{$order.shipping_name|escape} {$order.best_time|escape}</td>
+          </tr>
+          <tr>
+            <td>{$lang.shipping_address}</td>
+            <td>:</td>
+            <td>{$order.region|escape} {$order.address|escape} {$order.zipcode|escape}</td>
+            <td>{$lang.payment}</td>
+            <td>:</td>
+            <td>{$order.pay_name}</td>
+          </tr>
+          <tr>
+            <td>{$lang.phone}</td>
+            <td>:</td>
+            <td>{ecjoin v1=$order.mobile_phone v2=$order.office_phone v3=$order.home_phone}</td>
+            <!-- {if $order.inv_payee} -->
+            <td>{$lang.invoice_payee}</td>
+            <td>:</td>
+            <!-- {else} -->
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <!-- {/if} -->
+            <td>{$order.inv_payee|default:&nbsp;}</td>
+          </tr>
+          <tr>
+            <td>{$lang.email}</td>
+            <td>:</td>
+            <td>{$order.email}</td>
+            <!-- {if $order.inv_content} -->
+            <td>{$lang.invoice_content}</td>
+            <td>:</td>
+            <!-- {else} -->
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <!-- {/if} -->
+            <td>{$order.inv_content|default:&nbsp;}</td>
+          </tr>
+        </table>
+      </div>
+      <h3>{$lang.order_goods}</h3>
+      <table class="datatable" width="100%">
+        <tr class="title">
+          <td>{$lang.goods_name}</td>
+          <td width="60">{$lang.goods_number}</td>
+          <td width="100">{$lang.goods_price}</td>
+          <td width="100">{$lang.goods_subtotal}</td>
+        </tr>
+        <!-- {foreach name=g_last from=$goods item=g} -->
+        <tr{if $smarty.foreach.g_last.last} class="last"{/if}>
+          <td><a class="goods_thumb" href="index.php?app=goods&amp;id={$g.goods_id}" target="_blank"><img src="{image file=$g.default_image width=32 height=32}" alt="{$g.orig_name}" class="goods_thumb" align="left" /></a>
+            <p class="goods_desc"> <a class="goods_name" href="index.php?app=goods&amp;id={$g.goods_id}" target="_blank">{$g.goods_name|escape}</a><br/>
+              <!-- {if $g.color_name} -->
+              {$lang.goods_color}: <b>{$g.color_name|escape}</b>
+              <!-- {/if} -->
+              <!-- {if $g.spec_name} -->
+              {$lang.goods_spec}: <b>{$g.spec_name|escape}</b>
+              <!-- {/if} -->
+              {$lang.goods_sku}: <b>{$g.sku|escape}</b>
+            </p></td>
+          <td>{$g.goods_number}</td>
+          <td>{$g.goods_price|price}</td>
+          <td>{$g.subtotal|price}</td>
+        </tr>
+        <!-- {/foreach} -->
+      </table>
+      <div class="flowinfo"> {$lang.goods_amount}: {$order.goods_amount|price}
+        <!-- {if $order.coupon_value gt 0} 优惠券 -->
+        <img src="images/minus.gif" /> {$lang.coupon_value}: {$order.coupon_value|price}
+        <!-- {/if} -->
+        <!-- {if $order.discount gt 0} 现金折扣 -->
+        <img src="images/minus.gif" /> {$lang.discount}: {$order.discount|price}
+        <!-- {/if} -->
+        <!-- {if $order.shipping_fee gt 0} 配送费用 -->
+        <img src="images/plus.gif" /> {$lang.shipping_fee}: {$order.shipping_fee|price}
+        <!-- {/if} -->
+        <!-- {if $order.pay_fee gt 0} 支付费用 -->
+        <img src="images/plus.gif" /> {$lang.pay_fee}: {$order.pay_fee|price}
+        <!-- {/if} -->
+        <!-- {if $order.inv_fee gt 0} 发票费用 -->
+        <img src="images/plus.gif" /> {$lang.inv_fee}: {$order.inv_fee|price}
+        <!-- {/if} -->
+        <!-- {if $order.money_paid gt 0} 已付款金额 -->
+        <img src="images/minus.gif" />{$lang.order_money_paid}: {$order.money_paid|price}
+        <!-- {/if} -->
+        <img src="images/equal.gif"> {$lang.payable}:<span class="subtotal">{$order.payable|price}</span> </div>
+    </div>
+  </div>
+</div>

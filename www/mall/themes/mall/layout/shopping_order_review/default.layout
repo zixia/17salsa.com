@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<template>
+  <row id="region1" allowEdit="false">
+    <library>
+      <item id="header" src="themes/mall/resource/page_header.html" />
+      <item id="search_form" src="themes/mall/resource/search_form.html" />
+    </library>
+  </row>
+  <row id="region2" class="grid1col">
+    <library>
+      <item id="shopping_order_review" src="themes/mall/resource/shopping_order_review.html" />
+    </library>
+  </row>
+  <row id="region3" allowEdit="false">
+    <library>
+      <item id="footer" src="themes/mall/resource/page_footer.html" />
+    </library>
+  </row>
+</template>

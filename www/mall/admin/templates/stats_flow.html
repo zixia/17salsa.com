@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?act=jslang"></script>
+{script src="ajax,ecmall,charts"}
+<script type="text/javascript">
+    Event.observe(window, 'load', function(){
+      set_flow_data('year', "{$year_data.xml}", "{$year_data.link}");
+      set_flow_data('month', "{$month_data.xml}", "{$month_data.link}");
+      set_flow_data('day', "{$day_data.xml}", "{$day_data.link}");
+    });
+
+  function set_flow_data(type, xml, link){
+    if (type != 'year' && type != 'month' && type != 'day') return;
+    var width = 800;
+    var chart = new FusionCharts("admin/images/charts/Column3D.swf", type + "ChartId", width, "220", "0", "0");
+    chart.setDataXML(xml);
+    chart.render(type + 'chart');
+    $(type + 'link').innerHTML = link;
+  }
+
+  function update_flow(year, month){
+    Ajax.addVal('app', 'statistics');
+    Ajax.addVal('act', 'view_flow');
+    Ajax.addVal('year', year);
+    Ajax.addVal('month', month);
+    Ajax.addVal('type', 'xml');
+    Ajax.call('admin.php', update_flow_response);
+  }
+
+  function update_flow_response(result){
+    var type = result.retval.type;
+    set_flow_data(type, result.retval.xml, result.retval.link);
+  }
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_flow_stats}</h1>
+    <div id="desc">{$lang.flow_desc}</div>
+  </li>
+  <li>
+    <div id="daychart" align="center"></div>
+    <div id="daylink" align="center"></div>
+  </li>
+  <li>
+    <div id="monthchart" align="center"></div>
+    <div id="monthlink" align="center"></div>
+  </li>
+  <li>
+    <div id="yearchart" align="center"></div>
+    <div id="yearlink" align="center"></div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

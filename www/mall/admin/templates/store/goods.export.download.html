@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall"}
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$main_title}</h1>
+      <div class="link"></div>
+      <div id="desc">{$desc}</div>
+    </li>
+    <li>
+      <div id="tab-form">
+        <ul class="tab-bar">
+          <li class="actived">{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            {foreach from=$range item=item}
+            <tr>
+              <td class="label">{$item.title}</td><td>
+                <a href="{$item.url}">download</a>
+              </td>
+            </tr>
+            {/foreach}
+          </table>
+        </div>
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

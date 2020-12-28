@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, "load", function() {
+     new ui.utils.tabForm("tab-form");
+     Validator.run('theForm');
+    });
+    Event.observe(window, "load", function() {
+       Validator.run('theForm');
+       change_nav_type({$nav.cate_id});
+    });
+  //]]>
+  function change_nav_type(typenum) {
+    if(typenum == 0) {
+        $('select_cate').style.display = 'none';
+        $('nav_type_0').checked = 'checked';
+    } else {
+        $('select_cate').style.display = '';
+        $('nav_type_1').checked = 'checked';
+    }
+  }
+  function select_nav_cate(obj) {
+    var tmp_text = obj.options[obj.selectedIndex].text;
+    tmp_text = tmp_text.replace(/\xA0/g, '');
+    $('item_name').value = tmp_text;
+    $('item_url').value = 'index.php?app=category&cate_id=' + obj.value;
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{if $act eq 'add'}{$lang.nav_add}{else}{$lang.nav_update}{/if}</h1>
+      <div class="link">[<a href="admin.php?app=nav&amp;act=view">{$lang.nav_view}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li id="wrapper">
+      <form name="theForm" method="post" >
+        <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+           <li>{$lang.nav_info}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+                <td class="label">{$lang.nav_type}</td> <td>
+                  <label><input type="radio" id="nav_type_0" name="nav[nav_type]" value="0" onclick="change_nav_type(0)" />{$lang.nav_is_defined}</label>
+                  <label><input type="radio" id="nav_type_1" name="nav[nav_type]" value="1" onclick="change_nav_type(1)" />{$lang.nav_is_cate}</label>
+                  <span id="select_cate"><select name="nav[cate_id]" onchange="select_nav_cate(this)"><option value="0">{$lang.please_select}</option>{html_options options=$cate_list selected=$nav.cate_id}</select></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.name}</td> <td><input type="text" name="nav[nav_name]" value="{$nav.nav_name}" id="item_name" size="40" dataType="string" required="true" /> </td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.url}</td> <td><input type="text" name="nav[nav_url]" value="{$nav.nav_url}" id="item_url" size="40" dataType="string" required="true" {if $nav.is_app gt 0}readonly=readonly{/if}  style="float:left;" /> <span class="note" style="display:block;float:left;">{$lang.url_notice}</span></td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.sort_order}</td> <td><input type="text" name="nav[sort_order]" value="{$nav.sort_order}" size="40" dataType="int" /> </td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.if_show}</td> <td><input type="radio" name="nav[if_show]" value="1" {if $nav.if_show}checked="checked"{/if} /> {$lang.yes} <input type="radio" name="nav[if_show]" value="0" {if $nav.if_show eq 0}checked="checked"{/if} /> {$lang.no}</td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.if_blank}<td><input type="radio" name="nav[open_new]" value="1" {if $nav.open_new}checked="checked"{/if} /> {$lang.yes} <input type="radio" name="nav[open_new]" value="0" {if $nav.open_new eq 0}checked="checked"{/if} /> {$lang.no}</td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.position}</td>
+                <td>
+                    <input type="radio" name="nav[nav_position]" value="top" {if $nav.nav_position eq 'top'}checked="checked"{/if} /> {$lang.top}
+                    <input type="radio" name="nav[nav_position]" value="middle" {if $nav.nav_position eq 'middle'}checked="checked"{/if} /> {$lang.middle}
+                    <input type="radio" name="nav[nav_position]" value="bottom" {if $nav.nav_position eq 'bottom'}checked="checked"{/if} /> {$lang.bottom}
+                </td>
+            </tr>
+          </table>
+          </div>
+          <p class="submitlist"><input type="submit" name="value_submit" value="{$lang.submit}" /> &nbsp; <input type="reset" name="value_submit" value="{$lang.reset}" /></p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

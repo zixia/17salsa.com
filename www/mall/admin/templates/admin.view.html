@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,json,ui.datagrid,ui.dropdownmenu"}
+  <script type="text/javascript" src="?act=jslang"></script>
+
+  <script language="javascript" type="text/javascript">
+  var myDataGrid = null;
+    Event.observe(window, "load" ,function() {
+    myDataGrid = new ui.DataGrid($("myDataGrid"));
+    myDataGrid.action = "modify";
+  });
+  </script>
+ </head>
+
+ <body>
+    <ul id="container">
+    <li id="header">
+      <h1>{$lang.admin_view}</h1>
+      <div class="link">[<a href="admin.php?app=admin&amp;act=add">{$lang.admin_add}</a>]</div>
+     <div id="desc">
+        <div id="page-selector">
+              {$lang.goto_page}{page_selector from=$list.info}
+        </div>
+        <span>{$admin_stats}</span>
+      </div>
+    </li>
+    <li id="wrapper">
+    <select id='myDropDownlist' style="display:none">
+    {html_options options=$cate_list}
+    </select>
+      <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+        <tr>
+          <th class="first-cell"><input type="checkbox" class="checkAll" /> {$lang.user_name}</th>
+          <th>{$lang.real_name}</th>
+          <th>{$lang.add_time}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=admin}
+        <tr id="{$admin.user_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$admin.user_id}" /> {$admin.user_name}</td>
+          <td>{$admin.real_name}</td>
+          <td>{$admin.add_time}</td>
+          <td><a href="admin.php?app=admin&amp;act=edit&amp;user_id={$admin.user_id}">{$lang.edit}</a> | <a href="admin.php?app=admin&amp;act=drop&amp;ids={$admin.user_id}" onclick="return confirm('{$lang.confirm_delete}');">{$lang.delete}</a></td>
+        </tr>
+        {foreachelse}
+          <tr><td colspan="5" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="5">
+            <ul id="batch-links" style="margin-top:5px;padding-top:5px;">
+              <li class="batch-link" action="drop" param="drop" style="line-height:20px;">{$lang.delete}</li>
+            </ul>
+          </td>
+        </tr>
+      </table><div id="page-list" style="clear:both">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+   </body>
+</html>

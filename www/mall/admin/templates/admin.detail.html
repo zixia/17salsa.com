@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, "load", function() {
+      new ui.utils.tabForm("tab-form");
+      Validator.run('theForm');
+    });
+    function check_all(obj) {
+      var chechbox_arr = $('sub_' + obj.id).getElementsByTagName("INPUT");
+      for(var i=0;i<chechbox_arr.length;i++) {
+          chechbox_arr[i].checked = obj.checked;
+      }
+     }
+  //]]>
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{if $act eq 'add'}{$lang.admin_add}{else}{$lang.admin_update}{/if}</h1>
+      <div class="link">[<a href="admin.php?app=admin&amp;act=view&amp;store_id={$store_id}" >{$lang.admin_view}</a>]</div>
+      <div id="desc">{$lang.admin_detail_desc}</div>
+    </li>
+    <li id="wrapper">
+      <form name="theForm" method="post" >
+        <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+            <li>{$lang.admin_info}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.user_name}</td><td>
+              {if $act eq 'add'}
+                <input type="text" id="input_user_name" name="user_name" size="40" dataType="string" required="true" />
+              {else}
+                <input type="text" id="input_user_name" name="user_name" size="40" readonly="ture" disabled="on" value="{$admin.user_name}"/>
+              {/if}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.real_name}</td><td><input type="text" name="real_name" size="40" dataType="string" required="true" value="{$admin.real_name}" /> </td>
+            </tr>
+              {if $act neq 'add' && ($admin_info.privilege eq 'all' || $admin_info.user_id eq $store_id)}
+                <tr>
+                  <td class="label">{$lang.admin_privilege}</td><td>{$lang.founder_all_privilege}</td>
+                </tr>
+              {/if}
+              {if ($act eq 'add' && $store_id eq '0') || ($act neq 'add' && $admin_info.privilege neq 'all' && $admin_info.user_id neq $store_id)}
+                <tr>
+                  <td class="label" colspan="2">{$lang.admin_privilege}</td>
+                </tr>
+                {foreach from=$priv_items key=key AS item=item}
+                  <tr>
+                    <td class="label"><label><input type="checkbox" class="label radio" id="{$key}" name="{$key}" onclick="check_all(this)" value="1" />{$lang.$key}</label></td>
+                    <td id="sub_{$key}">
+                    {foreach from=$item item=priv}
+                      <label><input type="checkbox" name="priv[{$priv.title}]" value="1"{$priv.checked} /> {$lang.$priv.title}  &nbsp; &nbsp;</label>
+                    {/foreach}
+                    </td>
+                  </tr>
+                {/foreach}
+              {/if}
+          </table>
+        </div>
+          <p class="submitlist"><input type="submit" name="value_submit" value="{$lang.submit}" /> &nbsp; <input type="reset" name="value_submit" value="{$lang.reset}" /></p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

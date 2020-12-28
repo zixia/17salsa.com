@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>new document</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<link href="js/ui.tip/style.css" rel="stylesheet" type="text/css" />
+{script src="ecmall,ajax,validator,ui.datagrid,ui.tip"}
+<script type="text/javascript" src="admin.php?app=brand&act=jslang"></script>
+<script type="text/javascript">
+  Event.observe(window, 'load', function() {
+    var grid = new ui.DataGrid($("data-grid"));
+    grid.action = "modify";
+    {if $store_id neq 0}
+    var tip = new ui.tip($('th_is_public'));
+    tip.setText('{$lang.tip}', '{$lang.public_brand_tip}');
+    tip.show();
+    tip.hide(8000);
+    {/if}
+  });
+  
+  function updateGoodsCount() {
+    Ajax.call("admin.php?app=brand&act=update_goods_count", function(jso){
+      if (jso.done){
+        alert(lang.update_goods_succeed);
+        location.reload();
+      }
+    });
+  }
+  </script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.brands}</h1>
+    <div class="link">
+    [<a href="admin.php?app=brand&amp;act=add">{$lang.add_brand}</a>]
+    <!-- {if $store_id eq '0'} -->
+    [<a href="javascript:updateGoodsCount();">{$lang.update_goods_count}</a>]
+    <!-- {/if} -->
+    </div>
+    <div id="desc">
+      <div id="page-selector"> {$lang.goto_page}{page_selector from=$list.info url=$url_format} </div>
+      <span>{$stats}</span> </div>
+  </li>
+  <li id="tips" class="search-bar">
+    <form method="get" action="admin.php">
+      {$lang.brand_name}:
+      <input type="text" name="keywords" />
+      <input type="submit" value="{$lang.button_search}" />
+      <input type="hidden" name="app" value="brand"/>
+      <input type="hidden" name="act" value="view"/>
+    </form>
+  </li>
+  <li id="wrapper">
+    <table class="grid" cellspacing="0" id="data-grid">
+      <tr>
+        <th class="first-cell" readOnly="false" columnName="brand_name" dataType="string" required="true">
+          <input type="checkbox" class="checkAll" />
+          {sort_link by=brand_name text=$lang.brand_name}</th>
+
+        <th><span id="th_is_public">{sort_link by=store_id text=$lang.is_public}</span></th>
+        <th>{sort_link by=goods_count text=$lang.goods_count}</th>
+    {if $store_id eq 0}
+    <th readOnly="false" columnName="is_promote" dataType="bool">{sort_link by=is_promote text=$lang.is_promote}</th>
+    {/if}
+        <th>{$lang.handler}</th>
+      </tr>
+      {foreach from=$list.data item=brand}
+      <tr id="{$brand.brand_id}">
+        <td class="first-cell"><input type="checkbox" name="id" value="{$brand.brand_id}" />
+          {if $brand.editable}<span>{$brand.brand_name|escape}</span>{else}{$brand.brand_name|escape}{/if}</td>
+
+        <td>{if $brand.store_id eq 0}{$lang.yes}{else}{$lang.no}{/if}</td>
+        <td>{$brand.goods_count}</td>
+    {if $store_id eq 0}
+    <td>{img_yesorno value=$brand.is_promote dir=admin/images}</td>
+    {/if}
+        <td>{if $brand.editable}<a href="admin.php?app=brand&amp;act=edit&amp;id={$brand.brand_id}">{$lang.edit}</a> | <a href="admin.php?app=brand&amp;act=drop&amp;id={$brand.brand_id}" onclick="return confirm('{$lang.drop_confirm}')">{$lang.delete}</a>{else}&nbsp;{/if}</td>
+      </tr>
+      {foreachelse}
+      <tr><td colspan="{if $store_id eq 0}5{else}4{/if}" class="no-records">{$lang.no_records}</td></tr>
+      {/foreach}
+      <tr>
+        <td colspan="12"><ul id="batch-links">
+            <li class="batch-link" action="batch" param="drop">{$lang.delete}</li>
+          </ul></td>
+      </tr>
+    </table>
+    <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

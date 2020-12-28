@@ -1,0 +1,20 @@
+<!-- {if $recommended_store or $editing} -->
+<div id="recommended_store" class="colbox">
+  <h3><em class="more"><a href="{url src=index.php?app=storelist}">{$lang.all_store}</a></em>{$lang.recommended_store}</h3>
+  <div class="colboxcontent">
+    <!-- {foreach name=store from=$recommended_store item=store} -->
+    <ul{if $smarty.foreach.store.last} class="last"{/if}>
+      <li>
+        {include file="themes/mall/resource/avatar.html"}
+        <div class="infolist">
+          <p><a href="{url src=index.php?app=store&amp;store_id=$store.store_id}" target="_blank">{$store.store_name|escape}</a></p>
+          <p>{$lang.store_owner}: {$store.user_name|escape}</p>
+          <p>{$lang.goods_count}: {$store.goods_count}</p>
+        </div>
+      </li>
+    </ul>
+    <!-- {/foreach} -->
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

@@ -1,0 +1,35 @@
+<!--¹ºÂòÀúÊ·-->
+<div id="bought_history" class="colbox">
+  <a name="bought_history"></a>
+  <h3>{$lang.bought_history}</h3>
+  <div class="colboxcontent">
+    <!-- {if $bought_history} -->
+    <table width="100%" cellspacing="0">
+      <tr>
+        <th class="first">{$lang.buyer_name}</th>
+        <th>{$lang.goods_name}</th>
+        <th>{$lang.goods_price}</th>
+        <th>{$lang.buy_number}</th>
+        <th>{$lang.buy_time}</th>
+        <th class="last">{$lang.buy_status}</th>
+      </tr>
+      {foreach from=$bought_history item=history}
+      <tr>
+        <td class="first">{if $history.is_anonymous}{$lang.anonymous_buyer}{else}{if $history.user_name}{$history.user_name}{else}{$lang.guest}{/if}{/if}</td>
+        <td>{$history.goods_name|escape}</td>
+        <td>{$history.goods_price}</td>
+        <td>{$history.goods_number}</td>
+        <td>{$history.add_time|date}</td>
+        <td class="last">{$lang.buy_ok}</td>
+      </tr>
+      {/foreach}
+    </table>
+    <!-- {else} -->
+    <p class="not_find">{$lang.nobody_bought_it}</p>
+    <!-- {/if} -->
+  </div>
+  <!-- {if $bought_history} -->
+  <!-- {else} -->
+  <div class="colbtm"></div>
+  <!-- {/if} -->
+</div>

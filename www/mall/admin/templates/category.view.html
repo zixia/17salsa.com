@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,validator,ui.datagrid,ajax"}
+  <script type="text/javascript" src="admin.php?app=category&act=jslang"></script>
+  <script text="text/javascript" type="text/javascript">
+  Event.observe(window, "load" ,function(){
+    var myDataGrid = new ui.DataGrid($("myDataGrid"));
+        myDataGrid.action = "ajax_update";
+        });
+  function updateGoodsCount(){
+    Ajax.call("admin.php?app=category&act=update_goods_count", function(jso){
+      if (jso.done){
+        alert(lang.update_goods_succeed);
+        location.reload();
+      }
+    });
+  }
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.category_view}</h1>
+      <div class="link">[<a href="admin.php?app=category&amp;act=add" >{$lang.category_add}</a>][<a href="javascript:;" onclick="show_all(this)">{if $fold}{$lang.unfold_all}{else}{$lang.fold_all}{/if}</a>][<a href="javascript:;" onclick="updateGoodsCount(this)">{$lang.update_goods_count}</a>]</div>
+      <div id="desc">
+      {$stat_info}
+      </div>
+    </li>
+    <li id="wrapper">
+      <table class="grid" id="myDataGrid" cellspacing="0" width="100%">
+        <tr>
+          <th class="first-cell" readOnly=false columnName="cate_name" witdh="500">{$lang.cate_name}</th>
+          <th width="100" readOnly=false columnName="sort_order" dataType="int">{$lang.sort_order}</th>
+          <th width="100" readOnly=true>{$lang.goods_count}</th>
+          <th width="100">{$lang.handler}</th>
+        </tr>
+        {foreach from=$cate_infos item=cate key=cate_id}
+        <tr id="{$cate_id}" {if $fold and $cate.level gt 1}style="display:none;"{/if} level="{$cate.level}" child="{$cate.child}" >
+          <td class="first-cell" ><img src="admin/images/{if $fold and $cate.child gt 0}menu_plus.gif{else}menu_minus.gif{/if}"  style="padding-left:{$cate.level}em;cursor:pointer;" width="9" height="9" border="0" onclick="js_folding(this, {$cate.child})" /> <span>{$cate.cate_name|escape}</span></td>
+          <td><span>{$cate.sort_order}</span></td>
+          <td>{$cate.total}</td>
+          <td><a href="admin.php?app=category&act=edit&cate_id={$cate.cate_id}">{$lang.edit}</a>  <a href="admin.php?app=category&act=drop&cate_id={$cate.cate_id}" onclick="return confirm('{$lang.delete_confirm}')">{$lang.delete}</a></td>
+        </tr>
+        {foreachelse}
+        <tr>
+          <tr><td colspan="4" class="no-records">{$lang.no_records}</td></tr>
+        </tr>
+        {/foreach}
+      </table>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+  <script type="text/javascript">
+  function js_folding(obj, rowNum)
+  {
+    var tr = obj.parentNode.parentNode;
+    var tbl = tr.parentNode.parentNode;
+    var img = tr.getElementsByTagName("IMG")[0];
+
+    if (rowNum > 0)
+    {
+      var src = img.src.substr(img.src.lastIndexOf('/') + 1);
+      var rowIndex = tr.rowIndex + 1;
+      if (src == "menu_plus.gif"){
+        //unfold
+        var subLevel = parseInt(tr.getAttribute('level')) + 1;
+        for(var i=0;i<rowNum; i++){
+          var row = tbl.rows[rowIndex+i];
+          var level = parseInt(row.getAttribute('level'));
+          if (level == subLevel) row.style.display="";
+        }
+        img.src = "admin/images/menu_minus.gif";
+      }else{
+        //fold
+        for(var i=0;i<rowNum; i++){
+          var row = tbl.rows[rowIndex+i];
+          var child = parseInt(row.getAttribute('child'));
+          if (child > 0){
+            row.getElementsByTagName("IMG")[0].src = "admin/images/menu_plus.gif";
+          }
+          row.style.display="none";
+        }
+        img.src = "admin/images/menu_plus.gif";
+      }
+    }else{
+      img.src = "admin/images/menu_minus.gif";
+    }
+  }
+
+  function show_all(obj)
+  {
+    var fold = document.getCookie("ecm_config[category_fold]");
+    var tbl = $("myDataGrid");
+    var date = new Date();
+    date.setTime(date.getTime() + 3600 * 24 * 30);
+    if (fold && fold != "0") {
+      //unfold
+      for(var i=1; i < tbl.rows.length; i++){
+        tbl.rows[i].getElementsByTagName("IMG")[0].src = "admin/images/menu_minus.gif";
+        tbl.rows[i].style.display = '';
+      }
+      obj.innerHTML = "{$lang.fold_all}";
+      document.setCookie("ecm_config[category_fold]", 0, date.toGMTString());
+    }else{
+      //fold
+      for(var i=1; i < tbl.rows.length; i++){
+        var level = parseInt(tbl.rows[i].getAttribute('level'));
+        var child = parseInt(tbl.rows[i].getAttribute('child'));
+        if (level > 1){
+          tbl.rows[i].style.display = 'none';
+        }
+        if (child > 0){
+          tbl.rows[i].getElementsByTagName("IMG")[0].src = "admin/images/menu_plus.gif";
+        }
+      }
+      obj.innerHTML = "{$lang.unfold_all}";
+      document.setCookie("ecm_config[category_fold]", 1, date.toGMTString());
+  }}
+  </script>
+ </body>
+</html>

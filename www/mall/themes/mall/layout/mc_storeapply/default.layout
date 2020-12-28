@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<template>
+  <row id="region1" allowEdit="false">
+    <library>
+      <item id="header" src="themes/mall/resource/page_header.html" />
+      <item id="search_form" src="themes/mall/resource/search_form.html" />
+    </library>
+  </row>
+  <row id="mc_home">
+    <col id="region2" class="column1">
+    <library>
+      <item id="mc_menu" src="themes/mall/resource/mc_menu.html" />
+    </library>
+    </col>
+    <col id="region3" class="column2">
+    <library>
+      <item id="mc_order_view" src="themes/mall/resource/mc_storeapply.html" />
+    </library>
+    </col>
+  </row>
+  <row id="footer" allowEdit="false">
+    <library>
+      <item id="page_footer" src="themes/mall/resource/page_footer.html" />
+    </library>
+  </row>
+</template>

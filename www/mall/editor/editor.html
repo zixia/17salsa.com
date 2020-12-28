@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>ECMall Editor</title>
+<style type="text/css">
+  body { margin: 0px; padding: 2px; font-size: 12px; border: 1px solid #a7a6aa;}
+  input, select, textarea { font-size: 12px; }
+  form { padding: 0px; margin: 0px }
+  #toolbar { background: #FFF; height:25px; border-bottom: 1px solid #999;  }
+  .toolbarButton { position: absolute; width: 396px; height: 22px;  }
+  .toolbarItem { position: absolute; width: 22px; height: 22px;}
+  #editor__layer { position: absolute; border: 1px solid; padding: 5px; background: #FFF; display: none; }
+  #editor__code { width:99%; display:none; border:0; }
+</style>
+<script type="text/javascript" src="../js/ecmall.js"></script>
+<script type="text/javascript" src="../js/ajax.js"></script>
+<script type="text/javascript">
+var toolbarImg = new Image();
+toolbarImg.src = "images/toolbar.gif";
+var toolbarImages = {'bold':0, 'italic':1, 'underline':2, 'justifyLeft':3, 'justifyCenter':4, 'justifyRight':5, 'insertOrderedList':6, 'insertUnorderedList':7, 'outdent':8, 'indent':9, 'link':10, 'img':11, 'rule':12, 'backcolor':13, 'forecolor':14, 'fontsize':15, 'code':16, '-':17};
+var toolbarSets = new Array();
+toolbarSets['default'] = ['bold','italic','-','justifyLeft','justifyCenter', 'justifyRight','-','forecolor','link'];
+toolbarSets['full'] = ['fontsize', '-', 'bold','italic', 'underline','-','justifyLeft','justifyCenter', 'justifyRight','-','insertUnorderedList', 'insertOrderedList', 'indent', 'outdent', '-', 'link','img','rule','-','backcolor','forecolor'];
+
+var richEditor = {
+  fileManager : '',
+  basePath : '',
+  doc : null,
+  editorName : '',
+  editorArea : null,
+  editorCode : null,
+  toolbarSet : null,
+  selection : null,
+  range : null,
+
+  create : function() {
+    this.getParams();
+    this.buildToolbar();
+    this.resize();
+    this.editorArea = $('editor__area');
+    this.editorCode = $('editor__code');
+
+    if (!navigator.isIE()){
+      this.doc = this.editorArea.contentDocument;
+      Event.observe(window, 'mouseover', function(){richEditor.doc.designMode = "On";});
+    } else {
+      this.doc = this.editorArea.contentWindow.document;
+      this.doc.body.contentEditable = true;
+    }
+
+    var attachList = $(this.editorName + '__attachments', parent);
+    if (attachList) {
+      var arrLinks = attachList.getElementsByTagName('a');
+      if (arrLinks) {
+        for (var i=0; i<arrLinks.length; i++) {
+          var lnk = arrLinks[i];
+          lnk.onclick=function(e) {richEditor.onClickDropAttachment(e, lnk.getAttribute('fileId'), lnk.getAttribute('filePath'));};
+    }}}
+
+    if (this.doc != null) {
+      this.doc.body.style.fontSize = "12px";
+      this.doc.body.style.padding = "0px";
+      this.doc.body.style.margin = "2px 0px 0px";
+      this.doc.body.innerHTML = $(this.editorName + '___hidden', parent).value;
+
+      Event.observe(this.doc, "keyup", function(e) { var evt = fixEvent(e);richEditor.buttonStatus(evt); });
+      Event.observe(this.doc, "mouseup", function(e) { var evt = fixEvent(e);richEditor.buttonStatus(evt); });
+      Event.observe(this.doc, "click", function(e) { richEditor.hideMenu(); });
+      Event.observe(parent.document, "click", function(e) { richEditor.hideMenu(); });
+    }
+    richEditor.editorArea.contentWindow.focus();
+    //Event.observe($('editor__layer'), 'mouseover', function(e) {var evt = fixEvent(e); evt.cancelBubble = true;});
+  },
+  getParams : function() {
+    var params = location.href.substring(location.href.lastIndexOf('?') + 1).split("&");
+    for (i=0; i<params.length; i++) {
+      var pos = params[i].indexOf("=");
+      var val = params[i].substring(pos + 1);
+      var arg = params[i].substring(0, pos);
+
+      if (arg == "name") {
+        this.editorName = val;
+      } else if (arg == "toolbar") {
+        this.toolbarSet = toolbarSets[val];
+      } else if (arg == "fileManager") {
+        this.fileManager = val;
+      } else if (arg == "basePath") {
+        this.basePath = val;
+      } else if (arg == "borderColor") {
+        document.body.style.borderColor = val;
+      } else if (arg == "lang") {
+        document.require(decodeURIComponent(val));
+      } else {
+        throw "Unknow param";
+  }}},
+  buildToolbar : function() {
+    var toolbar =  this.toolbarSet;
+    for (i=0; i<toolbar.length; i++) {
+      var item = toolbar[i];
+      var idx = toolbarImages[item];
+      var btn = document.createElement('img');
+
+      if (typeof idx == "undefined") throw "Toolbar item is undefined.";
+
+      btn.src = toolbarImg.src;
+      btn.style.clip= "rect(auto " + ((idx+1) * 22) + "px auto "+ (idx * 22) +"px)";
+      btn.className = "toolbarButton";
+      btn.style.left = ((i-idx-i) * 22) + "px"
+
+      var span = document.createElement('div');
+      span.style.left = (i * 22 + 3) + "px";
+      span.id = item;
+      span.className = "toolbarItem";
+      if (item != '-') {
+        span.onmouseover = function(e) { richEditor.buttonBorder(e, "1px outset"); }
+        span.onmouseout = function(e) { richEditor.buttonBorder(e, ""); };
+        span.onmousedown = function(e) { richEditor.buttonBorder(e, "1px inset"); }
+        span.onmouseup = function(e) {
+          richEditor.buttonBorder(e, "");
+          richEditor.execute(e, this.id);
+          var evt = fixEvent(e);
+          evt.returnValue = false;
+          richEditor.focus();
+        };
+      }
+      span.appendChild(btn);
+      $('toolbar').appendChild(span);
+      span = null;
+    }
+  },
+  resize : function() {
+    try {
+      var pH = $(this.editorName+"___frame", window.parent).height;
+      var pW = $(this.editorName+"___frame", window.parent).offsetWidth;
+    } catch (e){
+      var pH = 300;
+      var pW = "100%";
+    }
+
+    if (pW != 0 && pH != 0) {
+      this.editorArea.width = pW-6;
+      this.editorArea.height = pH-32;
+      this.editorCode.style.width = (pW-6) + "px";
+      this.editorCode.style.height = (pH-36) + "px";
+    }
+  },
+  focus : function() {
+    this.editorArea.contentWindow.focus();
+  },
+  buttonBorder : function(e, bs) {
+    var evt = fixEvent(e);
+    var obj = evt.srcElement.parentNode;
+    if (obj.className == "toolbarItem" && obj.getAttribute("checked") != "true") obj.style.border=bs;
+  },
+  hideMenu : function() {
+    var mnu = $("editor__layer");
+    mnu.style.display = "none";
+  },
+  buttonStatus : function() {
+    this.getSelection();
+    var node = null;
+
+    if (this.selection.focusNode) {
+      if (this.selection.focusNode.nodeType == 3) node = this.selection.focusNode.parentNode;
+    } else {
+      node = this.selection.createRange().parentElement();
+    }
+
+    var status = {'bold':false, 'italic':false, 'underline':false, 'justifyLeft':false,
+      'justifyCenter':false, 'justifyRight':false, 'insertOrderedList':false, 'insertUnorderedList':false};
+    if (node != null) {
+      status = this.findParents(node, status);
+    }
+
+    for (var item in status) {
+      if ($(item) && typeof item != "function") {
+        $(item).style.border = (status[item] == true) ? "1px inset" : "";
+        $(item).setAttribute('checked', status[item]? "true" : "false");
+      }
+    }
+
+    $(this.editorName + '___hidden', parent).value = this.doc.body.innerHTML;
+  },
+  buttonPosition : function(btn) {
+    var n = 0;
+    for (i = 0; i < this.toolbarSet.length; i++) {
+      if (this.toolbarSet[i] == btn) {
+        n = i * 22;
+        break;
+    }}
+    return n;
+  },
+  findParents : function(node, status) {
+    switch (node.tagName) {
+    case "STRONG":
+    case "B":
+      status.bold = true;
+      break;
+    case "I":
+    case "EM":
+      status.italic = true;
+      break;
+    case "U":
+      status.underline = true;
+      break;
+    case "OL":
+      status.insertOrderedList = true;
+      break;
+    case "UL":
+      status.insertUnorderedList = true;
+      break;
+    case "P":
+    case "DIV":
+    case "SPAN":
+      status = this.parseStyle(node, status);
+      break;
+    }
+
+    if (node.tagName != "HTML") this.findParents(node.parentNode, status);
+
+    return status;
+  },
+  parseStyle : function(node, status) {
+    var css = node.getAttribute("style");
+
+    if (css) {
+      status.bold = (status.bold || this.testing("font-weight:\\s?bold", css));
+      status.italic = (status.italic || this.testing("font-style:\\s?italic", css));
+      status.underline = (status.underline || this.testing("text-decoration:\\s?underline", css));
+      status.justifyLeft = (status.justifyLeft || this.testing("text-align:\\s?left", css));
+      status.justifyCenter = (status.justifyCenter || this.testing("text-align:\\s?center", css));
+      status.justifyRight = (status.justifyRight || this.testing("text-align:\\s?right", css));
+    }
+
+    var align = node.getAttribute("align");
+    if (align) {
+      status.justifyLeft = (status.justifyLeft || (align.toLowerCase()=="left"));
+      status.justifyCenter = (status.justifyCenter || (align.toLowerCase()=="center"));
+      status.justifyRight = (status.justifyRight || (align.toLowerCase()=="right"));
+    }
+
+    return status;
+  },
+  testing : function (pattern, css) {
+    var regx = new RegExp(pattern, "i");
+
+    return regx.test(css);
+  },
+  getSelection : function() {
+    try { this.selection = (this.doc.selection) ? this.doc.selection : this.editorArea.contentWindow.getSelection(); }
+    catch (e) {};
+    if (this.selection != null) {
+      if (this.selection.createRange) {
+        this.range = this.selection.createRange();
+      } else {
+        if (this.selection.rangeCount == 0) {
+          var body = this.doc.getElementsByTagName("body")[0];
+          this.selection.collapse(body,0);
+        }
+        this.range = this.selection.getRangeAt(0);
+      }
+    }
+  },
+  execute : function(e, cmd) {
+    if (cmd != "code" && this.editorCode.style.display == "block")  return;
+
+    var evt = fixEvent(e);
+    evt.returnValue = false;
+
+    switch (cmd) {
+    case 'fontsize':
+      this.showFontsize(evt);
+      break;
+    case 'bold':
+    case 'italic':
+    case 'underline':
+    case 'justifyLeft':
+    case 'justifyCenter':
+    case 'justifyRight':
+    case 'indent':
+    case 'outdent':
+    case 'insertOrderedList':
+    case 'insertUnorderedList':
+      this.execCommand(cmd, null);
+      this.hideMenu();
+      break;
+    case 'link':
+      this.createLink(evt);
+      break;
+    case 'backcolor':
+    case 'forecolor':
+      this.setColor(cmd, evt);
+      break;
+    case 'rule':
+      this.execCommand('inserthorizontalrule', null);
+      this.hideMenu();
+      break;
+    case 'img':
+      this.createImage(evt);
+      break;
+    case 'code':
+      this.swapView(evt);
+      this.hideMenu();
+      break;
+    default:
+      throw 'Unkonw command:' + cmd;
+    }
+  },
+  execCommand : function(cmd, param) {
+    if (this.doc) {
+      this.doc.execCommand(cmd, false, param);
+      this.buttonStatus();
+    } else {
+      throw "no EditorDocument found";
+    }
+  },
+  insertHtml : function(html) {
+    if (this.selection && this.selection.focusNode) {
+      this.execCommand("insertHtml", html);
+    } else if (this.range != null) {
+      this.range.pasteHTML(html);
+    }
+  },
+  showFontsize : function(e) {
+    this.getSelection();
+    var obj = e.srcElement;
+    var mnu = $("editor__layer");
+    var size = [10, 12, 14, 16, 18, 22];
+    mnu.style.left = this.buttonPosition("fontsize") + "px";
+    mnu.style.display = "block";
+    mnu.innerHTML = "";
+    for (i=0; i<size.length; i++) {
+      var item = document.createElement("DIV");
+      item.style.fontSize = size[i] + "px";
+      item.style.border = "1px solid #FFF";
+      item.style.cursor = "pointer";
+      item.style.paddingRight = "1em";
+      item.innerHTML = size[i] + "px";
+      item.onmouseover = function() { this.style.borderColor = "#FF3399"; }
+      item.onmouseout = function() { this.style.borderColor = "#FFF"; }
+      item.onmousedown = function(e) {
+        richEditor.focus();
+        var txt = (document.all) ? richEditor.range.htmlText : richEditor.selection.toString();
+        var html = "<span style=\"font-size: " + this.innerHTML + "\">" + txt + "</span>";
+
+        richEditor.insertHtml(html);
+        richEditor.hideMenu();
+        var evt = fixEvent(e);
+        evt.cancelBubble = true;
+      }
+      mnu.appendChild(item);
+    }
+    e.retrunValue = false;
+  },
+  createLink : function(e)  {
+    this.getSelection();
+    var obj = e.srcElement;
+    var mnu = $("editor__layer");
+    var sel = this.selection;
+    if (sel != null && sel != '') {
+      mnu.style.left = this.buttonPosition("link") + "px";
+      mnu.style.display = "block";
+      mnu.innerHTML = "";
+
+      var div = document.createElement("DIV");
+      var obj = document.createElement("INPUT");
+      obj.type = "text";
+      obj.size = "40";
+      obj.id = "editor__url";
+      obj.style.marginRight = "3px";
+      div.appendChild(obj);
+      div.style.marginBottom = "5px";
+      mnu.appendChild(div);
+
+      div = document.createElement("DIV");
+      div.align = "right";
+      obj = document.createElement("input");
+      obj.type="button";
+      obj.value = lang.button_ok;
+      obj.onclick = function(e) {
+        var evt = fixEvent(e);
+        var txt = (richEditor.selection.createRange) ? richEditor.range.htmlText : richEditor.selection.toString();
+        var htm = "<a href=\""+$('editor__url').value+"\" target=\"_blank\">"+txt+"</a>";
+        richEditor.insertHtml(htm);
+        richEditor.hideMenu();
+        evt.cancelBubble = true;
+        return false;
+      }
+      div.appendChild(obj);
+      obj = document.createElement("input");
+      obj.type="button";
+      obj.value = lang.button_cancel;
+      obj.onclick = function(e) {
+        var evt = fixEvent(e);
+        richEditor.hideMenu();
+        evt.cancelBubble = true;
+        return false;
+      }
+      div.appendChild(obj);
+
+      mnu.appendChild(div);
+    }
+  },
+  setColor : function(cmd, e) {
+    this.getSelection();
+    var mnu = $("editor__layer");
+    mnu.style.left = this.buttonPosition(cmd) + "px";
+    mnu.style.display = "block";
+    mnu.innerHTML = "";
+    var tbl = document.createElement("table");
+    var row = null;
+    tbl.cellpadding = "0";
+    tbl.cellSpacing = "1";
+
+    var clr = ['Black', 'DimGray', 'Gray', 'DarkGray', 'Silver', 'WhiteSmoke', 'White',
+      'Red', 'DarkRed', 'Brown', 'Chocolate', 'OrangeRed', 'Salmon', 'LightSalmon',
+      'Yellow', 'Sienna', 'Peru', 'DarkOrange', 'Orange', 'Goldenrod', 'Gold',
+      'Green','DarkGreen', 'SeaGreen', 'LimeGreen','Lime', 'GreenYellow','LightGreen',
+      'Cyan', 'DarkSlateGray', 'Teal','LightSeaGreen', 'MediumTurquoise', 'Turquoise', 'LightCyan',
+      'Blue','DarkBlue','MediumBlue','RoyalBlue','SteelBlue','DeepSkyBlue', 'LightSkyBlue',
+      'Purple','DarkOrchid','Fuchsia','Orchid','DeepPink','HotPink','Pink'];
+
+    for (i=0; i<clr.length; i++) {
+      if (i % 7 == 0) row = tbl.insertRow(-1);
+      var cell = row.insertCell(-1);
+      cell.innerHTML = "&nbsp;";
+      cell.style.border = "1px solid black";
+      cell.style.fontSize = '10px';
+      cell.style.width = "10px";
+      cell.style.cursor = "pointer";
+      cell.style.backgroundColor = cell.title = clr[i];
+      cell.onmousedown = function(e) {
+        var evt = fixEvent(e);
+        var txt = (document.all) ? richEditor.range.htmlText : richEditor.selection.toString();
+        var html = (cmd == "forecolor") ? '<span style="color:' +this.style.backgroundColor+'">'+txt+'</span>' : "<span style=\"background-color:"+this.style.backgroundColor+"\">"+txt+"</span>";
+
+        richEditor.insertHtml(html)
+        richEditor.hideMenu();
+        richEditor.focus();
+        evt.returnValue = false;
+      }
+    }
+    mnu.appendChild(tbl);
+  },
+  createImage : function(e) {
+    this.getSelection();
+    var mnu = $("editor__layer");
+    mnu.style.left = this.buttonPosition("img") + "px";
+    mnu.style.display = "block";
+    mnu.innerHTML = "";
+
+    var frm = document.createElement('form');
+    frm.action = "javascript:;";
+    frm.method = "post";
+    frm.target = "editor__uploader";
+    frm.encoding = "multipart/form-data";
+    frm.onsubmit = function(e) {
+      var evt = fixEvent(e);
+      var url = $("editor__url").value;
+      var file = $("editor__upload").value;
+
+      if (!file.isEmpty()) {
+        this.action = richEditor.fileManager;
+        this.submit();
+        richEditor.hideMenu();
+      } else if (!url.isEmpty()) {
+        richEditor.insertImage(url);
+        richEditor.hideMenu();
+      }
+
+      e.returnValue = false;
+    }
+
+    var div = document.createElement("DIV");
+    var lab = document.createElement("label");
+    lab.innerHTML = lang.remote_image;
+    try {lab.style.display = "-moz-inline-box";}catch(e){lab.style.display = "inline-block";};
+    lab.style.width = "7em";
+    lab.htmlFor = "editor__url";
+    div.appendChild(lab);
+    div.style.marginBottom = "5px";
+
+    var obj = document.createElement("INPUT");
+    obj.type = "text";
+    obj.id = "editor__url";
+    obj.value = "http://";
+    div.appendChild(obj);
+    frm.appendChild(div);
+
+    var div = document.createElement("DIV");
+    var lab = document.createElement("label");
+    lab.innerHTML = lang.local_image;
+    try {lab.style.display = "-moz-inline-box";}catch(e){lab.style.display = "inline-block";};
+    lab.style.width = "7em";
+    lab.htmlFor = "editor__upload";
+    div.appendChild(lab);
+    div.style.marginBottom = "5px";
+
+    var obj = document.createElement("INPUT");
+    obj.type = "file";
+    obj.id = "editor__upload";
+    obj.name = "editor__upload";
+    div.appendChild(obj);
+    frm.appendChild(div);
+
+    div = document.createElement("DIV");
+    div.align = "right";
+    obj = document.createElement("input");
+    obj.type="submit";
+    obj.value = lang.button_ok;
+    div.appendChild(obj);
+    obj = document.createElement("input");
+    obj.type="button";
+    obj.value = lang.button_cancel;
+    obj.onclick = function(e) {
+      var evt = fixEvent(e);
+      richEditor.hideMenu();
+      evt.cancelBubble = true;
+      return false;
+    }
+    div.appendChild(obj);
+    frm.appendChild(div);
+
+    mnu.appendChild(frm);
+    e.returnValue = false;
+  },
+  insertImage : function(url) {
+    var htm = "<img src=\"" + url + "\" border=\"0\" />";
+    this.insertHtml(htm);
+  },
+  swapView : function(e) {
+    var txt = this.editorCode;
+    var dsp = txt.style.display;
+    if (dsp != "block") {
+      txt.value = this.doc.body.innerHTML;
+      txt.style.display = "block";
+      $('code').style.border = "1px inset";
+      this.editorArea.style.display = 'none';
+      txt.focus();
+    } else {
+      this.doc.body.innerHTML = txt.value;
+      txt.style.display = "none";
+      $('code').style.border = "";
+      this.editorArea.style.display = 'block';
+      this.editorArea.contentWindow.focus();
+    }
+    e.returnValue = false;
+    return false;
+  },
+  addAttachment : function(id, filename, size, path) {
+    var wrap = $(this.editorName + "__container", parent);
+    var list = $(this.editorName + "__attachments", parent);
+    var item = parent.document.createElement('li');
+    var field =  parent.document.createElement('input')
+    var link =  parent.document.createElement('a')
+
+    link.innerHTML = lang.drop_attachment;
+    link.href = "javascript:;";
+    item.innerHTML = filename + " [" + size + "]" + "&nbsp;&nbsp;";
+    item.appendChild(link);
+    list.appendChild(item);
+    link.onclick = function(e) {richEditor.onClickDropAttachment(e, id, path);};
+
+    field.type = "hidden";
+    field.name = this.editorName+"_attachments[]";
+    field.value = id;
+    field.setAttribute("file", path);
+    wrap.appendChild(field);
+  },
+  onClickDropAttachment : function(e, id, path) {
+      var evt = fixEvent(e, parent);
+
+      richEditor.dropAttachment(id, path);
+      evt.srcElement.parentNode.parentNode.removeChild(evt.srcElement.parentNode);
+  },
+  dropAttachment : function(id, path) {
+    var res = Ajax.call(this.fileManager + "?ajax&aid=" +id, null, 'GET', false);
+
+    if (res && res.done) {
+      var html = this.doc.body.innerHTML;
+      var regx = new RegExp("<img\\s.*?src=['|\"]?.*?" + path.replace(".", "\\.") + "['|\"]?.*?>", "ig");
+      html = this.doc.body.innerHTML.replace(regx, '');
+
+      this.doc.body.innerHTML = html;
+    } else if (res.msg.length > 0) {
+      alert(res.msg);
+    } else {
+      alert(res);
+    }
+  }
+};
+onload = function() {richEditor.create();};
+onresize = function() {richEditor.resize();};
+
+</script>
+</head>
+<body>
+<div id="toolbar"></div>
+<div id="editor__layer">menu and dialog.</div>
+<textarea id="editor__code"></textarea>
+<iframe id="editor__uploader" name="editor__uploader" src="about:blank" width="0" height="0" frameborder="0"></iframe>
+<iframe id="editor__area" src="blank.html" width="0" height="0" frameborder="0" designMode="On" scroll="auto"></iframe>
+</body>
+</html>

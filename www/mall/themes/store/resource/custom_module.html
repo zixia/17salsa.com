@@ -1,0 +1,13 @@
+<div id="cm_{index}" class="colbox sortlist">
+  <h3><span>{$custom_module.{index}.name|escape}</span></h3>
+  <div class="colboxcontent itemgrid">
+    <!-- {foreach from=$custom_module.{index}.data item=rgoods} 商品 -->
+    <dl class="item">
+      <dt class="pic"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=rgoods.store_id}"><img src="{image file=$rgoods.default_image width=120 height=120}" alt="{$rgoods.orig_name|escape}" /></a></dt>
+      <dd class="name"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=rgoods.store_id}">{$rgoods.goods_name|escape}</a></dd>
+      <dd class="price">{$rgoods.store_price|price}<!--<span class="marketprice">{$rgoods.market_price}</span>--></dd>
+    </dl>
+    <!-- {/foreach} 商品 -->
+  </div>
+  <div class="colbtm"></div>
+</div>

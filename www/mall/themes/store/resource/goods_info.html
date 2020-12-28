@@ -1,0 +1,98 @@
+<div id="goods_info">
+  <!-- {if $gallery[0]} -->
+  {script src="tools.magnifier"}
+  <script type="text/javascript">
+  var _magnifier = null;
+  Event.observe(window, "load", function(){ _magnifier = new magnifier($("goods_pic"), 400, 310); });
+  </script>
+  <!-- {/if} -->
+  <div class="pic">
+    <span class="bigpic"><div><img id="goods_pic" src="{image file=$gallery[0].file_id width=280 height=280}" alt="{$goods.goods_name|escape}" id="goodspic" org="{$gallery[0].file_name}" /></div></span>
+    <!--{if $gallery_count gt 1}-->
+    <div class="btnlarge"><a href="javascript:;" onclick="viewLargePic()">{$lang.view_large_image}</a></div>
+    <ul id="gallerylist" onclick="return changeGallery(event)">
+      {foreach from=$gallery item=pic name=gallery}
+        {if $smarty.foreach.gallery.first}
+        <li class="selected"><a href="{image file=$pic.file_id width=280 height=280}"><img src="{image file=$pic.file_id width=32 height=32}"  org="{$pic.file_name}"/></a></li>
+        {else}
+        <li><a href="{image file=$pic.file_id width=280 height=280}"><img src="{image file=$pic.file_id width=32 height=32}" org="{$pic.file_name}"/></a></li>
+        {/if}
+      {/foreach}
+    </ul>
+    <!--{/if}-->
+  </div>
+  <div class="globalinfo">
+    <h1 class="name">{$goods.goods_name|escape}
+    <br /><span>{$lang.goods_sku}: {$goods.sku|escape}</span>
+    </h1>
+    
+    <table border="0" class="infolist">
+      <tr>
+        <th width="50">{$lang.store_price}</th><th>:</th><td colspan="4"><span class="goodsprice">{$goods.store_price|price}</span></td>
+      </tr>
+      <!-- {if $goods.brand_name} -->
+      <tr>
+        <th>{$lang.goods_brand}</th><th>:</th><td colspan="4"><a href="{url src=index.php?app=category&amp;brand_id=$goods.brand_id}" target="_blank">{$goods.brand_name|escape}</a></td>
+      </tr>
+      <!-- {/if} -->
+      <tr>
+        <th>{$lang.market_price}</th><th>:</th><td><span class="marketprice">{$goods.market_price|price}</span></td>
+        <th width="50">{$lang.goods_new_level}</th><th>:</th><td>{$goods.lang_new_level}</td>
+      </tr>
+      <tr>
+        <th>{$lang.to_save}</th><th>:</th><td>{$goods.to_save|price}</td>
+        <!--{if $mall_display_volumn}--><th>{$lang.sales_volume}</th><th>:</th><td>{$goods.sales_volume|default:0} {$lang.sale_uint}</td><!--{else}--><th>&nbsp;</th><th>&nbsp;</th><td>&nbsp;</td><!--{/if}-->
+      </tr>
+    </table>
+    <div class="attrlist">
+      <table border="0">
+        <!--{if $goods_color}-->
+        <tr>
+          <th>{$lang.goods_color}: </th>
+          <td class="attrselect">
+            <!--{foreach from=$goods_color item=color}-->
+              {if $goods.color_name eq $color.color_name}
+              <a class="goods_color goods_color_selected" title="{$color.color_name|escape}"><span {if $goods.color_rgb}style="background-color:{$goods.color_rgb}"{/if}>&nbsp;</span></a>
+              {else}
+              <a class="goods_color" href="{url src=index.php?app=goods&amp;spec_id=$color.spec_id}" title="{$color.color_name|escape}"><span {if $color.color_rgb}style="background-color:{$color.color_rgb}"{/if}>&nbsp;</span></a>
+              {/if}
+            <!--{/foreach}-->
+           </td>
+        </tr>
+        <!--{/if}-->
+        <!--{if $goods_spec}-->
+        <tr>
+          <th>{$lang.goods_spec}: </th>
+          <td class="attrselect">
+            {foreach from=$goods_spec item=spec}
+              {if $spec.spec_name eq $goods.spec_name}
+                <a class="goods_spec goods_spec_selected" title="{$goods.spec_name|escape}"><span>{$goods.spec_name|escape}</span></a>
+              {else}
+                {if $spec.active}
+                  <a class="goods_spec" href="{url src=index.php?app=goods&amp;spec_id=$spec.spec_id}" title="{$spec.spec_name|escape}"><span>{$spec.spec_name|escape}</span></a>
+                {else}
+                  <a class="goods_spec goods_spec_disable" title="{$lang.no_spec_at_color}"><span>{$spec.spec_name|escape}</span></a>
+                {/if}
+
+              {/if}
+            {/foreach}
+          </td>
+        </tr>
+        <!--{/if}-->
+      </table>
+      <p class="btnbuy">{$lang.i_will_buy} <input type="text" size="5" class="sinput" id="goods_num" value="1" /> {$lang.sale_uint} <span class="desc">({$lang.goods_stock}{nocache}{$goods.stock}{/nocache} {$lang.sale_uint})</span></p>
+    </div>
+    <p class="btn">
+      <a href="javascript:;" id="addcart_button" onclick="addToCart({$goods.spec_id}, $('goods_num').value);"><img src="images/btn_addcart.gif" alt="{$lang.add_to_cart}" /></a>
+      <a href="javascript:;" onclick="addToFavorite({$goods.goods_id});" ><img src="images/btn_addfav.gif" alt="{$lang.add_to_fav}" /></a>
+    </p>
+    <!-- {if $goods.keywords} -->
+    <p id="goodstag">
+    <label>{$lang.goods_tags}</label>
+    {foreach from=$goods.tags item=tag}
+    <a href="{url src=index.php?app=search&amp;tag_words=$tag}">{$tag|escape}</a>
+    {/foreach}
+    </p>
+    <!-- {/if} -->
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+
+  function duplicateName (obj, id) {
+    Ajax.addVal('app', 'attribute');
+    Ajax.addVal('act', 'duplicate_name');
+    Ajax.addVal('id', id);
+    Ajax.addVal('name', obj.value);
+    Ajax.addVal('type_id', {$info.type_id});
+    var res = Ajax.call('admin.php', null, 'get', false);
+
+    if (res.done)
+      return true;
+    else
+      return res.msg;
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_attribute}</h1>
+      <div class="link">[<a href="admin.php?app=attribute&amp;act=view&amp;type_id={$info.type_id}">{$lang.list_attribute}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form method="post" enctype="multipart/form-data" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.attr_name}:</td>
+              <td><input name="attr_name" type="text" id="attr_name" value="{$info.attr_name|escape}" size="40" dataType="string" required="true" fun="duplicateName" funParam="{$info.attr_id}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_type}:</td>
+              <td>{$info.type_name}</td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.input_type}:</td>
+              <td>{html_radios name="input_type" options=$lang.input_type_list checked=$info.input_type}</td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.value_range}:</td>
+              <td><textarea name="value_range" cols="60" rows="4" id="value_range">{$info.value_range}</textarea>
+              <span class="note">{$lang.value_range_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.sort_order}:</td>
+              <td><input type="text" name="sort_order" value="{$info.sort_order}" /></td>
+            </tr>
+            <!--<tr>
+              <td class="label">{$lang.search_type}:</td>
+              <td>{html_radios name="search_type" options=$lang.search_type_list checked=$info.search_type}</td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.if_link}:</td>
+              <td>{html_radios name="if_link" options=$lang.if_link_list checked=$info.if_link}</td>
+            </tr>
+            {if $attr_group_list}
+            <tr>
+              <td class="label">{$lang.attr_group}:</td>
+              <td><select name="attr_group">html_options options=$attr_group_list selected=$info.attr_group</select></td>
+            </tr>
+            {/if}-->
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="id" value="{$info.attr_id}" />
+          <input type="hidden" name="type_id" value="{$info.type_id}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </div>
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

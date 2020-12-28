@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.datagrid"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  //]]>
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.list_goodstype}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="tips">
+      <form method="post" action="admin.php">
+        {$lang.add_goodstype}: <input type="text" name="type_name" />
+        <input type="submit" value="{$lang.button_submit}" />
+        <input type="hidden" name="app" value="goodstype"/>
+        <input type="hidden" name="act" value="add"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th width="30" class="first-cell"><input type="checkbox" class="checkAll" /></th>
+          <th readonly="false" columnName="type_name" dataType="string" required="true">{sort_link by=type_name text=$lang.goodstype_name}</th>
+          <th>{sort_link by=attr_count text=$lang.attr_count}</th>
+          <th width="200" >{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=goodstype}
+        <tr id="{$goodstype.type_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$goodstype.type_id}" /></td>
+          <td><span>{$goodstype.type_name|escape}</span></td>
+          <td>{$goodstype.attr_count}</td>
+          <td class="handlelist"><a href="admin.php?app=attribute&amp;act=view&amp;type_id={$goodstype.type_id}">{$lang.list_attribute}</a> | <a href="admin.php?app=goodstype&amp;act=edit&amp;id={$goodstype.type_id}">{$lang.edit}</a> | <a href="admin.php?app=goodstype&amp;act=drop&amp;id={$goodstype.type_id}" onclick="return confirm('{$lang.drop_confirm}')">{$lang.delete}</a></td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="4" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="12">
+            <ul id="batch-links">
+              <li class="batch-link last" action="batch" param="drop">{$lang.delete}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

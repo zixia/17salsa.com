@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,ui.utils,ui.calendar,validator"}
+  <script type="text/javascript">
+  function changeFileInput(type) {
+    if (parseInt(type) == 0){
+      $("file_url").disabled = false;
+      $("file").disabled = true;
+      document.getElementsByName("file_radio")[1].checked = true;
+    } else {
+      $("file_url").disabled = true;
+      $("file").disabled = false;
+      document.getElementsByName("file_radio")[0].checked = true;
+    }
+  }
+
+  Event.observe(window, "load", function() {
+    new ui.utils.tabForm("tab-form");
+    Validator.run("theForm");
+    {if $info.image neq ''}changeFileInput(0);{else}changeFileInput(1);{/if}
+  });
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_image}</h1>
+      <div class="link">[<a href="admin.php?app=cycleimage&amp;act=view">{$lang.view_cycleimage}</a>]</div>
+      <div id="desc">
+      {if $info}
+        {$lang.edit_cycleimage_notice}
+      {else}
+        {$lang.add_cycleimage_notice}
+      {/if}
+      </div>
+    </li>
+    <li>
+      <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+           <td class="label">{$lang.link_url}:</td><td><input name="link" type="text" id="link" value="{$info.link}" size="40" dataType="url" required="true"/><span class="note">*</span></td>
+            </tr>
+            <tr>
+              <td class="label" ><label><input name="file_radio" type="radio" onclick="changeFileInput(this.value)"  value="1" {if $info.item_url eq ''}checked="checked"{/if} />{$lang.upload_file}:</label></td>
+              <td><input name="file"  id="file"  type="file" size="40" ></td>
+            </tr>
+            <tr>
+              <td class="label"><label><input name="file_radio" type="radio"  value="0" onclick="changeFileInput(this.value)"/>{$lang.img_url}:</label></td>
+              <td><input name="file" id="file_url" type="text" dataType="string" required="true" {if $info.image eq ''}disabled="disabled"{else}checked="checked"{/if} size="40" value="{$info.item_url}" /></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <p class="submitlist">
+          <input type="submit" value="{$lang.button_submit}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> {$lang.print_order} </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <style type="text/css">
+  .print-order-item { background:#fff;text-align:center; font-size:13px; }
+  .print-order-title { font-size:18px; font-weight:bold; }
+  .print-order-order-sn { text-align:left; font-size:15px; }
+  .print-order-order-sn p{ margin:5px; }
+  .print-order-order-sn span{ margin-right:15px;width:300px; }
+  .print-order-goods { width:100%; margin:10px 0px; background:#eee; }
+  .print-order-goods tr{ line-height:25px; }
+  .print-order-goods td{ background:#fff; }
+  .print-order-goods .title{ background:#eee; }
+  .print-order-charge { text-align:right; }
+  .print-order-charge span{ border-top:#eee 1px solid; padding:3px 10px; }
+  .print-order-info { width:100%; margin-top:5px; padding-top:5px; border-top:#eee 1px solid; }
+  .print-order-info .order-key { width:10%;text-align:left; }
+  .print-order-info .order-val { width:40%;text-align:left; }
+  .page-break { page-break-after:always; }
+  </style>
+ </head>
+ <body>
+ <!--{foreach from=$orders item=order}-->
+ <div class="print-order-item">
+    <div class="print-order-title">
+      {$order_title}
+    </div>
+    <div class="print-order-order-sn">
+      <p>{$lang.order_sn}:{$order.order_sn}</p>
+      <p><span>{$lang.print_time}:{$now}</span><span>{$lang.print_user}:{$smarty.session.admin_name}</span><span>{$lang.order_payment}:{$order.pay_name|escape}</span>{$lang.order_shipping_method}:{$order.shipping_name|escape}</span></p>
+    </div>
+    <table class="print-order-goods" cellspacing="1">
+      <tr class="title">
+        <th width="100">{$lang.goods_sku}</th>
+        <th>{$lang.goods_name}</th>
+        <th width="100">{$lang.goods_attr}</th>
+        <th width="100">{$lang.goods_color}</th>
+        <th width="100">{$lang.goods_number}</th>
+      </tr>
+      <!--{foreach from=$order.goods item=g}-->
+      <tr>
+        <td>{$g.sku|escape}</td>
+        <td>{$g.goods_name|escape}</td>
+        <td>{$g.spec_name|default:N/A}</td>
+        <td>{$g.color_name|default:N/A}</td>
+        <td>{$g.goods_number}</td>
+      </tr>
+      <!--{/foreach}-->
+    </table>
+    {if $order.inv_payee and $order.inv_content}
+    <table class="print-order-info">
+      <tr>
+        <td class="order-key">{$lang.order_inv_payee}:</td>
+        <td class="order-val" colspan="3">{$order.inv_payee|escape}</td>
+      </tr>
+      <tr>
+        <td class="order-key">{$lang.order_inv_content}:</td>
+        <td class="order-val">{$order.inv_content|escape}</td>
+        <td class="order-key">{$lang.inv_amount}:</td>
+        <td class="order-val">{$order.inv_amount|price}</td>
+      </tr>
+    </table>
+    {/if}
+    <!--{if $order.is_cod}-->
+    <div class="print-order-charge">
+      <span>{$lang.order_payable}:{$order.payable|price}</span>
+    </div>
+    <!--{/if}-->
+    <table class="print-order-info">
+      <tr>
+        <td class="order-key">{$lang.order_consignee}:</td>
+        <td class="order-val">{$order.consignee|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_email}:</td>
+        <td class="order-val">{$order.email}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="order-key">{$lang.order_address}:</td>
+        <td class="order-val">[{$order.region|escape}]{$order.address|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_zipcode}:</td>
+        <td class="order-val">{$order.zipcode|escape}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="order-key">{$lang.order_home_phone}:</td>
+        <td class="order-val">{$order.home_phone|escape|default:$lang.have_nothing}&nbsp;</td>
+        <td class="order-key">{$lang.order_mobile_phone}:</td>
+        <td class="order-val">{$order.mobile_phone|escape|default:$lang.have_nothing}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="order-key">{$lang.order_office_phone}:</td>
+        <td class="order-val">{$order.office_phone|escape|default:$lang.have_nothing}&nbsp;</td>
+        <td class="order-key">{$lang.order_best_time}:</td>
+        <td class="order-val">{$order.best_time|escape}&nbsp;</td>
+      </tr>
+    </table>
+ </div>
+ <p class="page-break"></p>
+ <!--{/foreach}-->
+ </body>
+</html>

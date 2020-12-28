@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?act=jslang"></script>
+{script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.add_payment}</h1>
+    <div class="link">[<a href="admin.php?app=payment&amp;act=view">{$lang.list_payment}</a>]</div>
+    <div id="desc"></div>
+  </li>
+  <li>
+    <form method="post" enctype="multipart/form-data" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.pay_name}:</td>
+              <td>{$info.pay_name|escape}</td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.pay_desc}:</td>
+              <td><textarea name="pay_desc" cols="60" rows="4" id="pay_desc">{$info.pay_desc|escape}</textarea></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.pay_fee}:</td>
+              <td><input name="pay_fee" type="text" id="pay_fee" value="{$info.pay_fee}" size="40" />
+                <span class="note">{$lang.pay_fee_note}</span></td>
+            </tr>
+            {foreach from=$info.config item=conf key=name}
+            {if $info.pay_code eq 'alipay' and $name eq 'customer_code'}
+            {else}
+            <tr>
+              <td class="label">{$conf.name}:</td>
+              <td> {if $conf.type eq "text"}
+                <input name="config_value[]" type="text" value="{$conf.value}" size="40" />
+                {elseif $conf.type eq "textarea"}
+                <textarea name="config_value[]" cols="60" rows="4">{$conf.value}</textarea>
+                {elseif $conf.type eq "select"}
+                <select name="config_value[]">
+                  {html_options options=$conf.range selected=$conf.value}
+                </select>
+                {else}
+                {/if}
+                {if $conf.desc}<span class="note">{$conf.desc}</span>{/if}
+                <input name="config_name[]" type="hidden" value="{$name}" />
+              </td>
+            </tr>
+            {/if}
+            {/foreach}
+            {if $smarty.get.act eq 'edit' and ($info.config.alipay_real_method.value eq 0 or $info.config.alipay_virtual_method.value eq 0) and  $info.pay_code eq 'alipay'}
+              {if $info.config.customer_code}
+              <tr>
+                <td class="label">{$lang.protocol}:</td>
+                <td><a href="admin.php?app=payment&amp;act=alipay_sign&do=unsign">{$lang.alipay_unsign}</a><span class="note">{$lang.alipay_unsign_note}</span></td>
+              </tr>
+              {else}
+              <tr>
+                <td class="label">{$lang.protocol}:</td>
+                <td><a href="admin.php?app=payment&amp;act=alipay_sign&do=sign" target="_blank">{$lang.alipay_sign}</a><span class="note">{$lang.alipay_sign_note}</span></td>
+              </tr>
+              {/if}
+            {/if}
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="id" value="{$info.pay_id}" />
+          <input type="hidden" name="pay_code" value="{$info.pay_code}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

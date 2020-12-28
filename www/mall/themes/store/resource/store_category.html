@@ -1,0 +1,15 @@
+<div id="store_category" class="colbox">
+  <h3>{$lang.store_category}</h3>
+  <div class="colboxcontent">
+    <dl>
+      <dt><a href="{url src=index.php?app=store&amp;store_id=$store_id&amp;cate_id=0&amp;cate_name=$lang.all_goods&amp;show_type=$show_type}">{$lang.all_goods}</a></dt>
+      <!-- {foreach from=$goods_category item=parent} -->
+      <dt {if $smarty.get.cate_id eq $parent.cate_id}class="selected"{/if}><a href="{url src=index.php?app=store&amp;store_id=$store_id&&amp;cate_id=$parent.cate_id&amp;cate_name=$parent.cate_name&amp;show_type=$show_type}">{$parent.cate_name|escape}</a></dt>
+        <!-- {foreach from=$parent.children item=child} -->
+        <dd {if $smarty.get.cate_id eq $child.cate_id}class="selected"{/if}><a href="{url src=index.php?app=store&amp;store_id=$store_id&amp;cate_id=$child.cate_id&amp;cate_name=$child.cate_name&amp;show_type=$show_type}">{$child.cate_name|escape}</a></dd>
+        <!-- {/foreach} -->
+      <!-- {/foreach} -->
+    </dl>
+  </div>
+  <div class="colbtm"></div>
+</div>

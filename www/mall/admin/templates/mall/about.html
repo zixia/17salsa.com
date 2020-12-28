@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,uc"}
+  <style type="text/css">
+  /*<![CDATA[*/
+    .info-table { padding:5px 30px; }
+    .info-table th { text-align:left; width:120px; }
+    .info-table .title { font-weight:bold; color:#333; }
+  /*]]>*/
+  </style>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.about_us}</h1>
+      <div id="desc">{$lang.about_us_desc}</div>
+    </li>
+    <li id="wrapper">
+      <h2 class="first">{$lang.develop_team}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.project_manager}</th>
+              <td><a href="http://u.discuz.net/home/?445623" target="_blank">Weber Liu</a></td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.programmer}</th>
+              <td>
+                <a href="http://u.discuz.net/home/445623" target="_blank">Weber Liu</a>,
+                <a href="http://u.discuz.net/home/884528" target="_blank">Scott Ye</a>,
+                <a href="http://u.discuz.net/home/15104" target="_blank">Redstone</a>,
+                <a href="http://u.discuz.net/home/911158" target="_blank">Anders Lau</a>,
+                <a href="http://u.discuz.net/home/852823" target="_blank">Garbin Huang</a>,
+                <a href="http://u.discuz.net/home/904244" target="_blank">Wenjin Zhang</a>,
+                <a href="http://u.discuz.net/home/911163" target="_blank">Zhaofei Xing</a>
+              </td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.ui_designer}</th>
+              <td>
+                <a href="http://u.discuz.net/home/734203" target="_blank">Hengqi Lu</a>
+                <a href="http://u.discuz.net/home/797191" target="_blank">Yecoir</a>,
+              </td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.security_team}</th>
+              <td>
+                <a href="http://ecmall.shopex.cn/space.php?uid=859" target="_blank">Haibo Wang</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=210272" target="_blank">XiaoDun Fang</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=492114" target="_blank">Liang Xu</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=285706" target="_blank">Wei Yu</a>
+              </td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.support_team}</th>
+              <td>
+                <a href="http://ecmall.shopex.cn/space.php?uid=2691" target="_blank">Liang Chen</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=1519" target="_blank">Yang Xia</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=1904" target="_blank">Tao Cheng</a>,
+                <a href="http://ecmall.shopex.cn/space.php?uid=294092" target="_blank">Fangming Li</a>
+              </td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.links}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.company_site}</th>
+              <td><a href="http://ecmall.shopex.cn" target="_blank">http://ecmall.shopex.cn</a></td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.offical_bbs}</th>
+              <td><a href="http://ecmall.shopex.cn/bbs" target="_blank">http://ecmall.shopex.cn/bbs</a></td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.copyright}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <td>{$lang.ecmall_copyright}</td>
+          </tr>
+          <tr>
+              <td>{$lang.bcastr_copyright}</td>
+          </tr>
+          <tr>
+              <td>{$lang.niceditor_copyright}</td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

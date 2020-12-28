@@ -1,0 +1,41 @@
+<div id="groupbuy_join" class="colbox">
+  <h3>{$goods.goods_name|escape}<!-- {if $act_type} -->[{$act_type}]<!-- {/if} --></h3>
+  <div class="colboxcontent">
+    <form method="post">
+      <table>
+        <tr>
+          <th>{$lang.groupbuy_price}</th><td>{$info.price|price}</td>
+        </tr>
+        <!-- {foreach from=$goods.spec item=spec name=spec_name} -->
+        <tr>
+          <th>&nbsp;</th>
+          <td><input type="radio" name="spec_id" value="{$spec.spec_id}" {if $smarty.foreach.spec_name.first}checked="checked"{/if} /><!-- {if $spec.color_name} -->{$spec.color_name|escape}<!-- {/if} --><!-- {if $spec.spec_name} --> {$spec.spec_name|escape}<!-- {/if} --></td>
+        </tr>
+        <!-- {/foreach} -->
+        <tr>
+          <th>{$lang.linkman}</th><td><input type="text" name="user_name" value="{$act_user.user_name}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.order_number}</th><td><input type="text" name="number" value="1" class="sinput" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.email}</th><td><input type="text" name="email" value="{$act_user.email}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.telephone}</th><td><input type="text" name="telephone" value="{$act_user.telephone}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.mobile}</th><td><input type="text" name="mobile" value="{$act_user.mobile_phone}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <th>{$lang.remark}</th><td><textarea rows="3" cols="26" name="remarks"></textarea></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="{$lang.submit}" class="sbtn" /> <input type="reset" value="{$lang.reset}" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="colbtm"></div>
+</div>

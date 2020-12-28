@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>abc</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src="ecmall"}
+<script type="text/javascript">
+
+</script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.sitemap}</h1>
+    <div class="link"></div>
+    <div id="desc"> <span></span> </div>
+  </li>
+  <li id="tips">
+    <ul><li>{$lang.sitemaps_note}</li></ul>
+  </li>
+  <li>
+    <form method="post" enctype="multipart/form-data" name="theForm">
+      <div id="tab-form" class="tab-form" style="display:block">
+        <ul class="tab-bar">
+          <li class="actived">{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.homepage_changefreq}:</td>
+              <td><select name="homepage_changefreq">
+
+
+  {html_options options=$lang.priority selected=$config.homepage_changefreq}
+
+
+                </select></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.category_changefreq}:</td>
+              <td><select name="category_changefreq">
+
+
+  {html_options options=$lang.priority selected=$config.category_changefreq}
+
+
+                </select></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.content_changefreq}</td>
+              <td><select name="content_changefreq">
+
+
+  {html_options options=$lang.priority selected=$config.content_changefreq}
+
+
+                </select></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="submit" value="{$lang.generate_sitemap}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>{$lang.title}</title>
+  <link rel="stylesheet" href="templates/style/base.css" type="text/css" media="all" />
+</head>
+
+<body>
+  <div id="wrapper">
+    <div class="inside">
+      <div id="header" class="spacing">
+        <h1>ECMall - 安装向导</h1>
+      </div><!-- /header -->
+      <div id="title" class="spacing">
+        <div id="step" class="step2">
+          <h2>{$lang.step_env}</h2>
+          <p>{$lang.step_env_notice}</p>
+        </div>
+      </div><!-- /title -->
+      <div id="status" class="spacing step2"></div>
+      <div id="content">
+      <form action="index.php" method="post">
+        <table class="showtable">
+            <tbody id="installtips">
+            <tr>
+                <td><strong>
+                {if $passed}
+                    {$lang.uc_setting}
+                {elseif $error and $passed eq '0'}
+                    {$lang.env_error}
+                {elseif $error}
+                    {$lang.uc_setting_error}
+                {/if}
+                </strong></td>
+            </tr>
+            <tr>
+                <td id="msg2">
+                {if $error}
+                     <ul>
+                        {foreach from=$error item=info}
+                            <li style="color:red;">{$info}</li>
+                        {/foreach}
+                    </ul>
+                {else}
+                {if $passed}
+                    {$lang.uc_intro}
+                {/if}
+                {/if}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        {if $passed}
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr>
+                    <td width="20%">{$lang.uc_connect}</td>
+                    <td>
+                        <label>
+                        <input type="radio" value="mysql" name="uc_connect" {if $uc_info.uc_connect neq '' or $uc_info.uc_connect eq 'mysql'}checked{/if}/>&nbsp;{$lang.uc_connect_mysql}
+                        </label>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label><input type="radio" value="" name="uc_connect" {if $uc_info.uc_connect eq ''}checked{/if}/>&nbsp;{$lang.uc_connect_http}</label>
+                    </td>
+                    <td width="40%"></td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.uc_url}</td>
+                    <td><input type="text" size="35" value="{if $uc_info.uc_api eq ''}http://{else}{$uc_info.uc_api}{/if}" name="uc_api"/></td>
+                    <td width="40%"></td>
+                </tr>
+                {if $dns_error or $uc_info.uc_ip neq ''}
+                <tr>
+                    <td width="20%">{$lang.uc_ip}</td>
+                    <td><input type="text" size="35" value="{$uc_info.uc_ip}" name="uc_ip"/></td>
+                    <td width="40%"></td>
+                </tr>
+                {/if}
+                <tr>
+                    <td width="20%">{$lang.uc_pwd}</td>
+                    <td><input type="password" size="35" value="{$uc_info.pwd}" name="uc_password"/></td>
+                    <td width="40%"></td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.shop_name}</td>
+                    <td><input type="text" size="35" value="{if $uc_info.app_name}{$uc_info.app_name}{else}ECMall{/if}" name="app_name"/></td>
+                    <td width="40%"></td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.site_url}</td>
+                    <td><input type="text" size="35" value="{if $uc_info.app_url}{$uc_info.app_url}{else}{$site_url}{/if}" name="app_url"/></td>
+                    <td width="40%"></td>
+                </tr>
+            </tbody>
+        </table>
+        {/if}
+        <div id="btnlist">
+            {if $passed}
+            <input type="submit" name="save_env_setting" value="{$lang.next}{$lang.system_setting}">
+            {else}
+            <input type="submit" name="" value="{$lang.check}">
+            {/if}
+        </div>
+        <input type="hidden" name="language_type" value="{$cur_lang}" />
+        <input type="hidden" name="step" value="env_setting" />
+        </from>
+      </div><!-- /content -->
+      <div id="footer">
+        <p id="copyright">&copy; 2005-2008 <a href="http://www.shopex.cn">ShopEx Inc.</a></p>
+      </div><!-- /footer -->
+    </div>
+    <div class="bottom"></div>
+  </div>
+</body>
+</html>

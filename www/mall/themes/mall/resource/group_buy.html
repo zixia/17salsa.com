@@ -1,0 +1,19 @@
+<!-- 首页及商品列表页面团购部分模板 -->
+<!-- {if $group_buy_goods.data or $editing} -->
+<div id="group_buy" class="colbox">
+  <h3><em class="more"><a href="{url src=index.php?app=groupbuy}">{$lang.more}</a></em>{$lang.group_buy}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!-- {foreach name=group_buy from=$group_buy_goods.data item=gbgoods} 团购商品 -->
+      <!-- {if $smarty.foreach.group_buy.iteration lte 6} -->
+      <li>
+        <a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$gbgoods.act_id}"><img src="{image file=$gbgoods.default_image width=100 height=100}" alt="{$gbgoods.orig_name}" /></a>
+        <p class="infolist"><span class="name"><a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$gbgoods.act_id}">{$gbgoods.act_name|escape}</a></span><span class="price">{$gbgoods.ext.price|price}</span></p>
+      </li>
+      <!-- {/if} -->
+      <!-- {/foreach} 团购商品 -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

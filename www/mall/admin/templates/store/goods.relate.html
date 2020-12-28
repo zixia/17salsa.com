@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,ui.doublelist,ui.autocomplete"}
+  <script type="text/JavaScript">
+<!--
+  var dl = null;
+  var goodsId = {$goods.goods_id};
+  var type = '{$type}';
+
+  Event.observe(window, "load", function() {
+    dl = new ui.doublelist($('selAll'), $('selChecked'), add, drop);
+  new ui.autoComplete('brand_name', 'admin.php?app=goods&act=get_brand_list');
+  });
+
+  function search()
+  {
+    Ajax.addVal('app', 'goods');
+    Ajax.addVal('act', 'search');
+    Ajax.addVal('cate_id', $('cate_id').value);
+    Ajax.addVal('brand_name', $('brand_name').value);
+    Ajax.addVal('keywords', $('keywords').value);
+    Ajax.addVal('goods_id', goodsId);
+    Ajax.call('admin.php', searchResponse, 'get');
+  }
+
+  function searchResponse(result)
+  {
+    dl.createOptions(dl.selAll, result);
+  }
+
+  function add(arr)
+  {
+    Ajax.addVal('app', 'goods');
+    Ajax.addVal('act', 'set_related');
+    Ajax.addVal('goods_id', goodsId);
+    Ajax.addVal('type', type);
+    Ajax.addVal('id_list', arr);
+    Ajax.call('admin.php', addDropResponse, 'get');
+  }
+
+  function addDropResponse(result)
+  {
+    dl.createOptions(dl.selChecked, result);
+  }
+
+  function drop(arr)
+  {
+    Ajax.addVal('app', 'goods');
+    Ajax.addVal('act', 'unset_related');
+    Ajax.addVal('goods_id', goodsId);
+    Ajax.addVal('type', type);
+    Ajax.addVal('id_list', arr);
+    Ajax.call('admin.php', addDropResponse, 'get');
+  }
+
+
+//-->
+  </script>
+ </head>
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$title|escape}</h1>
+      <div class="link">[<a href="admin.php?app=goods">{$lang.list_goods}</a>]</div>
+      <div id="desc">
+        <span></span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      {$lang.cate_name}:
+      <select name="cate_id" id="cate_id">
+        <option value="0">{$lang.all_category}</option>
+        {html_options options=$cate_options}
+      </select>
+      {$lang.brand}:
+      <input type="text" name="brand_name" id="brand_name" value="" />
+      {$lang.keywords}:
+      <input type="text" name="keywords" id="keywords" />
+      <input type="button" value="{$lang.button_search}" onclick="search()" />
+    </li>
+    <li id="wrapper">
+      <table cellspacing="0" width="100%">
+        <tr>
+          <th class="first-cell" width="30%">{$lang.available_goods}</th>
+          <th width="10%">{$lang.handler}</th>
+          <th width="30%">{$lang.related_goods}</th>
+          <th></th>
+        </tr>
+        <tr>
+          <td class="first-cell">
+            <select name="selAll" id="selAll" size="20" multiple style="width:100%" ondblclick="dl.addItem(false)"></select>
+          </td>
+          <td align="center">
+            <p><input type="button" value=">>" onclick="dl.addItem(true)" class="button" /></p>
+            <p><input type="button" value=">" onclick="dl.addItem(false)" class="button" /></p>
+            <p><input type="button" value="<" onclick="dl.dropItem(false)" class="button" /></p>
+            <p><input type="button" value="<<" onclick="dl.dropItem(true)" class="button" /></p>
+          </td>
+          <td><select name="selChecked" id="selChecked" size="20" multiple style="width:100%" ondblclick="dl.dropItem(false)">
+            {foreach from=$related_goods item=rgoods}<option value="{$rgoods.id}">{$rgoods.name}</option>{/foreach}
+          </select></td>
+          <td></td>
+        </tr>
+      </table>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

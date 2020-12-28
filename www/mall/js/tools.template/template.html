@@ -1,0 +1,45 @@
+<div id="ECM_controlpanel">
+<div class="panel">
+<p class="loading" >
+  <img src="js/tools.template/images/loaderbar.gif" alt="loading..." />
+</p>
+<div class="panel_gb" style="display:none;">
+  <div class="col_left">
+    <div class="list_pager" style="display:none">
+        <h3 class="icon_style"></h3>
+        <p class="quickchange">
+          <span class="prev" title="{$lang.perv_page}">{$lang.perv_page}</span>
+          <span class="next" title="{$lang.next_page}">{$lang.next_page}</span>
+        </p>
+        <a href="javascript:ecmtcp.back();" class="btn_back">{$lang.back_parent}</a>
+    </div>
+    
+    <ul class="pane_tab">
+      <li class="pane_content selected" onclick="ecmtcp.showContentMenu()">{$lang.content}</li>
+      <li class="pane_style" onclick="ecmtcp.showStyleMenu();">{$lang.style}</li>
+    </ul>
+  </div>
+  <div class="col_right">
+    <ul class="text_list content_menu data_list">
+      <li onmousemove="this.className='heightlight';" onmouseout="this.className='';"><a href="#moduleList" onclick="ecmtcp.moduleList();">{$lang.add_module}</a></li>
+      <!-- {if $store_id eq ''} -->
+      <li onmousemove="this.className='heightlight';" onmouseout="this.className='';"><a href="#adList" onclick="ecmtcp.adList();">{$lang.add_ad}</a></li>
+      <!-- {/if} -->
+      <!-- {if $pagename eq 'homepage'} -->
+      <li onmousemove="this.className='heightlight';" onmouseout="this.className='';"><a href="#customModuleList" onclick="ecmtcp.customModuleList()">{$lang.add_goods_content}</a></li>
+      <!-- {/if} -->
+    </ul>
+    
+    <ul class="text_list style_menu data_list" style="display:none;">
+      <li onmousemove="this.className='heightlight';" onmouseout="this.className='';"><a href="#layoutList" onclick="ecmtcp.layoutList();">{$lang.change_layout}</a></li>
+      <li onmousemove="this.className='heightlight';" onmouseout="this.className='';"><a href="#skinList" onclick="ecmtcp.skinList();">{$lang.change_skin}</a></li>
+    </ul>
+    <p class="modulehandle"><span style="float:right"><img src="js/tools.template/images/btn_save{if $language_type_pre eq 'tc'}_tw{/if}.gif" alt="" class="btn_save" /> <img src="js/tools.template/images/btn_revert{if $language_type_pre eq 'tc'}_tw{/if}.gif" onclick="ecmtcp.restore();" alt="" /> <img src="js/tools.template/images/btn_quit{if $language_type_pre eq 'tc'}_tw{/if}.gif" alt="{$lang.exit_edit}" title="{$lang.exit_edit}" onclick="ecmtcp.exit();" /></span><img src="js/tools.template/images/btn_addmod{if $language_type_pre eq 'tc'}_tw{/if}.gif" class="bulid_module_btn" title="{$lang.js.create_module}" alt="{$lang.js.create_module}" style="display:none;" /></p>
+  </div>
+</div>
+</div>
+<div class="toolbar">
+<span class="switch_on"></span>
+<h1>{$lang.controlpanel_title}</h1>
+</div>
+</div>

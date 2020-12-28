@@ -1,0 +1,64 @@
+<div id="groupbuy_info">
+  <!-- {if $gallery[0]} -->
+  {script src="tools.magnifier"}
+  <script type="text/javascript">
+  var _magnifier = null;
+  Event.observe(window, "load", function(){ _magnifier = new magnifier($("goods_pic"), 400, 310); });
+  </script>
+  <!-- {/if} -->
+  <div class="pic">
+    <span class="bigpic"><img src="{image file=$gallery[0].file_id width=280 height=280}" alt="{$goods.goods_name|escape}" id="goods_pic" org="{$gallery[0].file_name}" /></span>
+    <!--{if $gallery_count gt 1}-->
+    <ul id="gallerylist" onclick="return changeGallery(event)">
+      {foreach from=$gallery item=pic name=gallery}
+        {if $smarty.foreach.gallery.first}
+        <li class="selected"><a href="{image file=$pic.file_id width=280 height=280}"><img src="{image file=$pic.file_id width=32 height=32}" org="{$pic.file_name}" /></a></li>
+        {else}
+        <li><a href="{image file=$pic.file_id width=280 height=280}"><img org="{$pic.file_name}" src="{image file=$pic.file_id width=32 height=32}"/></a></li>
+        {/if}
+      {/foreach}
+    </ul>
+    <!--{/if}-->
+
+  </div>
+  <div class="globalinfo">
+    <h1 class="name">
+      {$info.act_name|escape} [{$act_type}]
+      <!-- {if $limit_intro} -->
+      <br /><span>{$limit_intro}</span>
+      <!-- {/if} -->
+    </h1>
+
+    <table border="0" class="infolist">
+      <tr>
+        <th>{$lang.goods_name}:</th>
+        <td>{$info.goods_name|escape}</td>
+      </tr>
+      <tr>
+        <th>{$lang.groupbuy_price}:</th>
+        <td><span class="goodsprice">{$info.price|price}</span></td>
+      </tr>
+      <tr>
+        <th>{$lang.org_price}:</th>
+        <td><span class="marketprice">{$goods.store_price|price}</span> <a href="{url src=index.php?app=goods&amp;id=$goods.goods_id}" class="by_org_price">[{$lang.buy_it_by_org_price}]</a></td>
+      </tr>
+      <!-- {if $goods.spec} -->
+      <tr>
+        <th>{$lang.groupbuy_spec}:</th>
+        <td>
+          <!-- {foreach from=$goods.spec item=spec} --><!-- {if $spec.color_name} -->{$spec.color_name|escape}<!-- {/if} -->
+          <!-- {if $spec.spec_name} --> {$spec.spec_name|escape}<!-- {/if} -->&nbsp;&nbsp;<!-- {/foreach} -->
+        </td>
+      </tr>
+      <!-- {/if} -->
+      <tr><th>{$lang.start_time}:</th><td>{$info.start_time}</td></tr>
+      <tr><th>{$lang.end_time}:</th><td>{$info.end_time}</td></tr>
+      <tr><th>{$lang.act_limit}:</th><td>{$info.limit}</td></tr>
+      <tr><th>{$lang.act_num}:</th><td>{$info.goods_num}</td></tr>
+      <tr><th>{$lang.act_status}:</th><td>{$info.lang_status}</td></tr>
+    </table>
+    <!-- {if $info.status eq "active"} -->
+    <p class="btn"><a href="{$info.add_url}"><img src="images/btn_group_buy.gif" alt="{$lang.join_in_it}" /></a> <a href="javascript:;" onclick="addToFavorite({$goods.goods_id});" ><img src="images/btn_addfav.gif" alt="keep it" /></a></p>
+    <!-- {/if} -->
+  </div>
+</div>

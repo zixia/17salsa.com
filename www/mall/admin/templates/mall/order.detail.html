@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>ECMall</title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,ui.utils"}
+  <script type="text/javascript" src="admin.php?act=jslang"></script>
+  <script type="text/javascript">
+  function visibilitySwitch(obj){
+    if (obj.style.display == 'none')
+    {
+      obj.style.display = '';
+    }
+    else
+    {
+      obj.style.display = 'none';
+    }
+  }
+  </script>
+  <style type="text/css">
+    .order-table-header { font-size:14px; color:#1a5499; background: #FBFDFF url(admin/images/tips_bg.jpg) repeat-x; border-top: 1px solid #dde4c3; border-bottom: 1px solid #c3de71; padding: 10px 30px; clear: both; font-weight:bold; }
+    .order-table-header.first { border-top:0; }
+    .order-table-header form { padding-left: 20px; background: url(admin/images/icon_search.gif) no-repeat left; }
+    .order-table-body { padding-bottom:30px; }
+    .anonymous { color:#ccc; }
+    .price-item { margin-right:10px; }
+    .price { font-weight:bold; }
+    .order-info .order-th { text-align:center; }
+    .order-info td { padding:5px 5px; font-weight:normal; }
+    .order-info .order-key { width:15%; font-weight:bold; padding-left:30px; }
+    .order-info .order-val { text-align:left; width:35%; font-weight:normal; }
+    .eval-invalid { font-style:italic; color:#696969; }
+  </style>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_order_detail}</h1>
+    <div class="link"> [<a href="admin.php?app=order&amp;act=view">{$lang.view_order}</a>] </div>
+    <div id="desc"> {$lang.view_order_desc} </div>
+  </li>
+  <li id="wrapper">
+  <li class="order-table-header first"> {$lang.order_base_info} </li>
+  <li class="order-table-body">
+    <table class="grid order-info" cellspacing="0">
+      <tr>
+        <td class="first-cell order-key">{$lang.order_sn}:</td>
+        <td class="order-val">{$order.order_sn}</td>
+        <td class="order-key">{$lang.order_status}:</td>
+        <td class="order-val">{$order.order_status}</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_user_name}:</td>
+        <td class="order-val">{if $order.user_id}<a href="#">{$order.user_name}</a>{else}<span class="anonymous">{$lang.anonymous}</span>{/if}</td>
+        <td class="order-key">{$lang.order_add_time}:</td>
+        <td class="order-val">{$order.add_time|date:Y-m-d H:i}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_payment}:</td>
+        <td class="order-val">{$order.pay_name|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_pay_time}:</td>
+        <td class="order-val">{$order.pay_time|date:Y-m-d H:i}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_shipping_method}:</td>
+        <td class="order-val">{$order.shipping_name|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_ship_time}:</td>
+        <td class="order-val">{$order.ship_time|date:Y-m-d H:i}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_invoice_no}:</td>
+        <td class="order-val">{$order.invoice_no|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_from}:</td>
+        <td class="order-val">{$order.referer|escape}&nbsp;</td>
+      </tr>
+    </table>
+  </li>
+  <li class="order-table-header"> {$lang.order_consignee_info} </li>
+  <li class="order-table-body">
+    <table class="grid order-info" cellspacing="0">
+      <tr>
+        <td class="first-cell order-key">{$lang.order_consignee}:</td>
+        <td class="order-val">{$order.consignee|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_email}:</td>
+        <td class="order-val">{$order.email}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_address}:</td>
+        <td class="order-val">[{$order.region|escape}]{$order.address|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_zipcode}:</td>
+        <td class="order-val">{$order.zipcode|escape}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_home_phone}:</td>
+        <td class="order-val">{$order.home_phone|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_mobile_phone}:</td>
+        <td class="order-val">{$order.mobile_phone|escape}&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="first-cell order-key">{$lang.order_office_phone}:</td>
+        <td class="order-val">{$order.office_phone|escape}&nbsp;</td>
+        <td class="order-key">{$lang.order_best_time}:</td>
+        <td class="order-val">{$order.best_time|escape}&nbsp;</td>
+      </tr>
+      <!--<tr>
+        <td class="first-cell order-key">{$lang.order_sign_building}:</td>
+        <td class="order-val" colspan="3">{$order.sign_building}&nbsp;</td>
+      </tr>-->
+    </table>
+  </li>
+  <li class="order-table-header"> {$lang.order_goods_info} </li>
+  <li class="order-table-body">
+    <table class="grid" cellspacing="0">
+      <tr>
+        <th class="first-cell">{$lang.goods_name}</th>
+        <th>{$lang.goods_sku}</th>
+        <th>{$lang.goods_price}</th>
+        <th>{$lang.goods_attr}&nbsp;</th>
+        <th>{$lang.goods_color}&nbsp;</th>
+        <th>{$lang.goods_number}</th>
+        <th>{$lang.order_subtotal}</th>
+      </tr>
+      {foreach from=$goods item=g}
+      <tr>
+        <td class="first-cell"><a href="index.php?app=goods&spec_id={$g.spec_id}" target="_blank">{$g.goods_name|escape}</a></td>
+        <td><a href="index.php?app=goods&spec_id={$g.spec_id}" target="_blank">{$g.sku|escape}</a></td>
+        <td>{$g.goods_price|price}</td>
+        <td>{$g.spec_name|escape}</td>
+        <td>{$g.color_name|escape}</td>
+        <td>{$g.goods_number}</td>
+        <td>{$g.subtotal|price}</td>
+      </tr>
+      {/foreach}
+    </table>
+  </li>
+  <li class="order-table-header"> {$lang.other_info} </li>
+  <li class="order-table-body">
+    <table class="grid order-info" cellspacing="0">
+      <tr>
+        <!--<td class="first-cell order-key">{$lang.order_inv_type}:</td>
+        <td class="order-val">{$order.inv_type}&nbsp;</td>-->
+        <td class="order-key">{$lang.order_inv_payee}:</td>
+        <td class="order-val">{$order.inv_payee|escape}&nbsp;</td>
+        <td class="first-cell order-key">{$lang.order_inv_content}:</td>
+        <td class="order-val" colspan="3">{$order.inv_content|escape}&nbsp;</td>
+      </tr>
+      <!--<tr>
+        <td class="first-cell order-key">{$lang.order_to_buyer}:</td>
+        <td class="order-val" colspan="3">{$order.to_buyer}&nbsp;</td>
+      </tr>-->
+      <tr>
+        <td class="first-cell order-key">{$lang.order_post_script}:</td>
+        <td class="order-val" colspan="3">{$order.post_script|escape}&nbsp;</td>
+      </tr>
+    </table>
+  </li>
+  <li class="order-table-header"> {$lang.order_charge_info} </li>
+  <li class="order-table-body">
+    <table class="grid order-info" cellspacing="0">
+      <tr>
+        <td style="text-align:right;" colspan="4"><span class="price-item">{$lang.goods_amount}:<span class="price">{$order.goods_amount|price}</span></span> + <span class="price-item">{$lang.order_inv_fee}:<span class="price">{$order.inv_fee|price}</span></span> + <span class="price-item">{$lang.order_shipping_fee}:<span class="price">{$order.shipping_fee|price}</span></span> + <span class="price-item">{$lang.order_pay_fee}:<span class="price">{$order.pay_fee|price}</span></span><br />
+          = <span class="price-item">{$lang.order_amount}:<span class="price">{$order.order_amount|price}</span></span> </td>
+      </tr>
+      <tr>
+        <td style="text-align:right;" colspan="4"> - <span class="price-item">{$lang.order_discount}:<span class="price">{$order.discount|price}</span></span> - <span class="price-item">{$lang.order_coupon_sn}:<span class="price">{$order.coupon_value|price}</span></span> - <span class="price-item">{$lang.order_money_paid}:<span class="price">{$order.money_paid|price}</span></span> <br />
+          = <span class="price-item">{$lang.order_payable}:<span class="price">{$order.payable|price}</span></span> </td>
+      </tr>
+    </table>
+  </li>
+  <!-- {if $order.buyer_evaluation neq 0 or $order.seller_evaluation neq 0} -->
+  <li class="order-table-header"> {$lang.order_evaluation_info} </li>
+  <li class="order-table-body">
+    <table class="grid order-info" cellspacing="0">
+      <tr>
+        <td class="order-key first-cell">{$lang.seller_evaluation}:</td>
+        <td class="order-val">{$display_seller_eval}&nbsp;{if $order.seller_evaluation_invalid}<span class="eval-invalid">{$lang.eval_invalid}</span>{/if}</td>
+        <td class="order-key">
+            {$lang.evaluation_comment}
+        </td>
+        <td class="order-val">
+        {$order.seller_comment|escape}
+        </td>
+      </tr>
+      <tr>
+        <td class="order-key first-cell">{$lang.buyer_evaluation}:</td>
+        <td class="order-val">{$display_buyer_eval}&nbsp;{if $order.buyer_evaluation_invalid}<span class="eval-invalid">{$lang.eval_invalid}</span>{/if}</td>
+        <td class="order-key">
+            {$lang.evaluation_comment}
+        </td>
+        <td class="order-val">
+        {$order.buyer_comment|escape}
+        </td>
+      </tr>
+      <!-- {if $order.seller_evaluation_invalid eq 0 or $order.buyer_evaluation_invalid eq 0} -->
+      <tr>
+        <td class="order-key first-cell">{$lang.action_reason}</td>
+        <td class="order-val" colspan="3"><textarea cols="60" rows="5" id="reason"></textarea></td>
+      </tr>
+      <tr>
+        <td class="order-key first-cell">{$lang.handler}</td>
+        <td class="order-val" colspan="3">
+            <!-- {if $order.seller_evaluation_invalid eq 0} -->
+            <input type="button" value="{$lang.seller_evaluation_invalid}" onclick="if(confirm('{$lang.eval_invalid_confirm}'))window.location='admin.php?app=order&act=evaluation_invalid&body=seller&id={$order.order_id}&reason=' + $('reason').value;" />
+            <!-- {/if} -->
+            <!-- {if $order.buyer_evaluation_invalid eq 0 and $order.buyer_evaluation neq 0} -->
+            <input type="button" value="{$lang.buyer_evaluation_invalid}" onclick="if(confirm('{$lang.eval_invalid_confirm}'))window.location='admin.php?app=order&act=evaluation_invalid&body=buyer&id={$order.order_id}&reason=' + $('reason').value;" />
+            <!-- {/if} --></td>
+      </tr>
+      <!-- {/if} -->
+    </table>
+  </li>
+  <!-- {/if} -->
+  <li class="order-table-header"> <a href="javascript:;" onclick="visibilitySwitch($('action_logs_table'));">{$lang.action_logs}</a> </li>
+  <li>
+    <table class="grid" cellspacing="0" id="action_logs_table" style="display:none;">
+      <tr>
+        <th class="first-cell">{$lang.action_user}</th>
+        <th>{$lang.action_time}</th>
+        <th>{$lang.order_status}</th>
+        <th width="50%">{$lang.action_note}</th>
+      </tr>
+      {foreach from=$action_logs.data item=log}
+      <tr>
+        <td class="first-cell">{if $log.action_user eq '0'}{$lang.system_user}{else}{$log.action_user}{/if}</td>
+        <td>{$log.action_time}</td>
+        <td>{$lang.$log.order_status}</td>
+        <td>{$log.action_note|escape}</td>
+      </tr>
+      {foreachelse}
+      <tr>
+        <td colspan="4" class="no-records">{$lang.no_records}</td>
+      </tr>
+      {/foreach}
+    </table>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

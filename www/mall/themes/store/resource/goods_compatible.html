@@ -1,0 +1,17 @@
+<!-- {if $compatible_goods or $editing}} -->
+<div id="goods_compatible" class="colbox other_goods">
+  <h3>{$lang.compatible_goods}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!--{foreach from=$compatible_goods item=cgoods}-->
+      <li>
+        <a href="{url src=index.php?app=goods&amp;id=$cgoods.goods_id}"><img src="{image file=$cgoods.default_image width=100 height=100}" alt="{$cgoods.orig_name}" class="thumb" /></a>
+        <p class="name"><a href="{url src=index.php?app=goods&amp;id=$cgoods.goods_id}">{$cgoods.goods_name|escape}</a></p>
+        <p class="price">{$cgoods.store_price|price}</p>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

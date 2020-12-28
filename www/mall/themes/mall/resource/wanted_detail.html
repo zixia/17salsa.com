@@ -1,0 +1,70 @@
+<div id="wanted_detail">
+  <div class="container">
+    <div id="wanted_detail_msg">
+        <h2><a href="index.php?app=wanted&amp;act=add" style="background:#fff; border:#dadada 1px solid; padding:3px;float:right;">{$lang.wanted_add}</a>{$info.subject|escape}
+        <!-- {if $smarty.session.user_id eq $info.user_id} -->[<a href="index.php?app=wanted&amp;act=edit&amp;id={$info.log_id}">{$lang.edit}</a>]<!-- {/if} --></h2>
+        <p>
+            <span>{$lang.wanted_expiry}:{if $is_expire}{$lang.wanted_expire}{else}{$info.expiry|date}{/if}</span>
+            <span>{$lang.wanted_location}:<a href="index.php?app=wanted&amp;region_id={$info.region_id}">{$info.region_name}</a></span>
+            {$lang.wanted_price}:<span class="price">
+            {if $info.price_start neq 0 or $info.price_end neq 0}
+                {$info.price_start|price}&nbsp;-&nbsp;{$info.price_end|price}
+            {else}
+                {$lang.wanted_price_undefined}
+            {/if}
+            </span>
+        </p>
+        <div class="detail">{$info.detail|escape|nl2br}</div>
+        <div class="arrow"></div>
+    </div>
+    <div id="wanted_user">
+        <img src="{$info.avatar}" alt="{$info.user_name|escape}" />
+        <span><a href="{url src=index.php?app=wanted&amp;user_id=$info.user_id}">{$info.user_name|escape}</a>&nbsp;&nbsp;&nbsp;&nbsp;<span>{$info.add_time|date}</span></span>
+    </div>
+    <div class="reply_block">
+    <h2>{$lang.wanted_reply_list}({$info.replies})</h2>
+        <ul>
+        <!-- {foreach from=$info.reply_list item=store} -->
+            <li class="item">
+            {include file="themes/mall/resource/avatar.html"}
+            <p><span>{$store.add_time|date}</span>{$lang.store}:<a href="index.php?{$store.user_id}">{$store.store_name|escape}</a></p>
+            <p>
+    <!-- {if $smarty.session.user_id and ($smarty.session.user_id eq $info.user_id or $smarty.session.admin_store eq 0 or $smarty.session.user_id eq $store.user_id)} //只有发求购人及回复者和商城管理员能看回复 -->
+            {$store.detail|escape}
+
+    <!-- {else} -->
+            {$lang.wanted_user_only}
+    <!-- {/if} -->
+            </p>
+            <!-- {if $store.goods_url} -->
+                <p>{$lang.wanted_reply_goods}:<a href="{$store.goods_url}" target="_blank">{$store.goods_url|escape}</a></p>
+            <!-- {/if} -->
+            <div style="clear:both"></div>
+            </li>
+        <!-- {/foreach} -->
+        </ul>
+    </div>
+    <!-- {if !$is_expire and $smarty.session.user_id} //登录后才能回复 -->
+        <!-- {if $smarty.session.admin_store neq -1 and $smarty.session.admin_store neq $info.user_id and $smarty.session.user_id neq $info.user_id} //只有店铺管理员能回复 -->
+    <div class="reply_block">
+        <h2>{$lang.wanted_reply_form}</h2>
+        <div id="reply_form">
+            <form action="index.php?app=wanted&amp;act=reply" method="post">
+            <p><label>{$lang.wanted_reply_goods}:</label><input class="sinput" type="text" size="30" name="goods_url" /></p>
+            <p><label>{$lang.wanted_reply_detail}:</label><textarea cols="50" rows="5" name="detail"></textarea></p>
+            <p class="button_bar">
+                <input type="hidden" name="id" value="{$info.log_id}" />
+                <input type="submit" value="{$lang.submit}" />
+            </p>
+            </form>
+        </div>
+    </div>
+        <!-- {/if} -->
+    <!-- {else} -->
+    <div class="reply_block"><h2>{$login_require}</h2></div>
+    <!-- {/if} -->
+  </div>
+  <div class="pagechanger"> </div>
+
+  <div class="colbtm"></div>
+</div>

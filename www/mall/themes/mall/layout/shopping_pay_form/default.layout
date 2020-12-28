@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<template>
+    <row id="pay_form_wrapper" edit="false">
+        <library>
+            <item id="shopping_pay_form" src="themes/mall/resource/shopping_pay_form.html" />
+        </library>
+    </row>
+</template>

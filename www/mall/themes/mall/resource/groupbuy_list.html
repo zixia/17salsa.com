@@ -1,0 +1,23 @@
+<div id="groupbuy_list" class="colbox sortlist">
+  <h3><span>{$lang.groupbuy_list}</span></h3>
+  <div id="displaymode">
+    <p class="quickchanger"><a href="{$url_extra}&amp;page={$groupbuy_list.info.prev_page}"><img src="images/btn_page_prev.gif" alt="prev" /></a> {$groupbuy_list.info.curr_page}/{$groupbuy_list.info.page_count} <a href="{$url_extra}&amp;page={$groupbuy_list.info.next_page}"><img src="images/btn_page_next_act.gif" alt="" /></a></p>
+  </div>
+  <div class="colboxcontent itemgrid">
+    {foreach from=$groupbuy_list.data item=groupbuy}
+    <dl class="item">
+      <dt class="pic"><a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$groupbuy.act_id}"><img src="{image file=$groupbuy.default_image width=120 height=120}" alt="{$groupbuy.goods_name|escape}" /></a></dt>
+      <dd class="name"><a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$groupbuy.act_id}" target="_blank">{$groupbuy.act_name|escape}</a></dd>
+        <dd class="price">{$groupbuy.ext.price|price}</dd>
+        <!-- {if $groupbuy.status neq 'end'} -->
+        <dd class="date">{$lang.end_time}: {$groupbuy.end_time|date}</dd>
+        <!-- {/if} -->
+        <dd class="status">{$lang.gb_status}: {if $groupbuy.status eq 'active'}{$lang.gb_active}{/if}{if $groupbuy.status eq 'end'}<span style="color:red">{$lang.gb_end}</span>{/if}</dd>
+    </dl>
+    {/foreach}
+  </div>
+  <div class="pagechanger">
+      {page_links from=$groupbuy_list.info url=$url_format}
+  </div>
+  <div class="colbtm"></div>
+</div><!-- /colbox -->

@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall"}
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.order_action_logs}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+          {page_selector from=$logs.info url=$url_format}
+        </div>
+        <span>{$logs_stat}</span>
+      </div>
+    </li>
+    <li id="tips">
+      <form method="post">
+        {$lang.order_sn}: <input type="text" name="order_sn" />&nbsp;&nbsp;{$lang.action_note}{$lang.keywords}:<input type="text" name="remark" /> <input type="submit" value="{$lang.button_search}">
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" cellpadding="4">
+        <tr>
+          <th class="first-cell" width="15%">{sort_link by=order_sn text=$lang.order_sn}</th>
+          <th>{sort_link by=action_user text=$lang.user_name}</th>
+          <th>{sort_link by=order_status text=$lang.order_status}</th>
+          <th>{sort_link by=action_time text=$lang.action_time}</th>
+          <th width="40%">{$lang.action_note}</th>
+        </tr>
+        {foreach from=$logs.data item=log}
+        <tr>
+          <td class="first-cell">{$log.order_sn}</td>
+          <td>{if $log.action_user eq '0'}{$lang.system_user}{else}{$log.action_user}{/if}</td>
+          <td>{$order_status.$log.order_status}</td>
+          <td>{$log.action_time}</td>
+          <td>{$log.action_note}</td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="5" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table>
+      <div id="page-list">{page_links from=$logs.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

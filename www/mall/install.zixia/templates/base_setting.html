@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>{$lang.title}</title>
+  <link rel="stylesheet" href="templates/style/base.css" type="text/css" media="all" />
+  <script type="text/javascript">
+  function changeUserBox(sender)
+  {
+    var frm = document.getElementById("theForm");
+    if (sender.id == "use_old_user")
+    {
+        document.getElementById("row_confirm_pwd").style.display = "none";
+        document.getElementById("row_email").style.display = "none";
+    }
+    else
+    {
+        document.getElementById("row_confirm_pwd").style.display = "";
+        document.getElementById("row_email").style.display = "";
+    }
+  }
+
+  function checkDbName()
+  {
+    var frm = document.getElementById("checkDbForm");
+    var frm2 = document.getElementById("theForm");
+    for (var i=0; i<frm.elements.length; i++) {
+      var name = frm.elements[i].name;
+      frm.elements[name].value = frm2.elements[name].value;
+    }
+    frm.submit();
+  }
+
+  window.onload = function()
+  {
+    {if $info.userradio eq '1'}
+    document.getElementById("use_old_user").onclick();
+    document.getElementById("use_old_user").checked = true;
+    {else}
+    document.getElementById("use_new_user").checked = true;
+    {/if}
+  }
+
+  </script>
+</head>
+
+<body>
+
+<form id="checkDbForm" target="checkDbFrame" action="index.php?step=check_db_name" method="post" style="display:none;">
+        <input type="hidden" name="db_host" />
+        <input type="hidden" name="db_name" />
+        <input type="hidden" name="db_port" />
+        <input type="hidden" name="db_user" />
+        <input type="hidden" name="db_pwd" />
+        <input type="hidden" name="db_tablepre" />
+
+    </form>
+    <iframe name="checkDbFrame" style="display:none;"></iframe>
+  <div id="wrapper">
+    <div class="inside">
+      <div id="header" class="spacing">
+        <h1>ECMall - 安装向导</h1>
+      </div><!-- /header -->
+      <div id="title" class="spacing">
+        <div id="step" class="step3">
+          <h2>{$lang.step_base_setting}</h2>
+          <p>{$lang.step_base_setting_notice}</p>
+        </div>
+      </div><!-- /title -->
+      <div id="status" class="spacing step3"></div>
+      <div id="content">
+      <form action="index.php" id="theForm" method="post">
+
+        <table class="showtable">
+            <tbody id="installtips">
+            <tr>
+                <td><strong>{if $db_error}{$lang.db_setting_error}{else}{$lang.database_setting}{/if}</strong></td>
+            </tr>
+            <tr>
+                <td id="msg2">
+                    {if $db_error}
+                        <ul>
+                        {foreach from=$db_error item=err}
+                            <li>{$err}</li>
+                        {/foreach}
+                        </ul>
+                    {/if}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr>
+                    <td width="20%">{$lang.db_host}</td>
+                    <td>
+                        <input type="text" size="35" value="{$info.db_host}"  name="db_host"/>
+                    </td>
+                    <td width="40%">{$lang.tip.db_host}</td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.db_port}</td>
+                    <td>
+                        <input type="text" size="35" value="{$info.db_port}" name="db_port"/>
+                    </td>
+                    <td width="40%">{$lang.tip.db_port}</td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.db_user}</td>
+                    <td><input type="text" size="35" value="{$info.db_user}" name="db_user"/></td>
+                    <td width="40%">{$lang.tip.db_user}</td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.db_pwd}</td>
+                    <td><input type="password" size="35" value="{$info.db_pass}" name="db_pwd"/></td>
+                    <td width="40%">{$lang.tip.db_pwd}</td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.db_name}</td>
+                    <td><input type="text" size="35" onblur="checkDbName(this)" value="{$info.db_name}" name="db_name"/></td>
+                    <td width="40%">{$lang.tip.db_name}</td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.db_tablepre}</td>
+                    <td><input type="text" size="35" value="{$info.db_tablepre}" name="db_tablepre"/></td>
+                    <td width="40%">{$lang.tip.db_tablepre}</td>
+                </tr>
+                {if $forceinstall or $info.forceinstall}
+                <tr>
+                    <td width="20%">{$lang.forceinstall}</td>
+                    <td><label><input type="checkbox" value="1" {if $info.forceinstall eq '1'}checked{/if} name="forceinstall" /> {$lang.confirm_forceinstall}</label></td>
+                    <td width="40%">{$lang.tip.forceinstall}</td>
+                </tr>
+                {/if}
+            </tbody>
+        </table>
+
+        <table class="showtable">
+            <tbody id="installtips">
+            <tr>
+                <td><strong>{$lang.admin_setting} </strong></td>
+            </tr>
+            <tr>
+                <td id="msg2">
+                    {if $admin_user_error}
+                    <ul>
+                    {foreach from=$admin_user_error item=err}
+                        <li>{$err}</li>
+                    {/foreach}
+                    </ul>
+                    {/if}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr>
+                    <td width="20%"></td>
+                    <td>
+                        <label>
+                            <input type="radio" size="35" value="0" id="use_new_user" name="userradio" onclick="changeUserBox(this)" {if $info.userradio neq '1'}checked{/if}/>{$lang.use_new_user}
+                        </label>
+                        &nbsp;&nbsp;
+                        <label>
+                            <input type="radio" size="35" value="1" id="use_old_user" name="userradio" onclick="changeUserBox(this)" {if $info.userradio eq '1'}checked{/if} />{$lang.use_old_user}
+                        </label>
+                    </td>
+                    <td width="40%"></td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.admin_username}</td>
+                    <td>
+                        <input type="text" size="35" value="{$info.username}" name="username"/>
+                    </td>
+                    <td width="40%"></td>
+                </tr>
+                <tr>
+                    <td width="20%">{$lang.admin_pwd}</td>
+                    <td><input type="password" size="35" value="{$info.password}" name="password"/></td>
+                    <td width="40%"></td>
+                </tr>
+                <tr id="row_confirm_pwd">
+                    <td width="20%">{$lang.admin_confirm_pwd}</td>
+                    <td><input type="password" size="35" value="{$info.confirm_password}" name="confirm_password"/></td>
+                    <td width="40%"></td>
+                </tr>
+                <tr id="row_email">
+                    <td width="20%">{$lang.admin_email}</td>
+                    <td><input type="text" size="35" value="{$info.email}" name="email"/></td>
+                    <td width="40%"></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 其他设置 -->
+        <table class="showtable">
+            <tbody id="installtips">
+            <tr>
+                <td><strong>{$lang.other_setting} </strong></td>
+            </tr>
+            <tr>
+                <td id="msg2">
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" class="datatable">
+            <tbody>
+                <tr>
+                    <td width="20%">{$lang.install_demo}</td>
+                    <td>
+                        <label><input {if $info.install_demo eq '1'} checked="checked"{/if} type="checkbox" size="35" value="1" name="install_demo"/>
+                        {$lang.install_demo_label}</label>
+                    </td>
+                    <td width="40%">{$lang.tip.install_demo}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div id="btnlist">
+            <input type="submit" name="save_base_setting" id="nextBtn" value="{$lang.next}" />
+        </div>
+        <input type="hidden" name="language_type" value="{$cur_lang}" />
+        <input type="hidden" name="step" value="base_setting" />
+        </from>
+      </div><!-- /content -->
+      <div id="footer">
+        <p id="copyright">&copy; 2005-2008 <a href="http://www.shopex.cn">ShopEx Inc.</a></p>
+      </div><!-- /footer -->
+    </div>
+    <div class="bottom"></div>
+  </div>
+
+
+</body>
+</html>

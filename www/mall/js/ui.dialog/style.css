@@ -1,0 +1,35 @@
+.ECM_dialog_box { background:#fff; border:#999 1px solid; z-index:999; }
+.ECM_dialog_box .ECM_dialog_title { width:auto !important; width:100%; font-size:12px; line-height:22px; background:#eee url(images/ECM_dialog_title_bg.gif) repeat-x; height:22px; margin:0px; padding-left:10px; }
+.ECM_dialog_box .ECM_dialog_close_button { text-indent:-9999px; background:url(images/ECM_dialog_close.gif) no-repeat center center; width:22px; height:22px; float:right; cursor:pointer; }
+.ECM_dialog_box .ECM_dialog_title_span { float:left }
+.ECM_dialog_box .ECM_dialog_body { margin:15px; padding:3px; }
+.ECM_dialog_box .ECM_dialog_summary { font-size:12px; padding:1em; background:#eee; margin:3px; color:#555; }
+.ECM_dialog_box .ECM_dialog_message_body { line-height:1.3em; }
+.ECM_dialog_box .ECM_dialog_message_text {  }
+.ECM_dialog_box .ECM_dialog_icon_info { position:relative; background:url(images/ECM_dialog_icon.gif) no-repeat 0 5px; }
+.ECM_dialog_box .ECM_dialog_icon_warn { position:relative; background:url(images/ECM_dialog_icon_warn.gif) no-repeat 0 5px; }
+.ECM_dialog_box .ECM_dialog_no_icon { background:none;padding:0px;text-align:center; }
+.ECM_dialog_box .ECM_dialog_button_bar { text-align:center; margin-top:10px; }
+.ECM_dialog_box .ECM_dialog_button_bar input { font-size:12px; margin-right:10px; padding:2px 5px; padding-left:10px;padding-right:10px;letter-spacing:1px; }
+.ECM_dialog_box .ECM_dialog_ok_button { }
+.ECM_dialog_box .ECM_dialog_strike_button { }
+.ECM_dialog_box .ECM_dialog_progress_bar { background:#f8f8f8 url(images/ECM_dialog_loading.gif) no-repeat center top; height:19px; border:#eee 1px solid; }
+.ECM_dialog_box .ECM_dialog_progress_detail { border:#eee 1px solid; height:150px; background:#fafafa; margin-top:5px; text-align:left; padding:3px; overflow-y:scroll; }
+.ECM_dialog_box .ECM_dialog_progress_result_item { font-size:12px; color:#111; }
+.ECM_dialog_box .ECM_dialog_progress_result_item .result{ float:right; color:; }
+
+.ECM_dialog_tip { z-index:999; top:25px; }
+.ECM_dialog_tip .ECM_dialog_title { background: url(images/ECM_dialog_tip_bg.gif) no-repeat center bottom; height:10px; margin:0px; padding-left:10px; }
+.ECM_dialog_tip .ECM_dialog_title_bottom { background:url(images/ECM_dialog_tip_bg_bottom.gif) no-repeat center top; height:10px; margin:0px; padding-left:10px;}
+.ECM_dialog_tip .ECM_dialog_close_button { display:none; }
+.ECM_dialog_tip .ECM_dialog_title_span { float:left; display:none; }
+.ECM_dialog_tip .ECM_dialog_body { margin:0px; padding:5px; background:#fff; border:#f77516 2px solid; }
+.ECM_dialog_tip .ECM_dialog_message_body { vertical-align:top; line-height:40px; background:#E5E5E5 url(images/ECM_dialog_cart_icon.gif) no-repeat 5px center; padding:5px 5px 10px 40px; }
+.ECM_dialog_tip .ECM_dialog_button_bar { text-align:center; margin-top:8px;background:#fff; }
+.ECM_dialog_tip .ECM_dialog_button_bar input { font-size:12px; margin-right:10px; padding:2px 5px; border-width:1px;padding-left:10px;padding-right:10px;letter-spacing:1px; }
+.ECM_dialog_tip .ECM_dialog_ok_button { background:#AA1515;color:#ffffff; }
+.ECM_dialog_tip .ECM_dialog_strike_button { background:#AA1515;color:#ffffff; }
+.cart_price { color:#BF0028; font-weight:bold; }
+
+.dialog_form_line { padding:3px 8px; border-top:#eeeeee 1px dashed; margin:2px 0px; }
+.dialog_form_line label { margin:0px 5px; }

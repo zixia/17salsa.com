@@ -1,0 +1,15 @@
+# 
+# ECMall URL Rewrite Rule
+#
+RewriteEngine On
+
+#
+# 如果您在httpd.conf中已经设置了重写规则，请去掉下面的注释
+#
+#RewriteBase /
+
+#
+# Rewrite Rules
+#
+RewriteRule ^index.html$		index.php	[L]
+RewriteRule ^([a-zA-Z0-9]+)_(.*)\.html(.*)	index.php?app=$1&arg=$2&$3 [L]

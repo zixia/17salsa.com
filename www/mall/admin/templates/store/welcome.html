@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,uc,ui.utils"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <style type="text/css">
+  /*<![CDATA[*/
+    img { border:0px; }
+    .info-table { padding:5px 30px; }
+    .info-table th { text-align:left; width:120px; }
+    .info-table td { width:230px; }
+    .info-table .title { font-weight:bold; color:#333; }
+    .news-list { list-style:none; }
+    .news-list li { padding:5px; }
+    .new_pm a { color:red; background:url(admin/images/icon_newpm.gif) no-repeat 0 center; padding-left:13px; }
+    .pm a { background:url(admin/images/icon_pm.gif) no-repeat 0 center; padding-left:13px; }
+  /*]]>*/
+  </style>
+ </head>
+
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$welcome}</h1>
+      <div class="link">[<a href="javascript:pmwin('open','&local=backend');">{if $new_pm}<span class="new_pm">{$lang.new_pm}</span>{else}{$lang.pm}{/if}</a>]&nbsp;&nbsp;[<a href="admin.php?app=profile&act=logout" target="_parent">{$lang.exit}</a>]</div>
+      <div id="desc">{$lang.last_time}{$last_login}, {$lang.last_ip}{$last_ip}</div>
+    </li>
+    <li id="wrapper">
+      {if $store_info.closed_by_admin or $store_info.end_time > 0 or $store_info.goods_limit gt 0 or $store_info.file_limit gt 0}      <h2 class="first">{$lang.store_info}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          {if $store_info.closed_by_admin}
+          <tr>
+            <td>{$lang.store_closed}</td>
+          </tr>
+          {elseif $store_info.end_time > 0}
+          <tr>
+            <td>{if $store_info.expired}{$lang.store_past_due}{else}{$store_info.end_date_formated}{/if} {if $store_info.reletable}<a href="javascript:parent.openFrame('{$lang.tab_labels.storerelet}', 'storerelet', 'add');">{$lang.relet}</a>{/if}</td>
+          </tr>
+          {/if}
+          {if $store_info.goods_limit gt 0 or $store_info.file_limit gt 0}
+          <tr>
+            <td style="width:400px;">{if $store_info.goods_limit gt 0}{$lang.goods_capacity}: {$store_info.goods_count}/{$store_info.goods_limit}{/if}&nbsp;&nbsp;&nbsp;&nbsp;{if $store_info.file_limit gt 0}{$lang.file_capacity}: {$store_info.file_count}/{$store_info.file_limit}{/if}</td>
+          </tr>
+          {/if}
+        </table>
+      </div>
+      {/if}
+      <h2>{$lang.remind}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.oos_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.goods}', 'goods', 'view', '&amp;stock=0');">{$oos_count}</a></td>
+              <th class="title">{$lang.unevaluated_order_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;order_status=6&amp;unevaluated=1');">{$unevaluated_order_count}</a></td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.wait_for_ship_order_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'processing_order', '&amp;');">{$wait_for_ship_order_count}</a></td>
+              {if !$is_open}
+              <th class="title">{$lang.store_is_close}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.store}', 'conf', 'conf');">{$lang.open_it}</a></td>
+              {/if}
+          </tr>
+          <tr>
+              {if !$is_set_payment}
+              <th class="title">{$lang.payment_no_setup}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.store}', 'payment', 'view');">{$lang.install_it}</a></td>
+              {/if}
+              {if !$is_set_shipping}
+              <th class="title">{$lang.shipping_no_setup}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.store}', 'shipping', 'add');">{$lang.install_it}</a></td>
+              {/if}
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.dynamic_today}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.neworder_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;start_date={$order_query_start_date}&amp;end_date={$order_query_end_date}');">{$neworder_count}</a></td>
+              <th class="title">{$lang.dealt_order_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;order_status=6&amp;start_date={$order_query_start_date}&amp;end_date={$order_query_end_date}');">{$dealt_order_count}</a></td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.stat_info}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.finish_order_amount}:</th><td>{$finish_order_amount|price}</td>
+              <th class="title">{$lang.all_finish_order_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;order_status=6');">{$all_finish_order_count}</a></td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.goods_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.goods}', 'goods', 'view');">{$goods_count}</a></td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

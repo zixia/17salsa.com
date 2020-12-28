@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.datagrid,ajax,validator,ui.dropdownmenu"}
+  <script type="text/javascript">
+  //<![CDATA[
+    var grid = null;
+    Event.observe(window, 'load', function() {
+      grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  //]]>
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.view_goods}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stat_info}</span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      <form method="get" action="admin.php">
+        {$lang.keywords}:
+        <select name="mall_cate_id">
+        <option value="0">{$lang.all_category}</option>
+        {html_options options=$mall_cate_options selected=$condition.mall_cate_id}
+        </select>
+        <select name="store_id">
+        <option value="0">{$lang.all_store}</option>
+        {html_options options=$store_options selected=$condition.store_id}
+        </select>
+        <input type="text" name="keywords" value="{$condition.keywords}" />
+        <input type="submit" value="{$lang.button_search}" />
+        <input type="hidden" name="app" value="goods"/>
+        <input type="hidden" name="act" value="view"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th width="30" class="first-cell"><input type="checkbox" class="checkAll" /></th>
+          <th readOnly="false" columnName="goods_name" dataType="string" required="true">{sort_link by=goods_name text=$lang.goods_name}</th>
+          <th>{sort_link by=mall_cate_name text=$lang.cate_name}</th>
+          <th>{sort_link by=store_name text=$lang.store_name}</td>
+          <th>{sort_link by=brand_name text=$lang.brand}</th>
+          <th readOnly="false" columnName="sort_weighing" dataType="string" required="true" width="60">{sort_link by=sort_weighing text=$lang.sort_weighing}</th>
+          <th readOnly="false" dataType="bool" columnName="is_on_sale" width="40">{sort_link by=is_on_sale text=$lang.on_sale}</th>
+          <th readOnly="false" dataType="bool" columnName="is_mi_best" width="60">{sort_link by=is_mi_best text=$lang.is_mi_best}</th>
+          <th readOnly="false" dataType="bool" columnName="is_mw_best" width="60">{sort_link by=is_mw_best text=$lang.is_mw_best}</th>
+          <th readOnly="false" dataType="bool" columnName="is_m_hot" width="40">{sort_link by=is_m_hot text=$lang.is_m_hot}</th>
+          <th readOnly="false" dataType="bool" columnName="is_deny" width="40">{sort_link by=is_deny text=$lang.is_deny}</th>
+          <th width="100">{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=goods}
+        <tr id="{$goods.goods_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$goods.goods_id}" /></td>
+          <td><span>{$goods.goods_name|escape}</span></td>
+          <td>{if $goods.mall_cate_name}{$goods.mall_cate_name|escape}{else}N/A{/if}</td>
+          <td>{$goods.store_name|default:N/A}</td>
+          <td>{if $goods.brand_name}{$goods.brand_name|escape}{else}N/A{/if}</td>
+          <td><span>{$goods.sort_weighing|default:0}</span></td>
+          <td>{img_yesorno value=$goods.is_on_sale dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_mi_best dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_mw_best dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_m_hot dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_deny dir=admin/images}</td>
+          <td class="handlelist">
+            <a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_bank" >{$lang.view}</a> |
+            <a href="admin.php?app=goods&amp;act=edit&amp;id={$goods.goods_id}" >{$lang.edit}</a> |
+            <a href="admin.php?app=goods&amp;act=drop&amp;id={$goods.goods_id}" onclick="return confirm('{$lang.delete_confirm}')">{$lang.delete}</a>
+          </td>
+        </tr>
+        {foreachelse}
+          <tr><td colspan="12" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="12">
+            <ul id="batch-links">
+              <li class="batch-link last" action="batch" param="drop">{$lang.delete}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

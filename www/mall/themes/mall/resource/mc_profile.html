@@ -1,0 +1,155 @@
+{script src='validator,ui.dialog,ui.calendar,ui.utils,member'}
+<script type="text/javascript" src="?act=jslang"></script>
+<script type="text/javascript">
+Event.observe(window, "load", function() {
+    new ui.utils.tabForm("tab-form");
+    Validator.addForm('mc_base_form');
+    Validator.addForm('mc_pass_form');
+    Validator.addForm('mc_email_form');
+    Validator.addForm('mc_feed_form');
+    Validator.run();
+});
+</script>
+<div class="memberprofile">
+  <table>
+    <tr>
+      <td class="signinfo">
+        <h4>{$lang.hello} {$smarty.session.user_name}</h4>
+        <p class="desc">{$lang.reg_time}: {$user_info.reg_time|date:Y-m-d H:i:s}</p>
+        <p class="desc">{$lang.last_login}: {$smarty.session.last_login|date:Y-m-d H:i}</p>
+        <p class="desc">{$lang.last_ip}: {$smarty.session.last_ip}</p></td>
+      <td class="photo"><img src="{$uc_path}/avatar.php?uid={$smarty.session.user_id}&amp;size=middle" id="member_avatar" alt="" /><br />
+        <br />
+        <input type="button" value="{$lang.eidt_avatar}" class="sbtn" onclick="editAvatar();" />
+      </td>
+      <td class="photo">
+        <p id="avatar-edit" style="display:none">{$avatar_set_html}</p>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div id="profiletable" class="mc_box">
+  <div id="tab-form" class="tab-form">
+    <ul class="tab-bar">
+      <li>{$lang.update_base_info}</li>
+      <li>{$lang.update_password}</li>
+      <li>{$lang.update_email}</li>
+      <!-- {if $has_uchome} --><li>{$lang.feed_send_default}</li><!-- {/if} -->
+    </ul>
+    <div class="tab-page">
+      <form name="mc_base_form" method="post" action="index.php?app=member&act=profile" enctype="multipart/form-data">
+      <table class="mc_formtable">
+        <tr>
+          <td class="label">{$lang.user_name}:</td>
+          <td>{$user_info.user_name}</td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.email}:</td>
+          <td>{$user_info.email}</td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.gender}:</td>
+          <td>{html_radios options=$gender_options checked=$user_info.gender name=new_info[gender]}</td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.birthday}:</td>
+          <td><input type="text" name="new_info[birthday]" size="30" dataType="date" value="{$user_info.birthday}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.msn}:</td>
+          <td><input type="text" name="new_info[msn]" size="30" value="{$user_info.msn}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.qq}:</td>
+          <td><input type="text" name="new_info[qq]" size="30" value="{$user_info.qq}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.office_phone}:</td>
+          <td><input type="text" name="new_info[office_phone]" size="30" value="{$user_info.office_phone}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.home_phone}:</td>
+          <td><input type="text" name="new_info[home_phone]" size="30" value="{$user_info.home_phone}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.mobile_phone}:</td>
+          <td><input type="text" name="new_info[mobile_phone]" size="30" value="{$user_info.mobile_phone}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" name="base_info_submit" value="{$lang.submit}" class="sbtn" />
+            <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+      </form>
+      <form name="mc_pass_form" method="post" action="index.php?app=member&act=profile" enctype="multipart/form-data">
+      <table class="mc_formtable">
+        <tr>
+          <td class="label">{$lang.orig_pass}:</td>
+          <td><input type="password" name="new_info[orig_pass]" required="required" dataType="string" size="30" class="sinput" /><span class="note">{$lang.org_password_notice}</span></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.new_pass}:</td>
+          <td><input type="password" name="new_info[new_pass]" required="required" dataType="string" size="30" class="sinput" /><span class="note">{$lang.new_password_notice}</span></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.confirm_pass}:</td>
+          <td><input type="password" name="new_info[confirm_pass]" required="required" dataType="string" size="30" class="sinput" /><span class="note">{$lang.confirm_password_notice}</span></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" name="password_submit" value="{$lang.submit}" class="sbtn" />
+            <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+      </form>
+      <form name="mc_email_form" method="post" action="index.php?app=member&act=profile" enctype="multipart/form-data">
+      <table class="mc_formtable">
+        <tr>
+          <td class="label">{$lang.login_password}:</td>
+          <td><input type="password" name="new_info[login_pass]" required="required" dataType="string" size="30" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td class="label">{$lang.email}:</td>
+          <td><input type="text" name="new_info[email]" size="30" required="required" dataType="email" value="{$user_info.email}" class="sinput" /></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td class="desc">{$lang.update_email_note}</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td><input type="submit" name="email_submit" value="{$lang.submit}" class="sbtn" />
+            <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" /></td>
+        </tr>
+      </table>
+      </form>
+      <!-- {if $has_uchome} -->
+      <form name="mc_feed_form" method="post" action="index.php?app=member&act=profile" enctype="multipart/form-data">
+      <table class="mc_formtable">
+        <tr>
+          <td width="250">
+            <div class="feed_notice">{$lang.feed_default_desc}</div>
+          </td>
+          <td class="feed_list">
+            <p>{$lang.feed_send_default}</p>
+            <p><label><input type="checkbox" name="new_info[seed_feed][favorite]" value="1" {if $feed_status[0]}checked="checked" {/if}/> {$lang.feed_favorite}</label></p>
+            <p><label><input type="checkbox" name="new_info[seed_feed][message]" value="1" {if $feed_status[1]}checked="checked" {/if}/> {$lang.feed_message}</label></p>
+            <p><label><input type="checkbox" name="new_info[seed_feed][friend]" value="1" {if $feed_status[2]}checked="checked "{/if}/> {$lang.feed_friend}</label></p>
+            <p><label><input type="checkbox" name="new_info[seed_feed][shopping]" value="1" {if $feed_status[3]}checked="checked "{/if}/> {$lang.feed_shopping}</label></p>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <input type="submit" name="feed_submit" value="{$lang.submit}" class="sbtn" />
+            <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" />
+          </td>
+        </tr>
+      </table>
+      </form>
+      <!-- {/if} -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,285 @@
+<div id="shipping_payment_contents" class="colbox flow">
+<!--{script src="shopping,validator,ui.region"}-->
+<script type="text/javascript" src="index.php?app=regions&amp;act=get"></script>
+<script type="text/javascript">
+var use_new_address = document.getCookie('use_new_address');
+var guest_buy = '{$guest_buy}';
+var region          = null;
+Event.observe(window, "load", function() {
+    if ((use_new_address == 1 && guest_buy == '0') || guest_buy == 1)
+    {
+      useNewAddress($('switch_button'), true);
+      if (guest_buy == 1)
+      {
+        document.setCookie('use_new_address', 1);
+      }
+      Validator.run('theForm');
+    }
+});
+{$address_data}
+</script>
+<form method="post" name="theForm" onsubmit="return checkForm();" action="index.php?app={$application}&amp;act=update_shipping_and_payment&amp;guest_buy={$guest_buy}">
+  <!--{if !$is_activity}-->
+  <p id="flowview" class="two"> <span class="cart">{$lang.shopping_cart}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span>
+      <span class="submit">{$lang.submit_order}</span> </p>
+  <!--{else}-->
+  <p id="flowview" class="two"> <span class="cart">{$lang.activity_apply}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span>
+      <span class="submit">{$lang.submit_order}</span> </p>
+  <!--{/if}-->
+
+  <!--{if $guest_buy eq false}-->
+  <!-- Member Buy -->
+  <h3>
+    <span style="float:right"><!--{if !$is_activity}--><a href="index.php?app=shopping&amp;act=shopping_cart"><img src="images/btn_gotocart.gif" alt="{$lang.last_step}" /></a>
+    <!--{/if}--> <input type="image" src="images/btn_confirm_order.gif" alt="{$lang.order_review}" /></span>
+    {$lang.consignee_info} <a href="javascript:;" onclick="useNewAddress(this);" id="switch_button">[ {$lang.use_new_address} ]</a> <a href="index.php?app=member&amp;act=address" target="_blank">[ {$lang.manage_my_address} ]</a>
+  </h3>
+  <table border="0" cellspacing="0" class="datatable" id="address_list">
+    <tr class="title">
+      <td width="10">&nbsp;</th>
+      <td width="100">{$lang.consignee}</th>
+      <td width="150">{$lang.region}</th>
+      <td>{$lang.address}</th>
+      <td width="100">{$lang.zipcode}</th>
+      <td width="100">{$lang.phone}</th>
+    </tr>
+    <!--{foreach from=$user_address item=address name=address_list}-->
+    <tr>
+      <td> <!--{if $address_id}-->
+        <!--{if $address_id eq $address.address_id}-->
+        <input name="address_id" value="{$address.address_id}" onclick="autoFilled({$smarty.foreach.address_list.iteration});" type="radio" checked="true" />
+        <!--{else}-->
+        <input name="address_id" value="{$address.address_id}" onclick="autoFilled({$smarty.foreach.address_list.iteration});" type="radio" />
+        <!--{/if}-->
+        <!--{else}-->
+        <!--{if $smarty.foreach.address_list.iteration eq 1}-->
+        <input name="address_id" value="{$address.address_id}" onclick="autoFilled({$smarty.foreach.address_list.iteration});" type="radio" />
+        <!--{else}-->
+        <input name="address_id" value="{$address.address_id}" onclick="autoFilled({$smarty.foreach.address_list.iteration});" type="radio" />
+        <!--{/if}-->
+        <!--{/if}--> </td>
+      <td>{$address.consignee|escape}</td>
+      <td>{$address.region1_name}{$address.region2_name}</td>
+      <td>{$address.address|escape}</td>
+      <td>{$address.zipcode|escape}</td>
+      <td>{$address.mobile_phone}{if !$address.mobile_phone}{$address.home_phone|escape}{/if}</td>
+    </tr>
+    <!--{foreachelse}-->
+    <tr>
+      <td align="center" colspan="5">{$lang.no_consigneer}</td>
+    </tr>
+    <script type="text/javascript">
+        Event.observe(window, "load", function() {
+          if (!use_new_address)
+          {
+            useNewAddress($('switch_button'));
+          }
+        });
+    </script>
+    <!--{/foreach}-->
+  </table>
+  <!--{else}-->
+  <h3><span style="float:right"><!--{if !$is_activity}--><a href="index.php?app=shopping&amp;act=shopping_cart"><img src="images/btn_gotocart.gif" alt="{$lang.last_step}" /></a>
+  <!--{/if}--> <input type="image" src="images/btn_confirm_order.gif" alt="{$lang.order_review}" /></span>{$lang.consignee_info}</h3>
+  <!--{/if}-->
+
+  <!-- consigneer -->
+  <table border="0" cellspacing="0" class="datatable topline" id="add_address" style="display:none">
+    <tr class="title">
+      <td colspan="4"><span id="address_form_title">
+      {$lang.use_new_address}({$lang.phone_required})</span></th>
+    </tr>
+    <tr class="even">
+      <td width="10%">{$lang.consignee}:</th>
+      <td width="40%"><input type="text" name="consignee_info[consignee]" id="consignee" required="true" dataType="string" value="{$order.consignee}" class="sinput" /></td>
+      <td width="10%">{$lang.region}:</th>
+      <td width="40%">
+      <!--{if !$order.region_id}-->
+        <select onchange="region.changed(this, 2, setRegion);" name="consignee_info[region1]" id="region1">
+          <option value="0">{$lang.pls_select}</option>
+        </select>
+        <select id="region2" name="consignee_info[region2]" onchange="setRegion(this.value);">
+        <option value="0">{$lang.pls_select}</option></select>
+        <input type="hidden" name="region_id" id="region_id" required="required" dataType="int" />
+      <!--{else}-->
+        <div>
+          <div id="region_edit" style="display:;">
+            <script type="text/javascript">
+              Event.observe(window, 'load', function(){
+                region = new ui.region('region');
+                region.selected({$order.region_id});
+              });
+            </script>
+            <select onchange="region.changed(this, 2, setRegion);" name="consignee_info[region1]" id="region1">
+              <option value="0">{$lang.pls_select}</option>
+            </select>
+            <select id="region2" name="consignee_info[region2]" onchange="setRegion(this.value);">
+            <option value="0">{$lang.pls_select}</option></select><input type="hidden" name="region_id" id="region_id" value="{$order.region_id}" required="required" dataType="int" />
+          </div>
+        </div>
+      <!--{/if}-->
+      </td>
+    </tr>
+    <tr>
+      <td>{$lang.address}:</th>
+      <td><input type="text" size="40" name="consignee_info[address]" id="address" class="sinput" value="{$order.address}" required="true" dataType="string" /></td>
+      <td>{$lang.zipcode}:</th>
+      <td><input type="text" name="consignee_info[zipcode]" id="zipcode" class="sinput" value="{$order.zipcode}" required="true" dataType="post_code" /></td>
+    </tr>
+    <tr class="even">
+      <td>{$lang.email}:</th>
+      <td><input type="text" name="consignee_info[email]" id="email" value="{$order.email}" class="sinput" required="true" dataType="email" size="30" /></td>
+      <td>{$lang.mobile_phone}:</th>
+      <td><input type="text" name="consignee_info[mobile_phone]" id="mobile_phone"  dataType="mobile" value="{$order.mobile_phone}" class="sinput" /><span class="note">{$lang.mobile_phone_note}</span></td>
+    </tr>
+    <tr>
+      <td>{$lang.home_phone}:</th>
+      <td><input type="text" name="consignee_info[home_phone]" id="home_phone" dataType="tel_num" value="{$order.home_phone}" class="sinput" /> <span class="note">{$lang.home_phone_note}</span></td>
+      <td>{$lang.office_phone}:</th>
+      <td><input type="text" name="consignee_info[office_phone]" id="office_phone" dataType="tel_num" class="sinput" value="{$order.office_phone}" /><span class="note">{$lang.office_phone_note}</span></td>
+    </tr>
+    <tr class="even">
+      <td>{$lang.best_time}:</th>
+      <td>
+      <select name="consignee_info[best_time]" id="best_time">
+        {html_options options=$best_time_options selected=$order.best_time}
+      </select>
+      </td>
+      <td colspan="2">
+      <!--{if $smarty.session.user_id}-->
+      <label for="save_address"><input type="checkbox" id="save_address" name="save_address" value="1" /> <span style="font-weight:bold;">{$lang.save}</span></label>
+      <!--{/if}-->&nbsp;</td>
+    </tr>
+  </table>
+
+  <!-- shipping method -->
+  <h3>{$lang.shipping_method}</h3>
+  <table border="0" cellspacing="0" class="datatable">
+    <tr class="title">
+      <td width="10">&nbsp;</th>
+      <td width="150">{$lang.name}</th>
+      <td>{$lang.description}</th>
+      <td width="150px">{$lang.shipping_surcharge}</th>
+      <td width="80px">{$lang.shipping_fee}</th>
+    </tr>
+    <!--{foreach from=$shipping item=s}-->
+    <tr class="even">
+      <td>
+        <!--{if $order.shipping_id eq $s.shipping_id}-->
+        <script type="text/javascript">
+          Event.observe(window, "load", function() {
+          setShipping({$s.shipping_id}, '{$s.shipping_name}');
+          });
+        </script>
+        <input name="shipping" type="radio" value="{$s.shipping_id}" onclick="setShipping(this.value, '{$s.shipping_name}')" title="{$s.shipping_name|escape}" checked="true" />
+        <!--{else}-->
+        <input name="shipping" type="radio" value="{$s.shipping_id}" onclick="setShipping(this.value, '{$s.shipping_name}')" title="{$s.shipping_name|escape}" />
+        <!--{/if}-->
+       </td>
+      <td><b>{$s.shipping_name|escape}</b></td>
+      <td>{$s.shipping_desc|escape|nl2br}&nbsp;{if $s.cod_regions_name}(<font color="red">{foreach from=$s.cod_regions_name item=s_region}{$s_region.region_name}&nbsp;{/foreach} {$lang.support_cod}</font>){/if}</td>
+      <td>{$s.surcharge|price}</td>
+      <td class="order_fee">{$s.shipping_fee|price}</td>
+    </tr>
+    <!--{/foreach}-->
+  </table>
+
+  <!-- payment method -->
+  <h3>{$lang.payment}</h3>
+  <table border="0" cellspacing="0" class="datatable">
+    <tr class="title">
+      <td width="10">&nbsp;</th>
+      <td width="150">{$lang.name}</th>
+      <td>{$lang.description}</th>
+      <td width="80">{$lang.pay_fee}</th>
+    </tr>
+    <!--{foreach from=$online_payments item=onp}-->
+    <tr>
+      <td>
+        <!--{if $order.pay_id eq $onp.pay_id}-->
+        <script type="text/javascript">
+          Event.observe(window, "load", function() {
+          setPayment({$order.pay_id}, '{$onp.pay_name}');
+          });
+        </script>
+        <input name="payment" type="radio" value="{$onp.pay_id}" onclick="setPayment(this.value,'{$onp.pay_name}')" title="{$offp.pay_name}" checked="true" />
+        <!--{else}-->
+        <input name="payment" type="radio" value="{$onp.pay_id}" onclick="setPayment(this.value,'{$onp.pay_name}')" title="{$offp.pay_name}" />
+        <!--{/if}-->
+       </td>
+      <td>{if $order.pay_code eq 'tenpay'}<b style="color:red;">{$onp.pay_name|escape}</b>{else}<b>{$onp.pay_name|escape}</b>{/if}</td>
+      <td>{$onp.pay_desc|nl2br}&nbsp;</td>
+      <td class="order_fee">{$onp.pay_fee}</td>
+    </tr>
+    <!--{/foreach}-->
+    <!--{if $offline_payments}-->
+    <!--{foreach from=$offline_payments item=offp}-->
+    <tr>
+      <td>
+        <!--{if $offp.is_cod}-->
+        <!--{if $order.pay_id eq $offp.pay_id}-->
+        <script type="text/javascript">
+          Event.observe(window, "load", function() {
+          setPayment({$order.pay_id}, '{$offp.pay_name}');
+          });
+        </script>
+        <input name="payment" type="radio" value="{$offp.pay_id}" id="cod_payment" onclick="setPayment(this.value,'{$offp.pay_name}')" title="{$offp.pay_name}" checked="true" />
+        <!--{else}-->
+        <input name="payment" type="radio" value="{$offp.pay_id}" id="cod_payment" onclick="setPayment(this.value,'{$offp.pay_name}')" title="{$offp.pay_name}" />
+        <!--{/if}-->
+        <!--{else}-->
+        <!--{if $order.pay_id eq $offp.pay_id}-->
+        <script type="text/javascript">
+          Event.observe(window, "load", function() {
+          setPayment({$order.pay_id}, '{$offp.pay_name}');
+          });
+        </script>
+        <input name="payment" type="radio" value="{$offp.pay_id}" onclick="setPayment(this.value,'{$offp.pay_name}')" title="{$offp.pay_name}" checked="true" />
+        <!--{else}-->
+        <input name="payment" type="radio" value="{$offp.pay_id}" onclick="setPayment(this.value,'{$offp.pay_name}')" title="{$offp.pay_name}" />
+        <!--{/if}-->
+        <!--{/if}-->
+        </td>
+      <td>{$offp.pay_name}<span class="offline_pay">[{$lang.offline_pay}]</span></td>
+      <td>{$offp.pay_desc|nl2br}&nbsp;</td>
+      <td class="order_fee">{$offp.pay_fee}</td>
+    </tr>
+    <!--{/foreach}-->
+    <!--{/if}-->
+  </table>
+
+  <!-- other info -->
+  <h3>{$lang.other_info}</h3>
+  <table border="0" cellspacing="0" class="datatable">
+  <!--{if $inv_enable}-->
+    <tr id="inv_form">
+      <td>{$lang.inv_content}:
+      <script type="text/javascript">
+        Event.observe(window,'load', function(){invCheck($('inv_content'));});
+      </script>
+      <select name="inv_info[inv_content]" onchange="invCheck(this);" id="inv_content">
+        <option value="">{$lang.unneeded}</option>
+        {html_options options=$inv_content_options selected=$order.inv_content}
+      </select>
+      </td>
+      <td>{$lang.inv_payee}: <input disabled="true" type="text" name="inv_info[inv_payee]" id="inv_payee" value="{$order.inv_payee}" size="30" /></td>
+    </tr>
+  <!--{/if}-->
+    <tr class="title"><td colspan="2">{$lang.post_script}</th></tr>
+    <tr>
+      <td align="center" colspan="2"><textarea name="post_script" style="width:90%" rows="6">{$order.post_script}</textarea></td>
+    </tr>
+  </table>
+
+  <p align="right" class="btnlist">
+    <input type="hidden" name="shipping[shipping_id]" id="shipping_id" value="{$order.shipping_id}" />
+    <input type="hidden" name="shipping[shipping_name]" id="shipping_name" value="{$order.shipping_name}" />
+    <input type="hidden" name="payment[pay_id]" id="pay_id" value="{$order.pay_id}" />
+    <input type="hidden" name="payment[pay_name]" id="pay_name" value="{$order.pay_name}" />
+    <input type="hidden" id="selected_address_id" value="{$address_id}" />
+    <input type="hidden" name="store_id" value="{$store_id}" />
+    <!--{if !$is_activity}--><a href="index.php?app=shopping&amp;act=shopping_cart"><img src="images/btn_gotocart.gif" alt="{$lang.last_step}" /></a><!--{/if}-->
+    <input type="image" src="images/btn_confirm_order.gif" alt="{$lang.order_review}"/>
+  </p>
+</form>
+</div>

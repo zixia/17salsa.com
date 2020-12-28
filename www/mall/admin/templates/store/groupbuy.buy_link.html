@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ajax,ecmall,ui.utils,validator,ui.calendar"}
+  <script type="text/javascript" src="?app=groupbuy&act=jslang"></script>
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+  });
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.pm_buy_link}</h1>
+      <div class="link">[<a href="admin.php?app=groupbuy&amp;act=view_log&amp;act_id={$act_id}">{$lang.group_buy_viewlog}</a>]</div>
+      <div id="desc">{$pm_intro}</div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.pm_title}:</td>
+              <td><input type="text" name="pm_title" value="{$pm_title}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.pm_content}:</td>
+              <td><textarea rows="5" cols="60" name="pm_content">{$pm_content}</textarea></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+          <input type="hidden" name="act_id" value="{$act_id}" />
+          <input type="hidden" name="ids" value="{$ids}" />
+          <input type="hidden" name="act" value="pm_buy_link" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

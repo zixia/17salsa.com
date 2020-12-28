@@ -1,0 +1,11 @@
+<div id="latest_site_news" class="colbox">
+  <h3><!-- {if $site_news.info.page_count gt 1} --><em class="more"><a href="{url src=index.php?app=article&amp;act=site_news}">{$lang.more}</a></em><!-- {/if} -->{$lang.site_news}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!-- {foreach from=$site_news.data item=article} -->
+      <li><a href="{url src=index.php?app=article&amp;act=site_news&amp;id=$article.article_id}">{$article.title|escape}</a></li>
+      <!-- {/foreach} -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>

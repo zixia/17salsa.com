@@ -1,0 +1,127 @@
+<!--ÉÌÆ·ÆÀÂÛ-->
+<!-- {nocache} -->
+<div id="goods_comment" class="colbox"> <a name="goods_comment"></a>
+  <h3>{$lang.goods_comment}</h3>
+  <div class="colboxcontent">
+    <!-- {if $msg_list.data} -->
+    <table cellspacing="0">
+      <!-- {foreach from=$msg_list.data item=msg} -->
+      <tr>
+        <th rowspan="2" class="photo"> <div class="avatar">
+            <div class="avatar-link"> <img src="{$msg.user.avatar}" alt="{$msg.user.user_name|escape}" /> </div>
+            <div class="avatar-menu">
+              <ul>
+                <li><img src="images/avatar_ec.gif" />
+                  <!--{if $msg.user.has_store}-->
+                  <a href="./index.php?app=store&amp;store_id={$msg.user.user_id}" target="_blank">{$msg.user.user_name} {$lang.someone_store}</a>
+                  <!--{else}-->
+                  <span style="color: #666;">{$msg.user.user_name} {$lang.someone_store}</span>
+                  <!--{/if}-->
+                </li>
+                <li><img src="images/avatar_uchome.gif" /> {if $msg.user.uchome_url} <a href="{$msg.user.uchome_url}" target="_blank">{$msg.user.user_name} {$lang.someone_space}</a> {else} <span style="color: #666;">{$msg.user.user_name} {$lang.someone_space}</span> {/if} </li>
+              </ul>
+            </div>
+          </div></th>
+        <th class="name"><span class="buyother">
+          <!-- {if $msg.bought} -->
+          [ {$lang.he_bought_this} ]
+          <!-- {else} -->
+          [ {$lang.he_did_not_buy_this} ]
+          <!-- {/if} -->
+          </span>{$msg.buyer_name} <span class="time">{$msg.formated_add_time}</span></th>
+      </tr>
+      <tr>
+        <td class="content"><p>{$msg.message|escape|nl2br}</p>
+          <!-- {if $msg.reply} -->
+          <div class="recontent">
+            <h4 class="name">{$lang.seller_reply}:</h4>
+            {$msg.reply|escape|nl2br} </div>
+          <!-- {/if} -->
+        </td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+    <div class="pagechanger"> {page_links from=$msg_list.info url=$url_format} </div>
+    <!-- {else} -->
+    <p class="not_find">{$lang.no_comment}</p>
+    <!-- {/if} -->
+  </div>
+  <div class="colboxcontent">
+    <form action="index.php" method="post">
+      <table border="0">
+        <!-- {if $smarty.session.user_id eq 0} -->
+        <tr>
+          <td colspan="4"><textarea name="message" cols="110" rows="4" id="message"></textarea></td>
+        </tr>
+        <tr>
+          <td width="200">{$lang.user_name}: <input type="text" name="user_name" class="sinput" /></td>
+          <td width="200">{$lang.password}: <input type="password" name="password" class="sinput" /></td>
+          <!-- {if $need_captcha} -->
+          <td width="200">
+            <label id="captcha-input" style="display:none;">
+            {$lang.captcha}:
+            <input id="captcha" type="text" name="captcha" maxlength="4" size="6" class="sinput" />
+            <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" />
+            </label>
+          </td>
+          <!-- {/if} -->
+          <!-- {if $lang_send_comment_feed} -->
+          <td width="116">
+          <input type="checkbox" name="seed_feed" value="1" id="seed_feed" {if $feed_status[1]}checked="checked" {/if}/>
+          <label for="seed_feed">{$lang_send_comment_feed}</label>
+          </td>
+          <!--{/if}-->
+          <td>
+            <input type="submit" value="{$lang.submit_comment}" class="sbtn" />
+            <input type="hidden" name="app" value="message" />
+            <input type="hidden" name="act" value="add" />
+            <input type="hidden" name="goods_id" value="{$goods.goods_id}" />
+            <input type="hidden" name="seller_id" value="{$goods.store_id}" />
+          </td>
+        </tr>
+        <!-- {else} -->
+        <tr>
+          <td colspan="3"><textarea name="message" cols="110" rows="4" id="message"></textarea></td>
+        </tr>
+        <tr>
+          <!-- {if $lang_send_comment_feed} -->
+          <td>
+            <input type="checkbox" name="seed_feed" value="1" id="seed_feed" {if $feed_status[1]}checked="checked" {/if}/>
+            <label for="seed_feed">{$lang_send_comment_feed}</label>
+          </td>
+          <!--{/if}-->
+          <td>
+            <!-- {if $need_captcha} -->
+            <label id="captcha-input" style="display:none;">
+            {$lang.captcha}:<input id="captcha" type="text" name="captcha" maxlength="4" size="6" class="sinput" />
+            <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" />
+            </label>
+            <!-- {/if} -->
+            <input type="submit" value="{$lang.submit_comment}" class="sbtn" />
+            <input type="hidden" name="app" value="message" />
+            <input type="hidden" name="act" value="add" />
+            <input type="hidden" name="goods_id" value="{$goods.goods_id}" />
+            <input type="hidden" name="seller_id" value="{$goods.store_id}" />
+          </td>
+        </tr>
+        <!-- {/if} -->
+      </table>
+    </form>
+    <script type="text/javascript">
+    var showCaptcha = function(){
+      if ($('captcha-img'))
+      {
+        $('captcha-input').style.display = '';
+        changeCaptcha($('captcha-img'));
+      }
+    };
+    Event.observe($('message'), 'focus', showCaptcha);
+    function changeCaptcha (img) {
+      img.src = 'admin.php?app=profile&act=captcha&' + Math.random();
+      Event.stopObserving($('message'), 'focus', showCaptcha);
+    }
+    </script>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!--{/nocache}-->

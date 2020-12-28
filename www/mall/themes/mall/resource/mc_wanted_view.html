@@ -1,0 +1,34 @@
+<div id="addresslist" class="mc_box">
+  <h3>
+    <em class="more"><a href="index.php?app=wanted&amp;act=add">{$lang.wanted_add}</a></em>
+    <span>{$lang.wanted_list}</span>
+  </h3>
+  <div class="mc_boxcontent">
+  <table border="0" cellspacing="0" class="mc_table">
+    <tr>
+      <td>{$lang.wanted_subject}</td>
+      <td>{$lang.wanted_add_time}</td>
+      <td>{$lang.wanted_expiry}</td>
+      <td>{$lang.wanted_reply_count}</td>
+      <td>{$lang.handler}</td>
+    </tr>
+    <!-- {foreach from=$list.data item=wanted} -->
+    <tr>
+      <td>{$wanted.subject|escape}</td>
+      <td>{$wanted.add_time|date}</td>
+      <td>{$wanted.expiry|date}</td>
+      <td>{$wanted.replies}</td>
+      <td class="handle">
+          <a href="index.php?app=wanted&amp;act=edit&amp;id={$wanted.log_id}">{$lang.edit}</a> |
+          <a href="index.php?app=wanted&amp;act=show&amp;id={$wanted.log_id}">{$lang.view}</a>
+      </td>
+    </tr>
+    <!-- {foreachelse} -->
+    <tr>
+      <td colspan="6" class="no-records">{$lang.you_have_no_wanted}</td>
+    </tr>
+    <!-- {/foreach} -->
+  </table>
+  <div class="pagechanger">{page_links from=$list.info url=$url_format}</div>
+  </div>
+</div>

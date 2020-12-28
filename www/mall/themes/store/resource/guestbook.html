@@ -1,0 +1,107 @@
+<!-- {nocache} -->
+<div id="guestbook">
+  <div class="colboxcontent">
+    <!-- {if $msg_list.data} -->
+    <table cellspacing="0">
+      <!-- {foreach from=$msg_list.data item=msg} -->
+      <tr>
+        <td rowspan="2" class="photo"><div class="avatar">
+            <div class="avatar-link"> <img src="{$msg.user.avatar}" alt="{$msg.user.user_name|escape}" /> </div>
+            <div class="avatar-menu">
+              <ul>
+                <li><img src="images/avatar_ec.gif" />
+                  <!--{if $msg.user.has_store}-->
+                  <a href="./index.php?app=store&amp;store_id={$msg.user.user_id}" target="_blank">{$msg.user.user_name} {$lang.someone_store}</a>
+                  <!--{else}-->
+                  <span style="color: #666;">{$msg.user.user_name} {$lang.someone_store}</span>
+                  <!--{/if}-->
+                </li>
+                <li><img src="images/avatar_uchome.gif" /> {if $msg.user.uchome_url} <a href="{$store.uchome_url}" target="_blank">{$msg.user.user_name} {$lang.someone_space}</a> {else} <span style="color: #666;">{$msg.user.user_name} {$lang.someone_space}</span> {/if} </li>
+              </ul>
+            </div>
+          </div></td>
+        <td class="name"><a href="#">{$msg.buyer_name}</a> <span class="time">{$msg.formated_add_time}</span></td>
+      </tr>
+      <tr class="content">
+        <td><p>{$msg.message|escape|nl2br}</p>
+          <!-- {if $msg.reply} -->
+          <p class="recontent">{$lang.seller_reply}: {$msg.reply|escape|nl2br}</p>
+          <!-- {/if} -->
+        </td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+    <div class="pagechanger"> {page_links from=$msg_list.info url=$url_format} </div>
+    <!-- {else} -->
+    <p class="not_find">{$lang.no_store_message}</p>
+    <!-- {/if} -->
+  </div>
+</div>
+<div id="postgb" class="colbox">
+  <h3><span>{$lang.leave_my_word}</span></h3>
+  <div class="colboxcontent">
+    <form action="index.php" method="post">
+      <table border="0">
+        <!-- {if $smarty.session.user_id eq 0} -->
+        <tr>
+          <td colspan="4"><textarea name="message" cols="110" rows="4" id="message"></textarea></td>
+        </tr>
+        <tr>
+          <td width="200">{$lang.user_name}: <input type="text" name="user_name" class="sinput" /></td>
+          <td width="200">{$lang.password}: <input type="password" name="password" class="sinput" /></td>
+          <td width="316">
+            <!-- {if $need_captcha} -->
+            <label id="captcha-input" style="display:none;">
+            {$lang.captcha}:
+            <input id="captcha" type="text" name="captcha" maxlength="4" size="6" class="sinput" />
+            <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" />
+            </label>
+            <!-- {/if} -->
+            <input type="submit" value="{$lang.submit}" class="sbtn" />
+            <input type="hidden" name="app" value="message" />
+            <input type="hidden" name="act" value="add" />
+            <input type="hidden" name="seller_id" value="{$store_id}" />
+          <td>
+        </tr>
+        <!-- {else} -->
+        <tr>
+          <td><textarea name="message" cols="110" rows="4" id="message"></textarea></td>
+        </tr>
+        <tr>
+          <td>
+            <!-- {if $need_captcha} -->
+            <label id="captcha-input" style="display:none;">
+            {$lang.captcha}:
+            <input id="captcha" type="text" name="captcha" maxlength="4" size="6" class="sinput" />
+            <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" />
+            </label>
+            <!-- {/if} -->
+            <input type="submit" value="{$lang.submit}" class="sbtn" />
+            <input type="hidden" name="app" value="message" />
+            <input type="hidden" name="act" value="add" />
+            <input type="hidden" name="seller_id" value="{$store_id}" />
+          </td>
+        </tr>
+        <!-- {/if} -->
+      </table>
+    </form>
+  </div>
+  <div class="colbtm"></div>
+  <script type="text/javascript">
+  //<![CDATA[
+    var showCaptcha = function(){
+        if ($('captcha-img'))
+        {
+        $('captcha-input').style.display = '';
+        changeCaptcha($('captcha-img'));
+        }
+    };
+    Event.observe($('message'), 'focus', showCaptcha);
+    function changeCaptcha (img) {
+        img.src = 'admin.php?app=profile&act=captcha&' + Math.random();
+        Event.stopObserving($('message'), 'focus', showCaptcha);
+    }
+  //]]>
+  </script>
+</div>
+<!-- {/nocache} -->

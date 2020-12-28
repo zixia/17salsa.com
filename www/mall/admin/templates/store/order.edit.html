@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.utils"}
+  <script type="text/javascript" src="admin.php?app=order&act=jslang"></script>
+  <script type="text/javascript">
+  Event.observe(window, 'load', function(){
+   new ui.utils.tabForm("tab-form");
+    Validator.run('theForm');
+  });
+  function editable(o, b)
+  {
+    o.disabled = !b;
+    if (!b)
+    {
+        o.value = '{$lang.edit_pay_fee_note}';
+    }
+    else
+    {
+        o.value = {$order.pay_fee};
+    }
+    o.focus();
+    $('pay_fee_hidden').disabled = !b;
+  }
+  </script>
+  <style type="text/css">
+    .price-item { margin-right:10px;font-weight:normal;font-size:normal; }
+    .price { font-weight:bold; }
+  </style>
+ </head>
+ <body align="center">
+  <ul id="container">
+   <li id="header">
+      <h1>{$lang.edit_charge_info}</h1>
+      <div class="link">[<a href="admin.php?app=order&amp;act=view">{$lang.view_order}</a>]&nbsp;&nbsp;[<a href="admin.php?app=order&amp;act=change_status&amp;order_id={$order.order_id}">{$lang.change_status}</a>]</div>
+      <div id="desc">{$lang.edit_charge_info_desc}</div>
+    </li>
+    <li id="wrapper">
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.order_charge_info}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.order_discount}:</td>
+              <td><input type="text" name="discount" id="discount" dataType="float" value="{$order.discount}" /><span class="note">{$lang.number_only}</span></td>
+            </tr>
+            {if $inv_enable}
+            <tr>
+              <td class="label">{$lang.order_inv_fee}:</td>
+              <td><input type="text" name="inv_fee" id="inv_fee" dataType="float" value="{$order.inv_fee}" /><span class="note">{$lang.number_only}</span></td>
+            </tr>
+            {/if}
+            <tr>
+              <td class="label">{$lang.order_shipping_fee}:</td>
+              <td><input type="text" name="shipping_fee" id="shipping_fee" dataType="float" value="{$order.shipping_fee}" /><span class="note">{$lang.number_only}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.order_pay_fee}:</td>
+              <td>
+                <input type="text" disabled="true" id="pay_fee" dataType="float" value="{$lang.edit_pay_fee_note}" onchange="$('pay_fee_hidden').value = this.value" />
+                <label for="_c_p_f">
+                <input type="checkbox" id="_c_p_f" name="edit_pay_fee" value="1" onclick="editable($('pay_fee'), this.checked);" />
+                {$lang.edit}
+                </label><span class="note">{$lang.number_only}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.remark}:</td>
+              <td>
+                <textarea name="remark" cols="60" rows="5"></textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="pay_fee" value="{$order.pay_fee}" id="pay_fee_hidden" disabled="true" />
+          <input type="hidden" name="order_id" value="{$order.order_id}" />
+          <button type="submit">{$lang.submit_order}</button>
+          <button type="reset">{$lang.reset}</button>
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

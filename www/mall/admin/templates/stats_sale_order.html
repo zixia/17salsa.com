@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>ECMall</title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.utils,ui.calendar"}
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   $("start_date").onclick = function() {
+     if(!$("start_date").calendar) {
+       $("start_date").calendar = new ui.calendar(this, $('start_date'));
+     } else {
+       $("start_date").calendar.show();
+     }
+   }
+   $("end_date").onclick = function() {
+     if(!$("end_date").calendar) {
+       $("end_date").calendar = new ui.calendar(this, $('end_date'));
+     } else {
+       $("end_date").calendar.show();
+     }
+   }
+  });
+  </script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.sale_order}</h1>
+    <div class="link">[<a href="admin.php?app=statistics&act=sale_order&do=downxls&start_date={$condition.start_time|date:Y-m-d}&end_date={$condition.end_time|date:Y-m-d}&store_id={$condition.store_id}{if $smarty.get.sort}&sort={$smarty.get.sort}{/if}{if $smarty.get.order}&order={$smarty.get.order}{/if}">{$lang.downxls}</a>]</div>
+    <div id="desc">
+      <div id="page-selector"> {$lang.goto_page}{page_selector from=$list.info} </div>
+      <span>{$sale_order_stats}</span> </div>
+  </li>
+  <li id="tips">
+    <form method="get">
+      <input type="hidden" name="app" value="statistics" />
+      <input type="hidden" name="act" value="sale_order" />
+      {$lang.start_date}:<input name="start_date" value="{$condition.start_time|date:Y-m-d}" size="20" type="text" id="start_date" />
+      {$lang.end_date}:<input name="end_date" value="{$condition.end_time|date:Y-m-d}" size="20" type="text" id="end_date" />
+      {if $smarty.session.store_id eq 0}
+      <select name="store_id">
+        <option value="0">{$lang.all_store}</option>
+        {html_options options=$store_options selected=$condition.store_id}
+      </select>
+      {/if}
+      <input type="submit" value="{$lang.button_search}">
+    </form>
+  </li>
+  <li id="wrapper">
+   <table class="grid" cellspacing="0" cellpadding="4" id="DataGrid">
+      <tr>
+        <th class="first-cell">{$lang.order_num}</th>
+        <th>{$lang.goods_name}</th>
+        <th>{$lang.goods_sku}</th>
+        <th>{sort_link by=sales_volume text=$lang.sales_volume}</th>
+        <th>{sort_link by=sales_amount text=$lang.sales_amount}</th>
+       <th>{sort_link by=avg_price text=$lang.avg_price}</th>
+      </tr>
+      {foreach from=$list.data item=row}
+      <tr>
+        <td class="first-cell">{$row.order_num}</td>
+        <td><a href="index.php?app=goods&spec_id={$row.spec_id}" target="_blank">{$row.goods_name|escape}</a></td>
+        <td>{$row.sku|escape}</td>
+        <td>{$row.sales_volume}</td>
+        <td>{$row.sales_amount|price}</td>
+        <td>{$row.avg_price|price}</td>
+      </tr>
+      {foreachelse}
+      <tr><td colspan="5" class="no-records">{$lang.no_records}</td></tr>
+      {/foreach}
+    </table>
+    <div id="page-list" style="clear:both">{page_links from=$list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

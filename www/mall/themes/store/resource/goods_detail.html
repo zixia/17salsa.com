@@ -1,0 +1,21 @@
+  <div id="goods_detail" class="colbox">
+    <h3>{$lang.goods_desc}</h3>
+    <div class="colboxcontent">
+      <!-- if has attribute, show it -->
+      <!-- {if $goods.type_id gt 0} -->
+        <table border="0">
+          <!-- {foreach from=$goods.attr item=attr} -->
+          <!-- {if $attr.attr_value} -->
+          <tr>
+            <th>{$attr.attr_name}</th>
+            <th>:</th>
+            <td>{$attr.attr_value|escape|nl2br}</td>
+          </tr>
+          <!-- {/if} -->
+          <!-- {/foreach} -->
+        </table>
+      <!-- {/if} -->
+      <div class="colboxcontent format_article">{$goods.goods_desc}</div>
+    </div>
+    <div class="colbtm"></div>
+  </div>

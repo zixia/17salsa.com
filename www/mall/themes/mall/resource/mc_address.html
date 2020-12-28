@@ -1,0 +1,100 @@
+<div id="addresslist" class="mc_box">
+  {script src="member,ui.region,validator"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <h3>
+    <!--{if $address_total eq $mall_max_address_num or $address_total gt $mall_max_address_num}-->
+    <em class="more" id="add_address_button" style="color:red;font-weight:normal">{$lang.address_full}</em>
+    <!--{else}-->
+    <em class="more"><a href="javascript:addAddress();">{$lang.add_new_address}</a></em>
+    <!--{/if}-->
+    <span>{$lang.address_list}</span>
+  </h3>
+  <div class="mc_boxcontent">
+  <table border="0" cellspacing="0" class="mc_table">
+    <tr>
+      <td>{$lang.consignee}</td>
+      <td>{$lang.region}</td>
+      <td>{$lang.address}</td>
+      <td>{$lang.zipcode}</td>
+      <td>{$lang.phone}</td>
+      <td>{$lang.handler}</td>
+    </tr>
+    <!-- {foreach from=$address_list item=address name=address_list} -->
+    <tr id="address_{$address.address_id}">
+      <td>{$address.consignee|escape}</td>
+      <td>{$address.region1_name} {$address.region2_name}</td>
+      <td>{$address.address|escape}</td>
+      <td>{$address.zipcode|escape}</td>
+      <td>{if $address.mobile_phone}{$lang.mobile_phone}:{$address.mobile_phone|escape}{else}{$lang.home_phone}:{$address.home_phone|escape}{/if}</td>
+      <td class="handle"><a href="javascript:editAddress({$smarty.foreach.address_list.iteration});">{$lang.edit}</a> | <a href="javascript:confirm_drop_address({$address.address_id});" class="remove">{$lang.delete}</a></td>
+    </tr>
+    <!-- {foreachelse} -->
+    <tr>
+      <td colspan="6" class="no-records">{$lang.you_have_no_address}</td>
+    </tr>
+    <!-- {/foreach} -->
+  </table>
+  </div>
+  <script type="text/javascript" src="index.php?app=regions&amp;act=get"></script>
+  <script type="text/javascript">
+    {$address_data}
+    Event.observe(window, 'load', function(){
+      region = new ui.region('address_region');
+      Validator.run('theForm');
+    });
+  </script>
+  </div>
+  <div class="mc_box" id="address_display_box"  style="display:none" >
+  <h3 id="address_form_title"><span>{$lang.add_new_address}</span></h3>
+  <div class="mc_boxcontent">
+    <form id="address_form" method="post" name="theForm">
+      <table cellspacing="0" cellpadding="0" class="mc_formtable">
+        <tr class="even">
+          <td width="80">{$lang.consignee}:</td>
+          <td><input type="text" name="consignee" id="consignee" required="true" dataType="string" value="{$order.consignee}" class="sinput" /></td>
+          <td width="60">{$lang.region}:</td>
+          <td width="300">
+            <select onchange="region.changed(this, 2, setRegion);" name="region1" id="address_region1">
+              <option value="0">{$lang.pls_select}</option>
+            </select>
+            <select id="address_region2" name="region2" onchange="setRegion();">
+            <option value="0">{$lang.pls_select}</option></select>
+            <input type="hidden" name="region_id" dataType="int" required="true" id="region_id" />
+          </td>
+        </tr>
+        <tr>
+          <td>{$lang.address}:</td>
+          <td><input type="text" size="25" name="address" id="address" class="sinput" value="{$order.address}" required="true" dataType="string" /></td>
+          <td>{$lang.zipcode}:</td>
+          <td><input type="text" name="zipcode" id="zipcode" class="sinput" value="{$order.zipcode}" required="true" dataType="post_code" /></td>
+        </tr>
+        <tr class="even">
+          <td>{$lang.email}:</td>
+          <td><input type="text" name="email" id="email" value="{$order.email}" class="sinput" required="true" dataType="email" size="25" /></td>
+          <td>{$lang.mobile_phone}:</td>
+          <td><input type="text" name="mobile_phone" id="mobile_phone" value="{$order.mobile_phone}" dataType="mobile" class="sinput" /><span class="note">{$lang.mobile_phone_note}</span></td>
+        </tr>
+        <tr>
+          <td>{$lang.home_phone}:</td>
+          <td><input type="text" name="home_phone" id="home_phone" dataType="tel_num" value="{$order.home_phone}" class="sinput" /> <span class="note">{$lang.home_phone_note}</span></td>
+          <td>{$lang.office_phone}:</td>
+          <td><input type="text" name="office_phone" id="office_phone" dataType="tel_num" class="sinput" value="{$order.office_phone}" /><span class="note">{$lang.office_phone_note}</span></td>
+        </tr>
+        <tr class="even">
+          <td>{$lang.best_time}:</td>
+          <td colspan="3">
+          <select name="best_time" id="best_time">
+            {html_options options=$best_time_options selected=$order.best_time}
+          </select>
+          </td>
+        </tr>
+        <tr class="even">
+          <td colspan="4" align="center">
+          <input type="hidden" name="op" value="add" id="op" />
+          <input type="hidden" name="address_id" value="0" id="address_id" />
+          <input type="submit" value="{$lang.submit}" class="sbtn" />&nbsp;&nbsp;<input type="reset" value="{$lang.reset}" class="sbtn" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>

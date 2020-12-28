@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,ui.utils,ui.calendar,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+    function changeFileInput(type) {
+      if (parseInt(type) == 0)
+    {
+      $("file_url").disabled = false;
+      $("file").disabled = true;
+      document.getElementsByName("file_radio")[1].checked = true;
+    }
+    else
+    {
+      $("file_url").disabled = true;
+      $("file").disabled = false;
+      document.getElementsByName("file_radio")[0].checked = true;
+    }
+    }
+
+    function adTypeChanged(type)
+    {
+      if ($("ad_type")){
+        for (var i=0;i<$("ad_type").options.length; i++) {
+          if ($("ad_type").options[i].value == type)
+            $("ad_type").options[i].selected = "selected";
+          else
+            $("ad_type").options[i].selected = false;
+        }
+      }
+      var hidden = function (className) {
+        var rows = $class(className);
+        for (var i=0; i<rows.length; i++) {
+          rows[i].style.display = "none";
+          var inputs = rows[i].getElementsByTagName("*");
+          for (var j=0; j<inputs.length; j++) {
+            inputs[j].disabled = true;
+          }
+        }
+      };
+
+      var show = function (className) {
+          var rows = $class(className);
+        for (var i=0; i<rows.length; i++) {
+          rows[i].style.display = "";
+          var inputs = rows[i].getElementsByTagName("*");
+          for (var j=0; j<inputs.length; j++) {
+            inputs[j].disabled = false;
+          }
+        }
+      };
+      switch (parseInt(type))
+      {
+        case  0:
+          hidden("ad_code_row");
+          show("ad_link_row");
+          show("ad_file_row");
+          hidden("ad_content_row");
+        break;
+        case  1:
+          hidden("ad_code_row");
+          hidden("ad_link_row");
+          show("ad_file_row");
+          hidden("ad_content_row");
+        break;
+        case  2:
+          show("ad_code_row");
+          hidden("ad_link_row");
+          hidden("ad_file_row");
+          hidden("ad_content_row");
+        break;
+        case  3:
+          hidden("ad_code_row");
+          hidden("ad_file_row");
+          show("ad_link_row");
+          show("ad_content_row");
+        break;
+      }
+
+    }
+
+    Event.observe(window, "load", function() {
+      new ui.utils.tabForm("tab-form");
+      Validator.run("theForm");
+      {if $act neq 'edit'}
+        adTypeChanged(0);
+        changeFileInput(1);
+      {else}
+        adTypeChanged({$info.ad_type});
+        {if $info.ad_code neq ''}
+          changeFileInput(0);
+        {else}
+          changeFileInput(1);
+        {/if}
+      {/if}
+
+    });
+  //]]>
+  </script>
+</head>
+<body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_ad}</h1>
+      <div class="link">[<a href="admin.php?app=ad&amp;act=view">{$lang.view_ad}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+           <td class="label">{$lang.ad_name}:</td><td><input name="ad_name" type="text" id="ad_name" value="{$info.ad_name}" size="40" dataType="string" required="true"/><span class="note">*</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.ad_position}:</td>
+              <td><select name="position_id"><option value="0">{$lang.outside_ad}</option>{html_options options=$position_list selected=$info.position_id}</select></td>
+            </tr>
+            <tr>
+              <td height="20" class="label">{$lang.ad_type}:</td><td>{if $info.ad_type neq ''}{$ad_type}{else}<select name="ad_type" id="ad_type" onchange="adTypeChanged(this.value)">{html_options options=$ad_type}</select>{/if}</td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.ad_enabled}:</td>
+              <td><label><input  type="radio" value="0" name="ad_enabled" {if $info.enabled eq '0'}checked{/if}/>{$lang.ad_enabled_off}</label><label><input  type="radio" value="1" name="ad_enabled" {if $info.enabled neq '0'}checked{/if}/>{$lang.ad_enabled_on}</label></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.start_date}:</td>
+              <td><input name="start_date" type="text" value="{$info.start_time}" size="20" datatype="date" required="true"/></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.end_date}:</td>
+              <td><input name="end_date" type="text"  value="{$info.end_time}" size="20" datatype="date" required="true"/></td>
+            </tr>
+            <tr class="ad_file_row">
+              <td class="label" ><label ><input name="file_radio" type="radio" onclick="changeFileInput(this.value)"  value="1" checked="checked" />{$lang.upload_file}:</label></td>
+              <td><input name="file" id="file"  type="file" size="40" ></td>
+            </tr>
+            <tr class="ad_file_row">
+              <td class="label"><label><input name="file_radio" type="radio"  value="0" onclick="changeFileInput(this.value)"/>{$lang.file_url}:</label></td>
+              <td><input name="file"  id="file_url" type="text"  disabled="disabled" size="40" value="{$info.ad_code|escape}" /></td>
+            </tr>
+            <tr class="ad_link_row">
+              <td class="label">{$lang.ad_link}:</td>
+              <td><input name="ad_link" type="text" id="height4" size="40"  datatype="url" value="{if $info.ad_link eq ''}http://{else}{$info.ad_link}{/if}" required="true" /></td>
+            </tr>
+            <tr class="ad_code_row" style="display:none">
+              <td class="label">{$lang.ad_code}:</td><td>
+              <label>
+              <textarea name="ad_code" cols="40" rows="6" datatype="string" style="height:50px" id="ad_code" disabled="disabled">{$info.ad_code|escape}</textarea>
+              </label></td>
+            </tr>
+           <tr class="ad_content_row" style="display:none">
+              <td class="label">{$lang.ad_text}:</td><td>
+              <label>
+              <textarea name="textarea" cols="40" rows="6" datatype="string" style="height:50px" id="textarea" disabled="disabled">{$info.ad_code|escape}</textarea>
+              </label></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <p class="submitlist">
+          <input type="submit" value="{$lang.button_submit}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+</body>
+</html>

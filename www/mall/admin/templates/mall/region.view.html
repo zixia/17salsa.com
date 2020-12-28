@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>abc</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src='ecmall,ui.utils,ajax'}
+<script type="text/javascript">
+  function onchange(span)
+  {
+    if (span.tagName.toUpperCase() != 'SPAN')
+    {
+      return;
+    }
+    for (i = 0; i < span.attributes.length; i++)
+    {
+      if (span.attributes[i].nodeName == 'region_id')
+      {
+        region_id = span.attributes[i].nodeValue;
+      }
+      else if (span.attributes[i].nodeName == 'parent_id')
+      {
+        parent_id = span.attributes[i].nodeValue;
+      }
+    }
+    var res = update(region_id, span.innerText, parent_id);
+    if (!res.done)
+    {
+      alert(res.msg);
+      span.innerHTML = res.retval;
+    }
+  }
+  function update(region_id, region_name, parent_id)
+  {
+    Ajax.setReturnType('json');
+    Ajax.addVal("region_id", region_id);
+    Ajax.addVal("region_name", region_name);
+    Ajax.addVal("parent_id", parent_id);
+    var res = Ajax.call("admin.php?app=region&act=update&", null, "GET", false);
+    return res;
+  }
+
+  function editRegion (id) {
+    obj = $("region_" + id);
+    ui.inlineEditBox.edit(obj, onchange);
+  }
+  </script>
+  <style type="text/css">
+  #wrapper dl { margin: 0px; padding: 0px 0px 30px; clear:both; }
+  #wrapper dt { font-weight: bold; clear:both; border-bottom:1px dotted #CCC; padding: 20px 0px 5px 30px; }
+  #wrapper dd { float:left; width:21%; height:20px; line-height:20px; margin:0px; padding:0px 0px 0px 30px; }
+  #tips form { padding-left: 20px; background: url(admin/images/icon_add.gif) no-repeat left; }
+  </style>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.regions}</h1>
+    <div class="link"> [<a href="admin.php?app=region&amp;act=view&amp;pid=0">{$lang.root_region}</a>]
+      {foreach from=$ancestors item=region}
+      [<a href="admin.php?app=region&amp;act=view&amp;pid={$region.region_id}">{$region.region_name}</a>]
+      {/foreach}
+      {if $parent}{$parent.region_name}{/if} </div>
+    <div id="desc"> <span></span> </div>
+  </li>
+  {if not $add_disabled}
+  <li id="tips">
+    <form method="post" action="admin.php?app=region&amp;act=add">
+      {$lang.add_region}:
+      <select name="parent_id">
+        <option value="0">{$lang.root_region}</option>
+        {html_options options=$top_regions}
+      </select>
+      <input type="text" name="region_name" />
+      <input type="submit" value="{$lang.button_submit}">
+    </form>
+  </li>
+  {/if}
+  <li id="wrapper">
+    <dl>
+      {foreach name=region_list from=$region_list item=region}
+      {if ($region.level == 0) }<dt>{else}<dd>{/if}
+        <span id="region_{$region.region_id}" region_id="{$region.region_id}" parent_id="{$region.parent_id}">{$region.region_name|escape:"html"}</span>
+        <a href="javascript:;"  onclick="editRegion({$region.region_id})"><img src="admin/images/icon_edit.gif" alt="{$lang.edit}" border="0"/></a>
+        <a href="admin.php?app=region&amp;act=drop&amp;region_id={$region.region_id}" onclick="return confirm('{$lang.drop_confirm}')"><img src="admin/images/icon_delete.gif" alt="{$lang.delete}" border="0"/></a>
+      {if ($region.level == 0) }</dt>{else}</dd>{/if}
+      {/foreach}
+    </dl>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

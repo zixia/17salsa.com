@@ -1,0 +1,17 @@
+<!-- {if $similar_goods or $editing} -->
+<div id="goods_similar" class="colbox other_goods">
+  <h3>{$lang.similar_goods}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!--{foreach from=$similar_goods item=sgoods}-->
+      <li>
+        <a href="{url src=index.php?app=goods&amp;id=$sgoods.goods_id}"><img src="{image file=$sgoods.default_image width=100 height=100}" alt="{$sgoods.orig_name}" class="thumb" /></a>
+        <p class="name"><a href="{url src=index.php?app=goods&amp;id=$sgoods.goods_id}">{$sgoods.goods_name|escape}</a></p>
+        <p class="price">{$sgoods.store_price|price}</p>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

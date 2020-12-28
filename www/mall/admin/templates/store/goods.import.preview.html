@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.utils"}
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.goods_list_preview}</h1>
+      <div class="link"></div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" id="theForm" >
+      <div id="tab-form">
+        <ul class="tab-bar">
+          <li class="actived">{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+          <tr>
+            <th>{$lang.id}</th>
+          {foreach from=$header item=title}
+            <th>{$title}</th>
+          {/foreach}
+          </tr>
+          {foreach from=$data item=row name=data}
+          <tr>
+            <td class="pd"><input type="checkbox" name="id[]" value="{$smarty.foreach.data.iteration}" checked="checked" />{$smarty.foreach.data.iteration}</td>
+            {foreach from=$row item=col key=name}
+            <td><input type="text" name="data[{$name}][]" value="{$col|escape}" /></td>
+            {/foreach}
+          </tr>
+          {/foreach}
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="mall_cate_id" value="{$mall_cate_id}" />
+          <input type="hidden" name="store_cate_id" value="{$store_cate_id}" />
+          <input type="hidden" name="act" value="complete" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

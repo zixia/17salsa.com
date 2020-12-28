@@ -1,0 +1,15 @@
+<div id="new_goods" class="colbox sortlist">
+  <h3><span>{$lang.store_new_goods}</span></h3>
+  <div class="colboxcontent itemgrid">
+    <!-- {foreach from=$new_goods.data item=rgoods} 商品 -->
+    <dl class="item">
+      <dt class="pic"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=$rgoods.store_id}"><img src="{image file=$rgoods.default_image width=120 height=120}" alt="{$rgoods.orig_name}" /></a></dt>
+      <dd class="name"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=$rgoods.store_id}">{$rgoods.goods_name|escape}</a></dd>
+      <dd class="price">{$rgoods.store_price|price}<!--<span class="marketprice">{$rgoods.market_price}</span>--></dd>
+      <!--{if $mall_display_volumn}--><dd class="sales">{$lang.sales_volume} <em>{$rgoods.sales_volume}</em> {$lang.groupbuy_uint}</dd>{/if}
+      {if $rgoods.messages}<dd class="commended">{$lang.join_comment} <em>{$rgoods.messages}</em> {$lang.person}</dd>{/if}
+    </dl>
+    <!-- {/foreach} 商品 -->
+  </div>
+  <div class="colbtm"></div>
+</div>

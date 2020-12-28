@@ -1,0 +1,52 @@
+<div id="userinfo" class="colbox userinfo">
+  <h3>{$lang.owner_archives}</h3>
+  <div class="colboxcontent">
+    <dl>
+      <dt>{include file="themes/store/resource/avatar.html"}</dt>
+      <dd class="btnlist">
+        <a href="{url src=index.php?app=store&amp;act=comment&amp;store_id=$user.user_id}" class="msgbtn"><img src="images/btn_give_msg.gif" alt="{$lang.leave_word}" /></a>
+        <a href="javascript:add_friend({$user.user_id});"><img src="images/btn_adduser.gif" alt="{$lang.add_friend}" /></a>
+      </dd>
+      <dd class="infolist">
+        <p class="line">
+          <!-- {if $store.is_certified} -->
+          <a href="{url src=index.php?app=article&amp;act=builtin&amp;code=certification}" target="_blank"><img src="data/images/certification.gif" title="{$lang.certified}" alt="{$lang.certified_store}" style="float:right;" /></a>
+          <!-- {/if} -->
+          <label>{$lang.owner_name}: </label>{$user.user_name}
+        </p>
+        <p><label>{$lang.register_time}: </label>{$user.formated_reg_time}</p>
+        <p><label>{$lang.owner_phone}: </label>{$store.owner_phone}</p>
+        <p><label>{$lang.owner_address}: </label>{$store.owner_address}</p>     
+        <p class="line"><label>{$lang.seller_credit}: </label>{$user.seller_credit}
+        <a href="{url src=index.php?app=store&amp;act=credit&amp;store_id=$user.user_id}">{if $user.seller_grade gt 0}<img src="images/rank_sell_{$user.seller_grade}.gif" alt="{$user.seller_grade}" border="0" />{else}-{/if}</a></p>
+        <p><label>{$lang.buyer_credit}: </label>{$user.buyer_credit}
+        <a href="{url src=index.php?app=store&amp;act=credit&amp;store_id=$user.user_id}">{if $user.buyer_grade gt 0}<img src="images/rank_buy_{$user.buyer_grade}.gif" alt="{$user.buyer_grade}" border="0" />{else}-{/if}</a></p>
+        <p class="line"><label>{$lang.seller_rate}: </label>
+        <a href="{url src=index.php?app=store&amp;act=credit&amp;store_id=$user.user_id}">{$seller_rate.rate}%</a></p>
+        <p><label>{$lang.buyer_rate}: </label>
+        <a href="{url src=index.php?app=store&amp;act=credit&amp;store_id=$user.user_id}">{$buyer_rate.rate}%</a></p>
+        <!--{if $store_qq}-->
+        <p class="line">
+          <label>{$lang.store_qq}:</label><img src="http://wpa.qq.com/pa?p=1:{$store_qq|escape}:4" alt="QQ"><a href="http://wpa.qq.com/msgrd?V=1&amp;Uin={$store_qq|escape}&amp;Site={$user.user_name}&amp;Menu=yes" target="_blank">{$store_qq|escape}</a>
+        </p>
+        <!--{/if}-->
+        <!--{if $store_ww}-->
+        <p{if !$store_qq} class="line"{/if}>
+          <label>{$lang.store_ww} :</label>
+          <a target="_blank" href="http://amos.im.alisoft.com/msg.aw?v=2&uid={$store_ww|escape:url}&site=cntaobao&s=2&charset={$charset}" ><img border="0" src="http://amos.im.alisoft.com/online.aw?v=2&uid={$store_ww|escape:url}&site=cntaobao&s=2&charset={$charset}" alt="Wang Wang" />{$store_ww|escape}</a>
+        </p>
+        <!--{/if}-->
+        <!--{if $store_msn}-->
+        <p{if !$store_ww and !$store_qq} class="line"{/if}>
+         <label>{$lang.store_msn}:</label>
+         <span id="msn_status">{$lang.loading}</span>
+         <script type="text/javascript">
+         Event.observe(window, 'load', function(){document.require("http://messenger.services.live.com/users/{$store_msn|escape}/presence/?cb=show_msn_status");});
+         </script>
+        </p>
+        <!--{/if}-->
+      </dd>
+    </dl>
+  </div>
+  <div class="colbtm"></div>
+</div>

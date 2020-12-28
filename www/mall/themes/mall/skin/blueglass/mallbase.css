@@ -1,0 +1,90 @@
+/*  layout  */
+.grid1col,.grid2col,.grid3col { width:986px; margin:0 auto; }
+.grid2col .column1 { width:226px; padding-right:10px; }
+.grid2col .column2 .grid1col { width:100%; }
+.grid2col .column2 { width:750px; }
+.grid2col .inside2col { width:100%; }
+.grid2col .inside2col .columna { padding-right:10px; }
+.grid2col .inside2col .columnb { width:266px; }
+.grid2col .inside2colb .columna { width:354px; }
+.grid2col .inside2colb .columnb { width:354px; padding-left:9px; }
+
+.colbox { display:inline-block; clear:both; margin-bottom:8px; }
+.colbox { display:block; }
+.colbox:after,.colboxcontent:after { content:""; display:block; height:0; visibility:hidden; clear:both; }
+.colbox h3 { font-size:12px; line-height:25px; color:#3d474d; height:25px; padding-left:15px; border-bottom:1px solid #cfdee6; }
+.colbox em.more { float:right; margin-right:30px; }
+.colbox em.more a { font-weight:400; color:#666; }
+.colboxcontent { *display:inline-block; padding:10px; }
+.colbox .colbtm { height:5px; overflow:hidden; clear:both; }
+.grid1col .grid2col .column1 .colbox h3 { background:url(images/title_arrow.gif) no-repeat 0 center; }
+.grid2col .column1 .colbox { background:url(images/col_bgb1.gif) repeat-y; }
+.grid2col .column1 .colbox h3 { background:url(images/col_title_bgb1.gif) no-repeat; }
+.grid2col .column1 .colbox .colbtm { background:url(images/col_btm_bgb1.gif) no-repeat; }
+.grid2col .inside2col .columna .colbox { background:url(images/col_bga1.gif) repeat-y; }
+.grid2col .inside2col .columna .colbox h3 { background:url(images/col_title_bga1.gif) no-repeat; }
+.grid2col .inside2col .columna .colbox .colbtm { background:url(images/col_btm_bga1.gif) no-repeat; }
+.grid2col .inside2colb .colbox { background:url(images/col_bgc1.gif) repeat-y; }
+.grid2col .inside2colb .colbox h3 { background:url(images/col_title_bgc1.gif) no-repeat; }
+.grid2col .inside2colb .colbox .colbtm { background:url(images/col_btm_bgc1.gif) no-repeat; }
+.grid2col .column2 .grid1col .colbox { background:url(images/col_bgd1.gif) repeat-y; }
+.grid2col .column2 .grid1col .colbox h3 { background:url(images/col_title_bgd1.gif) no-repeat; }
+.grid2col .column2 .grid1col .colbox .colbtm { background:url(images/col_btm_bgd1.gif) no-repeat; }
+
+/*  component  */
+.avatar { float:left; }
+.avatar-link img { padding:3px; border:1px solid #e4ecf1; }
+.avatar-link { padding:0 12px 0 0; background:url(images/avatar_bg.gif) no-repeat right top; display:block; }
+.avatar-hover { padding:0 12px 0 0; background:url(images/avatar_bg.gif) no-repeat right top; display:block; position:relative; z-index:2; }
+.avatar-hover img { background:#fff; padding:3px; border:1px solid #D1DEED; border-bottom-color:#fff; width:48px;height:48px; }
+.avatar-menu { position:absolute; background:#FFF; margin-top:-1px; padding:12px; border:1px solid #D1DEED; display:none; float:left; z-index:1; }
+.avatar-menu li { line-height:22px; white-space:nowrap; padding-right:10px; }
+
+.pagechanger { padding:10px 20px; }
+.pagechanger ul { float:right; }
+.pagechanger li { line-height:16px; float:left; margin-right:3px; }
+.pagechanger li.pg_total { color:#fff; background:#258ab8; padding:0 5px; border:1px solid #258ab8; }
+.pagechanger li.curr-page { line-height:16px; color:#258ab8; background:#dae6ec; padding:0 5px; border:1px solid #258ab8; }
+.pagechanger li.pg_omission { color:#999; padding:0 5px; }
+.pagechanger li a { font:12px/16px Arial ; color:#999; display:block; float:left; padding:0 5px; border:1px solid #ccc; }
+.pagechanger a:hover { text-decoration:none; color:#258ab8; background:#dae6ec; border:1px solid #258ab8; }
+
+#message { background:url(images/login_gb_sprite.gif) repeat-y -986px 0; margin:30px auto; border:0; }
+#message .colboxcontent { padding:50px 150px 80px; }
+#message .coltop { background:url(images/login_gb_sprite.gif) no-repeat; height:8px; overflow:hidden; }
+#message .colbtm { background:url(images/login_gb_sprite.gif) no-repeat -1972px 0; height:8px; overflow:hidden; clear:both; }
+#message dl { background:#f7fbfc url(images/icon_notice.gif) no-repeat 30px 32px; width:622px; padding:30px 30px 50px; border:1px solid #d8e9f2; }
+#message dt { line-height:1.2em; font-size:14px; font-weight:bold; margin-bottom:5px; padding:2px 0 5px; }
+#message dt,#message dd { margin-left:50px; }
+#message .icon_error { background-image:url(images/icon_error.gif); }
+#message .icon_notice { background-image:url(images/icon_notice.gif); }
+#message .icon_warning { background-image:url(images/icon_warning.gif); }
+#message .icon_error dt { color:red; }
+#message .icon_notice dt { color:#225289; }
+#message .icon_warning dt { color:#e46a01; }
+#message dd strong { color:red; }
+#message dd { background:url(images/breadcrumbs_arrow.gif) no-repeat 0 center; margin-bottom:5px; padding-left:15px; }
+#message dd a { color:#258ab8; }
+
+#gallery { background:#FFFFFF; }
+#gallery table { margin-top:5px; padding:4px; }
+#gallery .prePage{ background:url(images/previous_arrow.gif) no-repeat 0 0;padding-left:10px; }
+#gallery .nextPage{ background:url(images/next_arrow.gif) no-repeat right 0;padding-right:10px; } 
+#gallery .chevron{ background:url(images/chevron_3x5.gif) no-repeat 0 center;padding-left:8px; }
+#gallery .curPage{ font-weight:bold; }
+#gallery table td { text-align:right; }
+
+#recommended_store ul { width:243px; float:left; }
+#recommended_store .infolist { color:#979797; width:100px; float:left; padding-left:10px; }
+#recommended_store .infolist p { line-height:16px; }
+.column1 #recommended_store ul { width:auto; padding-bottom:10px; }
+.column1 #recommended_store ul.last { padding-bottom:0; }
+
+.tip_msg { display:inline; padding-left: 5px; padding-top: 4px; }
+.tip_checked { background:url(images/icon_ok.gif) no-repeat; padding:4px 10px }
+.tip_loading { background:url(images/icon_loading.gif) no-repeat 2px 0; padding:4px 10px }
+.error_msg { border:1px solid #FF6600; background: #FFF2E9 url(images/icon_error_msg.gif) no-repeat 2px 2px; padding: 4px 20px; margin-left: 3px; }
+.msg { padding-left: 5px; }
+.error { color:#c20; background:#ffe url(images/icon_error_msg.gif) no-repeat 3px center; margin-left:8px; padding:3px 8px 3px 20px; border:1px solid #fdb086; }
+.note { color:#666; background:#f5faff; margin-left:8px; padding:3px 8px; border:1px solid #93c6f9; }
+.high_light { font-weight:bold; color:#ff0000 }

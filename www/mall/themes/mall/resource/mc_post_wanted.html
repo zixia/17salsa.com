@@ -1,0 +1,64 @@
+{script src='validator'}
+<script type="text/javascript">
+Event.observe(window, "load", function() { Validator.run('mc_post_form'); });
+</script>
+<div id="mc_favorite" class="mc_box">
+  <h3><em class="more"><a href="javascript:history.go(-1);">{$lang.go_back}</a></em><span>{$lang.wanted_info_form}</span></h3>
+  <div class="mc_boxcontent">
+  <form action="index.php?app=wanted&amp;act={$smarty.get.act}&amp;id={$smarty.get.id}" method="post" name="mc_post_form">
+    <table class="mc_formtable" cellspacing="4">
+      <tr>
+        <td class="label">{$lang.wanted_category}:</td>
+        <td>
+            <select name="cate_id">
+                <option value="0">&nbsp;&nbsp;{$lang.wanted_other}</option>
+                {html_options options=$wanted_cates selected=$wanted_info.cate_id}
+            </select>
+        <span class="note">{$lang.wanted_cate_notice}</span></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.wanted_location}:</td>
+        <td>
+            <select name="region_id">
+                <!-- {foreach from=$wanted_regions item=region} -->
+                <!-- {if $region.level eq 0} -->
+                <optgroup label="{$region.region_name}" />
+                <!-- {else} -->
+                <option value="{$region.region_id}"{if $region.region_id eq $wanted_info.region_id} selected{/if}>{$region.region_name}</option>
+                <!-- {/if} -->
+                <!-- {/foreach} -->
+            </select>
+        <span class="note">{$lang.wanted_location_notice}</span>
+        </td>
+      </tr>
+      <tr>
+      <!--{if $smarty.get.act eq edit}-->
+        <td class="label">{$lang.wanted_expiry}:</td>
+        <td><input class="sinput" type="text" size="5" name="delay" value="{$wanted_info.expiry_days}" required="true" dataType="int" test="1" />&nbsp;{$lang.wanted_day}<span class="note">{$lang.wanted_delay_notice}</span></td>
+      <!-- {else} -->
+        <td class="label">{$lang.wanted_expiry}:</td>
+        <td><input class="sinput" type="text" size="5" name="expiry" required="true" dataType="int" test="1" />&nbsp;{$lang.wanted_day}<span class="note">{$lang.wanted_expiry_notice}</span></td>
+      <!-- {/if} -->
+      </tr>
+      <tr>
+        <td class="label">{$lang.wanted_price}:</td>
+        <td><input class="sinput" type="text" size="5" name="price_start" required="required" value="{$wanted_info.price_start}" />&nbsp;-&nbsp;<input class="sinput" type="text" size="5" name="price_end" required="required" value="{$wanted_info.price_end}" /><span class="note">{$lang.wanted_price_notice}</span></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.wanted_subject}:</td>
+        <td><input class="sinput" type="text" size="35" name="subject" required="required" value="{$wanted_info.subject}" dataType="string" /><span class="note">{$lang.wanted_subject_notice}</span></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.wanted_detail}:</td>
+        <td><textarea  name="detail" cols="45" rows="8" required="required" dataType="string">{$wanted_info.detail}</textarea><span class="note">{$lang.wanted_detail_notice}</span></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="base_info_submit" value="{$lang.submit}" class="sbtn" />
+          <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" /></td>
+      </tr>
+    </table>
+  </form>
+  </div>
+  <div class="colbtm"></div>
+</div>

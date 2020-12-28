@@ -1,0 +1,23 @@
+<div id="goods_category" class="colbox">
+  <h3>{$lang.goods_category}</h3>
+  <div class="colboxcontent">
+    <!-- {foreach name="column" from=$goods_category item=row} 循环行 -->
+    <div class="sorttree clearfix{cycle values= odd, even}">
+      <!-- {foreach from=$row item=col} 循环列 -->
+        <dl{if $smarty.foreach.column.last} class="last"{/if}>
+          <dt><a href="{url src=index.php?app=category&amp;cate_id=$col.cate_id}">{$col.cate_name|escape}</a></dt>
+          <!-- {if $col.children} -->
+          <dd>
+            <!-- {foreach from=$col.children item=child} 循环二级分类 -->
+            <a href="{url src=index.php?app=category&amp;cate_id=$child.cate_id}">{$child.cate_name|escape}</a>
+            <!-- {/foreach} 二级分类 -->
+          </dd>
+          <!-- {/if} -->
+        </dl>
+      <!-- {/foreach} 列 -->
+    </div>
+    <!-- {/foreach} 行 -->
+    <!-- /sorttree -->
+  </div>
+  <div class="colbtm"></div>
+</div>

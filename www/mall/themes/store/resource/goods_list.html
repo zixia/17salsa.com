@@ -1,0 +1,72 @@
+<div id="recommended_goods" class="colbox sortlist">
+  {if $goods_list.data}
+  <div id="displaymode">
+  <p class="quickchanger"> {page_simple from=$goods_list.info url=$url_format} </p>
+     <span>{$lang.display_style} :
+        <a href="{$url_base}{$filte_url}&amp;show_type=l_l{$url_extra.sort}{$url_extra.order}{$page_url}" title="{$lang.list_display}"><img src="images/btn_display_mode_list{$btn_act.l_l}.gif" /></a>
+        <a href="{$url_base}{$filte_url}&amp;show_type=l_t{$url_extra.sort}{$url_extra.order}{$page_url}" title="{$lang.table_display}"><img src="images/btn_display_mode_grid{$btn_act.l_t}.gif" /></a>
+    </span>
+    <span>{$lang.sort_style} :
+        <a href="{$url_base}{$filte_url}{$url_extra.show_type}&amp;sort=store_price&amp;order={$order}{$page_url}" title="{$lang.price_sort}"><img src="images/btn_sortby_price_{$order}{$btn_act.store_price}.gif" /></a>
+        <a href="{$url_base}{$filte_url}{$url_extra.show_type}&amp;sort=goods_id&amp;order={$order}{$page_url}" title="{$lang.time_sort}"><img src="images/btn_sortby_time_{$order}{$btn_act.goods_id}.gif" /></a>
+    </span>
+</div>
+
+    <!-- {if $show_type eq 'l_t'} -->
+    <div class="colboxcontent itemgrid">
+    <!-- {foreach from=$goods_list.data item=rgoods} 商品 -->
+    <dl class="item">
+      <dt class="pic"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=$rgoods.store_id}"><img src="{image file=$rgoods.default_image width=120 height=120}" alt="{$rgoods.goods_name|escape}" /></a></dt>
+      <dd class="name"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id&amp;store_id=$rgoods.store_id}">{$rgoods.goods_name|escape}</a></dd>
+      <dd class="price">{$rgoods.store_price|price} <!--<span class="marketprice">{$rgoods.market_price|price}</span>--></dd>
+      <!--{if $mall_display_volumn}--><dd class="sales">{$lang.sales_volume} <em>{$rgoods.sales_volume}</em> {$lang.groupbuy_uint}</dd><!--{/if}-->
+      {if $rgoods.messages}<dd class="commended">{$lang.join_comment} <em>{$rgoods.messages}</em> {$lang.person}</dd>{/if}
+    </dl>
+    <!-- {/foreach} 商品 -->
+    </div>
+    <!--{else}-->
+    <div class="itemlist">
+    <ul>
+    <!-- {foreach from=$goods_list.data item=goods} -->
+    <li>
+      <div class="info">
+        <p class="pic"><a href="{url src=index.php?app=goods&amp;id=$goods.goods_id&amp;store_id=$goods.store_id}"><img src="{image file=$goods.default_image width=120 height=120}" alt="{$goods.orig_name}" /></a></p>
+        <p class="nowprice">{$goods.store_price|price}</p>
+        <p class="name"><a href="{url src=index.php?app=goods&amp;id=$goods.goods_id&amp;store_id=$goods.store_id}">{$goods.goods_name|escape}</a></p>
+        <p class="marketprice">{$lang.market_price} : <span>{$goods.market_price|price}</span></p>
+        {if $goods.messages}<p class="commended">{$lang.join_comment} : <em>{$goods.messages}</em> {$lang.person}</p>{/if}
+        <!--{if $mall_display_volumn}--><p class="sales">{$lang.sales_volume} : <em>{$goods.sales_volume}</em> {$lang.groupbuy_uint}</p><!--{/if}-->
+      </div>
+      <div class="otherinfo">
+        <!-- {if $goods.color_names} -->
+        <p>{$lang.goods_color}:{foreach from=$goods.color_names key=color_name item=spec_id}&nbsp;&nbsp;<a href="{url src=index.php?app=goods&amp;spec_id=$spec_id&amp;store_id=$goods.store_id}">{$color_name|escape}</a>{/foreach}<p>
+        <!-- {/if} -->
+        <!-- {if $goods.spec_names} -->
+        <p>{$lang.goods_spec}:{foreach from=$goods.spec_names key=spec_name item=spec_id}&nbsp;&nbsp;<a href="{url src=index.php?app=goods&amp;spec_id=$spec_id&amp;store_id=$goods.store_id}">{$spec_name|escape}</a>{/foreach}<p>
+        <!-- {/if} -->
+      </div>
+    </li>
+    <!-- {/foreach} -->
+    </ul>
+  </div>
+  <!--{/if}-->
+
+  <div class="pagechanger">
+  {page_links from=$goods_list.info url=$url_format}
+  </div>
+  {else}
+   <div class="nodata">
+    {if $smarty.get.keywords eq ''}
+    <h1>{$lang.no_category_goods}</h1>
+    {else}
+    <h1>{$lang.goods_no_found}</h1>
+    <p>
+      {$lang.goods_no_found_info}
+    </p>
+    {/if}
+
+    </div>
+
+  {/if}
+<div class="colbtm"></div>
+</div>

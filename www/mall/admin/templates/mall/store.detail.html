@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator,ui.region,ui.calendar"}
+  <script type="text/javascript">
+  //<![CDATA[
+    var Regions = null;
+    var region = null;
+    Event.observe(window, "load", function() {
+     region = new ui.region('region');
+     region.selected({$store.store_location});
+     new ui.utils.tabForm("tab-form");
+     Validator.run('theForm');
+    });
+
+    function duplicateName (obj, id) {
+      Ajax.addVal('app', 'store');
+      Ajax.addVal('act', 'duplicate_name');
+      Ajax.addVal('store_id', id);
+      Ajax.addVal('store_name', obj.value);
+      var res = Ajax.call('admin.php', null, '', false);
+
+      if (res.done)
+        return true;
+      else
+        return res.msg;
+    }
+    function adminExists (obj) {
+      Ajax.addVal('app', 'store');
+      Ajax.addVal('act', 'admin_exists');
+      Ajax.addVal('user_name', obj.value);
+      var res = Ajax.call('admin.php', null, '', false);
+
+      if (res.done)
+        return true;
+      else
+        return res.msg;
+    }
+    
+    function test_custom_name(obj, store_id){
+      var ret_val = true;
+      var val = obj.value.trim();
+      if (val.length > 0){
+        if (!/^[a-z0-9|\_\-]+$/.test(val))
+        {
+            ret_val = '{$lang.custom_rule}';
+        }
+        else
+        {
+            Ajax.addVal('app', 'store');
+            Ajax.addVal('act', 'test_custom_name');
+            Ajax.addVal('custom', val);
+            Ajax.addVal('store_id', store_id);
+            var res = Ajax.call('admin.php', null, 'POST', false);
+            if (res.done){
+              //none
+            }else{
+              ret_val = res.msg;
+            }       
+        }
+      }
+      
+      return ret_val;
+    }
+  //]]>
+  </script>
+  <script type="text/javascript" src="index.php?app=regions&amp;act=get"></script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_store}</h1>
+      <div class="link">[<a href="admin.php?app=store&amp;act=view">{$lang.store_view}</a>]</div>
+      <div id="desc">{$lang.store_detail_desc}</div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+          <li>{$lang.shop_owner}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.user}:</td><td>
+                {if $store.store_id eq 0}
+                <input type="text" id="user" name="username" required="true" dataType="string" fun="adminExists" />
+                {else}
+                <input type="text" id="user" name="username" value="{$store.user_name|escape}" disabled="true" />
+                {/if}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.store_name}:</td><td><input type="text" name="store_name" size="40" dataType="string" required="true" value="{$store.store_name|escape}" fun="duplicateName" funParam="{$store.store_id}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.store_location}:</td><td>
+              <select onchange="region.changed(this, 2);" name="region1" id="region1">
+              <option value="0">{$lang.pls_select}</option>
+              </select>
+              <select id="region2" dataType="string" required="required" name="store_location">
+              <option value="0">{$lang.pls_select}</option>
+              </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_limit}:</td><td><input type="text" name="goods_limit" size="10" dataType="int" required="true" value="{$store.goods_limit}" /><span class="note">{$lang.goods_limit_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.file_limit}:</td><td><input type="text" name="file_limit" size="10" dataType="int" required="true" value="{$store.file_limit}" /><span class="note">{$lang.file_limit_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.end_time}:</td><td><input name="end_time" value="{$store.end_time}" size="20" datatype="date" type="text"><span class="note">{$lang.end_time_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.certified_recommend}:</td>
+              <td>
+                <label for="is_recommend">
+                {if $store.is_recommend}
+                <input type="checkbox" name="is_recommend" id="is_recommend" value="1" checked="true" />{else}
+                <input type="checkbox" name="is_recommend" id="is_recommend" value="1" /> {/if}{$lang.recommend_store}</label>
+                <label for="is_certified">
+                {if $store.is_certified}
+                <input type="checkbox" name="is_certified" id="is_certified" value="1" checked="true" /> {else}
+                <input type="checkbox" name="is_certified" id="is_certified" value="1" /> {/if}{$lang.certified_store}</label>
+              </td>
+            </tr>
+            {if ENABLED_CUSTOM_DOMAIN}
+            <tr>
+              <td class="label">{$lang.custom_name}:</td><td><input type="text" name="custom" size="10" dataType="string" value="{$store.custom}"  fun="test_custom_name" funParam="{$store.store_id}" /><span class="note">{$lang.custom_note}</span></td>
+            </tr>
+            {/if}            
+          </table>
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.owner_name}:</td><td><input type="text" size="20" maxlength="20" name="owner_name" value="{$store.owner_name|escape}" dataType="string" required="required" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.owner_idcard}:</td><td><input type="text" size="40" maxlength="20" name="owner_idcard" dataType="id_card" value="{$store.owner_idcard|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.owner_phone}:</td><td><input type="text" size="30" maxlength="20" name="owner_phone" dataType="tel_num" value="{$store.owner_phone|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.owner_address}:</td><td><input type="text" size="60" maxlength="100" name="owner_address" value="{$store.owner_address|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.owner_zipcode}:</td><td><input type="text" size="20" maxlength="20" name="owner_zipcode" dataType="post_code" value="{$store.owner_zipcode|escape}" /></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+          <input type="hidden" name="id" value="{$store.store_id}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src='ecmall'}
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.admin_logs}</h1>
+      <div class="link">[<a href="admin.php?app=admin&amp;act=view">{$lang.admin_view}</a>] [<a href="admin.php?app=admin&amp;act=add">{$lang.admin_add}</a>]</div>
+      <div id="desc">
+        <div id="page-selector">
+          <form method="get" action="admin.php" onsubmit="return confirm('{$lang.remove_logs_confirm}')">
+            <select name="by">
+              {html_options options=$delete_logs_by selected=$selected}
+            </select>
+            <input type="hidden" value="admin" name="app" />
+            <input type="hidden" value="remove_logs" name="act" />
+            <input type="submit" value="{$lang.ok}"/>
+          </form>
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$log_stats}</span>
+      </div>
+    </li>
+    <li id="tips">
+      <form method="post">
+        {$lang.admin_name}: <input type="text" name="username" /> <input type="submit" name="submit" value="{$lang.button_search}">
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" cellpadding="4">
+        <tr>
+          <th class="first-cell">{sort_link by=username text=$lang.admin_name}</th>
+          <th>{sort_link by=application text=$lang.application}</th>
+          <th>{sort_link by=action text=$lang.action}</th>
+          <th>{sort_link by=item_id text=$lang.item_id}</th>
+          <th>{sort_link by=execution_time text=$lang.execution_time}</th>
+          <th>{sort_link by=ip_address text=$lang.ip_address}</th>
+        </tr>
+        {foreach from=$list.data item=log}
+        <tr>
+          <td class="first-cell">{$log.username|escape}</td>
+          <td>{$log.application}</td>
+          <td>{$log.action}</td>
+          <td>{$log.item_id}</td>
+          <td>{$log.execution_time}</td>
+          <td>{$log.ip_address}</td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ajax,ecmall,ui.utils,validator"}
+  <script type="text/javascript" src="?app=storeapply&act=jslang"></script>
+  <script type="text/javascript">
+    Event.observe(window, 'load', function() {
+     new ui.utils.tabForm("tab-form");
+     Validator.run('theForm');
+    });
+
+    function doAccept () {
+      $("do_process").value = "accept";
+    }
+
+    function doDeny () {
+      if ($("deny_reason").value == "") {
+        alert(lang.empty_reason);
+        $("deny_reason").focus();
+        return false;
+      } else {
+        $("do_process").value = "deny";
+        return true;
+      }
+    }
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.store_apply_detail}</h1>
+      <div class="link">[<a href="admin.php?app=storeapply&amp;act=view">{$lang.store_apply_view}</a>]</div>
+      <div id="desc">
+        <span>{$lang.detail_desc}</span>
+      </div>
+    </li>
+    <li id="wrapper">
+      <form action="admin.php?app=storeapply&amp;act=process" method="POST">
+        <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+           <li>{$lang.process_apply}</li>
+        </ul>
+        <div class="tab-page">
+        <table class="form-table" cellspacing="0">
+          <tr>
+            <td class="label">{$lang.user_name}:</td>
+            <td>{$apply.user_name|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.owner_name}:</td>
+            <td>{$apply.owner_name|escape}</td>
+          </tr>
+          {if ENABLED_CUSTOM_DOMAIN}
+          <tr>
+            <td class="label">{$lang.custom}:</td>
+            <td>{$apply.custom|default:N/A|escape}</td>     
+          </tr>
+          {/if}
+          <tr>
+            <td class="label">{$lang.owner_idcard}:</td>
+            <td>{$apply.owner_idcard|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.owner_phone}:</td>
+            <td>{$apply.owner_phone|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.owner_address}:</td>
+            <td>{$apply.owner_address|escape}</td>
+          </tr>
+          <tr>
+            <td class="label" width="120">{$lang.owner_zipcode}:</td>
+            <td>{$apply.owner_zipcode|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.store_name}:</td>
+            <td>{$apply.store_name|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.store_location}:</td>
+            <td>{$apply.region_name|escape}</td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.paper_image}:</td>
+            <td>{if $apply.paper_image}<a href="{$apply.paper_image}" target="_blank">{$lang.view}</a>{/if}</td>
+          </tr>
+          <tr>
+            <td class="label" valign="top">{$lang.apply_reason}:</td>
+            <td>{$apply.apply_reason|escape|nl2br}</td>
+          </tr>
+          {if $apply.status == 0}
+          <tr>
+            <td class="label" valign="top">{$lang.deny_reason}:</td>
+            <td><textarea id="deny_reason" name="deny_reason" cols="50" rows="5"></textarea></td>
+          </tr>
+          {/if}
+        </table>
+        </div>
+        {if $apply.status == 0}
+        <p class="submitlist">
+          <input type="hidden" name="do" id="do_process" value="accept"/>
+          <input type="hidden" name="id" value="{$apply.apply_id}"/>
+          <input type="submit" value="{$lang.accept}" onclick="doAccept()" />
+          <input type="submit" value="{$lang.deny}" onclick="return doDeny()" />
+        </p>
+        {/if}
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

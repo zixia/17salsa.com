@@ -1,0 +1,17 @@
+<div id="search_form" class="store">
+  <form action="index.php" method="get">
+    <select name="app">
+      <option value="search">{$lang.search_by_goods}</option>
+      <option value="storelist" {if $smarty.get.app eq "storelist"}selected="selected"{/if}>{$lang.search_by_store}</option>
+    </select>
+    <input name="keywords" type="text" id="keyword" class="sinput" value="{$smarty.get.keywords}" />
+    <select name="cate_id" id="searchcategory">
+      <option value="0">{$lang.all_category}</option>
+        {html_options options=$category selected=$smarty.get.cate_id}
+    </select>
+    <input type="image" src="images/btn_search.gif" />
+  </form>
+  <span id="addcart">{nocache}<a href="{url src=index.php?app=shopping&amp;act=shopping_cart}">{sprintf lang=my_cart var1=cart_goods_count}</a>
+  <input type="hidden" value="{$cart_goods_count}" id="hidden_cart_goods_count" />
+  <input type="hidden" value="{$cart_goods_amount}" id="hidden_cart_goods_amount" />{/nocache}</span>
+</div>

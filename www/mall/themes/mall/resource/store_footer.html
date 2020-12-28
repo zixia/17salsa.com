@@ -1,0 +1,31 @@
+<div id="page_footer" class="store">
+  <p class="articles"></p>
+  <p id="bottomnav">
+    <!-- {foreach name=nav from=$bottom_nav item=nav} -->
+    <a href="{$nav.nav_url}"{if $nav.open_new} target="_blank"{/if}>{$nav.nav_name}</a><!-- {if !$smarty.foreach.nav.last} --> | <!-- {/if} -->
+    <!-- {/foreach} -->
+  </p>
+  {nocache}
+  <!-- p id="qureyInfo">{sprintf lang=query_info var1=query_time var2=query_count var3=query_user_count}
+  {if $gzip_enabled}{$lang.gzip_enabled}{else}{$lang.gzip_disabled}{/if}
+  {if $memory_info}{sprintf lang=memory_info var1=memory_info}{/if}</p>
+  {/nocache}
+  <p>Powered by <a href="http://www.shopex.cn" target="_blank">ECMall {$ecm_version}</a></p -->
+  <p class="copyright">{$mall_copyright}</p>
+  <!-- {if $feed_url} -->
+  <p><a href="{$feed_url}"><img src="data/images/xml_rss2.gif" alt="" border="0" width="80" height="15"></a></p>
+  <!-- {/if} -->
+
+  <!-- {if $icp_number} --><p class=""><a href="http://www.miibeian.gov.cn/" target="_blank">{$icp_number}</a></p><!-- {/if} -->
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-287835-13");
+pageTracker._trackPageview();
+
+</script>
+

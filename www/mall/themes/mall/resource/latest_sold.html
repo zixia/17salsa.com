@@ -1,0 +1,17 @@
+<!-- {if $latest_sold or $editing} -->
+<div id="latest_sold" class="colbox">
+  <h3>{$lang.latest_sold}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!-- {foreach name=latestsold from=$latest_sold item=lsgoods} -->
+      <!-- {if $smarty.foreach.latestsold.iteration lte 3} -->
+      <li>
+        <p><a href="{url src=index.php?app=goods&amp;id=$lsgoods.goods_id}">{$lsgoods.goods_name|escape}</a></p>
+        <span class="price">{$lsgoods.goods_price}</span></li>
+        <!-- {/if} -->
+      <!-- {/foreach} -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

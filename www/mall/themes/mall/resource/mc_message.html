@@ -1,0 +1,30 @@
+<div id="guestbook" class="mc_box">
+  <h3><span>{$msg_title}</span></h3>
+  <div class="colboxcontent">
+    <table border="0" cellspacing="0" class="mc_table">
+      <!-- {foreach from=$msg_list.data item=msg} -->
+      <tr>
+        <th class="name"> {if $msg.goods_id} <a href="index.php?app=goods&amp;id={$msg.goods_id}">{$msg.msg_for}</a> {else} <a href="?{$msg.seller_id}">{$msg.msg_for}</a> {/if} <span class="time">{$msg.formated_add_time}</span></th>
+      </tr>
+      <tr>
+        <td class="content">
+          <div class="contentbox">{$msg.message|escape|nl2br}</div>
+          <!-- {if $msg.reply} -->
+          <div class="recontent">
+            <h4>{$lang.seller_reply}</h4>
+            {$msg.reply|escape|nl2br}
+          </div>
+          <!-- {/if} -->
+        </td>
+      </tr>
+      <!-- {foreachelse} -->
+      <tr>
+        <td class="no-records">{$lang.you_have_no_message}</td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+    <!-- {if $msg_list.data} -->
+    <div class="pagechanger"> {page_links from=$msg_list.info url=$url_format} </div>
+    <!-- {/if} -->
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src='ecmall,ui.datagrid,ui.dropdownmenu,ajax,json'}
+  <script type="text/javascript" src="?act=jslang"></script>
+
+  <script language="javascript" type="text/javascript">
+    var myDataGrid = null;
+    Event.observe(window, "load" ,function(){
+    myDataGrid = new ui.DataGrid($("myDataGrid"));
+    myDataGrid.action = "modify";
+  });
+  </script>
+ </head>
+
+ <body>
+    <ul id="container">
+    <li id="header">
+      <h1>{$lang.view_store_nav}</h1>
+      <div class="link">[<a href="admin.php?app=store_nav&amp;act=add">{$lang.add_store_nav}</a>]</div>
+     <div id="desc">
+        <div id="page-selector">
+        </div>
+        <span></span>
+      </div>    </li>
+     <li id="wrapper">
+    <select id='myDropDownlist' style="display:none">
+    {html_options options=$cate_list}
+    </select>
+      <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+        <tr>
+          <th class="first-cell" readOnly=false columnName="title" dataType="string" required="true">
+            {sort_link by=title text=$lang.nav_title}
+          </th>
+          <th readOnly=false columnName="sort_order">{sort_link by=sort_order text=$lang.sort_order}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=art}
+        <tr id="{$art.article_id}">
+          <td class="first-cell"><span>{$art.title|escape}</span></td>
+          <td><span>{$art.sort_order|default:0}</span></td>
+          <td class="handlelist"><a href="admin.php?app=store_nav&amp;act=edit&amp;id={$art.article_id}">{$lang.edit}</a> | <a href="admin.php?app=store_nav&amp;act=drop&amp;id={$art.article_id}" onclick="return confirm('{$lang.confirm_delete}');">{$lang.delete}</a></td>
+        </tr>
+        {foreachelse}
+          <tr><td colspan="7" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+
+      </table><div id="page-list" style="clear:both"></div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+   </body>
+</html>

@@ -1,0 +1,11 @@
+<!-- {if $hot_keywords} ÈÈÃÅËÑË÷ -->
+<div id="search_hot" class="colbox">
+  <h3>{$lang.hot_search}</h3>
+  <div class="colboxcontent">
+    <!-- {foreach from=$hot_keywords item=keyword} -->
+    <a href="{url src=index.php?app=search&amp;keywords=$keyword}">{$keyword}</a>
+    <!-- {/foreach} -->
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} ÈÈÃÅËÑË÷ -->

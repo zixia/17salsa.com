@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <title> ECMall - {$lang.system_message} </title>
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.system_message}</h1>
+      <div id="desc"></div>
+    </li>
+    <li align="center">
+      <h2 style="border:none; margin: 40px 0 20px 150px; padding: 0px 0px 0px 50px; background:url(admin/images/icon_{$icon}.gif) no-repeat center left; height: 32px;">{$message}</h2>
+      {if $err_file}
+      <p style="padding-left: 200px">Error File: <b>{$err_file}</b> at <b>{$err_line}</b> line.</p>
+      {/if}
+      {if $redirect}
+      <p style="padding-left: 200px">{$lang.auto_redirect}</p>
+      {/if}
+      <div>
+        <ul style="padding-left: 200px; line-height: 150%; ">
+          {foreach from=$links item=item}
+          <li><a href="{$item.href}" class="forward">{$item.text}</a></li>
+          {/foreach}
+        </ul>
+      </div>
+    </li>
+    <li id="footer">
+      <div>Copyright 2005-2008 ShopEx Inc., All rights reserved.</div>
+    </li>
+  </ul>
+  {if $redirect}
+  <script type="text/javascript">
+  <!--
+    window.setTimeout("{$redirect}", 3000);
+  //-->
+  </script>
+  {/if}
+  <span id="send_mail_code">{$send_mail_code}</span>
+ </body>
+</html>

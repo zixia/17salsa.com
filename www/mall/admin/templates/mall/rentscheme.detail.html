@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?act=jslang"></script>
+{script src="ajax,ecmall,ui.utils,ui.autocomplete,ui.effect,ui.imgpreviewer,validator"}
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{if $rentscheme.scheme_id}{$lang.edit_rentscheme}{else}{$lang.add_rentscheme}{/if}</h1>
+    <div class="link">[<a href="admin.php?app=rentscheme&amp;act=view">{$lang.rentschemes}</a>]</div>
+    <div id="desc"></div>
+  </li>
+  <li>
+    <form method="post" enctype="multipart/form-data" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.allowed_goods}:</td>
+              <td><input name="allowed_goods" type="text" id="allowed_goods" value="{$rentscheme.allowed_goods}" size="20" dataType="int" test="0,*" required="true" /><span class="note">{$lang.allowed_goods_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.allowed_file}:</td>
+              <td><input name="allowed_file" type="text" id="allowed_file" value="{$rentscheme.allowed_file}" size="20" dataType="int" test="0,*" required="true" /><span class="note">{$lang.allowed_file_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.allowed_month}:</td>
+              <td><input name="allowed_month" type="text" id="allowed_month" value="{$rentscheme.allowed_month}" size="20" dataType="int" test="1,*" required="true" /><span class="note">{$lang.allowed_month_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.price}:</td>
+              <td><input name="price" type="text" id="price" value="{$rentscheme.price}" size="20" dataType="float" test="1,*" required="true" /><span class="note">{$lang.price_note}</span></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="scheme_id" value="{$rentscheme.scheme_id}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

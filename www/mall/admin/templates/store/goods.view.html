@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.datagrid,ajax,validator,ui.dropdownmenu"}
+  {literal}
+  <script type="text/javascript">
+    var grid = null;
+    Event.observe(window, 'load', function() {
+      grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+      var batchMenu = initDropDownMenu('dropdown-button', 'dropdown-menu');
+      show_cate_select();
+    });
+
+    function addGroupBuy (lab, id) {
+      parent.openFrame(lab, 'groupbuy', 'add', 'goods_id=' + id, true);
+    }
+
+  function change_cate(elem)
+  {
+    var cate_id = elem.value;
+    var cate_type = elem.name.substr(0,elem.name.indexOf('_'));
+    if (cate_id == "0" || cate_id == "") {alert("{$lang.e_target_cate}"); return;}
+    if (!confirm('{$lang.confirm_change_cate}')) return;
+    grid.batch("batch", "move_to_cate," + cate_type + "," + cate_id);
+  }
+
+  function change_brand(obj)
+  {
+    var brand_name = getInputByName(obj.parentNode, 'new_brand_name').value;
+    if (brand_name.length == 0){
+      alert("{$lang.e_new_brand}");
+      return;
+    }
+    grid.batch("batch", "move_to_brand," + brand_name);
+  }
+
+  /*get input by name*/
+  function getInputByName(obj, input_name)
+  {
+    var elem = obj.getElementsByTagName("INPUT");
+    var result = false;
+    for (var i =0;i<elem.length; i++)
+    {
+      if (elem[i].name == input_name){
+        result = elem[i];
+        break;
+      }
+    }
+    return result;
+  }
+  
+  function show_cate_select(pre){
+    if (typeof(pre) == "undefined") pre = '';
+    var cate_type = $(pre + 'select_cate_type');
+    var store_cate = $(pre + 'select_store_cate');
+    var mall_cate = $(pre + 'select_mall_cate');
+    if (cate_type.value == 'store'){
+      store_cate.style.display = "";
+      store_cate.disabled = false;
+      mall_cate.style.display = "none";
+      mall_cate.disabled = true;
+    }else{
+      store_cate.style.display = "none";
+      store_cate.disabled = true;
+      mall_cate.style.display = "";
+      mall_cate.disabled = false;   
+    }
+  }
+  {/literal}
+  </script>
+ </head>
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.view_goods}</h1>
+      <div class="link">[<a href="admin.php?app=goods&amp;act=add">{$lang.add_goods}</a>]</div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stat_info}</span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      <form method="get" action="admin.php">
+        {$lang.keywords}:
+        <select name="cate_type" id="select_cate_type" onchange="show_cate_select();">
+          <option value="store" {if $cate_type eq 'store'}selected="selected"{/if}>{$lang.store_category}</option>
+          <option value="mall" {if $cate_type eq 'mall'}selected="selected"{/if}>{$lang.mall_category}</option>          
+        </select>        
+        <select name="store_cate_id" id="select_store_cate">
+        <option value="0">{$lang.all_category}</option>
+        {html_options options=$store_cate_options selected=$condition.store_cate_id}
+        </select>
+        <select name="mall_cate_id" id="select_mall_cate" style="display:none">
+        <option value="0">{$lang.all_category}</option>
+        {html_options options=$mall_cate_options selected=$condition.mall_cate_id}
+        </select>        
+        <input type="text" name="keywords" value="{$condition.keywords}" />
+        <input type="submit" value="{$lang.button_search}" />
+        <input type="hidden" name="app" value="goods"/>
+        <input type="hidden" name="act" value="view"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell" readOnly="false" columnName="goods_name" dataType="string" required="true">
+            <input type="checkbox" class="checkAll" />
+            {sort_link by=goods_name text=$lang.goods_name}
+          </th>
+          <th>{sort_link by=store_cate_name text=$lang.cate_name}</th>
+          <th>{sort_link by=brand_name text=$lang.brand}</th>
+          <th>{sort_link by=store_price text=$lang.store_price}</th>
+          <th readOnly="false" dataType="bool" columnName="is_s_best" >{sort_link by=is_s_best text=$lang.is_s_best}</th>
+          <th readOnly="false" dataType="bool" columnName="is_s_new" >{sort_link by=is_s_new text=$lang.is_s_new}</th>
+          <th readOnly="false" dataType="bool" columnName="is_on_sale">{sort_link by=is_on_sale text=$lang.on_sale}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=goods}
+        <tr id="{$goods.goods_id}">
+          <td class="first-cell">
+            <input type="checkbox" name="id" value="{$goods.goods_id}" />
+            <span>{$goods.goods_name|escape|default:N/A}</span>
+          </td>
+          <td>{if $goods.store_cate_name}{$goods.store_cate_name|escape}{else}N/A{/if}</td>
+          <td>{if $goods.brand_name}{$goods.brand_name|escape}{else}N/A{/if}</td>
+          <td>{$goods.store_price}</td>
+          <td>{img_yesorno value=$goods.is_s_best dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_s_new dir=admin/images}</td>
+          <td>{img_yesorno value=$goods.is_on_sale dir=admin/images}</td>
+          <td width="160" class="handlelist">
+            <a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_brank">{$lang.view}</a> |
+            <a href="admin.php?app=goods&amp;act=edit&amp;id={$goods.goods_id}">{$lang.edit}</a> |
+            <a href="admin.php?app=goods&amp;act=drop&amp;id={$goods.goods_id}" onclick="return confirm('{$lang.delete_confirm}')">{$lang.delete}</a> |
+            <a href="javascript:;" class="dropdown-button">{$lang.more}</a>
+            <ul class="dropdown-menu">
+              <li><a href="admin.php?app=goods&amp;act=relate&amp;id={$goods.goods_id}&amp;type=s">{$lang.similar_goods}</a></li>
+              <li><a href="admin.php?app=goods&amp;act=relate&amp;id={$goods.goods_id}&amp;type=c">{$lang.compatible_goods}</a></li>
+              <li><a href="javascript:;" onclick="addGroupBuy('{$lang.tab_labels.group_buy}', {$goods.goods_id})">{$lang.group_buy}</a></li>
+            </ul>
+          </td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="8" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="11">
+            <ul id="batch-links">
+              <li class="batch-link" action="batch" param="set_best">{$lang.set_best}</li>
+              <li class="batch-link" action="batch" param="set_sale">{$lang.set_sale}</li>
+              <li class="batch-link" action="batch" param="drop">{$lang.delete}</li>
+              <li class="batch-link dropdown-button">
+                {$lang.more_handler}
+                <ul class="dropdown-menu">
+                  <li>{$lang.change_store_cate}&nbsp;
+                  <select name="cate_type" onchange="show_cate_select('change_');" id="change_select_cate_type"><option value="store">{$lang.store_category}</option><option value="mall">{$lang.mall_category}</option></select>
+                  <select name="store_cate_id" onchange="change_cate(this)" id="change_select_store_cate"><option value="0">{$lang.all_category}</option>{html_options options=$store_cate_options }</select>
+                  <select name="mall_cate_id" onchange="change_cate(this)"  id="change_select_mall_cate" disabled="disabled" style="display:none"><option value="0">{$lang.all_category}</option>{html_options options=$mall_cate_options }</select>
+                  </li>
+                  <li>{$lang.change_brand} <input type="text" name="new_brand_name" size="14"><input type="button" value="{$lang.confirm}" onclick="change_brand(this);"></li>
+                </ul>
+              </li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

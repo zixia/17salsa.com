@@ -1,0 +1,52 @@
+body { margin:0; padding:0; }
+img { border:0; }
+#ECM_controlpanel .loading { text-align:center; width:502px; height:70px; margin:auto; padding-top:53px; }
+#ECM_controlpanel .panel { background:#000 url(images/panel_bg.png) no-repeat center 0; height:171px; margin:auto; padding-top:29px; }
+#ECM_controlpanel .panel_gb { width:502px; height:145px; margin:auto; }
+#ECM_controlpanel .pane_tab { margin:0; padding:0; list-style:none; position:absolute; }
+#ECM_controlpanel .pane_tab li.pane_content { background-image:url(images/icon_content.gif); background-repeat:no-repeat; background-position:5px center; }
+#ECM_controlpanel .pane_tab li.pane_style { background-image:url(images/icon_style.gif); background-repeat:no-repeat; background-position:5px center; }
+#ECM_controlpanel .pane_tab li { line-height:24px; font-size:12px; color:#c7c7c7; background-color:#5f5f60; width:54px; margin:1px 1px 1px 0; padding-left:25px; cursor:pointer; }
+#ECM_controlpanel .pane_tab li.selected { line-height:24px; color:#fff; background-color:#5c5c5c; width:55px; margin:0; border:1px solid #717171; border-right:0; }
+#ECM_controlpanel .toolbar { background:#000 url(images/toolbar_bg.gif) repeat-x; height:34px; }
+#ECM_controlpanel .toolbar h1 { line-height:32px; font-size:12px; color:#fff; background:url(images/icon_layout.gif) no-repeat 0 9px; width:100px; margin:0 auto; padding:0 0 0 20px; }
+#ECM_controlpanel .switch_on { line-height:34px; font-size:12px; color:#fff; background:url(images/btn_arrow.gif) no-repeat 0 top; float:right; padding:0 18px; cursor:pointer; }
+#ECM_controlpanel .switch_off { line-height:34px; font-size:12px; color:#fff; background:url(images/btn_arrow.gif) no-repeat 0 -34px; float:right; padding:0 18px; cursor:pointer; }
+#ECM_controlpanel .icon_content { font-size:12px; color:#fff; background:url(images/icon_content.gif) no-repeat 0 center; margin:10px 0 0 5px; padding:0 0 0 20px; }
+#ECM_controlpanel .icon_style { line-height:16px; font-size:12px; color:#fff; background:url(images/icon_style.gif) no-repeat 0 center; margin:10px 0 0 10px; padding:0 0 0 20px; }
+#ECM_controlpanel .col_left,#ECM_controlpanel .col_right { height:145px; float:left; }
+#ECM_controlpanel .col_left { width:80px; position:relative; }
+#ECM_controlpanel .col_right { width:422px; }
+#ECM_controlpanel .text_list { background:url(images/list_bg.gif) no-repeat; height:123px; margin:0; padding:2px 2px 0; list-style:none; }
+#ECM_controlpanel .text_list li { line-height:24px; font-size:12px; color:#333; padding:0 10px; }
+#ECM_controlpanel .text_list li a { text-decoration:none; color:#333; display:block; height:24px; }
+#ECM_controlpanel .text_list li a:hover { text-decoration:none; color:#fff; background:url(images/list_arrow.gif) no-repeat right center; }
+#ECM_controlpanel .text_list .heightlight { color:#fff; background:url(images/list_selected.gif) repeat-x; }
+#ECM_controlpanel .text_list .btnlist { line-height:normal; padding-top:6px; float:right; }
+#ECM_controlpanel .text_list .btnlist img { cursor:pointer; }
+#ECM_controlpanel .thumb_list { background:url(images/thumb_list_bg.gif) no-repeat; height:115px; overflow:hidden; margin:0; padding:7px 0 3px 25px; list-style:none; }
+#ECM_controlpanel .thumb_list li { position: relative; display:inline; float:left; margin-right:24px; }
+#ECM_controlpanel .thumb_list li span { position: absolute; top:40px; left:30px; padding:3px 5px 3px 5px;; color:#fff; font-weight:bold; cursor:pointer; }
+#ECM_controlpanel .thumb_list li div { position: absolute; top:40px; left:30px; background:#000; filter:alpha(opacity=50); -moz-opacity:0.7 }
+
+#ECM_controlpanel .thumb_list li img { padding:2px; border:2px solid #dcdcdc; cursor:pointer; }
+#ECM_controlpanel .thumb_list li.heightlight img { border:2px solid #333333; }
+#ECM_controlpanel .thumb_list li.selected img { border:2px solid #1177fe; }
+#ECM_controlpanel .handle { margin:0; padding:0; }
+#ECM_controlpanel .handle img { cursor:pointer; }
+#ECM_controlpanel .modulehandle { margin:0; padding:0; }
+#ECM_controlpanel .modulehandle img { cursor:pointer; }
+#ECM_controlpanel .btn_back { font-size:12px; text-decoration:none; color:#fff; background:url(images/btn_back.gif) no-repeat 0 top; padding-left:10px; position:absolute; bottom:2px; left:7px; }
+#ECM_controlpanel a:hover.btn_back { color:#80c7f6; background-position:0 -14px; }
+#ECM_controlpanel .quickchange { margin:0; padding:0; position:absolute; right:10px; top:43px; }
+#ECM_controlpanel .quickchange span { text-indent:-9999px; display:block; width:16px; height:16px; margin-bottom:5px; cursor:pointer; }
+#ECM_controlpanel .quickchange .prev { background:url(images/btn_prev.gif) no-repeat center top; }
+#ECM_controlpanel .quickchange .prev:hover { background:url(images/btn_prev.gif) no-repeat center center; }
+#ECM_controlpanel .quickchange .prevdisable { background:url(images/btn_prev.gif) no-repeat center bottom; cursor:default; }
+#ECM_controlpanel .quickchange .next { background:url(images/btn_next.gif) no-repeat center top; }
+#ECM_controlpanel .quickchange .next:hover { background:url(images/btn_next.gif) no-repeat center center; }
+#ECM_controlpanel .quickchange .nextdisable { background:url(images/btn_next.gif) no-repeat center bottom; cursor:default; }
+
+.close_btn { right:10px; top:8px; position:absolute; cursor:pointer; }
+.ECM_loaderBox { text-align:center; border: 1px solid #ccc; }
+.ECM_loaderBox img { margin-top:19px; } 

@@ -1,0 +1,39 @@
+  <h2 id="logo"><a href="#" onclick="alert('todo: add link')"><img src="images/logo.gif" alt="site name" /></a></h2>
+  <ul id="topnav">
+    <li><span><a href="#" onclick="alert('todo: add link')">{$lang.user_center}</a></span></li>
+    <li><span><a href="#" onclick="alert('todo: add link')">{$lang.help_center}</a></span></li>
+    <li><span><a href="#" onclick="alert('todo: add link')">{$lang.pm}</a></span></li>
+  </ul>
+  <p class="memberinfo"><span>{$lang.hello}{$visitor}</span> <a href="#" onclick="alert('todo: add link')">[{$lang.sign_in}]</a> <a href="#" onclick="alert('todo: add link')">[{$lang.register}]</a></p>
+  <div id="navigation">
+    <ul>
+      <!-- {foreach from=$nav_list item=nav name=navlist} 导航 -->
+      <li class="{if $nav.selected}selected{/if}{if $smarty.foreach.navlist.first} first{/if}{if $smarty.foreach.navlist.last} last{/if}"><a href="{$nav.href}"{if $nav.open_new} target="_blank"{/if}>{$nav.text}</a></li>
+      <!-- {/foreach} 导航 -->
+    </ul>
+  </div>
+</div>
+
+<div id="globalsearch">
+  <form action="index.php" method="get">
+    <!-- todo<div class="soption"><p>
+      <select name="searchbrand" id="searchbrand">
+        <option>搜索商品</option>
+      </select></p>
+    </div>-->
+    <div class="soption"><p>
+      <select name="cate_id" id="searchcategory">
+        <option value="0">{$lang.all_category}</option>
+        {html_options options=$category}
+      </select></p>
+    </div>
+    <input name="keywords" type="text" id="keyword" class="sinput" />
+	<input name="app" type="hidden" value="search" />
+    <input type="image" src="images/btn_search.gif" />
+    <a href="#" onclick="alert('todo')">[{$lang.advanced_search}]</a><a href="#" onclick="alert('todo')">[{$lang.store_search}]</a>
+  </form>
+  <!-- {if $hot_keywords} 热门搜索 -->
+  <div id="hotkeywords">
+    {$lang.hot_search}: <!-- {foreach from=$hot_keywords item=keyword} --><a href="{url src=index.php?app=search&keywords=$keyword}">{$keyword}</a><!-- {/foreach} -->
+  </div>
+  <!-- {/if} 热门搜索 -->

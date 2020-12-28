@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.datagrid"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.list_payment}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell">{$lang.pay_name}</th>
+          <th>{$lang.version}</th>
+          <th>{$lang.author}</th>
+          <th readOnly="false" columnName="pay_fee" dataType="string">{$lang.pay_fee}</th>
+          <th readOnly="false" columnName="sort_order" dataType="int">{$lang.sort_order}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=payment name=payment}
+        <tr id="{$payment.pay_id}"{if !$payment.enabled} readOnly="true"{/if}>
+          <td class="first-cell">{if $payment.pay_code eq 'tenpay'}<span style="font-weight:bold;color:red;">{$payment.pay_name|escape}</span>{else}{$payment.pay_name|escape}{/if}</td>
+          <td>{$payment.version}</td>
+          <td><a href="{$payment.website}" target="_blank">{$payment.author}</a></td>
+          <td><span>{$payment.pay_fee}</span></td>
+          <td><span>{if $payment.enabled}{$payment.sort_order}{else}&nbsp;{/if}</span></td>
+          <td>
+            {if $payment.enabled}
+             <a href="admin.php?app=payment&amp;act=edit&amp;id={$payment.pay_id}">{$lang.edit}</a> | <a href="admin.php?app=payment&amp;act=drop&amp;id={$payment.pay_id}" onclick="return confirm('{$lang.drop_confirm}')">{$lang.uninstall}</a>
+            {else}
+            <a href="admin.php?app=payment&amp;act=add&amp;code={$payment.pay_code}">{$lang.install}</a>
+            {/if}
+          </td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

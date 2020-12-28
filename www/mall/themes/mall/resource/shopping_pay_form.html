@@ -1,0 +1,20 @@
+<div id="shopping_pay_form" class="colbox flow">
+  <h3>loading...</h3>
+  <form action="{$pay_form.action}" id="pay_form" method="{$pay_form.method}" style="display:none">
+  <!-- {foreach from=$pay_form.fields item=value key=_k} -->
+    <!-- {if $value.type eq 'select'} -->
+    <select name="{$_k}">
+      <!-- {foreach from=$value.data item=select_item key=select_key} -->
+        <option value="{$select_key}">{$select_item}</option>
+      <!-- {/foreach} -->
+    </select>
+    <!-- {else} -->
+    <input type="hidden" name="{$_k}" value="{$value}" />
+    <!-- {/if} -->
+  <!-- {/foreach} -->
+  </form>
+    <script type="text/javascript">
+      $('pay_form').submit();
+    </script>
+  <div class="colbtm"></div>
+</div>

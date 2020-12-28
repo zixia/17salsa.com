@@ -1,0 +1,21 @@
+<div id="help_center" class="clearfix">
+  <div class="column1">
+    <div id="help_list" class="colbox">
+      <h3>{$lang.help_title}</h3>
+      <div class="colboxcontent">
+        <ul>
+          <!-- {foreach from=$article_list.data item=article} -->
+          <li><a href="{url src=index.php?app=article&amp;act=help_center&amp;id=$article.article_id}">{$article.title|escape}</a></li>
+          <!-- {/foreach} -->
+        </ul>
+      </div>
+      <div class="colbtm"></div>
+    </div>
+  </div>
+  <div class="column2">
+    <div id="help_content">
+      <h1>{$cur_article.title|escape}</h1>
+      <div class="help_article format_article">{$cur_article.content}</div>
+    </div>
+  </div>
+</div>

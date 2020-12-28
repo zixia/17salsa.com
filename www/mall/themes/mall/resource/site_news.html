@@ -1,0 +1,15 @@
+<div id="site_news_content" class="colbox">
+  <!-- {if $article_list} -->
+  <div class="colboxcontent" >
+    <ul class="articles_list">
+      <!-- {foreach from=$article_list.data item=article} ндуб -->
+      <li><span class="time">({$article.formated_add_time})</span><a href="{url src=index.php?app=article&amp;act=site_news&amp;id=$article.article_id}">{$article.title|escape}</a></li>
+      <!-- {/foreach} ндуб -->
+  </ul>
+    <div class="pagechanger">{page_links from=$article_list.info url=$url_format}</div>
+  </div>
+  <div class="colbtm"></div>
+  <!-- {else} -->
+  <div class="colboxcontent format_article"> {$article.content} </div>
+  <!-- {/if} -->
+</div>

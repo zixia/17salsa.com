@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, "load", function() {
+     new ui.utils.tabForm("tab-form");
+     Validator.run("theForm");
+    });
+  //]]>
+  </script>
+</head>
+<body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_position}</h1>
+      <div class="link">[<a href="admin.php?app=ad_position&amp;act=view">{$lang.view_position}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.position_name}:</td><td><input name="position_name" type="text" id="position_name" value="{$info.position_name}" size="40" dataType="string" required="true"/><span class="note">*</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.position_width}:</td><td><input name="width" type="text" id="width" value="{$info.width}" size="20" dataType="int" required="true"/><span class="note">{$lang.position_size_notice}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.position_height}:</td><td><input name="height" type="text" id="height" value="{$info.height}" size="20" dataType="int" required="true"/><span class="note">{$lang.position_size_notice}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.position_desc}</td><td>
+              <label>
+              <textarea name="desc" cols="40" rows="6" datatype="string" style="height:50px">{$info.position_desc}</textarea>
+              </label></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <p class="submitlist">
+          <input type="submit" value="{$lang.button_submit}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+</body>
+</html>

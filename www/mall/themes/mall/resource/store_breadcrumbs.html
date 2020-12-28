@@ -1,0 +1,13 @@
+<!-- µ±Ç°Î»ÖÃ -->
+<div id="breadcrumbs" class="store">
+  <ul>
+    <li id="breadcrumbs_home"><a href="./">{$lang.home}</a></li>
+    <!-- {foreach from=$location_data item=location} -->
+    <!-- {if $location.url} -->
+    <li><a href="{$location.url}">{$location.name|escape}</a></li>
+    <!-- {else} -->
+    <li><span class="selected">{$location.name|escape}</span></li>
+    <!-- {/if} -->
+    <!-- {/foreach} -->
+  </ul>
+</div>

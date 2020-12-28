@@ -1,0 +1,78 @@
+#filter_condition:after { content:""; display:block; height:0px; clear:both; visibility:hidden; }
+#filter_condition { background:#FFF2F2 url(images/filter_condition_bg.gif) no-repeat scroll 5px; *display:inline-block; border:1px solid #FFD0D0; padding:10px 10px 10px 60px; margin-bottom:10px; line-height:30px; }
+#filter_condition .color-span { width:10px; height:10px; overflow:hidden; margin-top:3px; border:2px solid #0F42B5; }
+#filter_condition a { color:blue; padding-left:10px; }
+.filter_condition_item { background:#F6FCFF none repeat scroll 0%; border:1px dotted #B6E0F8; height:20px; line-height:20px; float:left; margin:3px 5px 2px 0pt; padding:0pt 6px; white-space:nowrap; }
+.filter_condition_item span { font-weight:bold; float:left; }
+.filter_condition_item label,.filter_condition_item a { float:left; margin:0 3px; }
+#goods_filter .colboxcontent { padding:0 1px; }
+#goods_filter h4 { margin:0 4px; padding:5px 6px; border-top:1px solid #DDD; font-size:12px; color:#333; background:#DDD url(images/category_bg.gif) repeat-x; }
+#goods_filter h4.first { border-top:0; }
+#goods_filter h4 span { width:12px; height:12px; cursor:pointer; }
+#goods_filter li { margin:0; padding:0; }
+#goods_filter .filter_body { padding:5px 0 10px; }
+#goods_filter #filter_cate li { padding-right:15px; }
+#goods_filter #filter_cate li a { display:block; padding-left:8px; height:22px; line-height:22px; background:url(images/icon_arrow01.gif) no-repeat 0 center; }
+#goods_filter #filter_cate .cate_level_top,#filter_cate { padding-left:15px; }
+#goods_filter #filter_cate .cur_cate { font-weight:bold; }
+#goods_filter #filter_brand,#goods_filter #filter_price { padding:5px 15px 10px; }
+#goods_filter #filter_price .sinput { width:35px; }
+#goods_filter #filter_brand li,#goods_filter #filter_price li { border-bottom:1px dotted #dadada; }
+#goods_filter #filter_brand li a,#goods_filter #filter_price li a { line-height:22px; background:url(images/icon_arrow01.gif) no-repeat 0 center; display:block; padding-left:8px; }
+#goods_filter #filter_price .btnlist { padding:10px 0; border:0; }
+#goods_filter #filter_color { padding:10px; }
+#goods_filter #filter_color li { float:left; margin:3px; }
+#goods_filter #filter_color li a { text-indent:-9999px; width:15px; height:15px; overflow:hidden; float:left; border:2px solid #f1f1f1; outline:0; }
+#goods_filter #filter_color li.selected a { border:2px solid #0f42b5; }
+#goods_filter #filter_color li a:hover { background:none; border:2px solid #0f42b5; }
+.collapse_open { float:right; background:url(images/menu_minus.gif) no-repeat; }
+.collapse_close { float:right; background:url(images/menu_plus.gif) no-repeat; }
+.nodata { background:url(images/icon_warning.gif) no-repeat 50px 60px; border-top:1px solid #e5e5e5; clear:both; padding:60px 20px 150px 100px; }
+.nodata h1 { font-size:14px; }
+.nodata span { font-weight:bold; padding:10px 0; display:block; }
+.nodata ul { padding:5px 10px 10px 20px; display:block; }
+.nodata ul li { color:#666; list-style:square; }
+
+.sortlist h3 { background:url(images/col_title_bgd1.gif) no-repeat; }
+.sortlist .itemgrid .item { width:137px; height:240px; float:left; margin:5px 0 15px; padding:0 24px; }
+.sortlist .itemgrid .item .pic img { padding:5px; border:1px solid #e5e5e5; }
+.sortlist .itemgrid .item .name { padding:8px 2px; display:block; height:38px !important; height:36px; overflow:hidden; }
+.sortlist .itemgrid .item .name a { color:#333; }
+.sortlist .itemgrid .item .price { color:#999; margin-bottom:5px; }
+.sortlist .itemgrid .item .price { font:bold 14px Arial; color:#FF5050; }
+.sortlist .itemgrid .item .price .marketprice { display:block; margin-left:3px; font-size:12px; font-weight:normal; color:#999; text-decoration:line-through; }
+.sortlist .itemgrid .item .date,
+.sortlist .itemgrid .item .status,
+.sortlist .itemgrid .item .sales,
+.sortlist .itemgrid .item .commended { line-height:16px; color:#4A4A4A; }
+.sortlist .itemgrid .item .sales em,
+.sortlist .itemgrid .item .commended em { font-weight:700; color:#FF5050; }
+.sortlist .itemlist{ margin:0 10px 5px; border:1px solid #DDD; background:#FFF; }
+.sortlist .itemlist li { height:135px; padding:10px 10px 0 0; border-bottom:1px dotted #dadada; }
+.sortlist .itemlist .info { color:#999; }
+.sortlist .itemlist .info p { margin-bottom:5px; }
+.sortlist .itemlist .info .pic { float:left; padding:0 10px 0 15px; }
+.sortlist .itemlist .info .pic img { margin-bottom:1px; padding:2px; border:1px solid #e5e5e5; }
+.sortlist .itemlist .info .name a { font-size:14px; font-weight:bold; color:#0e6ad0; }
+.sortlist .itemlist .info .nowprice { font:bold 18px Arial; color:#FF5050; margin-left:3px; }
+.sortlist .itemlist .info .marketprice,
+.sortlist .itemlist .info .nowprice,
+.sortlist .itemlist .info .commended,
+.sortlist .itemlist .info .sales { float:right; clear:right; }
+.sortlist .itemlist .info .commended em,
+.sortlist .itemlist .info .sales em { font-weight:bold; color:#287fb6; }
+.sortlist .itemlist .info .marketprice span { text-decoration:line-through; }
+.sortlist .itemlist .otherinfo { padding-top:8px; }
+.sortlist .itemlist .otherinfo p { color:#4A4A4A; margin-bottom:5px; }
+.sortlist .itemlist .otherinfo a { text-decoration:underline; color:#4A4A4A; }
+.sortlist #displaymode { height:18px; padding:10px 15px; border-top:1px solid #dadada; color:#4A4A4A; }
+.sortlist #displaymode span { margin-right:35px; }
+.sortlist #displaymode .quickchanger span { margin-right:10px; }
+.sortlist #displaymode .quickchanger { float:right; }
+.sortlist #displaymode .quickchanger .prve_page { text-indent:-9999px; background:url(images/btn_page_prev.gif) no-repeat; width:50px; height:16px; float:left; }
+.sortlist #displaymode .quickchanger .next_page { text-indent:-9999px; background:url(images/btn_page_next.gif) no-repeat; width:50px; height:16px; float:left; }
+.sortlist #displaymode .quickchanger .act_next_page { text-indent:-9999px; background:url(images/btn_page_next_act.gif) no-repeat; width:50px; height:16px; float:left; }
+.sortlist #displaymode .quickchanger .act_prve_page { text-indent:-9999px; background:url(images/btn_page_prev_act.gif) no-repeat; width:50px; height:16px; float:left; }
+.sortlist #displaymode .quickchanger .pps_total { line-height:16px; float:left; }
+.sortlist #displaymode .quickchanger a,.sortlist #displaymode .quickchanger span { margin:0 5px; outline:0; }
+.grid2col .column2 .grid1col .sortlist .colboxcontent{ width:auto; height:auto; overflow:visible; }

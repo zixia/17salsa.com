@@ -1,0 +1,84 @@
+<div id="mc_register" class="mc_login clearfix">
+  <div class="coltop"></div>
+  <script type="text/javascript" src="js/validator.js"></script>
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, 'load', function(){
+      if (document.forms['ECS_LOGIN'].user_name) document.forms['ECS_LOGIN'].user_name.focus();
+    });
+
+  //]]>
+  </script>
+  <div class="column1">
+    <h3><img src="images/login_title_register.gif" alt="{$lang.register}" /></h3>
+    <form name="ECS_LOGIN" action="index.php?app=member&amp;act=register" method="post">
+      <table border="0" cellspacing="0" class="formtable">
+        <tr>
+          <th width="80">{$lang.user_name}:</th>
+          <td><input type="text" size="30" class="sinput" name="user_name" id="user-name" onblur="checkUserName(this.value)" /><span id="checkusername" class="tip_msg"></span></td>
+        </tr>
+        <tr>
+          <th>{$lang.email}:</th>
+          <td><input name="email" type="text" size="30" class="sinput" dataType="email" onblur="checkUserEmail(this.value)" /><span id="checkuseremail" class="tip_msg"></span></td>
+        </tr>
+        <tr>
+          <th>{$lang.password}:</th>
+          <td><input name="password" type="password" size="30" class="sinput" id="password_id" onkeyup="checkIntensity(this.value)" />
+            <table border="0" cellspacing="0" style="vertical-align:bottom;display:inline;">
+              <tbody>
+                <tr align="center">
+                  <td id="pwd_lower" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_lower}</td>
+                  <td id="pwd_middle" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_middle}</td>
+                  <td id="pwd_high" style="border-bottom: 2px solid rgb(218, 218, 218);" width="33%">{$lang.pwd_high}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <th>{$lang.repeat_password}:</th>
+          <td><input name="repeat_password" type="password" size="30" class="sinput"  onblur="checkRepeatPassword(this.value)"/><span id="checkrepeatpassword" class="tip_msg"></span></td>
+        </tr>
+        <!--{if $register_captcha}-->
+        <tr style="display:none;" id="captcha-input">
+          <th>{$lang.captcha}:</th>
+          <td><input type="text" id="captcha" name="captcha" maxlength="4" size="8"  class="sinput" /> <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" /> <span class="desc" onclick="changeCaptcha($('captcha-img'))" style="cursor:pointer">{$lang.change_captcha}</span></td>
+        </tr>
+        <!--{/if}-->
+        <tr>
+          <th>&nbsp;</th>
+          <td><input type="checkbox" name="eula" onclick="if(this.checked)$('registerBtn').disabled=false; else $('registerBtn').disabled=true;" /> {$lang.agreement}</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>
+          <input type="hidden" name="ret_url" value="{$ret_url}" /><input type="submit" disabled="disabled" value="{$lang.register}" id="registerBtn" class="sbtn" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+  <div class="column2">
+    <h4>{$lang.to_login}</h4>
+    <p>{$lang.to_login_intro}</p><br />
+    <p><a href="index.php?app=member&amp;act=login"><img src="images/btn_to_signin.gif" alt="{$anonymous_buy_alt}" /></a></p><br /><br />
+    <p>{$lang.getpwd_intro}</p>
+    <p><a href="index.php?app=member&amp;act=getpwd"><img src="images/btn_getpwd.gif" alt="{$lang.getpwd}" /></a></p>
+  </div>
+  <div class="colbtm"></div>
+  <script type="text/javascript">
+  //<![CDATA[
+    var showCaptcha = function(){
+        if ($('captcha-img'))
+        {
+            $('captcha-input').style.display = '';
+            changeCaptcha($('captcha-img'));
+        }
+    };
+    Event.observe($('user-name'), 'focus', showCaptcha);
+    function changeCaptcha (img) {
+        img.src = 'admin.php?app=profile&act=captcha&' + Math.random();
+        Event.stopObserving($('user-name'), 'focus', showCaptcha);
+    }
+  //]]>
+  </script>
+</div>

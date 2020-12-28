@@ -1,0 +1,18 @@
+<!-- {if $partner_list.logo or $partner_list.text or $editing} -->
+<div id="partner" class="colbox">
+  <h3>{$lang.partner}</h3>
+  <div class="colboxcontent">
+    <ul class="popuplist">
+      <!-- {foreach from=$partner_list.logo item=partner_logo} -->
+      <li><a href="{$partner_logo.partner_website}" target="_blank" title="{$partner_logo.partner_name|escape}"><img src="{$partner_logo.partner_logo}" alt="{$partner_logo.partner_name}" /></a></li>
+      <!-- {/foreach} -->
+    </ul>
+    <ul class="popuplist">
+      <!-- {foreach from=$partner_list.text item=partner} -->
+      <li><a href="{$partner.partner_website}" target="_blank">{$partner.partner_name|escape}</a></li>
+      <!-- {/foreach} -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

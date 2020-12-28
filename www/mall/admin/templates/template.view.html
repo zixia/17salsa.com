@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src='ecmall'}
+  <script type="text/javascript" src="?act=jslang"></script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.templates_admin}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+        </div>
+        <span>{$lang.templates_admin_notice}</span>
+      </div>
+    </li>
+    <li id="wrapper">
+        <div id="template-list">
+        {foreach from=$list item=tmp key=name}
+        <div class="template-item">
+            <h3>{$lang.pages.$name}</h3>
+            <p><img src="{$tmp.src}" /></p>
+            <p><input type="button" value="{$lang.edit_template_button}" class="btn" onclick="window.open('{$tmp.edit_url}')"/></p>
+        </div>
+        {/foreach}
+        </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

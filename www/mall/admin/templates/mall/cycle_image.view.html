@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src='ecmall'}
+<script type="text/javascript" src="?act=jslang"></script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_cycleimage}</h1>
+    <div class="link">[<a href="admin.php?app=cycleimage&amp;act=add">{$lang.add_image}</a>]</div>
+    <div id="desc">
+      <div id="page-selector"> </div>
+      <span>{$cycleimage_stats}</span> </div>
+  </li>
+  <li id="wrapper">
+    <table class="grid" id="data-grid" cellspacing="0" cellpadding="0">
+      <tr>
+        <th class="first-cell">{$lang.img_url}</th>
+        <th>{$lang.link_url}</th>
+        <th>{$lang.handler}</th>
+      </tr>
+      {if $data}
+      {foreach from=$data item=img}
+      <tr>
+        <td class="first-cell"><span>{$img.item_url|truncate:50}</span></td>
+        <td><span>{$img.link|truncate:50}</span></td>
+        <td class="handlelist"><a href="admin.php?act=edit&app=cycleimage&id={$img.id}">{$lang.edit}</a> | <a href="admin.php?act=drop&app=cycleimage&id={$img.id}" onclick="return confirm('{$lang.drop_confirm}');">{$lang.delete}</a></td>
+      </tr>
+      {/foreach}
+      {else}
+      <tr>
+        <td colspan="3" class="no-records"><span>{$lang.no_records}</span></td>
+      </tr>
+      {/if}
+    </table>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

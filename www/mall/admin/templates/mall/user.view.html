@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.datagrid"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.user_view}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      <form method="get" action="admin.php">
+        {$lang.keywords}: <input type="text" name="keywords" value="{$smarty.get.keywords}" />
+        <input type="submit" value="{$lang.button_search}" />
+        <input type="hidden" name="app" value="user"/>
+        <input type="hidden" name="act" value="view"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell">{sort_link by=user_name text=$lang.user_name}</th>
+          <th readOnly="false" columnName="msn" dataType="email">{sort_link by=msn text=$lang.msn}</th>
+          <th readOnly="false" columnName="qq" dataType="int">{sort_link by=qq text=$lang.qq_num}</th>
+          <th readOnly="false" columnName="office_phone" dataType="tel_num">{sort_link by=office_phone text=$lang.office_phone}</th>
+          <th readOnly="false" columnName="home_phone" dataType="tel_num">{sort_link by=home_phone text=$lang.home_phone}</th>
+          <th readOnly="false" columnName="mobile_phone" dataType="tel_num">{sort_link by=mobile_phone text=$lang.mobile_phone}</th>
+          <th>{sort_link by=visit_count text=$lang.visit_count}</th>
+          <th>{sort_link by=shopping_amount text=$lang.shopping_amount}</th>
+          <th readOnly="false" columnName="last_ip" dataType="bool">{sort_link by=last_ip text=$lang.last_ip}</th>
+          <th readOnly="false" columnName="last_login" dataType="bool">{sort_link by=last_login text=$lang.last_login}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=user}
+        <tr id="{$user.user_id}">
+          <td class="first-cell"><span>{$user.user_name|escape}</span></td>
+          <td><span>{$user.msn|escape}</span>&nbsp;</td>
+          <td><span>{$user.qq|escape}</span>&nbsp;</td>
+          <td><span>{$user.office_phone|escape}</span>&nbsp;</td>
+          <td><span>{$user.home_phone|escape}</span>&nbsp;</td>
+          <td><span>{$user.mobile_phone|escape}</span>&nbsp;</td>
+          <td>{$user.visit_count}&nbsp;</td>
+          <td>{$user.shopping_amount}&nbsp;</td>
+          <td>{$user.last_ip}&nbsp;</td>
+          <td>{$user.last_login}&nbsp;</td>
+          <td>
+            <a href="admin.php?app=user&amp;act=edit&amp;id={$user.user_id}">{$lang.edit}</a>
+          </td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="11" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src='ecmall,ui.datagrid,validator,json,ajax'}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <script type="text/javascript">
+  //<![CDATA[
+    var myDataGrid = null;
+    Event.observe(window, "load" ,function(){
+          myDataGrid = new ui.DataGrid($("myDataGrid"));
+          myDataGrid.action = "modify";
+    });
+  //]]>
+  </script>
+</head>
+
+<body>
+  <ul id="container">
+  <li id="header">
+    <h1>{$lang.view_position}</h1>
+    <div class="link">[<a href="admin.php?app=ad_position&amp;act=add">{$lang.add_position}</a>]</div>
+   <div id="desc">
+      <div id="page-selector">
+            {$lang.goto_page}{page_selector from=$list.info}        </div>
+    <span>{$position_stats}</span>      </div>    </li>
+
+  <li id="wrapper">
+    <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+      <tr>
+        <th class="first-cell" readOnly="false" columnName="position_name" required="true">{$lang.position_name}</th>
+        <th readOnly="false" columnName="width" required="true" dataType="int">{$lang.position_width}</th>
+        <th readOnly="false" columnName="height" required="true" dataType="int">{$lang.position_height}</th>
+        <th readOnly="false" columnName="desc" dataType="string">{$lang.position_desc}</th>
+        <th>{$lang.ad_count}</th>
+        <th>{$lang.handler}</th>
+      </tr>
+      {foreach from=$list.data item=adp}
+      <tr id="{$adp.position_id}">
+        <td class="first-cell"><span>{$adp.position_name}</span></td>
+        <td><span>{$adp.width}</span></td>
+        <td><span>{$adp.height}</span></td>
+        <td>{$adp.position_desc}</td>
+        <td>{$adp.num}</td>
+        <td class="handlelist"><a href="admin.php?act=add&amp;app=ad&amp;position_id={$adp.position_id}">{$lang.add_ad}</a> | <a href="admin.php?act=edit&amp;app=ad_position&amp;id={$adp.position_id}">{$lang.edit}</a> | <a href="admin.php?act=drop&app=ad_position&id={$adp.position_id}">{$lang.delete}</a></td>
+      </tr>
+      {foreachelse}
+        <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+      {/foreach}
+    </table><div id="page-list" style="clear:both">{page_links from=$list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+
+
+ </body>
+</html>

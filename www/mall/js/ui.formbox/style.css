@@ -1,0 +1,77 @@
+.formbox 
+{
+	width: 300px;
+	background-color: white;
+	border:1px solid #AAAAAA;
+	z-index: auto;
+	left: 0px;
+	top: 0px;
+	position: absolute;
+	overflow:hidden;
+	padding:1px;
+}
+
+.formbox form {
+    padding: 0px;
+    margin: 0px;
+
+}
+
+.formbox .closeBtn
+{
+  text-indent:-9999px;
+  background:url(images/btn_close.gif) no-repeat;
+  width:8px;
+  height:8px;
+  float:right;
+  margin-top:-15px;
+  margin-right:5px;
+  cursor:pointer;
+}
+
+.formbox dl 
+{
+  padding: 0px;
+  margin: 0px;
+}
+.formbox dd
+{
+    padding : 3px;
+    clear:both;
+}
+
+.formbox dt
+{
+  font-weight:bold;
+  line-height:22px;
+  background:#ddd url(images/title_bg.gif) repeat-x;
+  height:22px;
+  overflow:hidden;
+  padding-left:15px;
+}
+
+.formbox dl dd 
+{
+  padding:5px;
+  margin:0px;
+}
+
+.formbox dl dd .closeTipBtn
+{
+    width: 10px;
+    height: 10px;
+    float: right;
+}
+
+.formbox dl .tip 
+{
+	background:#ffffe7;
+	padding: 3px;
+	margin: 5px;
+	border:1px solid #FFF5DE;
+}
+
+.formbox dl dd .textElem
+{
+font-weight: bold;
+}

@@ -1,0 +1,140 @@
+<div class="memberprofile"> {script src='ui.utils,ui.effect,validator,member'}
+  <script type="text/javascript" src="index.php?app=regions&amp;act=get"></script>
+  <table>
+    <tr>
+      <td class="signinfo"><h4>{$lang.hello} {$smarty.session.user_name}</h4>
+        <p class="desc">{$lang.reg_time}: {$user_info.formated_reg_time}</p>
+        <p class="desc">{$lang.last_login}: {$user_info.formated_last_login}</p>
+        <p class="desc">{$lang.last_ip}: {$smarty.session.last_ip}</p></td>
+      <td class="act"><p>{$lang.seller_credit}: <a href="{url src=index.php?app=member&amp;act=credit}">{if $user_info.seller_grade gt 0}<img src="images/rank_sell_{$user_info.seller_grade}.gif" alt="{$user_info.seller_grade}" border="0" />{else}-{/if}</a></p>
+        <p>{$lang.buyer_credit}: <a href="{url src=index.php?app=member&amp;act=credit}">{if $user_info.buyer_grade gt 0}<img src="images/rank_sell_{$user_info.buyer_grade}.gif" alt="{$user_info.buyer_grade}" border="0" />{else}-{/if}</a></p>
+        <p>{$lang.seller_rate}: {$seller_rate.rate}% <a href="?app=article&amp;act=builtin&amp;code=reputation" style="color:red;"><img src="data/images/help.gif" class="helpBtn" /></a></p>
+        <p>{$lang.buyer_rate}: {$buyer_rate.rate}% <a href="?app=article&amp;act=builtin&amp;code=reputation" style="color:red;"><img src="data/images/help.gif" class="helpBtn" /></a></p></td>
+      <td class="photo"><img src="{$uc_path}/avatar.php?uid={$smarty.session.user_id}&amp;size=middle" id="member_avatar" alt="" /><br />
+        <br />
+        <input type="button" value="{$lang.eidt_avatar}" class="sbtn" onclick="editAvatar();" />
+        <p id="avatar-edit" style="display:none">{$avatar_set_html}</p></td>
+    </tr>
+  </table>
+</div>
+<!-- /memberprofile -->
+<div id="latestorder" class="mc_box">
+  <h3><em class="more"><a href="index.php?app=member&amp;act=order_view">{$lang.view_all}</a></em><span>{$lang.recent_order}</span></h3>
+  <div class="mc_boxcontent">
+    <table border="0" cellspacing="0" class="mc_table">
+      <!-- {if $recent_order} -->
+      <tr>
+        <td>{$lang.order_sn}</td>
+        <td>{$lang.receiver}</td>
+        <td>{$lang.order_amount}</td>
+        <td>{$lang.order_status}</td>
+        <td>{$lang.order_add_time}</td>
+        <td width="150">{$lang.handle}</td>
+      </tr>
+      <!-- {foreach name=order_last from=$recent_order item=order} -->
+      <tr{if $smarty.foreach.order_last.last} class="last"{/if}>
+        <td>{$order.order_sn}</td>
+        <td>{$order.consignee}</td>
+        <td>{$order.order_amount|price}</td>
+        <td id="order_status_{$order.order_id}">{$order.order_status|modifier:get_order_status_lang}</td>
+        <td>{$order.add_time|date:Y-m-d}</td>
+        <td class="handle"><!-- {if $order.order_status lt ORDER_STATUS_ACCEPTTED} -->
+          <!-- {if $order.order_status eq ORDER_STATUS_PENDING} -->
+          <span id="pay_order_button_{$order.order_id}"><a href="javascript:location.href='index.php?app=shopping&amp;act=pay&amp;order_sn={$order.order_sn}';">{$lang.pay}</a> |</span>
+          <!-- {/if} -->
+          <span id="cancel_order_button_{$order.order_id}"><a href="javascript:cancelConfirm({$order.order_id});">{$lang.cancel_order}</a> |</span>
+          <!-- {elseif $order.order_status eq ORDER_STATUS_SHIPPED} -->
+          <a href="javascript:delivered({$order.order_id}, {$order.store_id});">{$lang.delivered}</a> |
+          <!-- {/if} -->
+          <a href="index.php?app=member&amp;act=order_detail&amp;id={$order.order_id}">{$lang.view}</a> </td>
+      </tr>
+      <!-- {/foreach} -->
+      <!-- {else} -->
+      <tr>
+        <td colspan="7" class="no-records" style="border:0">{$lang.you_have_no_order}</td>
+      </tr>
+      <!-- {/if} -->
+    </table>
+  </div>
+</div>
+<div id="latestwanted" class="mc_box">
+  <h3><em class="more"><a href="index.php?app=member&amp;act=wanted_view">{$lang.view_all}</a></em><span>{$lang.recent_wanted}</span></h3>
+  <div class="mc_boxcontent">
+    <table border="0" cellspacing="0" class="mc_table">
+      <!-- {if $recent_wanted} -->
+      <tr>
+        <td>{$lang.wanted_subject}</td>
+        <td>{$lang.wanted_add_time}</td>
+        <td>{$lang.wanted_expiry}</td>
+        <td>{$lang.wanted_reply_count}</td>
+        <td width="150">{$lang.handle}</td>
+      </tr>
+      <!-- {foreach name=wanted_last from=$recent_wanted item=wanted} -->
+      <tr{if $smarty.foreach.wanted_last.last} class="last"{/if}>
+        <td>{$wanted.subject|escape}</td>
+        <td>{$wanted.add_time|date}</td>
+        <td>{$wanted.expiry|date}</td>
+        <td>{$wanted.replies}</td>
+        <td class="handle">
+          <a href="index.php?app=wanted&amp;act=edit&amp;id={$wanted.log_id}">{$lang.edit}</a> |
+          <a href="index.php?app=wanted&amp;act=show&amp;id={$wanted.log_id}">{$lang.view}</a>
+        </td>
+      </tr>
+      <!-- {/foreach} -->
+      <!-- {else} -->
+      <tr>
+        <td colspan="5" class="no-records" style="border:0">{$lang.you_have_no_wanted}</td>
+      </tr>
+      <!-- {/if} -->
+    </table>
+  </div>
+</div>
+<div id="guestbook" class="mc_box">
+  <h3><em class="more"><a href="index.php?app=member&amp;act=message">{$lang.view_all}</a></em><span>{$lang.latest_message}</span></h3>
+  <div class="mc_boxcontent">
+    <table cellspacing="0" class="mc_table">
+      <!-- {foreach from=$msg_list.data item=msg} -->
+      <tr>
+        <th class="name"> {if $msg.goods_id} <a href="index.php?app=goods&amp;id={$msg.goods_id}">{$msg.msg_for}</a> {else} <a href="?{$msg.seller_id}">{$msg.msg_for}</a> {/if} <span class="time">{$msg.formated_add_time}</span></th>
+      </tr>
+      <tr>
+        <td class="content">
+          <div class="contentbox">{$msg.message|escape|nl2br}</div>
+          <!-- {if $msg.reply} -->
+          <div class="recontent">
+            <h4>{$lang.seller_reply}</h4>
+            {$msg.reply|escape|nl2br}
+          </div>
+          <!-- {/if} -->
+        </td>
+      </tr>
+      <!-- {foreachelse} -->
+      <tr>
+        <td class="no-records" style="border:0">{$lang.you_have_no_message}</td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+  </div>
+</div>
+<div id="mc_favorite" class="mc_box">
+  <h3><em class="more"><a href="index.php?app=member&amp;act=favorite">{$lang.view_all}</a></em><span>{$lang.favorite}</span></h3>
+  <div class="mc_boxcontent">
+    <table border="0" cellspacing="0" class="mc_table">
+      <!-- {foreach name=wrap from=$favorite_list item=goods} -->
+      <!-- {if $smarty.foreach.wrap.iteration lte 3} -->
+      <tr id="favorite_{$goods.goods_id}">
+        <td><a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_blank"><img src="{image file=$goods.default_image width=32 height=32}" alt="{$goods.orig_name}" /></a></td>
+        <td><p class="name"><a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a></p>
+          <p class="goodsprice">{$goods.store_price|price}</p></td>
+        <td>{$lang.store}: <a href="?{$goods.store_id}" target="_blank">{$goods.store_name|escape}</a></td>
+        <td class="handle"><a href="javascript:rm_favorite({$goods.goods_id});" class="remove">{$lang.remove}</a></td>
+      </tr>
+      <!-- {/if} -->
+      <!-- {foreachelse} -->
+      <tr>
+        <td class="no-records" style="border:0">{$lang.you_have_no_favorite}</td>
+      </tr>
+      <!-- {/foreach} -->
+    </table>
+  </div>
+</div>

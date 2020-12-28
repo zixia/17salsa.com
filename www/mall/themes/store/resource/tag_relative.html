@@ -1,0 +1,22 @@
+<!-- {if $editing} -->
+<div id="tag_relative" class="colbox">
+  <h3>{$lang.app_tags}</h3>
+  <div class="colboxcontent">
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {else} -->
+<!-- {foreach from=$tag_relative item=app} -->
+<div class="colbox">
+  <h3><a href="{$app.url}" target="_blank">{$app.name}</a></h3>
+  <div class="colboxcontent">
+    <ul class="tag_relative">
+      {foreach from=$app.data item=item}
+      <li>{$item}</li>
+      {/foreach}
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/foreach} -->
+<!-- {/if} -->

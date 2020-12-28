@@ -1,0 +1,14 @@
+# 
+# ECMall URL Rewrite Rule
+#
+RewriteEngine On
+
+#
+#
+RewriteBase /mall
+
+#
+# Rewrite Rules
+#
+RewriteRule ^index.html$                index.php       [L]
+RewriteRule ^([a-zA-Z0-9]+)_(.*)\.html(.*)      index.php?app=$1&arg=$2&$3 [L]

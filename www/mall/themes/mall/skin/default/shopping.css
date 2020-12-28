@@ -1,0 +1,52 @@
+.flow h3 { color: #333; font-size:12px; padding: 2px 0 2px 25px; background: url(images/h3_header.gif) no-repeat left 17px; }
+.flow h3 a { color:#6C6C6C; font-weight:400; }
+.flow .btnlist { padding:30px 0px; }
+.flow .btnlist a{ color:blue; }
+.flow .reviewinfo { margin-bottom:10px; padding:10px 30px; border:1px solid #C8C8C8; border-top:2px solid #FF6B79; color:#797979; }
+.flow .reviewinfo.nobtm { border-bottom:0; }
+.flow .reviewinfo.noline { border:0; }
+.flow .reviewinfo a { color:blue; }
+.flow .reviewinfo .title th,.flow .reviewinfo .title td { padding:10px 0; }
+.flow .reviewinfo td { color:#777; line-height:150%; }
+.flow .reviewinfo td.label { vertical-align:top; color:#333; padding-left:15px; }
+.flow .reviewinfo p { line-height:150%; color:#666; margin: 6px 0; }
+.flow .reviewinfo h1 { margin-bottom:12px; color:#666}
+
+.flowinfo { text-align:right; padding:10px 30px; }
+.flowinfo img { vertical-align:middle; margin: 0 5px; }
+.flowinfo .subtotal { color:#FF5050; font-size:14px; font-weight:700; }
+
+#flowview { position:relative; margin:20px 0 10px; width:100%; height:85px; background:url(images/flow_sprite.png) no-repeat right 0; color:#999; font-weight:700; }
+#flowview span { display:none; }
+#flowview.two { background-position:right -101px; }
+#flowview.three { background-position:right -202px; }
+#flowview.four { background-position:right -303px; }
+.pager { text-align:right; padding:5px 20px 5px; }
+.btn_pay { margin-bottom:2px; }
+#order_thanks { font-size:14px; font-weight:bold; }
+#order_sn { font-size:14px; font-weight:bold; color:#FF5050; }
+
+.flow .datatable { width:100%; border:1px solid #C8C8C8; border-top:2px solid #FF6B79; border-collapse:collapse; }
+.flow .datatable th,.flow .datatable td { vertical-align:middle; padding:5px 10px; }
+.flow .datatable th { font-weight:normal; border-bottom:1px solid #FFF; color:#6C6C6C; }
+.flow .datatable .title th, .flow .datatable .title td { height:28px; padding:0 10px; background:#EEE; }
+.flow .datatable a { color:#2f63B0; }
+.flow .datatable td { color:#797979; border-bottom:1px solid #ECECEC; line-height:150%; }
+.flow .datatable td a{ color:#666; }
+.flow .datatable .last td { border-bottom:0; }
+.flow .datatable .subtotal { color: #FF5050; font-size:14px; font-weight:bold; }
+.flow .datatable .goods_name { line-height: 160%; color:#000; }
+.flow .datatable .goods_desc{ color:#797979; }
+.flow .datatable .goods_thumb img { float:left; border: 1px solid #e5e5e5; margin-right:10px; }
+.flow .datatable td.store_name { padding-top: 10px; background:#F8F8F8; border-bottom: 1px solid #FFF; }
+.flow .datatable td.store_name a{ color:#797979; text-decoration:underline; }
+.flow .datatable td.opration_row { border-bottom:none; padding-bottom:24px; }
+.order_fee,.flow .datatable td.order_fee { font-weight:700; font-size:14px; color:#FF5050; }
+#continue_shopping { padding:12px 0px 24px; text-align:right; }
+.flow .offline_pay { color:red; }
+.flow #add_address .title td{ background:#F8F8F8; color:#6C6C6C; }
+.flow #add_address td{ border:none; color:#333; }
+.flow #add_address .even #best_time{ margin-bottom:20px; }
+.flow .datatable .odd .goods_thumb{ margin-right:10px; }
+#shopping_order_pay .btn_pay{ margin-bottom:10px; }
+#shopping_order_pay .sbtn{ width:96px; height:22px; border:none; background:url(images/btn_bg_99.gif) no-repeat; color:#FFF; text-align:center; }

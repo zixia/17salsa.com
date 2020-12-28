@@ -1,0 +1,27 @@
+<div id="groupbuy_log" class="colbox">
+  <h3>{$lang.groupbuy_actor}</h3>
+  <div class="colboxcontent">
+    <!-- {if $groupbuy_log.data} -->
+    <table width="100%" cellspacing="0">
+      <tr>
+        <th class="first">{$lang.actor_name}</th>
+        <th class="last">{$lang.act_time}</th>
+        <th width="80">{$lang.act_number}</th>
+      </tr>
+      <!-- {foreach from=$groupbuy_log.data item=log} -->
+      <tr>
+        <td class="first">{$log.user_name}</td>
+        <td class="last">{$log.add_time|date}</td>
+        <td>{$log.number}{$lang.groupbuy_uint}</td>
+      </tr>
+      {/foreach}
+    </table>
+    <!-- {else} -->
+    <p class="not_find">{$lang.nobody_bought_it}</p>
+    <!-- {/if} -->
+  </div>
+  <!-- {if $bought_history} -->
+  <!-- {else} -->
+  <div class="colbtm"></div>
+  <!-- {/if} -->
+</div>

@@ -1,0 +1,77 @@
+<div id="mc_login" class="mc_login clearfix">
+  <div class="coltop"></div>
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, 'load', function(){
+      if (document.forms['ECS_LOGIN'].user_name) document.forms['ECS_LOGIN'].user_name.focus();
+    });
+  //]]>
+  </script>
+  <div class="column1">
+    <h3><img src="images/login_title.gif" alt="{$lang.login}" /></h3>
+    <form name="ECS_LOGIN" action="index.php?app=member&amp;act=login" method="post">
+      <table border="0" cellspacing="0" class="formtable">
+       <tr>
+         <th width="60">{$lang.user_name}:</th>
+         <td width="150" colspan="2"><input type="text" id="login-user-name" name="user_name" value="{$user_name}" size="25" class="sinput" tabindex="1" /></td>
+       </tr>
+       <tr>
+         <th>{$lang.password}:</th>
+         <td><input name="password" type="password" size="25" class="sinput" tabindex="2" /></td>
+         <td><a href="{url src=index.php?app=member&amp;act=getpwd}">{$lang.get_pwd}</a></td>
+       </tr>
+       <!--{if $login_captcha}-->
+       <tr style="display:none;" id="captcha-input">
+         <th>{$lang.captcha}:</th>
+         <td colspan="2"><input type="text" id="captcha" name="captcha" maxlength="4"  class="sinput" tabindex="3" /> <img src="about:blank" style="display:none;cursor:pointer" id="captcha-img" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" /></td>
+       </tr>
+       <tr>
+         <td>&nbsp;</td>
+         <td class="desc" colspan="2"><span onclick="changeCaptcha($('captcha-img'))" style="cursor:pointer">{$lang.change_captcha}</span></td>
+       </tr>
+       <!--{/if}-->
+       <tr>
+         <td>&nbsp;</td>
+         <td colspan="2">
+           <input type="hidden" name="ret_url" value="{$ret_url}" /><input type="image" src="images/btn_signin.gif" />
+         </td>
+       </tr>
+      </table>
+    </form>
+  </div>
+  <div class="column2">
+    <!--{if $from eq 1}-->
+    <h4>{$lang.to_uc_register}.</h4>
+    <p>{$lang.register_intro}</p>
+    <p><a href="{url src=index.php?app=member&amp;act=register&amp;ret_url=$ret_url}"><img src="images/btn_register.gif" alt="{$lang.register}" /></a></p><br /><br />
+    <!--{if $allow_anonymous_buy}-->
+    <h4>{$lang.anonymous_buy}</h4>
+    <p>{$lang.anonymous_buy_note}</p>
+    <p><a href="{$ret_url}&amp;guest_buy=1"><img src="images/btn_anonymity.gif" alt="{$lang.guest_buy_alt}" /></a></p>
+    <!--{/if}-->
+    <!-- {else} -->
+    <h4>{$lang.to_uc_register}.</h4>
+    <p>{$lang.register_intro}</p>
+    <p><a href="{url src=index.php?app=member&amp;act=register&amp;ret_url=$ret_url}"><img src="images/btn_register.gif" alt="{$lang.register}" /></a></p><br /><br />
+    <p>{$lang.getpwd_intro}</p>
+    <p><a href="{url src=index.php?app=member&amp;act=getpwd}"><img src="images/btn_getpwd.gif" alt="{$lang.getpwd}" /></a></p>
+    <!-- {/if} -->
+  </div>
+  <div class="colbtm"></div>
+  <script type="text/javascript">
+  //<![CDATA[
+    var showCaptcha = function(){
+        if ($('captcha-img'))
+        {
+            $('captcha-input').style.display = '';
+            changeCaptcha($('captcha-img'));
+        }
+    };
+    Event.observe($('login-user-name'), 'focus', showCaptcha);
+    function changeCaptcha (img) {
+        img.src = 'admin.php?app=profile&act=captcha&' + Math.random();
+        Event.stopObserving($('login-user-name'), 'focus', showCaptcha);
+    }
+  //]]>
+  </script>
+</div>

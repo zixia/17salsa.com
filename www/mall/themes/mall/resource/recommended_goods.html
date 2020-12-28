@@ -1,0 +1,37 @@
+<div id="recommended_goods" class="colbox">
+  <div id="best_goods">
+    <h3>{$lang.recommended_sort}</h3>
+    <div class="colboxcontent thumblist">
+      <ul>
+        <!-- {foreach from=$image_goods.data item=igoods} -->
+        <li>
+          <a href="{url src=index.php?app=goods&amp;id=$igoods.goods_id}" target="_blank"><img src="{image file=$igoods.default_image width=100 height=100}" alt="{$igoods.goods_name|escape}" /></a>
+          <p class="infolist">
+            <span class="name"><a href="{url src=index.php?app=goods&amp;id=$igoods.goods_id}" target="_blank">{$igoods.goods_name|escape}</a></span>
+            <span class="price">{$igoods.store_price|price}</span>
+          </p>
+        </li>
+        <!-- {/foreach} -->
+      </ul>
+    </div>
+    <div class="colboxcontent textlist">
+      <!-- {foreach from=$words_goods.data item=wgoods} -->
+      <ul>
+        <li><a href="{url src=index.php?app=goods&amp;id=$wgoods.goods_id}" target="_blank">{$wgoods.goods_name|escape}</a></li>
+      </ul>
+      <!-- {/foreach} -->
+    </div>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<div id="hot_goods" class="colbox">
+  <h3>{$lang.top_hot}</h3>
+  <div class="colboxcontent">
+    <ol>
+    <!-- {foreach from=$sales_goods.data item=sgoods} -->
+      <li><a href="{url src=index.php?app=goods&amp;id=$sgoods.goods_id}" target="_blank">{$sgoods.goods_name|escape}</a></li>
+    <!-- {/foreach} -->
+    </ol>
+  </div>
+  <div class="colbtm"></div>
+</div>

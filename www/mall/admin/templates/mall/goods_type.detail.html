@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+
+  function duplicateName (obj, id) {
+    Ajax.addVal('app', 'goodstype');
+    Ajax.addVal('act', 'duplicate_name');
+    Ajax.addVal('id', id);
+    Ajax.addVal('name', obj.value);
+    var res = Ajax.call('admin.php', null, 'POST', false);
+
+    if (res.done)
+      return true;
+    else
+      return res.msg;
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.add_goodstype}</h1>
+      <div class="link">[<a href="admin.php?app=goodstype&amp;act=view">{$lang.list_goodstype}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form method="post" enctype="multipart/form-data" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.goodstype_name}:</td>
+              <td><input name="type_name" type="text" id="type_name" value="{$info.type_name|escape}" size="40" dataType="string" required="true" fun="duplicateName" funParam="{$info.type_id}" /></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="id" value="{$info.type_id}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

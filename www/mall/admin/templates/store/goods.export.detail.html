@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   var tabBar = $class("tab-bar", $("tab-form"))[0];
+   Event.observe(tabBar, "click", function(e){
+     var evt = fixEvent(e);
+     var obj = evt.srcElement;
+     if (obj.tagName == "LI"){
+       $("export_type").value = obj.id;
+     }
+   }
+   );
+  });
+
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.goods_export}</h1>
+      <div class="link"></div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li id="taobao">{$lang.to_taobao}</li>
+          <li id="paipai">{$lang.to_paipai}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.cate_name}:</td><td>
+                <select name="taobao[cate_id]"><option value="0" >{$lang.all_category}</option>{html_options options=$cate_options}</select><span class="note">{$lang.cate_name_note}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.post_fee}:</td>
+              <td>
+                <input type="text" name="taobao[post_fee]" value="10" />
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.express_fee}:</td>
+              <td>
+                <input type="text" name="taobao[express_fee]" value="15" />
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.ems_fee}:</td>
+              <td>
+                <input type="text" name="taobao[ems_fee]" value="20" />
+              </td>
+            </tr>
+          </table>
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.cate_name}:</td><td>
+                <select name="paipai[cate_id]"><option value="0" >{$lang.all_category}</option>{html_options options=$cate_options}</select>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.post_fee}:</td>
+              <td>
+                <input type="text" name="paipai[post_fee]" value="10" />
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.express_fee}:</td>
+              <td>
+                <input type="text" name="paipai[express_fee]" value="15" />
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="export_type" value="taobao" id="export_type" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

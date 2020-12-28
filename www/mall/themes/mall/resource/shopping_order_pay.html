@@ -1,0 +1,131 @@
+<div id="shopping_order_pay" class="colbox flow">
+  <!--{if !$is_activity}-->
+  <p id="flowview" class="four"> <span class="cart">{$lang.shopping_cart}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span> <span class="submit">{$lang.submit_order}</span> </p>
+  <!--{else}-->
+  <p id="flowview" class="four"> <span class="cart">{$lang.activity_apply}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span> <span class="submit">{$lang.submit_order}</span> </p>
+  <!--{/if}-->
+  <div align="right" class="btn_pay">
+    <input type="button" value="{$lang.go_on_shopping}" onclick="window.location.href='index.php';" class="sbtn" />
+  <!--{if $smarty.session.user_id}-->
+    <input type="button" value="{$lang.my_order_list}" onclick="window.location.href='{url src=index.php?app=member&amp;act=order_view}';" class="sbtn" />
+  <!--{/if}-->
+  <!-- {if $order.is_online} -->
+    <form target="_blank" onsubmit="showAskDialog('{$order.order_sn}');" style="display:inline;">
+      <input type="hidden" value="shopping" name="app" />
+      <input type="hidden" value="do_pay" name="act" />
+      <input type="hidden" value="{$order.order_sn}" name="order_sn" />
+      <input type="submit" value="{$lang.online_pay}" class="sbtn" />
+    </form>
+  <!--{elseif $order.is_cod}-->
+  <script type="text/javascript">
+    Event.observe(window, 'load', function () {
+      var d = new Dialog(DIALOG_MESSAGE);
+      d.setContent('{$lang.cod_order_tip}', '{$lang.cod_order_message}');
+      d.autoCloseTime = 10;
+      d.show();
+    });
+  </script>
+  <!--{else}-->
+  <script type="text/javascript">
+    Event.observe(window, 'load', function () {
+      var d = new Dialog(DIALOG_MESSAGE);
+      d.setContent('{$lang.offline_order_tip}', '{$lang.offline_order_message}');
+      d.autoCloseTime = 10;
+      d.show();
+    });
+  </script>
+  <!--{/if}-->
+  </div>
+  <div class="reviewinfo">
+    <h1 id="order_thanks">{$pay_note}</h1>
+    <p>{$lang.your_order_sn}: <span id="order_sn">{$order.order_sn}</span></p>
+    <p>{$order.pay_desc}</p>
+  </div>
+  {if $order.user_id eq $smarty.session.user_id}
+  <h3>{$lang.order_info}:</h3>
+  <div class="reviewinfo">
+    <table border="0" width="100%">
+      <tr>
+        <td width="15%">{$lang.consignee}:</td>
+        <td class="label">{$order.consignee|escape}</td>
+        <td width="15%">{$lang.shipping_method}:</td>
+        <td class="label">{$order.shipping_name|escape} {$order.best_time}</td>
+      </tr>
+      <tr>
+        <td>{$lang.address}:</td>
+        <td class="label">{$order.region} {$order.address|escape} {$order.zipcode|escape}</td>
+        <td>{$lang.payment}:</td>
+        <td class="label">{$order.pay_name|escape}</td>
+      </tr>
+      <tr>
+        <td>{$lang.phone}:</td>
+        <td class="label">{ecjoin v1=$order.mobile_phone v2=$order.office_phone v3=$order.home_phone}</td>
+        <td>{if $order.inv_payee}{$lang.inv_payee}:{else}&nbsp;{/if}</td>
+        <td class="label">{$order.inv_payee|escape}&nbsp;</td>
+      </tr>
+      <tr>
+        <td>{$lang.email}</td>
+        <td class="label">{$order.email}</td>
+        <td>{if $order.inv_content}{$lang.inv_content}:{else}&nbsp;{/if}</td>
+        <td class="label">{$order.inv_content|escape}&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <h3>{$lang.order_goods}:</h3>
+  <table border="0" cellspacing="0" class="datatable">
+    <tr class="title">
+      <th>{$lang.goods_name}</th>
+      <th width="100">{$lang.goods_number}</th>
+      <th width="150">{$lang.goods_price}</th>
+      <th width="150">{$lang.goods_subtotal}</th>
+    </tr>
+    {foreach from=$order_goods item=goods}
+    <tr class="odd">
+      <td><a href="{url src=index.php?app=goods&amp;id=$goods.goods_id}"><img src="{image file=$goods.default_image width=32 height=32}" alt="{$goods.orig_name}" class="goods_thumb" align="left" />{$goods.goods_name|escape}</a><br/>
+        <!-- {if $goods.color_name} -->
+        {$lang.goods_color}: <b>{$goods.color_name|escape}</b>
+        <!-- {/if} -->
+        <!-- {if $goods.spec_name} -->
+        {$lang.goods_spec}: <b>{$goods.spec_name|escape}</b>
+        <!-- {/if} --></td>
+      <td>{$goods.goods_number}</td>
+      <td>{$goods.goods_price|price}</td>
+      <td>{$goods.subtotal|price}</td>
+    </tr>
+    {/foreach}
+  </table>
+  <div class="flowinfo"> {$lang.goods_amount}: {$order.goods_amount|price}
+    {if $order.coupon_sn}<img src="images/minus.gif" /> {$lang.coupon_value}: <span id="coupon_value">{$order.coupon_value|price}</span>{/if}
+    {if $order.discount gt 0}<img src="images/minus.gif" /> {$lang.discount}: <span id="discount">{$order.discount|price}</span>{/if}
+    {if $order.shipping_fee gt 0}<img src="images/plus.gif" /> {$lang.shipping_fee}: {$order.shipping_fee|price}{/if}
+    {if $order.pay_fee gt 0}{$lang.pay_fee}: {$order.pay_fee|price}{/if}
+    {if $order.inv_fee gt 0}<img src="images/plus.gif" /> {$lang.inv_fee}: {$order.inv_fee|price}{/if}
+  <img src="images/equal.gif"> {$lang.payable}: <span class="subtotal">{$order.payable|price}</span>
+  </div>
+  {else}
+  <h3>{$lang.order_info}</h3>
+  <div class="reviewinfo">
+    <table border="0" width="100%">
+      <tr>
+        <td width="15%">{$lang.consignee}:</td>
+        <td class="label">{$order.consignee|escape}</td>
+        <td width="15%">{$lang.payable}:</td>
+        <td class="label">{$order.payable|price}</td>
+      </tr>
+    </table>
+  </div>
+  {/if}
+  <div align="right" class="btn_pay">
+    <input type="button" value="{$lang.go_on_shopping}" onclick="window.location.href='index.php';" class="sbtn" />
+  <!--{if $smarty.session.user_id}-->
+    <input type="button" value="{$lang.my_order_list}" onclick="window.location.href='{url src=index.php?app=member&amp;act=order_view}';" class="sbtn" />
+  <!--{/if}-->
+  {if $order.is_online}
+    <form target="_blank" onsubmit="showAskDialog('{$order.order_sn}');" style="display:inline;">
+      <input type="hidden" value="shopping" name="app" />
+      <input type="hidden" value="do_pay" name="act" />
+      <input type="hidden" value="{$order.order_sn}" name="order_sn" />
+      <input type="submit" value="{$lang.online_pay}" class="sbtn" />
+    </form>
+  {/if}
+  </div></div>

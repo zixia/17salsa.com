@@ -1,0 +1,47 @@
+<div id="mc_order_view" class="mc_box"> {script src="shopping,ui.dialog,member"}
+  <ul class="tab-bar">
+    <li{if $os_actived eq "all"} class="actived"{/if}><a href="./index.php?app=member&amp;act=order_view">{$lang.order_all}</a></li>
+    <li{if $os_actived eq "pending"} class="actived"{/if}><a href="./index.php?app=member&amp;act=order_view&amp;os=pending">{$lang.order_pending}</a></li>
+    <li{if $os_actived eq "shipped"} class="actived"{/if}><a href="./index.php?app=member&amp;act=order_view&amp;os=shipped">{$lang.order_shipped}</a></li>
+    <li{if $os_actived eq "delivered"} class="actived"{/if}><a href="./index.php?app=member&amp;act=order_view&amp;os=delivered">{$lang.order_delivered}</a></li>
+  </ul>
+  <div class="mc_boxcontent">
+  <table cellspacing="0" class="mc_table">
+    <tr>
+      <td>{$lang.store_name}</td>
+      <td>{$lang.order_sn}</td>
+      <td>{$lang.order_add_time}</td>
+      <td>{$lang.order_amount}</td>
+      <td>{$lang.consignee}</td>
+      <td>{$lang.order_status}</td>
+      <td width="150">{$lang.handle}</td>
+    </tr>
+    <!-- {foreach from=$order_list.data item=order} -->
+    <tr class="{cycle values="odd,even"}">
+      <td><a href="?{$order.store_id}" target="_blank">{$order.store_name|escape}</a>{if $order.store_is_closed}({$lang.closed}){/if}</td>
+      <td>{$order.order_sn}</td>
+      <td>{$order.add_time|date:Y-m-d}</td>
+      <td>{$order.order_amount|price} ({$order.pay_name})</td>
+      <td>{$order.consignee}</td>
+      <td id="order_status_{$order.order_id}">{$order.order_status|modifier:get_order_status_lang}</td>
+      <td class="handle">
+        <!-- {if $order.order_status lt ORDER_STATUS_ACCEPTTED} -->
+        <!-- {if $order.order_status eq ORDER_STATUS_PENDING} -->
+        <span id="pay_order_button_{$order.order_id}"><a href="index.php?app=shopping&amp;act=pay&amp;order_sn={$order.order_sn}">{$lang.pay}</a> |</span>
+        <!-- {/if} -->
+        <span id="cancel_order_button_{$order.order_id}"><a href="javascript:cancelConfirm({$order.order_id});">{$lang.cancel_order}</a> |</span>
+        <!-- {elseif $order.order_status eq ORDER_STATUS_SHIPPED} -->
+        <a href="javascript:delivered({$order.order_id}, {$order.store_id});">{$lang.delivered}</a> |
+        <!-- {/if} -->
+        <a href="index.php?app=member&amp;act=order_detail&amp;id={$order.order_id}&amp;page={$smarty.get.page}">{$lang.view}</a>
+      </td>
+    </tr>
+    <!-- {foreachelse} -->
+    <tr>
+      <td colspan="7" class="no-records">{$lang.you_have_no_order}</td>
+    </tr>
+    <!-- {/foreach} -->
+  </table>
+  <div class="pagechanger">{page_links from=$order_list.info url=$url_format}</div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+{script src='member,validator,ui.region'}
+<script type="text/javascript" src="index.php?app=regions&amp;act=get"></script>
+<script type="text/javascript">
+var region = null;
+var setRegion = function(value){
+  $('store_location').value = value;
+};
+
+Event.observe(window, "load", function() {
+  region = new ui.region('reg');
+  Validator.run('mc_apply_form'); 
+});
+
+function checkStoreName(obj) {
+  Ajax.addVal('store_name', obj.value);
+  var res = Ajax.call("index.php?app=storeapply&act=check_store_name", null, 'post', false);
+  if (res.done) {
+    return true;
+  } else {
+    return res.msg;
+  }
+}
+
+function checkCustom(obj){
+    var ret_val = true;
+    var val = obj.value.trim();
+    if (val.length > 0){
+      if (val.length < 3)
+      {
+        ret_val = '{$lang.custom_short}';
+      }
+      else if (!/^[a-z0-9|\_\-]+$/.test(val))
+      {
+        ret_val = '{$lang.custom_rule}';
+      }
+      else
+      {
+        Ajax.addVal('app', 'storeapply');
+        Ajax.addVal('act', 'check_custom');
+        Ajax.addVal('custom', val);
+        var res = Ajax.call('index.php', null, 'POST', false);
+        if (res.done){
+          //none
+        }else{
+          ret_val = res.msg;
+        }       
+      }
+    }
+
+    return ret_val;
+}
+
+function checkFileType(filename)
+{
+    var path = filename.replace(/\\/g, '/');
+    if (path.length == 0) return;
+    var ext = path.lastIndexOf('.') == -1 ? '' : path.substr(path.lastIndexOf('.') + 1, path.length).toLowerCase();
+    if (ext.length == 0 || (!['gif', 'jpg', 'png', 'jpeg'].inArray(ext))){
+      alert('{$lang.not_image_type}');
+      return;
+    }
+}
+
+</script>
+<div id="mc_favorite" class="mc_box">
+  <h3><span>{$lang.i_wannt_setup_shop}</span></h3>
+  <div class="mc_boxcontent">
+  <form action="index.php?app=storeapply" method="post" enctype="multipart/form-data" name="mc_apply_form">
+    <table class="mc_formtable" cellspacing="4">
+      <tr>
+        <td class="label">{$lang.owner_name}:</td>
+        <td><input class="sinput" type="text" size="30" name="owner_name" required="required" dataType="string" /><span class="note">{$lang.owner_name_notice}</span></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.owner_idcard}:</td>
+        <td><input class="sinput" type="text" size="40" name="owner_idcard" required="required" dataType="id_card" /></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.owner_phone}:</td>
+        <td><input class="sinput" type="text" size="20" name="owner_phone" required="required" dataType="tel_num" /><span class="note">{$lang.owner_phone_notice}</span></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.owner_address}:</td>
+        <td><input class="sinput" type="text" size="50" name="owner_address" required="required" dataType="string" /></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.owner_zipcode}:</td>
+        <td><input class="sinput" type="text" size="20" name="owner_zipcode" required="required" dataType="post_code" /></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.store_name}:</td>
+        <td><input class="sinput" type="text" size="30" name="store_name" required="required" dataType="string" fun="checkStoreName"/></td>
+      </tr>
+      <!--{if ENABLED_CUSTOM_DOMAIN}-->
+      <tr>
+        <td class="label">{$lang.custom}:</td>
+        <td><input class="sinput" type="text" size="10" name="custom" dataType="string" fun="checkCustom" /><span class="note">{$lang.custom_note}</span></td>
+      </tr>
+      <!--{/if}-->      
+      <tr>
+        <td class="label">{$lang.store_location}:</td>
+        <td>
+            <select onchange="region.changed(this, 2);" name="consignee_info[region1]" id="reg1">
+              <option value="0">{$lang.pls_select}</option>
+            </select>
+            <select id="reg2" dataType="string" required="required" name="consignee_info[region2]" onchange="setRegion(this.value);">
+            <option value="0">{$lang.pls_select}</option></select><input type="hidden" name="store_location" id="store_location" value="" />          </td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.upload_paper}:</td>
+        <td><input type="file" name="paper_image" onchange="checkFileType(this.value);" /></td>
+      </tr>
+      <tr>
+        <td class="label">{$lang.apply_reason}:</td>
+        <td><textarea name="apply_reason" cols="60" rows="5" required="required" dataType="string"></textarea></td>
+      </tr>
+      <tr>
+        <td class="label">&nbsp;</td>
+        <td><input type="checkbox" name="eula" onclick="if(this.checked)$('base_info_submit').disabled=false; else $('base_info_submit').disabled=true;" />
+{$lang.store_agreement}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="base_info_submit" id="base_info_submit" value="{$lang.submit}" disabled="disabled" class="sbtn" />
+          <input type="reset" name="value_reset" value="{$lang.reset_form}" class="sbtn" /></td>
+      </tr>
+    </table>
+  </form>
+  </div>
+  <div class="colbtm"></div>
+</div>

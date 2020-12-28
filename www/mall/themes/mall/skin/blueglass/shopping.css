@@ -1,0 +1,47 @@
+.flow h3 { color: #808080; font-size:12px; font-weight:normal; padding: 2px 0 2px 20px; background: url(images/h3_header.gif) no-repeat left center; }
+.flow h3 a { color:#2f63B0; }
+.flow .btnlist { padding:30px 0px; }
+.flow .btnlist a{ color:blue; }
+.flow .reviewinfo { padding:10px 30px; border:1px solid #CFDEE6; }
+.flow .reviewinfo.nobtm { border-bottom:0; }
+.flow .reviewinfo.noline { border:0; }
+.flow .reviewinfo a { color:blue; }
+.flow .reviewinfo .title th,.flow .reviewinfo .title td { padding:10px 0; }
+.flow .reviewinfo td { color:#777; line-height:150%; }
+.flow .reviewinfo td.label { vertical-align:top; color:#333; padding-left:15px; }
+.flow .reviewinfo p { line-height:150%; color:#666; margin: 6px 0; }
+.flow .reviewinfo h1 { margin-bottom:12px; color:#666}
+
+.flowinfo { text-align:right; padding:10px 30px; }
+.flowinfo img { vertical-align:middle; margin: 0 5px; }
+.flowinfo .subtotal { color:#AA1515; font-size:14px; font-weight:bold; }
+
+#flowview { background:url(images/flow_sprite.gif) no-repeat; width:985px; height:24px; margin:24px auto; position:relative; color:#FFF; font-size: 14px; font-weight: bold; }
+#flowview span {position:absolute; top:5px; }
+#flowview.two { background-position:0 -24px; }
+#flowview.three { background-position:0 -48px; }
+#flowview.four { background-position:0 -72px; }
+#flowview .cart { left:50px; }
+#flowview .pay { left:310px; }
+#flowview .confirm {left:575px; }
+#flowview .submit { left:810px; }
+.pager { text-align:right; padding:5px 20px 5px; }
+.btn_pay { margin-bottom:2px; }
+#order_thanks { font-size:14px; font-weight:bold; }
+#order_sn { font-size:14px; font-weight:bold; color:#AA1515; }
+
+.flow .datatable { width:100%; border:1px solid #e5e5e5; }
+.flow .datatable th,.flow .datatable td { vertical-align:middle; padding:5px 8px; }
+.flow .datatable th { font-weight:normal; border-bottom:1px solid #e5e5e5; color:#808080; }
+.flow .datatable .title th { height:32px; padding:0 10px; }
+.flow .datatable a { color:#2f63B0; }
+.flow .datatable td { color:#4A4A4A; border-bottom:1px dotted #e5e5e5; line-height:150%; }
+.flow .datatable .last td { border-bottom:0; }
+.flow .datatable .subtotal { color: #AA1515; font-size:14px; font-weight:bold; }
+.flow .datatable .goods_name { line-height: 160%; }
+.flow .datatable .goods_thumb img { float:left; border: 1px solid #e5e5e5; margin-right:5px; }
+.flow .datatable td.store_name { padding-top: 10px; background:#f4f8fb; border-bottom: 1px solid #9FC1D9; }
+.flow .datatable td.opration_row { border-bottom:none; padding-bottom:24px; }
+.order_fee,.flow .datatable td.order_fee { font-weight:bold; color:#AA1515; }
+#continue_shopping { padding:12px 0px 24px; }
+.flow .offline_pay { color:red; }

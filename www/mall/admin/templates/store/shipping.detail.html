@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="admin.php?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator,ui.region"}
+  <script type="text/javascript" src="index.php?app=regions&act=get"></script>
+
+  <script type="text/javascript">
+  var region = null;
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   region = new ui.region('region');
+   Validator.run('theForm');
+
+    Event.observe($('btn_add'), 'click', function(){
+      var obj = region.getRegion();
+    if (obj.id > 0)
+    {
+      var label = document.createElement('LABEL');
+    label.innerHTML = '<input name="shipping[cod_regions][]" type="checkbox"  value="' + obj.id + '" checked />' + obj.name;
+      $('cod_regions').appendChild(label);
+    }
+    });
+  });
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <!--{if $is_add}-->
+      <h1>{$lang.add_shipping}</h1>
+      <div class="link">[<a href="admin.php?app=shipping&amp;act=view">{$lang.list_shipping}</a>]</div>
+      <div id="desc">{$lang.add_shipping_desc}</div>
+      <!--{else}-->
+      <h1>{$lang.edit_shipping}</h1>
+      <div class="link">[<a href="admin.php?app=shipping&amp;act=view">{$lang.list_shipping}</a>]</div>
+      <div id="desc">{$lang.edit_shipping_desc}</div>
+      <!--{/if}-->
+    </li>
+    <li>
+      <form method="post" name="theForm">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+          <li>{$lang.cod_regions}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.shipping_name}:</td>
+              <td><input type="text" name="shipping[shipping_name]" value="{$info.shipping_name|escape}" required="true" dataType="string" /></td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.shipping_fee}:</td>
+              <td><input name="shipping[shipping_fee]" type="text" value="{$info.shipping_fee}" required="true" dataType="float" /><span class="note">{$lang.shipping_fee_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.surcharge}:</td>
+              <td><input name="shipping[surcharge]" type="text" value="{$info.surcharge}" required="true" dataType="float" /><span class="note">{$lang.surcharge_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.is_enable}:</td>
+              <td>
+                {html_radios name="shipping[enabled]" checked=$info.enabled options=$is_enable_radio}
+                <span class="note">{$lang.is_enable_note}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="label" >{$lang.shipping_desc}:</td>
+              <td>
+                <textarea name="shipping[shipping_desc]" cols="60" rows="5">{$info.shipping_desc}</textarea><span class="note">{$lang.shipping_desc_note}</span></td>
+            </tr>
+          </table>
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.add_region}:</td>
+                  <td><select name="select" id="region1" onchange="region.changed(this, 2);">
+                    <option value="0">{$lang.pls_select}</option>
+                  </select>
+                    <select name="select" id="region2">
+                      <option value="0">{$lang.pls_select}</option>
+                    </select>
+                    <input type="button" id="btn_add" value="{$lang.add_region}" /></td>
+              </tr>
+              <tr>
+              <td class="label">{$lang.list_region}:</td>
+                    <td><div id="cod_regions">{foreach from=$regions item=region}<label><input name="shipping[cod_regions][]" type="checkbox"  value="{$region.region_id}" checked />{$region.region_name}</label>{/foreach}&nbsp;&nbsp;</div></td>
+              </tr>
+            </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="id" value="{$info.shipping_id}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

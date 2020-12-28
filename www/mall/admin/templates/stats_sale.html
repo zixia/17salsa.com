@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?app=statistics&amp;act=jslang"></script>
+{script src="ajax,ecmall,charts"}
+<script type="text/javascript">
+    Event.observe(window, 'load', function(){
+      set_sale_data("{$data.xml}", "{$data.link}");
+    });
+
+  function set_sale_data(xml, link)
+  {
+    var chart = new FusionCharts("admin/images/charts/StackedColumn3DLineDY.swf", "ChartId", 800, "350", "0", "0");
+    chart.setDataXML(xml);
+    chart.render('salechart');
+    $('salelink').innerHTML = link;
+  }
+
+  function validate()
+  {
+    var type = $('type').value;
+    if ($('year').value <= 0 && (type == 'quarter' || type == 'month' || type == 'day'))
+  {
+    alert(lang.pls_select_year);
+    return false;
+  }
+  if ($('month').value <= 0 && type == 'day')
+  {
+    alert(lang.pls_select_month);
+    return false;
+  }
+  return true;
+  }
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_sale_stats}</h1>
+    <div id="desc"></div>
+  </li>
+  <li id="tips" class="search-bar">
+    <form method="get" action="admin.php" onsubmit="return validate();">
+      {$lang.sale_type_name}:
+      <select name="type" id="type">{html_options options=$types selected=$cur_type}</select>
+    &nbsp;&nbsp;
+    {$lang.time_limit}:
+    <select name="year" id="year">{html_options options=$years selected=$cur_year}</select> {$lang.year}
+    <select name="month" id="month">{html_options options=$months selected=$cur_month}</select> {$lang.month}
+    &nbsp;&nbsp;
+    {$lang.time_by_name}:
+    <select name="time_field">{html_options options=$lang.time_by selected=$cur_time_field}</select>
+    &nbsp;&nbsp;
+    <input type="checkbox" name="inc_shipped" value="1" {if $cur_inc_shipped}checked="checked"{/if} />{$lang.inc_shipped}
+    &nbsp;&nbsp;
+    <input type="checkbox" name="compare" value="1" {if $cur_compare}checked="checked"{/if} />{$lang.compare}
+      <input type="submit" value="{$lang.button_search}" />
+      <input type="hidden" name="app" value="statistics"/>
+      <input type="hidden" name="act" value="view_sale"/>
+    </form>
+  </li>
+  <li>
+    <div id="salechart" align="center"></div>
+    <div id="salelink" align="center"></div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

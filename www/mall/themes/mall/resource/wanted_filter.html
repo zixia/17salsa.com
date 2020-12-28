@@ -1,0 +1,38 @@
+<!-- 网站求购列表页面过滤器模板 -->
+<div id="wanted_filter" class="colbox">
+  <h3>{$lang.wanted_filter}</h3>
+  <div class="colboxcontent">
+    <form action="index.php">
+    <div class="filter_item">
+    <p>{$lang.wanted_category}</p>
+        <select name="cate_id">
+            <option value="0">{$lang.wanted_all}</option>
+            {html_options options=$wanted_cates selected=$conditions.cate_id}
+            <option value="other"{if $conditions.cate_id === 0} selected{/if}>&nbsp;&nbsp;{$lang.wanted_other}</option>
+        </select>
+    </div>
+    <div class="filter_item">
+    <p>{$lang.wanted_location}</p>
+        <select name="region_id">
+            <option value="0">{$lang.pls_select}</option>
+            <!-- {foreach from=$wanted_regions item=region} -->
+            <!-- {if $region.level eq 0} -->
+            <optgroup label="{$region.region_name}" />
+            <!-- {else} -->
+            <option value="{$region.region_id}"{if $region.region_id eq $conditions.region_id} selected{/if}>{$region.region_name}</option>
+            <!-- {/if} -->
+            <!-- {/foreach} -->
+        </select>
+    </div>
+    <div class="filter_item">
+    <p>{$lang.keywords}</p>
+    <input type="text" name="keywords" value="{$conditions.keywords}" class="sinput" />
+    </div>
+    <div class="filter_item">
+    <label for="valid_only">&nbsp;<input type="checkbox" id="valid_only" class="ckbox" value="1" name="valid_only"{if $smarty.get.valid_only} checked="true"{/if} />{$lang.valid_only}</label>
+    </div>
+    <div class="btn"><input type="hidden" value="wanted" name="app" /><input type="submit" value="{$lang.submit}" /></div>
+    </form>
+  </div>
+  <div class="colbtm"></div>
+</div>

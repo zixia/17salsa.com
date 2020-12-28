@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,uc,ui.utils"}
+  <script type="text/javascript" src="admin.php?app=home&act=jslang"></script>
+  <script type="text/javascript">
+  /*var __ECM_OFFICALINFO = null;
+  setTimeout(function(){ if(__ECM_OFFICALINFO === null)$('offical_info_list').innerHTML = '<li class="news">' + lang.cant_load_offical_info + '</li>';
+  }, 10000);
+  Event.observe(window, 'load', function(){
+    var officalInfo = '';
+    if (__ECM_OFFICALINFO !== null)
+    {
+      if (__ECM_OFFICALINFO['latest_version'])
+      {
+        officalInfo += '<li class="latest_version"><a href="'+__ECM_OFFICALINFO['latest_version'].link+'" target="_blank">'+lang.latest_version+':'+__ECM_OFFICALINFO['latest_version'].code+' '+lang.download+'</a><span class="news-date">'+lang.latest_updated+': '+__ECM_OFFICALINFO['latest_version'].date+'</span></li>';
+      }
+      if (__ECM_OFFICALINFO['latest_news'])
+      {
+        for (var i=0; i < __ECM_OFFICALINFO['latest_news'].length; i++)
+        {
+          officalInfo += '<li class="news"><a href="'+__ECM_OFFICALINFO['latest_news'][i].link+'" target="_blank">'+__ECM_OFFICALINFO['latest_news'][i].title+'</a><span class="news-date">'+__ECM_OFFICALINFO['latest_news'][i].date+'</span></li>';
+        }
+      }
+    }
+    if (!officalInfo)
+    {
+      officalInfo = '<li class="loading">'+lang.cant_load_offical_info+'</li>';
+    }
+    $('offical_info_list').innerHTML = officalInfo;
+  });*/
+  </script>
+  <style type="text/css">
+  /*<![CDATA[*/
+    img { border:0px; }
+    .info-table { padding:5px 30px; }
+    .info-table th { text-align:left; width:120px; }
+    .info-table td { width:230px; }
+    .info-table .title { font-weight:bold; color:#333; }
+    .news-list { list-style:none; }
+    .news-list li { padding:5px; }
+    #offical_info_wrapper:after { content:""; display:block; height:0px; clear:both; visibility:hidden; }
+    #offical_info_wrapper { *display:inline-block; padding:10px 35px; }
+    .offical_info li { line-height:18px; background:url(admin/images/icon_news_arrow.gif) no-repeat 3px center; width:48%; float:left; margin-bottom:3px; padding-left:15px; }
+    .offical_info li.latest_version { width:95%; }
+    .offical_info li.latest_version a { color:red; }
+    .offical_info li.latest_version a .link { border-bottom:1px solid red; }
+    .offical_info li .news-date { font-style:italic; font-size:10px; color:#999; margin-left:10px; }
+    .new_pm a { color:red; background:url(admin/images/icon_newpm.gif) no-repeat 0 center; padding-left:13px; }
+    .pm a { background:url(admin/images/icon_pm.gif) no-repeat 0 center; padding-left:13px; }
+  /*]]>*/
+  </style>
+</head>
+
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$welcome}</h1>
+      <div class="link">[ {if $new_pm}<span class="new_pm"><a href="javascript:pmwin('open');">{$lang.new_pm}</a></span>{else}<span class="pm"><a href="javascript:pmwin('open','&local=backend');">{$lang.pm}</a></span>{/if} ]&nbsp;&nbsp;[ <a href="admin.php?app=profile&amp;act=logout" target="_parent">{$lang.exit}</a> ]</div>
+     <div id="desc">{$lang.last_time}{$last_login}, {$lang.last_ip}{$last_ip}</div>
+    </li>
+    {if $install_dir_exists}
+    <li id="tips">
+      <ul>
+        <li>{$lang.no_del_install_dir}</li>
+      </ul>
+    </li>
+    {/if}
+    <li id="wrapper">
+      <!--<h2 class="first">{$lang.official_news}</h2>
+      <div id="offical_info_wrapper">
+      <ul class="offical_info" id="offical_info_list">
+        <li class="loading">loading...</li>
+      </ul>
+      </div>-->
+      <h2>{$lang.dynamic_today}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.newmember_count}:</th><td>{$newmember_count}</td>
+              <th class="title">{$lang.finish_order_count}:</th><td>{$finish_order_count}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.newgoods_count}:</th><td>{$newgoods_count}</td>
+              <th class="title">{$lang.newstore_count}:</th><td>{$newstore_count}</td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.stat_info}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.member_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.user}', 'user', 'view');">{$member_count}</a></td>
+              <th class="title">{$lang.goods_count}</th><td>{$goods_count}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.store_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.store}', 'store', 'view');">{$store_count}</a></td>
+              <th class="title">{$lang.new_store_apply}</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.storeapply}', 'storeapply', 'view');">{$new_apply_count}</a></td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.finish_order_amount}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;order_status=6');">{$finish_order_amount|price}</a></td>
+              <th class="title">{$lang.all_finish_order_count}:</th><td><a href="javascript:parent.openFrame('{$lang.tab_labels.order}', 'order', 'view', '&amp;order_status=6');">{$all_finish_order_count}</a></td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.system_info}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.server_os}:</th><td>{$sysinfo.server_os}</td>
+              <th class="title">{$lang.web_server}:</th><td>{$sysinfo.web_server}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.php_version}:</th><td>{$sysinfo.php_version}</td>
+              <th class="title">{$lang.mysql_version}:</th><td>{$sysinfo.mysql_version}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.current_version}:</th><td>{$sysinfo.current_version}</td>
+              <th class="title">{$lang.install_date}:</th><td>{$sysinfo.install_date}</td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+  {$spt}
+ </body>
+</html>

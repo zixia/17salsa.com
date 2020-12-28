@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>abc</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src='ecmall,ui.utils,ajax'}
+<script type="text/javascript">
+  function onchange(span)
+  {
+    if (span.tagName.toUpperCase() != 'SPAN')
+    {
+      return;
+    }
+    for (i = 0; i < span.attributes.length; i++)
+    {
+      if (span.attributes[i].nodeName == 'words_id')
+      {
+        words_id = span.attributes[i].nodeValue;
+      }
+    }
+    var res = update(words_id, span.innerText);
+    if (!res.done)
+    {
+      alert(res.msg);
+      span.innerHTML = res.retval;
+    }
+  }
+  function update(words_id, words_name)
+  {
+    Ajax.setReturnType('json');
+    Ajax.addVal("words_id", words_id);
+    Ajax.addVal("words", words_name);
+    var res = Ajax.call("admin.php?app=badwords&act=update&", null, "POST", false);
+    return res;
+  }
+
+  function check_all(obj){
+      var val = obj.checked;
+      var elem = document.getElementsByName('words_ids[]');
+      for (var i in elem){
+      elem[i].checked = val;
+      }
+  }
+
+  function get_edit_obj(obj)
+  {
+      var parent = obj.parentNode;
+      var elem = obj.parentNode.getElementsByTagName("SPAN");
+      var target = null;
+      for (var i in elem){
+        if (elem[i].id == "editable"){
+            target = elem[i];
+            break;
+        }
+      }
+      return target;
+  }
+  </script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.badwords_view}</h1>
+    <div class="link"></div>
+    <div id="desc"> <span>{$lang.badwords_note}</span> </div>
+  </li>
+  <li id="tips">
+    <form method="post" action="admin.php?app=badwords&amp;act=add">
+      {$lang.add_badwords}:
+      <input type="text" name="badwords_name" />
+      <input type="submit" value="{$lang.button_submit}">
+    </form>
+  </li>
+  <li id="wrapper">
+    <form method="post" action="admin.php?app=badwords&amp;act=drop" name="drop_form">
+      <table class="grid" cellspacing="0">
+      {if $badwords_list}
+      {foreach from=$badwords_list item=row}
+      <tr>
+      {foreach from=$row item=words}
+        <td class="first-cell" width="33%">
+        {if $words.words}
+        <input type="checkbox" name="words_ids[]" value="{$words.words_id}" /><span id="editable" words_id="{$words.words_id}" >{$words.words|escape:"html"}</span>&nbsp;&nbsp;<a href="javascript:;"  onclick="ui.inlineEditBox.edit(get_edit_obj(this), onchange)"><img src="admin/images/icon_edit.gif" alt="{$lang.edit}" border="0"/></a>
+        {else}
+        &nbsp;
+        {/if}
+        </td>
+      {/foreach}
+      </tr>
+      {/foreach}
+      <tr><td colspan="3" class="first-cell"><input type="checkbox" onchange="check_all(this);" name="delete_all"><a href="javascript:;" onclick="document.forms['drop_form'].submit();">{$lang.delete}</a></td></tr>
+      {else}
+      <tr>
+        <td class="first-cell">{$lang.no_badwords}</td>
+      </tr>
+      {/if}
+    </table>
+   </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

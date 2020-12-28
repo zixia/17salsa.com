@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,ui.utils,ui.effect,ui.imgpreviewer,validator"}
+  <script type="text/javascript" src="admin.php?app=conf&act=jslang"></script>
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, "load", function() {
+     new ui.utils.tabForm("tab-form");
+     Validator.run('theForm');
+     initImgPreviewer();
+    });
+    function duplicateName (obj, id) {
+      Ajax.addVal('app', 'store');
+      Ajax.addVal('act', 'duplicate_name');
+      Ajax.addVal('store_id', id);
+      Ajax.addVal('store_name', obj.value);
+      var res = Ajax.call('admin.php', null, '', false);
+
+      if (res.done)
+        return true;
+      else
+        return res.msg;
+    }
+
+    function dropPicture (picFile, obj) {
+      alert("TODO: delete this file: \n" + picFile);
+    }
+
+    function test_ajax() {
+      var inputs = ['test_submit', 'mall_email_host', 'mall_email_port', 'mall_email_addr', 'mall_email_id', 'mall_email_pass', 'mall_test_email'];
+      var radios = ['mall_email_type'];
+      for (var i = 0; i < inputs.length; i++) {
+        cur_e = document.forms.theForm[inputs[i]];
+        if (inputs[i] == 'mall_test_email' && !cur_e.value.isEmail()) {
+          alert(lang.mall_test_email_illegal);
+          return;
+        }
+        Ajax.addVal(inputs[i], cur_e.value);
+      }
+      for (var i = 0; i < radios.length; i++) {
+        cur_e = document.forms.theForm[radios[i]];
+        for (var j = 0; j < cur_e.length; j++) {
+          if (cur_e[j].checked) {
+            Ajax.addVal(radios[i], cur_e[j].value);
+          }
+        }
+      }
+      Ajax.call('admin.php?app=conf&act=send_test_email', function(s) {
+        if (!s.msg || (document.forms['theForm']['mall_email_type'][0].checked && (!s.done))){
+            alert('{$lang.test_mail_has_fail}');
+        }else{
+            alert(s.msg);
+        }
+
+      }, 'POST');
+    }
+    
+    function drop_store_msn()
+    {
+        Ajax.call('admin.php?app=conf&act=drop_store_msn', function (s){
+          if (s.done) {
+            var elem = $('store_msn_id');
+            elem.parentNode.innerHTML = elem.innerHTML;
+          }
+          alert(s.msg);
+        }, 'GET')
+    }
+    var is_first_chick = true;
+    function disabled_link(obj){
+        if (is_first_chick){
+            is_first_chick = false;
+            return true;
+        }else{
+            alert('{$lang.refresh_first}')
+            return false;
+        }
+    }
+  //]]>
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.$page_title}</h1>
+      <div class="link"></div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+        {foreach from=$group_items key=group_code item=items}
+          <li>{$lang.$group_code}</li>
+        {/foreach}
+        </ul>
+        <div class="tab-page">
+        {foreach from=$group_items item=items}
+          <table class="form-table">
+            {foreach from=$items item=item}
+            <tr>
+              {if $item.type eq 'html'}
+                <td colspan="2" style="text-align:left; padding-left:39px">{$store_intro}</td>
+              {elseif $item.code eq 'store_msn'}
+                <td class="label">{$lang.$item.code}:</td>
+                <td>{if $item.value} {$item.value} <a href="javascript:;" onclick="drop_store_msn();">{$lang.unactive_msn}</a><span id="store_msn_id" style="display:none"><a href="{$msn_active_url}" target="_blank" onclick="return disabled_link();">{$lang.active_msn}</a></span>{else}<a href="{$msn_active_url}" onclick="return disabled_link();" target="_blank">{$lang.active_msn}</a>{/if}</td>
+              {else}
+              <td class="label">{$lang.$item.code}:
+                {if $item.value and $item.type eq 'file' and $item.params eq 'image'}
+                <img src="{$item.value}" class="icon-picture" enable_drop="disabled" onerror="this.style.display='none'" />
+                {/if}
+              </td><td>
+                {if $item.type eq 'file'}
+                <input type="file" name="{$item.code}" size="40" />
+                {elseif $item.type eq 'time_zone'}
+                <select name="{$item.code}" id="{$item.code}">
+                  {html_options options=$item.params selected=$item.value}
+                </select>
+                {else}
+                {$item.input_html}
+                {/if}
+                {if $lang.$item.note}<span class="note">{$lang.$item.note}</span>{/if}
+              </td>
+              {/if}
+            </tr>
+            {/foreach}
+          </table>
+        {/foreach}
+        </div>
+        <p class="submitlist"><input type="submit" name="value_submit" value="{$lang.submit}" /> &nbsp; <input type="reset" name="value_submit" value="{$lang.reset}" /></p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

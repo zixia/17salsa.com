@@ -1,0 +1,17 @@
+#store_list #displaymode { color:#4A4A4A; height:24px; margin-bottom:5px; padding:10px 20px 0; border-top:1px solid #dadada; }
+#store_list #displaymode span { margin-right:35px; }
+#store_list #displaymode .quickchanger { padding-top:2px; }
+#store_list #displaymode .quickchanger span { margin-right:10px; }
+#store_list #displaymode .quickchanger { line-height:12px; float:right; }
+#store_list #displaymode .quickchanger .prve_page { text-indent:-9999px; background:url(images/btn_page_prev.gif) no-repeat; width:50px; height:16px; float:left; }
+#store_list #displaymode .quickchanger .next_page { text-indent:-9999px; background:url(images/btn_page_next.gif) no-repeat; width:50px; height:16px; float:left; }
+#store_list #displaymode .quickchanger .act_next_page { text-indent:-9999px; background:url(images/btn_page_next_act.gif) no-repeat; width:50px; height:16px; float:left; }
+#store_list #displaymode .quickchanger .act_prve_page { text-indent:-9999px; background:url(images/btn_page_prev_act.gif) no-repeat; width:50px; height:16px; float:left; }
+#store_list #displaymode .quickchanger .pps_total { line-height:16px; float:left; }
+#store_list #displaymode .quickchanger a,.store_list #displaymode .quickchanger span { margin:0 5px; outline:0; }
+#store_item_list { background:#fff; width:100%; border:1px solid #dedede; }
+#store_item_list th,#store_item_list td { vertical-align:middle; padding:5px 8px; border-bottom:1px dotted #e5e5e5; }
+#store_item_list th { color:#333; }
+#store_item_list td { color:#666; }
+#store_item_list a { color:#0E6AD0; }
+#hot_store li,#new_store li { line-height:24px; background:url(images/icon_arrow02.gif) no-repeat 0 center; padding-left:20px; border-bottom:1px dotted #e5e5e5; }

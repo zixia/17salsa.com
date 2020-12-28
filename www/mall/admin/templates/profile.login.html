@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset={$charset}" />
+  <title>ECMall</title>
+  <script type="text/javascript" src="js/ecmall.js"></script>
+  <script type="text/javascript">
+  <!--
+    if (window.top.frames.length > 0) {
+      top.location.href=location.href;
+    }
+    Event.observe(window, 'load', function(){
+      if ($("username") && $("username").type.toLowerCase() == "text"){
+        $("username").focus();
+      }else if ($("password")){
+        $("password").focus();
+      }
+    });
+  //-->
+  </script>
+  <style type="text/css">
+    /*<![CDATA[*/
+      p, form, input { font-size:12px; margin:0; padding:0; }
+      body { background:#2362a6; }
+      .sinput { width:140px; height:14px; padding:2px 3px; }
+      #wrapper { padding:100px 0 30px; }
+      #loginarea { background:url(admin/images/bg.png) no-repeat 0 0; width:290px; height:230px; margin:0 auto; padding:125px 0 0 270px; }
+      #loginarea p { height:28px; }
+      #loginarea label { line-height:22px; color:#aae9f6; width:60px; float:left; }
+      #loginarea #captcha { text-transform:uppercase; width:50px; margin-right:9px; }
+      #loginarea input, #loginarea img { vertical-align:middle; }
+      #remember { padding-left:50px; }
+      #returnhome { color:#fff; text-decoration:underline; background:url(admin/images/icon_bg.gif) no-repeat 0 -200px; margin-right:30px; padding-left:13px; }
+      #forget { color:#fff; text-decoration:underline; background:url(admin/images/icon_bg.gif) no-repeat 0 -250px; padding-left:13px; }
+      #copyright { font:10px Arial; color:#fff; }
+    /*]]>*/
+  </style>
+</head>
+
+<body>
+  <div id="wrapper">
+    <div id="loginarea">
+      <form method="post" name="loginForm">
+        <p><label for="username" class="area">{$lang.username}:</label>
+        {if $smarty.session.user_id}<span style="line-height:22px;color:#AAE9F6;"><input type="hidden" name="username" class="sinput" value="{$smarty.session.user_name}" />{$smarty.session.user_name}<a href="admin.php?app=profile&act=logout" style="margin-left:18px;color:#ccffff;">[{$lang.logout}]</a></span>
+        {else}<input type="text" id="username" name="username" class="sinput" value="" />{/if}
+        </p>
+        <p><label for="password" class="area">{$lang.password}:</label><input type="password" id="password" name="password" class="sinput" /></p>
+        {if $captcha}
+        <p id="captcha-input" style="display:none;"><label for="captcha" class="area">{$lang.captcha}:</label><input type="text" id="captcha" name="captcha" maxlength="4" class="sinput" autocomplete="off" /><img src="about:blank" style="border:1; display:none; cursor:pointer" id="captcha-img" border="1" title="{$lang.change_captcha}" onclick="changeCaptcha(this)" onload="this.style.display='inline'" /></p>
+        {/if}
+        <p style="padding-left:59px"><input type="image" src="admin/images/btn_login.gif" /></p>
+      </form>
+    </div><br /><br />
+    <p align="center" class="other"><a href="index.php" id="returnhome">{$lang.back_home}</a> <a href="index.php?app=member&amp;act=getpwd" id="forget">{$lang.lost_password}</a></p><br />
+    <p align="center" id="copyright" class="other">&copy; 2005-2008 ShopEx Inc.  Powered by ECMall</p>
+  </div>
+  <script type="text/javascript">
+  //<![CDATA[
+    var showCaptcha = function(){
+        if ($('captcha-img'))
+        {
+            $('captcha-input').style.display = '';
+            changeCaptcha($('captcha-img'));
+        }
+    };
+    var obobj = $('username') && $("username").type.toLowerCase() == "text" ? $('username') : $('password');
+    Event.observe(obobj, 'focus', showCaptcha);
+    function changeCaptcha (img) {
+        img.src = 'admin.php?app=profile&act=captcha&' + Math.random();
+        Event.stopObserving(obobj, 'focus', showCaptcha);
+    }
+  //]]>
+  </script>
+</body>
+</html>

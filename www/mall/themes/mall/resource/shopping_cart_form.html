@@ -1,0 +1,71 @@
+{script src="shopping,ui.tip"}
+<link href="js/ui.tip/style.css" rel="stylesheet" type="text/css"  />
+<div id="shopping_cart_form" class="colbox flow">
+  <p id="flowview">
+    <span class="cart">{$lang.shopping_cart}</span>
+    <span class="pay">{$lang.shipping_and_payment}</span>
+    <span class="confirm">{$lang.order_review}</span>
+    <span class="submit">{$lang.submit_order}</span>
+  </p>
+  <table border="0" cellspacing="0" class="datatable">
+    <tr class="title">
+      <th>{$lang.goods_name}</th>
+      <th width="100">{$lang.goods_number}</th>
+      <th width="100">{$lang.goods_price}</th>
+      <th width="100">{$lang.goods_subtotal}</th>
+      <th width="120">{$lang.handler}</th>
+    </tr>
+    <!-- {foreach from=$carts item=cart key=store_id} -->
+    <form method="post" name="cart_store{$store_id}" action="index.php?app=shopping&amp;act=update_cart&amp;guest_buy={$guest_buy}">
+    <tr>
+      <td colspan="5" class="store_name">{$lang.store}: <a href="{url src=index.php?app=store&amp;store_id=$store_id}">{$cart.store_name|escape}</a></td>
+    </tr>
+    <!-- {foreach from=$cart.goods item=goods} -->
+    <tr class="odd">
+      <td>
+        <a href="index.php?app=goods&amp;spec_id={$goods.spec_id}" target="_blank" class="goods_thumb"><img src="{image file=$goods.default_image width=32 height=32}" alt="{$goods.orig_name}" class="goods_thumb"/></a>
+        <p class="goods_desc">
+          <a href="index.php?app=goods&amp;spec_id={$goods.spec_id}" target="_blank" class="goods_name">{$goods.goods_name|escape}</a><br />
+          <!-- {if $goods.color_name} -->{$lang.goods_color}: <b>{$goods.color_name|escape}</b>&nbsp;&nbsp;<!-- {/if} -->
+          <!-- {if $goods.spec_name} -->{$lang.goods_spec}: <b>{$goods.spec_name|escape}</b><!-- {/if} -->
+        </p>
+      </td>
+      <td><!--<button type="button">-</button>--><input type="text" size="5" onchange="updateGoodsSubTotal({$goods.spec_id}, this, {$store_id});" class="sinput" name="goods_number[{$goods.spec_id}]" value="{$goods.goods_number}" />
+      <input type="hidden" value="{$goods.goods_number}" id="goods{$goods.spec_id}_old_num" />
+          <input type="hidden" value="{$goods.goods_price}" id="goods:{$goods.spec_id}:price" />
+          <input type="hidden" value="{$goods.stock}" id="goods:{$goods.spec_id}:stock" />
+      <!--<button type="button">+</button>--></td>
+      <td>{$goods.goods_price|price}</td>
+      <td><span id="goods{$goods.spec_id}_subtotal" class="subtotal">{$goods.subtotal|price}</td>
+      <td><a href="index.php?app=shopping&amp;act=drop_from_cart&amp;spec_id={$goods.spec_id}&amp;go_back={$go_back}">{$lang.remove}</a> <a href="#" onclick="addToFavorite({$goods.goods_id});">{$lang.add_to_fav}</a></td>
+    </tr>
+    <!-- {/foreach} -->
+    <tr>
+      <td colspan="2" class="opration_row">
+        <p>
+          {$lang.goods_amount}:<span id="store{$store_id}_goods_amount" class="order_fee">{$cart.goods_amount|price}</span>&nbsp;&nbsp;&nbsp;
+          <label id="store{$store_id}_coupon"{if !$cart.coupon.sn} style="display:none;"{/if}>{$lang.coupon_value}:<span id="store{$store_id}_coupon_value" class="order_fee">{$cart.coupon.value|price}
+          </span>&nbsp;&nbsp;[<a href="javascript:;" onclick="useCoupon('', {$store_id}, true);" title="{$lang.cancel_use_coupon_title}">{$lang.cancel}</a>]</label>
+        </p>
+      </td>
+      <td colspan="3" class="opration_row" align="right">
+          <input type="hidden" value="{$cart.goods_amount}" id="store{$store_id}_old_amount" />
+          <input type="hidden" value="{$cart.coupon.sn}" id="store{$store_id}_coupon_sn" />
+          <input type="hidden" value="{$store_id}" name="store_id" />
+          <input type="hidden" value="{$go_back}" name="go_back" />
+          <input type="hidden" value="0" name="go_checkout" id="store{$store_id}_go_checkout" />
+          <p><label for="store{$store_id}_coupon_sn" style="margin-right:15px;">
+          <a href="javascript:;"><img src="images/btn_coupon.gif" onclick="useCouponDialog({$store_id});" alt="{$lang.use_coupon}" /></a></label>
+          <!-- {if $go_back and $store_id eq $smarty.cookies.store_id} -->
+          <input type="image" src="images/btn_confirm_order.gif" alt="{$lang.order_review}" onclick="goCheckout('{$store_id}', 'order_review');" />
+          <!-- {else} -->
+          <input type="image" src="images/btn_checkout.gif" alt="{$lang.checkout}" onclick="goCheckout({$store_id}, 'shipping_and_payment');" />
+          <!-- {/if} -->
+          </p>
+        </form>
+      </td>
+    </tr>
+    <!-- {/foreach} -->
+  </table>
+  <p id="continue_shopping"><input type="image" src="images/btn_clearcart.gif" alt="{$lang.clear_cart}" onclick="if(confirm('{$lang.clear_cart_confirm}'))window.location.href='index.php?app=shopping&amp;act=clear_cart';" /> <input type="image" src="images/btn_continue.gif" alt="{$lang.go_on_shopping}" onclick="window.location.href='index.php';" /></p>
+</div>

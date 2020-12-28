@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,ui.autocomplete,validator"}
+  <script type="text/javascript">
+  var select_category = '{$lang.select_category}';
+  var select_file = '{$lang.select_file}';
+  Event.observe(window, "load", function() {
+  field_status();
+  });
+
+  function clearFileInput(file){
+    var form=document.createElement('form');
+    document.body.appendChild(form);
+    var pos=file.nextSibling;
+    form.appendChild(file);
+    form.reset();
+    pos.parentNode.insertBefore(file,pos);
+    document.body.removeChild(form);
+  }
+
+  function field_status (obj) {
+    var elem = $("theForm").getElementsByTagName("input");
+    if (!obj) {
+      for(var i=0; i< elem.length; i++){
+        if (elem[i].type == "radio" && elem[i].name == "file_type" ){
+          elem[i].onclick = function() {field_status(this);}
+          if (elem[i].checked){
+            obj = elem[i];
+    }}}}
+
+    //set state
+    for (var i=0; i<elem.length; i++) {
+      if (elem[i].type=="file" && elem[i].name=="csv_file"){
+        elem[i].disabled = !(elem[i].parentNode.parentNode == obj.parentNode.parentNode.parentNode);
+  }}}
+
+  function submit_check(frm)
+  {
+    if (frm.elements['mall_cate_id'].value == 0)
+    {
+        alert(select_category);
+        return false;
+    }
+
+    //遍历检查文件是否已经选择
+    var elem = frm.getElementsByTagName("input");
+    var file_selected = false;
+    for (var i=0; i<elem.length; i++) {
+      if (elem[i].type=="file" && elem[i].name=="csv_file" && (!elem[i].disabled)) {
+        if (elem[i].value.length > 0) {
+            file_selected = true;
+            break;
+    }}}
+
+    if (file_selected){
+        return true;
+    }else{
+        alert(select_file);
+        return false;
+    }
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.goods_import}</h1>
+      <div class="link"></div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" id="theForm" enctype="multipart/form-data" onsubmit="return submit_check(this);">
+      <div id="tab-form">
+        <ul class="tab-bar">
+          <li class="actived">{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+          <tr>
+            <td class="label">{$lang.mall_category}:</td>
+            <td><select name="mall_cate_id"><option value="0">{$lang.cate_select}</option>{html_options options=$mall_cate_option}</select></td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.store_category}:</td>
+            <td><select name="store_cate_id"><option value="0">{$lang.cate_select}</option>{html_options options=$store_cate_option}</select></td>
+          </tr>          
+          <tr>
+            <td class="label"><label for="from_taobao"><input type="radio" value="taobao" name="file_type" id="from_taobao" checked="on" />{$lang.from_taobao}:</label></td><td><input type="file" name="csv_file" /><span></span></td>
+          </tr>
+          <tr>
+            <td class="label"><label for="from_paipai"><input type="radio" value="paipai" name="file_type" id="from_paipai" checked="on" />{$lang.from_paipai}:</label></td><td><input type="file" name="csv_file"/><span></span></td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding-left:40px;color:#C00;line-height:18px;">{$lang.import_note}</td>
+          </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="hidden" name="act" value="preview" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

@@ -1,0 +1,99 @@
+<div id="credit">
+  <div class="mc_box">
+    <h3><span>{$credit_title}</span></h3>
+    <h4><span>{$lang.seller_rate}</span></h4>
+    <div class="colboxcontent">
+      <table cellspacing="0" width="100%">
+        <tr class="title">
+          <th>&nbsp;</th>
+          <th>{$lang.in_week}</th>
+          <th>{$lang.in_month}</th>
+          <th>{$lang.in_half_year}</th>
+          <th>{$lang.half_year_ago}</th>
+          <th class="last">{$lang.total}</th>
+        </tr>
+        <tr class="odd">
+          <td class="goodcredit">{$lang.eval_good}</td>
+          <td>{$eval.seller.week.3|default:0}</td>
+          <td>{$eval.seller.month.3|default:0}</td>
+          <td>{$eval.seller.half_year.3|default:0}</td>
+          <td>{$eval.seller.other.3|default:0}</td>
+          <td class="last">{$eval.seller.total.3|default:0}</td>
+        </tr>
+        <tr class="even">
+          <td class="normalcredit">{$lang.eval_normal}</td>
+          <td>{$eval.seller.week.2|default:0}</td>
+          <td>{$eval.seller.month.2|default:0}</td>
+          <td>{$eval.seller.half_year.2|default:0}</td>
+          <td>{$eval.seller.other.2|default:0}</td>
+          <td class="last">{$eval.seller.total.2|default:0}</td>
+        </tr>
+        <tr class="odd">
+          <td class="badcredit">{$lang.eval_bad}</td>
+          <td>{$eval.seller.week.1|default:0}</td>
+          <td>{$eval.seller.month.1|default:0}</td>
+          <td>{$eval.seller.half_year.1|default:0}</td>
+          <td>{$eval.seller.other.1|default:0}</td>
+          <td class="last">{$eval.seller.total.1|default:0}</td>
+        </tr>
+        <tr class="even last">
+          <td class="totalcredit">{$lang.total}</td>
+          <td>{$eval.seller.week.total|default:0}</td>
+          <td>{$eval.seller.month.total|default:0}</td>
+          <td>{$eval.seller.half_year.total|default:0}</td>
+          <td>{$eval.seller.other.total|default:0}</td>
+          <td class="last">{$eval.seller.total.total|default:0}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="colbtm"></div>
+  </div>
+  <div class="mc_box">
+    <h4><span>{$lang.buyer_rate}</span></h4>
+    <div class="colboxcontent">
+      <table cellspacing="0" width="100%">
+        <tr class="title">
+          <th>&nbsp;</th>
+          <th>{$lang.in_week}</th>
+          <th>{$lang.in_month}</th>
+          <th>{$lang.in_half_year}</th>
+          <th>{$lang.half_year_ago}</th>
+          <th class="last">{$lang.total}</th>
+        </tr>
+        <tr>
+          <td class="goodcredit">{$lang.eval_good}</td>
+          <td>{$eval.buyer.week.3|default:0}</td>
+          <td>{$eval.buyer.month.3|default:0}</td>
+          <td>{$eval.buyer.half_year.3|default:0}</td>
+          <td>{$eval.buyer.other.3|default:0}</td>
+          <td class="last">{$eval.buyer.total.3|default:0}</td>
+        </tr>
+        <tr class="even">
+          <td class="normalcredit">{$lang.eval_normal}</td>
+          <td>{$eval.buyer.week.2|default:0}</td>
+          <td>{$eval.buyer.month.2|default:0}</td>
+          <td>{$eval.buyer.half_year.2|default:0}</td>
+          <td>{$eval.buyer.other.2|default:0}</td>
+          <td class="last">{$eval.buyer.total.2|default:0}</td>
+        </tr>
+        <tr class="add">
+          <td class="badcredit">{$lang.eval_bad}</td>
+          <td>{$eval.buyer.week.1|default:0}</td>
+          <td>{$eval.buyer.month.1|default:0}</td>
+          <td>{$eval.buyer.half_year.1|default:0}</td>
+          <td>{$eval.buyer.other.1|default:0}</td>
+          <td class="last">{$eval.buyer.total.1|default:0}</td>
+        </tr>
+        <tr class="even last">
+          <td class="totalcredit">{$lang.total}</td>
+          <td>{$eval.buyer.week.total|default:0}</td>
+          <td>{$eval.buyer.month.total|default:0}</td>
+          <td>{$eval.buyer.half_year.total|default:0}</td>
+          <td>{$eval.buyer.other.total|default:0}</td>
+          <td class="last">{$eval.buyer.total.total|default:0}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="colbtm"></div>
+  </div>
+</div>

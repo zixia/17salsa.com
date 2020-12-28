@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<template>
+  <row id="region1" allowEdit="false">
+    <library>
+      <item id="page_header" src="themes/mall/resource/page_header.html" />
+      <item id="search_form" src="themes/mall/resource/search_form.html" />
+    </library>
+  </row>
+  <row id="region2" class="grid2col">
+    <row id="region4" allowEdit="false">
+      <library><item id="breadcrumbs" src="themes/mall/resource/breadcrumbs.html" /></library>
+    </row>
+    <row>
+      <col id="region5" class="column1">
+        <library>
+          <item id="wanted_my_other" src="themes/mall/resource/wanted_my_other.html" />
+        </library>
+      </col>
+      <col id="region6" class="column2">
+        <row id="region7" class="grid1col">
+        <library>
+          <item id="wanted_detail" src="themes/mall/resource/wanted_detail.html" />
+        </library>
+        </row>
+      </col>
+    </row>
+  </row>
+  <row id="region3" allowEdit="false">
+    <library>
+      <item id="page_footer" src="themes/mall/resource/page_footer.html" />
+    </library>
+  </row>
+</template>

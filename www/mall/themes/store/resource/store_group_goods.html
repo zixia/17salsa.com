@@ -1,0 +1,15 @@
+<!-- {if $group_goods.data or $editing} -->
+<div id="group_goods" class="colbox sortlist">
+  <h3><span>{$lang.group_buy}</span></h3>
+  <div class="colboxcontent itemgrid">
+    <!-- {foreach from=$group_goods.data item=ggoods} 商品 -->
+    <dl class="item">
+      <dt class="pic"><a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$ggoods.act_id}"><img src="{image file=$ggoods.default_image width=120 height=120}" alt="{$ggoods.goods_name|escape}" /></a></dt>
+      <dd class="name"><a href="{url src=index.php?app=groupbuy&amp;act=detail&amp;id=$ggoods.act_id}">{$ggoods.act_name|escape}</a></dd>
+      <dd class="price">{$ggoods.ext.price|price}</dd>
+    </dl>
+    <!-- {/foreach} 商品 -->
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

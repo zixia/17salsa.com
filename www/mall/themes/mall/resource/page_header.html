@@ -1,0 +1,50 @@
+<div id="page_header">
+  <h2 id="logo"><a href="./"><img src="data/common/mall_logo.gif" alt="" /></a></h2>
+  <ul id="topnav">
+    <!-- {nocache} -->
+    <li class="memberinfo">
+      <span>{$lang.hello}{$visitor}</span>
+      <!-- {if $smarty.session.user_id}-->
+      <a href="index.php?app=member&amp;act=logout">[{$lang.logout}]</a>
+      <!--{else}-->
+      <a href="index.php?app=member&amp;act=login">[{$lang.sign_in}]</a>
+      <a href="index.php?app=member&amp;act=register">[{$lang.register}]</a>
+      <!--{/if}-->
+    </li>
+    <!-- {/nocache} -->
+    <li class="topnav_member"><span><a href="{url src=index.php?app=member}">{$lang.user_center}</a></span></li>
+    <!--{nocache}--><!-- {if !$smarty.session.user_id or $smarty.session.admin_store neq 0} -->
+    <li class="topnav_store"><span>
+      <!-- {if $smarty.session.user_id gt 0 and $smarty.session.admin_store gt 0}-->
+      <a href="./?{$smarty.session.admin_store}">{$lang.my_store}</a>
+      <a href="./admin.php" target="_blank">{$lang.manage_store}</a>
+      <!--{else}-->
+      <!-- {if $mall_storeapply} -->
+      <a href="index.php?app=storeapply">{$lang.i_wannt_setup_shop}</a>
+      <!-- {/if} -->
+      <!--{/if}-->
+    </span></li>
+    <!-- {/if} --><!--{/nocache}-->
+    <li class="topnav_store"><a href="index.php?app=wanted&amp;act=add">{$lang.i_want_wanted}</a></li>
+    <li class="topnav_help"><span><a href="{$help_center_url}">{$lang.help_center}</a></span></li>
+    <!--{nocache}-->
+    <!--{if $smarty.session.user_id}-->
+    <li class="topnav_pm"><span><a href="#" id="pm_button" <!-- {if $check_new_pm} -->class="check_new_pm"<!--{/if}-->>{$lang.pm}</a></span></li>
+    <!--{/if}-->
+    <!-- {/nocache} -->
+    <!-- {foreach from=$top_nav item=nav} -->
+    <li><span><a href="{$nav.nav_url}"{if $nav.open_new} target="_blank"{/if}>{$nav.nav_name}</a></span></li>
+    <!-- {/foreach} -->
+  </ul>
+  <div id="navigation">
+    <ul>
+      <!-- {foreach from=$nav_list item=nav name=navlist} µ¼º½ -->
+      <li class="{if $nav.selected}selected{/if}{if $smarty.foreach.navlist.first} first{/if}{if $smarty.foreach.navlist.last} last{/if}">
+        <span>
+          <a href="{$nav.href}"{if $nav.open_new} target="_blank"{/if}>{$nav.text}</a>
+        </span>
+      </li>
+      <!-- {/foreach} µ¼º½ -->
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,validator,ui.datagrid,ui.calendar"}
+  <script type="text/javascript">
+    var grid;
+    Event.observe(window, 'load', function() {
+      grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify_log";
+    });
+    //∏°∂Ø–≈œ¢
+    var detailLayer = null;
+    function showDetail(detail, obj){
+      if (!detailLayer)
+      {
+        detailLayer = $ce('div');
+        detailLayer.style.cssText = "filter:alpha(opacity=40);-moz-opacity:0.8;opacity: 0.8;background:#EFEFEF;color:#000;padding:5px;border:#ccc 1px solid;";
+        detailLayer.id = "__detail_layer_id";
+        detailLayer.style.position = 'absolute';
+        document.body.appendChild(detailLayer);
+      }
+      pos = Element.getPosition(obj);
+      detailLayer.style.display = 'block';
+      detailLayer.innerHTML = detail;
+      detailLayer.style.left = pos.left + 'px';
+      detailLayer.style.top = pos.top + 15 + 'px';
+    }
+    function hiddenDetail(){
+      if (detailLayer !== null)
+      {
+        detailLayer.style.display = 'none';
+      }
+    }
+  </script>
+ </head>
+
+ <body onclick="hiddenDetail();">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.group_buy_viewlog}</h1>
+      <div class="link">
+        <a href="admin.php?app=groupbuy&amp;act=view">[{$lang.group_buy_view}]</a>
+      </div>
+      <div id="desc">
+        <div id="page-selector">
+        </div>
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell"><input class="checkAll" type="checkbox" />{sort_link by=user_name text=$lang.username}</th>
+          <th>{sort_link by=spec_id text=$lang.goods_spec}</th>
+          <th readOnly="false" dataType="int" columnName="number">{sort_link by=number text=$lang.goods_number}</th>
+          <th>{$lang.other}
+          <th>{$lang.notify}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=actor}
+        <tr id="{$actor.log_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$actor.log_id}" {if $actor.notify}disabled="disabled"{/if} /><span>{$actor.user_name}</span>&nbsp;</td>
+          <td><span>{$actor.spec_name|escape}</span></td>
+          <td><span>{$actor.number|escape}</span></td>
+          <td><a href="javascript:;" onmouseover="showDetail('{if $actor.email}{$lang.email}:{$actor.email|escape}<br />{/if}{if $actor.telephone}{$lang.telephone}:{$actor.telephone|escape}<br />{/if}{if $actor.mobile}{$lang.mobile}:{$actor.mobile|escape}<br />{/if}{if $actor.remarks}{$lang.remarks}:{$actor.remarks|escape|quotes}{/if}',this)" onmouseout="hiddenDetail()">
+          {$actor.email}
+          </td>
+          <td>{if $actor.notify}{$lang.notefied}{else}{$lang.not_notify}{/if}</td>
+          <td class="handlelist">
+            <a href="admin.php?app=groupbuy&amp;act=drop_actor&amp;act_id={$act_id}&amp;log_id={$actor.log_id}">{$lang.delete}</a>
+          </td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table>
+      <div style="text-align:center; padding:4px;" >
+        {if $act_status eq "active"}
+        <input type="button" value="{$lang.end_activity}" onclick="location.href='admin.php?app=groupbuy&amp;act=end_activity&amp;act_id={$act_id}'"/>
+        {/if}
+        {if $act_status eq "end"}
+        <input type="button" value="{$lang.pm_buy_link}" onclick="grid.batch('pm_buy_link');" />
+        {/if}
+        {if $act_status eq "cancle"}
+        <input type="button" value="{$lang.reopen_activity}" onclick="location.href='admin.php?app=groupbuy&amp;act=reopen_activity&amp;act_id={$act_id}'" />
+        {else}
+        <input type="button" value="{$lang.cancel_activity}" onclick="if ('{$lang.cancel_intro}') location.href='admin.php?app=groupbuy&amp;act=cancel_activity&amp;act_id={$act_id}'"/>
+        {/if}
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

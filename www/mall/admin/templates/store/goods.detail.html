@@ -1,0 +1,667 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,ui.utils,ui.autocomplete,validator,ui.effect,ui.imgpreviewer"}
+  <!-- todo: move ui.colorselector to up  -->
+  <script type="text/javascript" src="js/ui.simplecolorselector.js"></script>
+  <script type="text/javascript">
+  var goods_spec_invalid = '{$lang.goods_spec_invalid}';
+  var not_allow_type = '{$lang.not_allow_type}';
+  var goods_spec_exist = '{$lang.goods_spec_exist}';
+  var blank = '{$lang.blank}';
+  var notice_change_mode = '{$lang.notice_change_mode}';
+  var confirm_change_mode = '{$lang.confirm_chage_mode}';
+  var goods_spec_spec_lack = '{$lang.goods_spec_spec_lack}';
+  var goods_spec_color_lack = '{$lang.goods_spec_color_lack}';
+  var del_image_confirm = '{$lang.del_image_confirm}';
+  var del_spec_confirm = '{$lang.del_spec_confirm}';
+  var plz_select_cate = '{$lang.plz_select_cate}';
+  var mall_cate_is_empty = '{$lang.mall_cate_is_empty}';
+  var mall_cate_index = {$mall_cate_index};
+
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Event.observe($('goods-album-li'), "click", update_color); //album color list
+   Event.observe($('goods-attr-li'), "click", update_attr)
+   var ac = new ui.autoComplete('brandName', 'admin.php?app=goods&act=get_brand_list');
+   $('brandName').onfocus = function () {if (this.value.length == 0) {setTimeout(function(){ac.populatePopup()}, 100);}};
+   Validator.run("theForm"); //validate auto form
+   initImgPreviewer(); //pic to preview
+
+   change_new_level(document.forms["theForm"]["select_level"]);
+   mall_cate_init($('mall_cate_dir').value);
+   document.forms['theForm']['goods_name'].focus();
+  });
+  /* clear file input */
+  function clearFileInput(file){
+    var form=document.createElement('form');
+    document.body.appendChild(form);
+    var pos=file.nextSibling;
+    form.appendChild(file);
+    form.reset();
+    pos.parentNode.insertBefore(file,pos);
+    document.body.removeChild(form);
+  }
+
+  function image_insert(obj){
+    var tr = obj.parentNode.parentNode;
+    var tbl = $(tr.parentNode.parentNode);
+    path = obj.value.replace(/\\/g, '/');
+    if (path.length == 0) return;
+    var ext = path.lastIndexOf('.') == -1 ? '' : path.substr(path.lastIndexOf('.') + 1, path.length).toLowerCase();
+    if (ext.length == 0 || (!['gif', 'jpg', 'png'].inArray(ext))){
+      clearFileInput(obj);
+      alert(not_allow_type);
+      return;
+    }
+    var row = tbl.insertRow(tr.rowIndex + 1);
+    for(var i=0;i<tr.children.length; i++){
+      var cell = row.insertCell(i);
+      if (tr.children[i].className) cell.className = tr.children[i].className;
+      cell.innerHTML = tr.children[i].innerHTML;
+    }
+
+    tr.cells[row.cells.length-1].getElementsByTagName("a")[0].style.display='';
+    obj.style.display='none';
+    obj.nextSibling.innerHTML = obj.value.substr(obj.value.replace(/\\/g, '/').lastIndexOf('/')+1);
+  }
+  function image_delete(obj, goods_id, id){
+    var tr = $(obj.parentNode.parentNode);
+    if (goods_id && id) {
+      if (!confirm(del_image_confirm))
+      {
+        return;
+      }
+      goods_id = parseInt(goods_id);
+      id = parseInt(id);
+      Ajax.call('admin.php?app=goods&act=drop_image&goods_id=' + goods_id + '&id=' + id, function (result){
+        if (result.msg.length > 0) alert(result.msg);
+        if (result.done) Element.remove(tr);
+      },
+      'GET');
+    }else{
+      Element.remove(tr);
+  }}
+
+  function spec_add(obj, is_copy){
+    if (is_copy == undefined) is_copy = 0;
+    var tr = obj.parentNode.parentNode;
+    var tbl = $(tr.parentNode.parentNode);
+    var rowIndex = tr.rowIndex;
+    var dataRow = 1;
+    if (is_copy){
+      dataRow =rowIndex;
+      rowIndex++;
+    }
+    var row = tbl.insertRow(rowIndex);
+    Element.addClass(row, "spec");
+    for(var i=0;i<tbl.rows[1].children.length; i++){
+      var cell = tbl.rows[dataRow].children[i].cloneNode(true);
+      row.appendChild(cell);
+    }
+    var items = row.getElementsByTagName("INPUT");
+    for(var i=0; i<items.length; i++){
+      if (is_copy){
+        switch(items[i].name){
+          case "default_spec" :
+            if (items[i].checked){
+              /* need to check first */
+              var elem = tbl.rows[dataRow].getElementsByTagName("INPUT");
+              for(var j=0; j<elem.length; j++){
+                if (elem[j].name=="default_spec"){
+                  items[i].checked = false;
+                  elem[j].checked = true;
+                  break;
+            }}}
+            break;
+          case 'spec_id[]':
+            items[i].value = 0;
+            break;
+          case 'color_name[]':
+            items[i].focus();
+            break;
+          case "color_rgb[]":
+            Element.next(items[i]).selector = null;
+            break;
+          case "sku[]":
+            items[i].value = "";
+            break;
+          default:
+        }
+      }else{
+        switch(items[i].name){
+          case "default_spec" :
+            if (items[i].checked){
+              /* need to check first */
+              var elem = tbl.rows[1].getElementsByTagName("INPUT");
+              for(var j=0; j<elem.length; j++){
+                if (elem[j].name=="default_spec"){
+                  items[i].checked = false;
+                  elem[j].checked = true;
+                  break;
+            }}}
+            break;
+          case "color_rgb[]":
+            items[i].parentNode.style.backgroundColor="";
+            Element.next(items[i]).selector = null;
+            break;
+          case "color_name[]":
+            items[i].value = "";
+            items[i].focus();
+            break;
+          case "spec_id[]":
+          case "market_price[]":
+            items[i].value = 0;
+            break;
+          case "store_price[]":
+          case "stock[]":
+            items[i].value = 1;
+            break;
+          default:
+            items[i].value = "";
+        }
+      }
+    }
+  }
+  function spec_delete(obj){
+    var tr = $(obj.parentNode.parentNode);
+    var tbl = $(tr.parentNode.parentNode);
+    if (tbl.rows.length > 3){
+      var spec = $class("spec_id", tr, "INPUT");
+      if (spec[0].value > 0){
+        if (!confirm(del_spec_confirm)){
+          return;
+        }
+        result = Ajax.call('admin.php?app=goods&act=drop_spec&id=' + spec[0].value, null, 'GET', false);
+        if (result.msg.length > 0){
+          alert(reslutl.msg);
+        }
+        if(!result.done){
+          return;
+      }}
+
+      var elem = tr.getElementsByTagName("INPUT");
+      for (var i=0;i<elem.length;i++){
+        if (elem[i].name == "default_spec"){
+          if (elem[i].checked){
+            /* need to check first */
+            var j = tr.rowIndex == 1 ? 2 : 1;
+            var elem = tbl.rows[j].getElementsByTagName("INPUT");
+            for(var j=0; j<elem.length; j++){
+              if (elem[j].name=="default_spec"){
+                elem[j].checked = true;
+                break;
+            }}}
+            break;
+        }}
+      Element.remove(tr);
+  }}
+
+  function pre_submit(){
+    update_color(); //update color
+    return check_mall_cate() && check_spec();
+  }
+  function check_spec(){
+    var count = 0;
+    var spec_arr = []; //规格和颜色
+    var blank_color_count = 0; //颜色
+    var blank_spec_count = 0; //规格
+    var errMsg = goods_spec_invalid;
+    var spec = $class("spec", "spec_table", "TR");
+    for(var i=0; i< spec.length; i++){
+      var spec_item = spec[i].getElementsByTagName('INPUT');
+      var spec_name = '';
+      var color_name = '';
+      for (var j=0;j < spec_item.length ; j++){
+        switch (spec_item[j].name){
+        case "store_price[]":
+          var float_test = new dt_float();
+          if (spec_item[j].value.length == 0 || (parseFloat(spec_item[j].value) <= 0) || !float_test.check(spec_item[j].value) ){
+            count ++;
+            spec_item[j].style.borderColor = "red";
+            spec_item[j].onfocus = function (){this.style.borderColor="";}
+          }
+          break;
+        case "stock[]":
+          var int_test = new dt_int();
+          if (spec_item[j].value.length == 0 || spec_item[j].value < 0 || !int_test.check(spec_item[j].value)){
+            count ++;
+            spec_item[j].style.borderColor = "red";
+            spec_item[j].onfocus = function (){this.style.borderColor="";}
+          }
+          break;
+        case "color_name[]":
+          color_name = spec_item[j].value.trim();
+          break;
+        case "spec_name[]":
+          spec_name = spec_item[j].value.trim();
+          break;
+        default:
+          break;
+      }}
+      var color_spec = color_name + "\n" + spec_name;
+      if (color_name == '') blank_color_count ++;
+      if (spec_name == '') blank_spec_count ++;
+      if (!spec_arr.inArray(color_spec)){
+        spec_arr.push(color_spec);
+      }else{
+        count ++;
+        errArr = goods_spec_exist.split('%s');
+        if (color_name == '') color_name = blank;
+        if (spec_name == '') spec_name = blank;
+        errMsg = errArr[0] + color_name + errArr[1] + spec_name + errArr[2];
+      }
+    }
+    if (blank_color_count != 0 && blank_color_count != spec.length){
+      count ++;
+      errMsg =  goods_spec_color_lack;
+    }
+    if (blank_spec_count != 0 && blank_spec_count != spec.length){
+      count ++;
+      errMsg = goods_spec_spec_lack;
+    }
+    if (count > 0){
+      var tabBar = $class("tab-bar", $('tab-form'))[0];
+      var e = {};
+      e.srcElement = $('goods-spec-li');
+      tabBar.onclick(e);
+      alert(errMsg);
+      return false;
+    }else{
+      return true;
+  }}
+  Validator.preSubmit = pre_submit;
+  function change_type(obj){
+    if (obj.value == 0){
+      var tbl = $('goods_attribute');
+      for(i=tbl.rows.length-1; i > 0; i--){tbl.deleteRow(i);};
+    }
+    Ajax.call('admin.php?app=goods&act=get_attribute&id=' + obj.value,
+    function(result){
+    if (result.msg) {alert(result.msg)}
+    if (result.done){
+      var tbl = $('goods_attribute');
+      for(i=tbl.rows.length-1; i > 0; i--){tbl.deleteRow(i);};
+      for(i=0;i<result.retval.length;i++){
+        var row = tbl.insertRow(-1);
+        var cell0 = row.insertCell(0);
+        cell0.className = "label";
+        cell0.innerHTML = result.retval[i].attr_name;
+        var cell1 = row.insertCell(1);
+        if (result.retval[i].input_type == 'select'){
+          var input_content = "<select name=\"attr[" + result.retval[i].attr_id + "]\" >";
+          for (var key in result.retval[i].value_range){
+            input_content += "<option value=\"" + key + "\" >" + key + "</option>"
+          }
+        }else if (result.retval[i].input_type == "textarea"){
+          input_content = "<textarea rows=\"3\" cols=\"40\" name=\"attr[" + result.retval[i].attr_id + "]\">" + result.retval[i].value_range  + "</textarea>";
+        }else{
+          input_content = "<input name=\"attr[" + result.retval[i].attr_id + "]\" value=\"" + result.retval[i].value_range + "\" size=\"40\" />";
+        }
+        cell1.innerHTML = input_content;
+      }
+    }},
+    'GET');
+  }
+  function update_attr(){
+    var cate_div = $('cate_div');
+    var mall_cate_id = 0;
+    var len = cate_div.children.length;
+    if (len == 1){
+        mall_cate_id = parseInt(cate_div.children[0].value);
+    }else if (len > 1){
+        if (cate_div.children[len - 1].value == "0"){
+            mall_cate_id = parseInt(cate_div.children[len -2].value);
+        }else{
+            mall_cate_id = parseInt(cate_div.children[len -1].value);
+        }
+    }
+    //if do not change, submit it
+    if (mall_cate_id > 0 && document.forms['theForm']['type_id'].value == '0'){
+      Ajax.call('admin.php?app=goods&act=get_goods_type&cate_id=' + mall_cate_id,
+      function(result){
+        if (result.msg) alert(result.msg);
+        if (result.done){
+          document.forms['theForm']['type_id'].value = result.retval;
+          result.value = result.retval;
+          change_type(result);
+      }},
+      'GET');
+  }}
+  function update_color(){
+    var colors = [];
+    var items = $class("color_name", "spec_table", "INPUT");
+    for (var i=0; i < items.length; i++ ){
+      var value = items[i].value.trim();
+      if (value && (!colors.inArray(value))) colors.push(value);
+    }
+    var items = $class("image_color", "goods_image", "SELECT");
+    for(var i=0; i<items.length; i++){
+      var value = items[i].value;
+      items[i].options.length = 1;
+      for (var j=0; j<colors.length; j++){
+        var opt = new Option(colors[j],colors[j]);
+        items[i].options.add(opt);
+      }
+      items[i].value = value;
+    }
+  }
+
+  function specColorSelector(obj){
+    if (obj.selector){
+        obj.selector.show();
+      }else{
+        obj.selector = new ui.simpleColorSelector(obj, selectorGetColor(obj));
+        obj.selector.setValue = selectorSetVal;
+      }
+  }
+
+  /* get color*/
+  function selectorGetColor(obj){
+    return obj.previousSibling.value;
+  }
+  /* set color */
+  function selectorSetVal(hexstr, color_name){
+    var org_color = this.color2hex(this.sender.parentNode.style.backgroundColor);
+    var input = getInputByName(this.sender.parentNode.parentNode, 'color_name[]');
+    if (input.value == "" || lang.colorindex[org_color] == input.value){
+      input.value = color_name;
+    }
+    input.focus();
+    this.sender.parentNode.style.backgroundColor = hexstr;
+    this.sender.previousSibling.value = hexstr;
+  }
+  /* dropPicture */
+  function dropPicture(src, img){
+    var tr = img.parentNode.parentNode;
+    var elem = $class('cls-image-delete', tr, "A");
+    elem[0].onclick();
+  }
+  /* change edit mode*/
+  function change_mode(cur_mode, not_allow_change)
+  {
+    if (not_allow_change == 1){
+      alert(notice_change_mode);
+      return false;
+    }
+
+    if (!confirm(confirm_change_mode))
+    {
+        return false;
+    }
+
+    var date = new Date();
+    date.setTime(date.getTime() + 3600 * 24 * 30);
+    var edit_mode = cur_mode  == 'full' ? 'cut' : 'full';
+    document.setCookie('ecm_config[goods_edit_mode]', edit_mode, date.toUTCString());
+    location.reload();
+  }
+  /*change new level*/
+  function change_new_level(obj)
+  {
+    document.forms['theForm']['new_level'].style.display = (obj.value == '10') ? "none" : '';
+  }
+  /*get input by name*/
+  function getInputByName(obj, input_name)
+  {
+    var elem = obj.getElementsByTagName("INPUT");
+    var result = false;
+    for (var i =0;i<elem.length; i++)
+    {
+      if (elem[i].name == input_name){
+        result = elem[i];
+        break;
+      }
+    }
+    return result;
+  }
+
+  function mall_cate_init($dir){
+    var cate_div = $('cate_div');
+    cate_seq = $dir.split('/');
+    for (var i=0; i < cate_seq.length - 1; i++){
+        create_mall_cate_select(cate_seq[i], cate_seq[i+1],cate_div);
+    }
+    if ((cate_seq[i] != 0) && mall_cate_index[cate_seq[i]]){
+        create_mall_cate_select(cate_seq[i], 0, cate_div);
+    }
+  }
+
+  function mall_cate_onchange(obj){
+    obj = this;
+    var cate_div = obj.parentNode;
+    for (i=cate_div.children.length; i> obj.cate_index ; i--){
+        cate_div.removeChild(cate_div.children[i-1]);
+    }
+
+    if (obj.value == 0){
+        //do nothing
+    }else if (mall_cate_index[obj.value]){
+        obj.name = 'mall_cate_id_' + obj.cate_index;
+        create_mall_cate_select(obj.value, 0, cate_div);
+    }else{
+        obj.name = 'mall_cate_id';
+    }
+  }
+
+  function create_mall_cate_select(parent_id, cate_id, cate_div){
+    new_select = $ce("SELECT");
+    new_select.name = "mall_cate_id_" + mall_cate_index[parent_id][0]['level'];
+    new_select.cate_index = mall_cate_index[parent_id][0]['level'];
+    new_select.onchange = mall_cate_onchange;
+
+    var opt = new Option(plz_select_cate, 0);
+    new_select.options[new_select.options.length] = opt;
+
+    var select_index = 0;
+    for(i=0; i < mall_cate_index[parent_id].length; i++){
+        var opt = new Option(mall_cate_index[parent_id][i]['cate_name'],mall_cate_index[parent_id][i]['cate_id']);
+        if (mall_cate_index[parent_id][i]['cate_id'] == cate_id){opt.selected = true; select_index = i + 1}
+        new_select.options[new_select.options.length] = opt;
+    }
+    if (select_index > 0) {new_select.selectedIndex = select_index;};
+    cate_div.appendChild(new_select);
+  }
+
+  function check_mall_cate(){
+    var cate_div = $('cate_div');
+    if ((cate_div.children.length == 1) && (cate_div.children[0].value == 0)){
+      alert(mall_cate_is_empty);
+      return false;
+      //error;
+    }else{
+      if (cate_div.children[cate_div.children.length - 1].value == 0){
+        cate_div.children[cate_div.children.length - 1].name = "mall_cate_id_" + cate_div.children.length;
+        cate_div.children[cate_div.children.length - 2].name = "mall_cate_id";
+      }else{
+        cate_div.children[cate_div.children.length - 1].name = "mall_cate_id";
+      }
+
+      return true;
+    }
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{if $goods.goods_id eq 0}{$lang.add_goods}{else}{$lang.edit_goods}{/if}</h1>
+      <div class="link">[<a href="admin.php?app=goods&amp;act=view">{$lang.view_goods}</a>][<a href="javascript:;" onclick="change_mode('{$mode}', {$not_allow_change|default:0});" >{if $mode eq 'full'}{$lang.to_cut}{else}{$lang.to_full}{/if}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+      <div style="position:relative">
+        <ul class="tab-bar" >
+          <li>{$lang.general}</li>
+          {if $mode eq 'full'}
+          <li id="goods-spec-li">{$lang.spec}</li>
+          {/if}
+          <li>{$lang.goods_desc}</li>
+          <li id="goods-album-li">{$lang.album}</li>
+          <li id="goods-attr-li">{$lang.goods_attr}</li>
+        </ul>
+       </div>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.goods_name}:</td><td><input type="text" size="40" name="goods_name" value="{$goods.goods_name|escape:input}" dataType="string" required="required" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.mall_category}:</td><td><div id="cate_div"></div><input type="hidden" name="mall_cate_dir" id="mall_cate_dir" value="{$goods.mall_cate_dir}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.store_category}:</td><td><select name="store_cate_id">
+              <option value="0">{$lang.plz_select_cate}</option>
+              {html_options options=$store_cate_list selected=$goods.store_cate_id}</select></td>
+            </tr>
+            {if $mode neq 'full'}
+            <tr>
+              <td class="label">{$lang.color}:</td><td><span style="background-color:{$goods.spec[0].color_rgb|default:#FFFFFF};"><input type="hidden" name="color_rgb[]" value="{$goods.spec[0].color_rgb}" /><img src="admin/images/color_selecter.gif" width="21" height="18" alt="selecter" onclick="specColorSelector(this)" /></span>&nbsp;<input type="text" name="color_name[]" class="color_name" value="{$goods.spec[0].color_name|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.market_price}:</td><td><input type="text" size="8" name="market_price[]" value="{$goods.spec[0].market_price|default:0}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.store_price}:</td><td><input type="text" size="8" name="store_price[]" value="{$goods.spec[0].store_price}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.stock}:</td><td><input type="text" size="3" name="stock[]" value="{$goods.spec[0].stock}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.spec}:</td><td><input type="text"  name="spec_name[]" value="{$goods.spec[0].spec_name|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.sku}:</td><td>
+              <input type="hidden" name="spec_id[]" value="{$goods.spec[0].spec_id|default:0}" class="spec_id" />
+              <input type="text" name="sku[]" value="{$goods.spec[0].sku}" /></td>
+            </tr>
+            {/if}
+            <tr>
+              <td class="label">{$lang.new_level}:</td>
+              <td><select name="select_level" onchange="change_new_level(this)">{html_options options=$select_level selected=$goods.new_level}</select>&nbsp;<select name="new_level" {if $goods.new_level eq "10"}style="display:none"{/if}>{html_options options=$level_range selected=$goods.new_level}</select></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.brand}:</td><td><input type="text" size="40" name="brand_name" value="{$goods.brand_name|escape:input}" id="brandName" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_brief}:</td><td>
+              <textarea rows="3" cols="40" name="goods_brief">{$goods.goods_brief}</textarea>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.on_sale}/{$lang.is_s_best}/{$lang.is_s_new}:</td>
+              <td>
+                <label><input name="is_on_sale" type="checkbox" value="1" {if $goods.is_on_sale eq '1'}checked="checked"{/if}>{$lang.on_sale}</label>
+                <label><input type="checkbox" value="1" name="is_s_best" {if $goods.is_s_best eq '1'}checked="checked"{/if}>{$lang.is_s_best}</label>
+                <label><input type="checkbox" value="1" name="is_s_new" {if $goods.is_s_new eq '1'}checked="checked"{/if}>{$lang.is_s_new}</label>
+                <span class="note">{$lang.note_for_goods}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.tags}:</td><td><input type="text" name="keywords" value="{$goods.keywords}" size="40" /></td>
+            </tr>
+            {if $goods.goods_id eq 0 and $lang_goods_send_feed}
+            <tr>
+              <td class="label">&nbsp;</td><td><input type="checkbox" name="send_feed" value="1" id="is_send_feed"{if $default_feed_status} checked="checked"{/if} /><label for="is_send_feed">{$lang_goods_send_feed}</label></td>
+            </tr>
+            {/if}
+          </table>
+          {if $mode eq 'full'}
+          <div class="form-table" id="spec_tab">
+          <table cellspacing="0" id="spec_table">
+            <tr class="title">
+              <th width="30" class="pd">{$lang.default}</th>
+              <th width="80">{$lang.color}</th>
+              <th width="60">{$lang.market_price}</th>
+              <th width="60">{$lang.store_price}</th>
+              <th width="50">{$lang.stock}</th>
+              <th width="100">{$lang.spec}</th>
+              <th width="100">{$lang.sku}</th>
+              <th width="50">{$lang.handler}</th>
+            </tr>
+            {foreach from=$goods.spec item=spec key=index}
+            <tr class="spec">
+              <td class="pd"><input type="radio" name="default_spec" value="0" {if $spec.spec_id eq $goods.default_spec}checked="checked"{/if} onclick="this.value=(this.parentNode.parentNode.rowIndex-1);" /><input type="hidden" name="spec_id[]" value="{$spec.spec_id|default:0}" class="spec_id" /></td>
+              <td><span style="background-color:{$spec.color_rgb|default:#FFFFFF};"><input type="hidden" name="color_rgb[]" value="{$spec.color_rgb}" /><img src="admin/images/color_selecter.gif" width="21" height="18" alt="selecter" onclick="specColorSelector(this)" /></span>&nbsp;<input type="text" size="7" name="color_name[]" class="color_name" value="{$spec.color_name|escape}" /></td>
+              <td><input type="text" size="8" name="market_price[]" value="{$spec.market_price|default:0}" /></td>
+              <td><input type="text" size="8" name="store_price[]" value="{$spec.store_price}" /></td>
+              <td><input type="text" size="3" name="stock[]" value="{$spec.stock}" /></td>
+              <td><input type="text"  name="spec_name[]" value="{$spec.spec_name|escape}" /></td>
+              <td><input type="text" name="sku[]" value="{$spec.sku}" /></td>
+              <td><a href="javascript:;" onclick="spec_add(this, 1)">{$lang.copy}</a> | <a href="javascript:;" onclick="spec_delete(this)">{$lang.delete}</a></td>
+            </tr>
+            {/foreach}
+            <tr>
+              <td colspan="8" class="pd"><a href="javascript:;" onclick="spec_add(this)" >[ {$lang.add_spec} ]</a></td>
+            </tr>
+          </table>
+          </div>
+          {/if}
+          <table class="form-table">
+            <tr>
+              <td style="text-align:left; padding-left:39px">{$rich_editor}</td>
+            </tr>
+          </table>
+          <div class="form-table">
+          <table cellspacing="0" id="goods_image">
+            <tr class="title">
+              <th class="pd">{$lang.filename}</th>
+              <th>{if $mode eq 'full'}{$lang.color}{else}&nbsp;{/if}</th>
+              <th>{$lang.sort_order}</th>
+              <th>{$lang.handler}</th>
+            </tr>
+            {foreach from=$thumb item=image}
+            <tr>
+              <td class="pd"><img src="{$image.file_name}" onerror="this.style.display='none'" class="icon-picture" /><input type="hidden" name="post_file_id[]" value="{$image.file_id}" /><span>{$image.orig_name}</span></td>
+              <td>
+              <select name="post_image_color[]" class="image_color"
+              {if $mode neq 'full'}style="display:none;"{/if} >
+              <option value="">{$lang.public}</option>
+              {if $image.color}<option value="{$image.color}" selected="selected">{$image.color}</option>{/if}
+              </select>
+              </td>
+              <td><input type="text" name="post_image_sort[]" value="{$image.sort_order}"/></td>
+              <td><a href="javascript:;" onclick="image_delete(this, {$goods.goods_id|default:0},  {$image.file_id});" class="cls-image-delete" >{$lang.delete}</a></td>
+            </tr>
+            {/foreach}
+            <tr>
+              <td class="pd"><input type="file" name="image[]" onchange="image_insert(this)"/><span></span></td>
+              <td><select name="image_color[]" class="image_color" {if $mode neq 'full'}style="display:none;"{/if}><option value="">{$lang.public}</option></select></td>
+              <td><input type="text" value="0" name="image_sort[]" /></td>
+              <td><a href="javascript:;" onclick="image_delete(this);" style="display:none;">{$lang.delete}</a>&nbsp;</td>
+            </tr>
+          </table>
+          </div>
+          <div class="form-table">
+          <table cellspacing="0" id="goods_attribute">
+            <tr>
+              <td class="label">{$lang.all_type}</td>
+              <td><select name="type_id" onchange="change_type(this)"><option value="0">{$lang.goods_type_select}</option>{html_options options=$type_options selected=$goods.type_id}</select></td>
+            </tr>
+            {foreach from=$attr_list item=attr}
+            <tr>
+              <td class="label">{$attr.attr_name}</td>
+              <td>{if $attr.input_type eq 'text'}<input type="text" name="attr[{$attr.attr_id}]" value="{$attr.value}" />{elseif $attr.input_type eq 'textarea'}<textarea cols="40" rows="3" name="attr[{$attr.attr_id}]">{$attr.value}</textarea>{else}<select name="attr[{$attr.attr_id}]">{html_options options=$attr.value_range selected=$attr.value}</select>{/if}</td>
+            </tr>
+            {/foreach}
+           </table>
+          </div>
+        </div>
+      </div>
+      <p class="submitlist">
+          <input type="hidden" name="goods_id" value="{$goods.goods_id|default:0}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

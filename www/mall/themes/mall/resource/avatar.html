@@ -1,0 +1,10 @@
+<!-- 用户头像模板 -->
+<div class="avatar">
+  <div class="avatar-link"> <img src="{$store.avatar}" alt="{$store.store_name|escape}" /> </div>
+  <div class="avatar-menu">
+    <ul>
+      <li><img src="images/avatar_ec.gif" /> <a href="./?{$store.store_id}" target="_blank">{$store.user_name} {$lang.someone_store}</a></li>
+      <li><img src="images/avatar_uchome.gif" /> {if $store.uchome_url} <a href="{$store.uchome_url}" target="_blank">{$store.user_name} {$lang.someone_space}</a> {else} <span style="color: #666;">{$store.user_name} {$lang.someone_space}</span> {/if} </li>
+    </ul>
+  </div>
+</div>

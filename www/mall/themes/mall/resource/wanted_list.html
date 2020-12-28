@@ -1,0 +1,52 @@
+<!-- 网站求购列表页面列表部分模板 -->
+<div class="colbox" id="wanted_list">
+    <!-- {if $wanted.data} -->
+    <div id="displaymode">
+    <p class="quickchanger">{page_simple from=$wanted.info url=$url_format}</p>
+    <a href="index.php?app=wanted&amp;act=add" style="background:#fff; border:#dadada 1px solid; padding:3px;">{$lang.wanted_add}</a>
+    </div>
+    <div class="colboxcontent">
+    <table border="0" cellspacing="0" id="wanted_item_list">
+        <tr class="title">
+            <th width="50">&nbsp;</th>
+            <th width="60">{$lang.user_name}</th>
+            <th>{$lang.wanted_subject}</th>
+            <th width="80">{$lang.wanted_expiry}</th>
+            <th width="100">{$lang.wanted_price}</th>
+            <th width="40">{$lang.wanted_location}</th>
+            <th width="80">{$lang.wanted_add_time}</th>
+        </tr>
+        <!-- {foreach from=$wanted.data item=log} //循环开始 -->
+        <tr>
+            <td>
+            <img src="{$log.avatar}" class="simple_avatar" alt="{$log.user_name|escape}" /></td>
+            <td>{$log.user_name|escape}</td>
+            <td><a href="{url src=index.php?app=wanted&amp;act=show&amp;id=$log.log_id}">{$log.subject|escape}</a></td>
+            <td>{$log.expiry|date}</td>
+            <td><span class="price">
+                {if $log.price_start neq 0 or $log.price_end neq 0}
+                    {$log.price_start|price}&nbsp;-&nbsp;{$log.price_end|price}
+                {else}
+                    {$lang.wanted_price_undefined}
+                {/if}
+                </span></td>
+            <td><a href="{url src=index.php?app=wanted&region_id=$log.region_id}" title="{$lang.search_by_region}">{$log.region_name}</a></td>
+            <td>{$log.add_time|date}</td>
+        </tr>
+        <!-- {/foreach} -->
+    </table>
+    </div>
+    <div class="pagechanger">{page_links from=$wanted.info url=$url_format}</div>
+  <!-- {else} -->
+  <div class="nodata">
+    <!--{if $smarty.get.keywords eq ''}-->
+    <h1>{$lang.no_wanted}</h1>
+    <p><a href="index.php?app=wanted&amp;act=add">{$lang.add_wanted}</a></p>
+    <!-- {else} -->
+    <h1>{$lang.wanted_no_found}</h1>
+    <p> {$lang.goods_no_found_info} </p>
+    <!-- {/if} -->
+  </div>
+  <!-- {/if} -->
+    <div class="colbtm"></div>
+</div>

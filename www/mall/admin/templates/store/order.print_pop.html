@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> {$lang.print_order} </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  {script src="ecmall"}
+ </head>
+ <body>
+ <div>
+ <form method="GET" action="admin.php" style="display:none;" target="_blank" id="print_form">
+ <input type="hidden" name="app" value="order" />
+ <input type="hidden" name="act" value="print_order" />
+ <input type="hidden" name="ids" value="{$ids}" />
+ <input type="hidden" name="do" value="yes" />
+ </form>
+ <script type="text/javascript">
+  $('print_form').submit();
+  history.go(-1);
+ </script>
+ </div>
+ <p class="page-break"></p>
+ </body>
+</html>

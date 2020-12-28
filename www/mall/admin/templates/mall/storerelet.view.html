@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>new document</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+{script src="ecmall,ui.datagrid"}
+<script type="text/javascript" src="admin.php?act=jslang"></script>
+<script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  </script>
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.list_relet_order}</h1>
+    <div class="link"></div>
+    <div id="desc"> <span></span> </div>
+  </li>
+  <li id="tips" style="border-bottom:1px solid #dadada">
+      <form method="get" name="queryForm">
+        {$lang.order_sn}: <input type="text" name="order_sn" value="{$smarty.get.order_sn}" id="search_order_sn" />
+      <input type="hidden" name="app" value="storerelet" />
+      <input type="hidden" name="act" value="view" />
+      <input type="submit" value="{$lang.button_search}" />
+      </form>
+    </li>
+  <li id="wrapper">
+    <table class="grid" cellspacing="0" id="data-grid">
+      <tr>
+        <th class="first-cell"><input type="checkbox" class="checkAll" />{$lang.order_sn}</th>
+        <th>{$lang.username}</th>
+        <th>{$lang.add_time}</th>
+        <th>{$lang.order_amount}</th>
+        <th>{$lang.pay_method}</th>
+        <th>{$lang.order_status}</th>
+        <th>{$lang.handler}</th>
+      </tr>
+      {foreach from=$order_list.data item=order}
+      <tr id="{$order.order_id}">
+        <td class="first-cell"><input type="checkbox" name="id" value="{$order.order_id}" />{$order.order_sn}</td>
+        <td><a href="javascript:parent.openFrame('{$lang.store_admin}', 'store', 'edit', 'id={$order.user_id}')">{$order.user_name}</a></td>
+        <td>{$order.add_time}</td>
+        <td>{$order.order_amount|price}</td>
+        <td>{$order.pay_name}</td>
+        <td>{if $order.order_status eq 1}{$lang.not_paid}{else}{$lang.paid}{/if}</td>
+        <td class="handlelist">{if $order.order_status eq 1}<a href="admin.php?app=storerelet&amp;act=set_paid&amp;id={$order.order_id}" onclick="return confirm('{$lang.set_paid_confirm}')">{$lang.set_paid}</a> | <a href="admin.php?app=storerelet&amp;act=drop&amp;id={$order.order_id}" onclick="return confirm('{$lang.drop_confirm}')">{$lang.delete}</a>{else}&nbsp;{/if}</td>
+      </tr>
+      <tr id="{$order.order_id}">
+        <td>&nbsp;</td>
+        <td colspan="5">{$order.goods.0.goods_name}</td>
+        <td class="handlelist">&nbsp;</td>
+      </tr>
+      {foreachelse}
+      <tr>
+        <td colspan="7" class="no-records">{$lang.no_records}</td>
+      </tr>
+      {/foreach}
+    </table>
+  <div id="page-list">{page_links from=$order_list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

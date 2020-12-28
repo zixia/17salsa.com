@@ -1,0 +1,55 @@
+<!-- 网站商品列表页面过滤器模板 -->
+<div id="goods_filter" class="colbox">
+  <h3>{$lang.goods_filter}</h3>
+  <div class="colboxcontent">
+    <h4 class="first"><span class="collapse_open" onclick="hidden_filter(this,'filter_cate')"></span>{$lang.goods_category}</h4>
+    <ul id="filter_cate" class="filter_body">
+      <li class="cate_level_top {if $smarty.get.cate_id eq '' or $smarty.get.cate_id eq '0'}cur_cate{/if}"><a href="{$url_base}&amp;cate_id=0{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_gbk.url}{$filter_data.price_range.url}{$display_url}">{$lang.all_category}</a></li>
+      <!-- {foreach name="parents_cate" from=$cate_family.parents item=cate} -->
+      <li style="padding-left:{$smarty.foreach.parents_cate.iteration}5px;"><a href="{$url_base}&amp;cate_id={$cate.cate_id}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}">{$cate.cate_name|escape}</a></li>
+      <!-- {/foreach} -->
+      <!--{if $cate_family.brothers}-->
+        <!-- {foreach name="brother_cate" from=$cate_family.brothers item=b_cate} -->
+          <li {if $b_cate.cate_id eq $cate_info.cate_id}class="cur_cate" {/if}style="padding-left: {$smarty.foreach.parents_cate.iteration}5px; margin-left:10px;"><a href="{$url_base}&amp;cate_id={$b_cate.cate_id}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}">{$b_cate.cate_name|escape}</a></li>
+          <!--{if $b_cate.cate_id eq $cate_info.cate_id}-->
+            <!-- {foreach name="son_cate" from=$cate_family.sons item=cate} -->
+              <li style="padding-left:{$smarty.foreach.parents_cate.iteration}5px; margin-left:20px;"><a href="{$url_base}&amp;cate_id={$cate.cate_id}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}">{$cate.cate_name|escape}</a></li>
+            <!-- {/foreach} -->
+          <!--{/if}-->
+        <!-- {/foreach} -->
+      <!--{else}-->
+        <!-- {foreach name="son_cate" from=$cate_family.sons item=cate} -->
+          <li style="padding-left:{$smarty.foreach.parents_cate.iteration}5px; margin-left:20px;"><a href="{$url_base}&amp;cate_id={$cate.cate_id}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}">{$cate.cate_name|escape}</a></li>
+        <!-- {/foreach} -->
+      <!--{/if}-->
+    </ul>
+    <!-- {if $brand_arr} -->
+    <h4><span class="collapse_open" onclick="hidden_filter(this, 'filter_brand')"></span>{$lang.goods_brand}</h4>
+    <ul id="filter_brand" class="filter_body">
+      <!-- {foreach name="filter_brand" from=$brand_arr item=brand} -->
+      <li><a href="{$url_base}{$filter_data.cate_id.url}{$filter_data.keywords.url}&amp;brand_id={$brand.brand_id}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}">{$brand.brand_name|escape|truncate:12}</a></li>
+      <!-- {/foreach} -->
+    </ul>
+    <!-- {/if} -->
+    <!-- {if $show_price_range or $price_range} -->
+    <h4><span class="collapse_open" onclick="hidden_filter(this, 'filter_price')"></span>{$lang.filter_price}</h4>
+    <ul id="filter_price" class="filter_body">
+      <!-- {foreach name="filter_color" from=$price_range item=price} -->
+      <li><a href="{$url_base}{$filter_data.cate_id.url}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}&amp;min_price={$price.left}&amp;max_price={$price.right}{$display_url}{$filter_data.region.url}">{$price.left|price} - {$price.right|price}</a></li>
+      <!-- {/foreach} -->
+      <li class="btnlist"><form method="get" onsubmit="submit_price('{$url_base}{$filter_data.cate_id.url}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}{$filter_data.color_rgb.url}{$display_url}{$filter_data.region.url}'); return false"><input type="text" id="price_left" size="6" value="{$smarty.get.min_price}" class="sinput" /> - <input type="text" id="price_right" size="6" value="{$smarty.get.max_price}" class="sinput" /> <input type="submit" value="{$lang.submit}" class="sbtn" /></form></li>
+    </ul>
+    <!-- {/if} -->
+    <!-- {if $color_arr} -->
+    <h4><span class="collapse_open" onclick="hidden_filter(this, 'filter_color')"></span>{$lang.goods_color}</h4>
+    <ul id="filter_color" class="filter_body">
+      <!-- {foreach name="filter_color" from=$color_arr item=color} -->
+      <li{if $filter_data.color_rgb and $filter_data.color_rgb.value eq $color.color_rgb } class="selected"{/if}>
+        <a href="{$url_base}{$filter_data.cate_id.url}{$filter_data.keywords.url}{$filter_data.brand_id.url}{$filter_data.is_best.url}{$filter_data.tag_words.url}&amp;color_rgb={$color.color_rgb_trim}{$filter_data.price_range.url}{$display_url}{$filter_data.region.url}" title="{$lang.colorindex.$color.color_rgb}" style="background-color:{$color.color_rgb}">&nbsp;</a>
+      </li>
+      <!-- {/foreach} -->
+    </ul>
+    <!-- {/if} -->
+  </div>
+  <div class="colbtm"></div>
+</div>

@@ -1,0 +1,24 @@
+.calendar { -moz-user-select:none }
+.calendar { background:#fff; z-index:111;top:0px;left:0px; font:12px Arial; width:182px; height:170px; padding:5px 0; border:1px solid #333; position:absolute; }
+.calendar .btnbar { font:14px Arial; text-align:center; color:#333; height:18px; padding-top:5px; }
+.calendar .calendarprev { position:absolute; top:12px; left:15px; cursor:pointer; background:url(calendar_prev.gif) no-repeat; width:8px; height:9px;}
+.calendar .calendarnext { position:absolute; top:12px; right:15px; cursor:pointer; background:url(calendar_next.gif)  no-repeat; width:8px; height:9px;}
+.calendar p, ul { clear:both; margin:0; padding:0; }
+.calendar .time { font:10px Arial; text-align:center; color:#333; height:15px; padding-top:2px; }
+
+.calendar ul.weekbar { border-bottom:1px solid #f9f9f9; }
+.calendar ul.weekbar li.first, .calendar ul.daylist li.first { border-left:0; }
+.calendar ul.weekbar li.last, .calendar ul.daylist li.last { border-right:0; }
+.calendar ul.weekbar li { color:#83878c; }
+
+.calendar ul { height:20px; list-style:none; }
+.calendar ul.daylist li.prevMonth, .calendar ul.daylist li.nextMonth { color:#999; }
+.calendar ul.daylist li { color:#333; }
+.calendar ul.currentline { background:url(calendar_bg.gif) no-repeat 0 -280px; }
+.calendar ul li.today { color:#fff; background:#4189e3; }
+.calendar ul li.selected { color:#fff; background:#888; }
+.calendar ul.weekbar li, .calendar ul.daylist li { cursor:pointer; text-align:right; width:20px; height:12px; float:left; padding:4px 5px 4px 0 !important; padding:3px 5px 3px 0; /*border-left:1px solid #e7ebef; border-right:1px solid #a9bacb;*/ } 
+
+.calendar .calendarclose { position:absolute; top:5px; right:5px; cursor:pointer; }    
+.calendar .slideBar { overflow:hidden; width:182px; }
+.calendar .item { float:left; width:182px; }

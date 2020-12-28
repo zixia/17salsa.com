@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall"}
+  <script type="text/javascript" src="admin.php?app=statistics&act=jslang"></script>
+  <style type="text/css">
+  /*<![CDATA[*/
+    img { border:0px; }
+    .info-table { padding:5px 30px; }
+    .info-table th { text-align:left; width:120px; }
+    .info-table td { width:230px; }
+    .info-table .title { font-weight:bold; color:#333; }
+  /*]]>*/
+  </style>
+</head>
+
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.guest_stats}</h1>
+      <div class="link">[<a href="admin.php?app=statistics&act=guest_stats&do=downxls">{$lang.downxls}</a>]</div>
+     <div id="desc">
+        <span>{$lang.tips_about_order}</span>
+     </div>     
+    </li>
+
+    <li id="wrapper">
+      <h2>{$lang.guest_sale_rate}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.member_count}:</th><td>{$stats_data.user_total}</td>
+              <th class="title">{$lang.have_order}:</th><td>{$stats_data.have_order}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.order_count}:</th><td>{$stats_data.order_total}</td>
+              <th class="title">{$lang.guest_sale_rate}:</th><td>{$stats_data.guest_sale_rate}%</td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.user_average_order_amount}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.user_order_amount}:</th><td>{$stats_data.user_order_amount|price}</td>
+              <th class="title">{$lang.user_average_order}:</th><td>{$stats_data.user_average_order}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.user_average_amount}:</th><td colspan="2">{$stats_data.user_average_amount|price}</td>
+          </tr>
+        </table>
+      </div>
+      <h2>{$lang.guest_average_order_amount}</h2>
+      <div class="info-table">
+        <table cellpadding="5" cellspacing="0">
+          <tr>
+              <th class="title">{$lang.guest_order_amount}:</th><td>{$stats_data.guest_order_amount|price}</td>
+              <th class="title">{$lang.guest_order_count}:</th><td>{$stats_data.guest_order_total}</td>
+          </tr>
+          <tr>
+              <th class="title">{$lang.guest_average_amount}:</th><td colspan="2">{$stats_data.guest_average_amount|price}</td>
+          </tr>
+        </table>
+      </div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

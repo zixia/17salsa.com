@@ -1,0 +1,35 @@
+<!-- 首页自定义模块 -->
+<div id="cm_{index}" class="colbox sortitemlist {if $custom_module.{index}.image_goods}image{/if}{if $custom_module.{index}.word_goods}word{/if}{if $custom_module.{index}.hot_goods}hot{/if}">
+  <h3 style="{if $custom_module.{index}.title_fontcolor}color:{$custom_module.{index}.title_fontcolor};{/if}{if $custom_module.{index}.title_backgroundcolor and $custom_module.{index}.title_backgroundimage eq ''}background:{$custom_module.{index}.title_backgroundcolor};{/if}{if $custom_module.{index}.title_backgroundimage}background:url({$custom_module.{index}.title_backgroundimage}){if $custom_module.{index}.title_backgroundcolor} {$custom_module.{index}.title_backgroundcolor}{/if};{/if}">{$custom_module.{index}.name|escape}</h3>
+  <div class="colboxcontent" style="{if $custom_module.{index}.content_fontcolor}color:{$custom_module.{index}.content_fontcolor};{/if}{if $custom_module.{index}.content_backgroundcolor and $custom_module.{index}.content_backgroundimage eq ''}background:{$custom_module.{index}.content_backgroundcolor};{/if}{if $custom_module.{index}.content_backgroundimage}background:url({$custom_module.{index}.content_backgroundimage}){if $custom_module.{index}.content_backgroundcolor} {$custom_module.{index}.content_backgroundcolor}{/if};{/if}">
+    <!-- {if $custom_module.{index}.image_goods} -->
+    <ul class="thumblist clearfix">
+    
+      <!-- {foreach from=$custom_module.{index}.image_goods item=rgoods} -->
+      <li>
+        <a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id}" target="_blank" ><img src="{image file=$rgoods.default_image width=100 height=100}" alt="{$rgoods.goods_name|escape}" /></a>
+        <p class="infolist"><span class="name"><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id}" target="_blank" {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>{$rgoods.goods_name|truncate:24|escape}</a></span><span class="price" {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>{$rgoods.store_price|price}</span></p>
+      </li>
+      <!-- {/foreach} -->
+    </ul>
+    <!-- {/if} -->
+    <!-- {if $custom_module.{index}.word_goods} -->
+    <ul class="textlist clearfix">
+      <!-- {foreach from=$custom_module.{index}.word_goods item=rgoods} -->
+      <li><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id}" target="_blank" {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>{$rgoods.goods_name|escape|truncate:18}</a></li>
+      <!-- {/foreach} -->
+    </ul>
+    <!-- {/if} -->
+    <!-- {if $custom_module.{index}.hot_goods} -->
+    <div class="toplist" {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>
+        <h4>{$lang.top_hot}</h4>
+        <ol {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>
+          <!-- {foreach from=$custom_module.{index}.hot_goods item=rgoods} -->
+          <li><p><a href="{url src=index.php?app=goods&amp;id=$rgoods.goods_id}" target="_blank" {if $custom_module.{index}.content_fontcolor}style="color:{$custom_module.{index}.content_fontcolor};"{/if}>{$rgoods.goods_name|escape|truncate:20}</a></p></li>
+          <!-- {/foreach} -->
+        </ol>
+    </div>
+    <!-- {/if} -->
+  </div>
+  <div class="colbtm" style="{if $custom_module.{index}.bottom_fontcolor}color:{$custom_module.{index}.bottom_fontcolor};{/if}{if $custom_module.{index}.bottom_backgroundcolor and $custom_module.{index}.bottom_backgroundimage eq ''}background:{$custom_module.{index}.bottom_backgroundcolor};{/if}{if $custom_module.{index}.bottom_backgroundimage}background:url({$custom_module.{index}.bottom_backgroundimage}){if $custom_module.{index}.bottom_backgroundcolor} {$custom_module.{index}.bottom_backgroundcolor}{/if};{/if}"></div>
+</div>

@@ -1,0 +1,27 @@
+<!-- 首页的分类树 -->
+<div id="goods_category" class="colbox">
+  <h3>{$lang.goods_category}</h3>
+  <div class="colboxcontent">
+    <ul class="even">
+      <!-- {foreach name=row_last from=$goods_category item=row}  循环一级分类-->
+      <li{if $smarty.foreach.row_last.last} class="last"{/if}>
+        <h4 class="title"><a href="{url src=index.php?app=category&amp;cate_id=$row.cate_id}">{$row.cate_name|escape}</a></h4>
+          <!-- {if $row.children} -->
+          <!-- {foreach from=$row.children item=col} 循环二级分类-->
+          <dl class="clearfix">
+            <dt><a href="{url src=index.php?app=category&amp;cate_id=$col.cate_id}">{$col.cate_name|escape}</a> <!-- {if $col.children} -->:<!-- {/if} --> </dt>
+            <!-- {if $col.children} -->
+            <!-- {foreach from=$col.children item=sub} 循环三级分类-->
+            <dd><a href="{url src=index.php?app=category&amp;cate_id=$sub.cate_id}">{$sub.cate_name|escape}</a></dd>
+            <!-- {/foreach} 三级分类-->
+            <!-- {/if} -->
+          </dl>
+          <!-- {/foreach} 二级分类-->
+          <!--{/if}-->
+        </li>
+        <!-- {if ($smarty.foreach.row_last.iteration % 3) eq 0} --></ul><ul class="{cycle values='odd,even'}"><!-- {/if} -->
+      <!-- {/foreach} 一级分类 -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>

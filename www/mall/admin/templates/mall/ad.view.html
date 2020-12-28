@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src='ecmall,ui.datagrid,validator,ajax,json,ui.calendar'}
+  <script type="text/javascript" src="?act=jslang&app=ad"></script>
+
+  <script language="javascript" type="text/javascript">
+  var myDataGrid = null;
+  Event.observe(window, "load" ,function(){
+        myDataGrid = new ui.DataGrid($("myDataGrid"));
+        myDataGrid.action = "modify";
+        document.require("js/ui.utils.js");
+        document.require("js/ui.formbox.js");
+        document.require("js/ui.formbox/style.css", null, "css");
+  });
+
+  var myForm,myLocker = false;
+
+  function createCode(id)
+  {
+    var url = location.href.split('admin.php')[0];
+    url += "index.php?app=ads&id="+id + "&encoding="+myForm.items['encoding'].value;
+    myForm.items["code"].value = "<script type=\"text/javascript\" src=\"" + url +"\"><"+"/script"+">";
+  }
+
+  function getAdCode(id)
+  {
+    if (!myForm)
+    {
+        myForm = new ui.FormBox(lang.ad_js_code);
+        myForm.allowDarg = false;
+        myForm.width = "500px";
+        myForm.box.style.top  = "40px";
+        myForm.addItem("select", "encoding", {style:{width: "auto",height:"20px"},label:lang.code_encoding});
+        myForm.addItem('textarea', "code", {style:{width:"480px",height:"100px"}});
+        myForm.addItem("button", "copyBtn", {value:lang.create_code,style:{margin:'auto'}});
+        myForm.addItem("button", "closeBtn", {inline:true,value:lang.close_window,style:{margin:"auto"}});
+
+        myLocker = new ui.utils.locker();
+        myForm.items['encoding'].options[0] = new Option(lang.encoding.utf8, "utf-8");
+        myForm.items['encoding'].options[1] = new Option(lang.encoding.gbk, "gbk");
+        myForm.items['encoding'].options[2] = new Option(lang.encoding.big5, "big5");
+    }
+
+    myForm.items["closeBtn"].onclick = myForm.close.bind(myForm);
+
+    myForm.items["copyBtn"].onclick = function() {
+      createCode(id);
+      if (navigator.isIE())
+      {
+        window.clipboardData.setData("text", myForm.items["code"].value);
+      }
+      myForm.items["code"].select();
+    }
+
+    myForm.onShow = function() {
+      var width = Math.min(document.body.scrollWidth, self.innerWidth||document.body.clientWidth);
+      myForm.box.style.left = (width / 2 - 250) + "px";
+      myLocker.lock();
+      createCode(id);
+    };
+
+    myForm.onClose = myLocker.unLock.bind(myLocker);
+
+    myForm.show();
+
+  }
+
+  </script>
+ </head>
+
+ <body>
+    <ul id="container">
+    <li id="header">
+      <h1>{$lang.view_ad}</h1>
+      <div class="link">[<a href="admin.php?app=ad&amp;act=add">{$lang.add_ad}</a>]</div>
+     <div id="desc">
+        <div id="page-selector">
+              {$lang.goto_page}{page_selector from=$list.info} </div>
+      <span>{$ad_stats}</span>      </div>    </li>
+
+    <li id="wrapper">
+    <select id='myDropDownlist' style="display:none">
+    <option value="0">{$lang.outside_ad}</option>
+    {html_options options=$position_list}
+    </select>
+      <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+        <tr>
+          <th class="first-cell" readOnly="false" columnName="ad_name" required="true">{$lang.ad_name}</th>
+          <th readOnly=false columnName="position_id" dataType="string" dropDownList="myDropDownlist">{$lang.position_name}</th>
+          <th readOnly="false" columnName="enabled" required="true" dataType="bool">{$lang.ad_enabled}</th>
+          <th readOnly="false" columnName="start_time" dataType="date">{$lang.start_date}</th>
+          <th readOnly="false" columnName="end_time" dataType="date">{$lang.end_date}</th>
+          <th>{$lang.click_count}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=ad}
+        <tr id="{$ad.ad_id}">
+          <td class="first-cell"><span>{$ad.ad_name}</span></td>
+          <td><span>{$ad.position_name}{if $ad.position_name eq ''}{$lang.outside_ad}{/if}</span></td>
+          <td><span>{img_yesorno value=$ad.enabled dir=admin/images}</span></td>
+          <td><span>{$ad.start_time}</span></td>
+          <td><span>{$ad.end_time}</span></td>
+          <td>{$ad.click_count}</td>
+          <td class="handlelist"><a href="admin.php?act=edit&app=ad&id={$ad.ad_id}">{$lang.edit}</a> | <a href="admin.php?act=drop&app=ad&id={$ad.ad_id}">{$lang.delete}</a>{if $ad.position_name eq ''} | <a href="javascript:getAdCode({$ad.ad_id});">{$lang.get_code}</a>{/if}</td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="7" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+      </table><div id="page-list" style="clear:both">{page_links from=$list.info}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+
+
+   </body>
+</html>

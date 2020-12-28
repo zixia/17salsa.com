@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="admin.php?act=jslang"></script>
+{script src='ajax,ecmall,ui.utils,ui.autocomplete,validator'}
+<script type="text/javascript" src="js/validator.js"></script>
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+    new ui.utils.tabForm("tab-form");
+    Validator.run("theForm");
+    var ac = new ui.autoComplete('brandName', 'admin.php?app=datacall&act=get_brand_list');
+    $('brandName').onfocus = function () {if (this.value.length == 0) {setTimeout(function(){ac.populatePopup()}, 100);}};
+  
+  });
+</script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{if $smarty.get.act eq 'edit'}{$lang.edit_data_call}{else}{$lang.add_data_call}{/if}</h1>
+    <div class="link">[<a href="admin.php?app=datacall&amp;act=view">{$lang.data_call_view}</a>]</div>
+    <div id="desc">{if $store_id eq '0'}{$lang.data_call_desc}{else}{$lang.store_data_call_desc}{/if}</div>
+  </li>
+  <li>
+    <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+          <li>{$lang.data_call_template}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.easy_description}:</td>
+              <td><input type="text" size="40" name="desc" value="{$info.call_desc|escape:input}" dataType="string" required="true"/></td>
+            </tr>
+             <tr>
+              <td class="label">{$lang.cache_time}:</td>
+              <td><input type="text" size="40" name="cache_time" value="{if $info.cache_time}{$info.cache_time}{else}60{/if}" dataType="int" required="true"/><span class="note">{$lang.cache_time_note}</span></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.charset}:</td>
+              <td>
+                <select name="content_charset">
+                    <option value="0">{$lang.default_charset}</option>
+                    <option value="1" {if $info.content_charset eq '1'}selected="selected"{/if}>UTF-8</option>
+                    <option value="2" {if $info.content_charset eq '2'}selected="selected"{/if}>GBK</option>
+                    <option value="3" {if $info.content_charset eq '3'}selected="selected"{/if}>BIG5</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_cate}:</td>
+              <td>
+                <select name="cate_id">
+                <option value="0">{$lang.all_cate}</option>
+                  {html_options options=$cate_options selected=$info.cate_id}
+                </select>
+                </td>
+            </tr>
+            
+            <tr>
+              <td class="label">{$lang.goods_brand}:</td>
+              <td>
+                <input name="brand_name" id="brandName" type="text" value="{$info.brand_name|escape:input}"/>
+              </td>
+            </tr>
+
+              <tr>
+                  <td class="label">{$lang.goods_number}:</td><td>
+                  <input name="goods_number" datatype="int" test="1,50" type="text" required="true" value="{if $info.goods_number}{$info.goods_number}{else}10{/if}" />
+                                     </td>
+                </tr>
+                  <tr>
+                  <td class="label">{$lang.goods_name_length}:</td><td>
+                  <input name="goods_name_length" datatype="int" test="4" type="text" required="true" value="{if $info.goods_name_length}{$info.goods_name_length}{else}4{/if}" />
+                  </td>
+                </tr>
+            <tr>
+              <td class="label">{$lang.recommend_goods}:</td>
+              <td>
+                <label>
+                <input name="recommend_options[0]" type="checkbox" value="1" {if $info.recommend_option.0 eq '1'}checked{/if}>
+                {$lang.recommend_checkbox.recommend}</label>
+                {if $store_id eq '0'}
+                <label>
+                <input name="recommend_options[1]" type="checkbox" value="1"  {if $info.recommend_option.1 eq '1'}checked{/if}>
+                {$lang.recommend_checkbox.hot}</label>
+                {/if}
+                </td>
+            </tr>
+          
+          </table>
+          <table class="form-table">
+            <tr>
+                  <td class="label">{$lang.template_header}:</td>
+                  <td colspan="2">
+                  <textarea name="template_header" style="width:300px;">{if $info.template.header eq ''}<ul>{else}{$info.template.header}{/if}</textarea>
+                  </td>
+                </tr>
+            <tr>
+            <tr>
+                  <td class="label">{$lang.template_body}:</td>
+                  <td width="30%">
+                  <textarea name="template_body" style="width:300px; height:100px;">{if $info.template.body eq ''}<li><a href="{goods_url}">{goods_name} </a></li>{else}{$info.template.body}{/if}</textarea>
+                  </td>
+                  <td>
+                  {$lang.var_intro}
+                  </td>
+            </tr>
+            <tr>
+            <tr>
+                  <td class="label">{$lang.template_footer}:</td>
+                  <td colspan="2">
+                  <textarea name="template_footer" style="width:300px;">{if $info.template.footer eq ''} </ul>{else}{$info.template.footer}{/if}</textarea>
+                  </td>
+                </tr>
+            <tr>
+
+          </table>
+        </div>
+      </div>
+      <p class="submitlist">
+        <input type="submit" value="{$lang.submit}" />
+        <input type="reset" value="{$lang.reset}" />
+      </p>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

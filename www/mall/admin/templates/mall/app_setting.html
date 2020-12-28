@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ajax,ecmall,ui.utils,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+    Event.observe(window, "load", function() {
+     new ui.utils.tabForm("tab-form");
+     Validator.run('theForm');
+    });
+  //]]>
+  </script>
+  <style type="text/css">
+  /*<![CDATA[*/
+    .tpl-fields { font-weight: normal; line-height:1.5em; margin-top: 5px; }
+    .tpl-fields span { color: #00c; }
+  /*]]>*/
+  </style>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.app_setting}</h1>
+      <div class="link"></div>
+      <div id="desc">{$lang.app_setting_desc}</div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          {foreach from=$settings item=app}
+          <li>{$app.name}</li>
+          {/foreach}
+        </ul>
+        <div class="tab-page">
+          {foreach from=$settings item=app}
+          <table class="form-table">
+          <tr>
+            <td class="label">{$lang.item_num}:</td>
+            <td><input type="text" name="item_num[{$app.appid}]" required="true" value="{$app.num}" datatype="int"/><span class="note">{$lang.tagnum_note}</span></td>
+          </tr>
+          <tr>
+            <td class="label">{$lang.item_template}:
+              <ul class="tpl-fields">
+                {foreach from=$app.fields item=item key=key}
+                <li><span>{{$key}}</span>: {$item}</li>
+                {/foreach}
+                <li></li>
+              </ul>
+            </td>
+            <td><textarea name="item_template[{$app.appid}]" required="true" datatype="string" cols="60" rows="7">{$app.tpl|escape}</textarea></td>
+          </tr>
+          </table>
+          {/foreach}
+        </div>
+      </div>
+      <p class="submitlist">
+        <input type="submit" value="{$lang.button_submit}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

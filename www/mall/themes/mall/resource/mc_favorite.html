@@ -1,0 +1,19 @@
+<div id="mc_favorite" class="mc_box">
+  {script src='member'}
+  <h3><span>{$lang.favorite}</span></h3>
+  <div class="mc_boxcontent">
+    <table border="0" cellspacing="0" class="mc_table">
+      <!-- {foreach name=goods_last from=$favorite_list item=goods} -->
+      <tr id="favorite_{$goods.goods_id}"{if $smarty.foreach.goods_last.last} class="last"{/if}>
+        <td><a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_blank"><img src="{image file=$goods.default_image width=40 height=40}" alt="{$goods.orig_name}" /></a></td>
+        <td><p class="name"><a href="index.php?app=goods&amp;id={$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a></p><p class="goodsprice">{$goods.store_price|price}</p></td>
+        <td class="store">{$lang.store}: <a href="?{$goods.store_id}" target="_blank">{$goods.store_name|escape}</a></td>
+        <td class="handle"><a href="javascript:rm_favorite({$goods.goods_id});" class="remove">{$lang.remove}</a></td>
+      </tr>
+      <!-- {foreachelse} -->
+      <tr><td colspan="4" class="no-records" style="border-bottom:0">{$lang.you_have_no_favorite}</td></tr>
+      <!-- {/foreach} -->
+    </table>
+  </div>
+  <div class="colbtm"></div>
+</div>

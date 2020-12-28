@@ -1,0 +1,63 @@
+#wanted_filter .colboxcontent { padding:0 1px; margin:15px; }
+#wanted_filter h4 { font-size:12px; color:#287FB6; background:#F2F6FA; border:1px solid #E4E4E4; border-width:1px 0; padding:5px 13px; }
+#wanted_filter h4.first { border-top:0; }
+#wanted_filter h4 span { width:12px; height:12px; cursor:pointer; }
+#wanted_filter .filter_item { margin-top:10px; }
+#wanted_filter .filter_item p { color:#666; margin-bottom:3px; }
+#wanted_filter .btn { margin-top:10px; }
+#wanted_filter .filter_item select { width:150px; }
+#wanted_filter .filter_item input { width:140px; }
+#wanted_filter .filter_item .ckbox { width:auto; }
+#wanted_filter .infolist { float:left; margin-left:3px; }
+#other_wanted li { background:url(images/icon_cart.gif) no-repeat 0 5px; margin-bottom:5px; padding-left:25px; }
+#other_wanted li a { line-height:14px; color:#4A4A4A; }
+#other_wanted li p { padding-top:3px; }
+#other_wanted li .price { color:#FF5050; }
+.nodata { background:url(images/icon_warning.gif) no-repeat 50px 60px; border-top:1px solid #e5e5e5; clear:both; padding:60px 20px 150px 100px; }
+.nodata h1 { font-size:14px; }
+.nodata span { font-weight:bold; color:#666; padding:10px 0; display:block; }
+.nodata ul { padding:5px 10px 10px 20px; display:block; }
+.nodata ul li { color:#666; list-style:square; }
+
+#wanted_list #displaymode { color:#4A4A4A; background:#f2f6fa; height:24px; margin-bottom:5px; padding:5px 20px 0; border:1px solid #dadada; }
+#wanted_list #displaymode span { margin-right:35px; }
+#wanted_list #displaymode .quickchanger { padding-top:2px; }
+#wanted_list #displaymode .quickchanger span { margin-right:10px; }
+#wanted_list #displaymode .quickchanger { line-height:12px; float:right; }
+#wanted_list #displaymode .quickchanger .prve_page { text-indent:-9999px; background:url(images/btn_page_prev.gif) no-repeat; width:50px; height:16px; float:left; }
+#wanted_list #displaymode .quickchanger .next_page { text-indent:-9999px; background:url(images/btn_page_next.gif) no-repeat; width:50px; height:16px; float:left; }
+#wanted_list #displaymode .quickchanger .act_next_page { text-indent:-9999px; background:url(images/btn_page_next_act.gif) no-repeat; width:50px; height:16px; float:left; }
+#wanted_list #displaymode .quickchanger .act_prve_page { text-indent:-9999px; background:url(images/btn_page_prev_act.gif) no-repeat; width:50px; height:16px; float:left; }
+#wanted_list #displaymode .quickchanger .pps_total { line-height:16px; float:left; }
+#wanted_list #displaymode .quickchanger a,.wanted_list #displaymode .quickchanger span { margin:0 5px; outline:0; }
+
+#wanted_item_list { width:100%; }
+#wanted_item_list th,#wanted_item_list td { vertical-align:middle; padding:5px 8px; border-bottom:1px dotted #e5e5e5; }
+#wanted_item_list th { color:#333; }
+#wanted_item_list td { color:#666; }
+#wanted_item_list a { color:#0E6AD0; }
+#wanted_item_list .price { color:#287FB6; }
+#wanted_item_list .simple_avatar { border:#dadada 1px solid; padding:3px; }
+
+.wanted_user_info { text-align:center; }
+
+#wanted_detail_msg { background:#fff; padding:5px; border:#dadada 1px solid; position:relative; }
+#wanted_detail_msg h2 { margin:5px 0px; color:#3366CC; font-size:14px; }
+#wanted_detail_msg h2 a { font-weight:normal; }
+#wanted_detail_msg p { color:#696969; }
+#wanted_detail_msg p span { margin-right:15px; }
+#wanted_detail_msg p .price { color:#287FB6; }
+#wanted_detail_msg .detail { margin:10px 0px; }
+#wanted_detail_msg .arrow { position:absolute; bottom:-25px; left:50px; background:transparent url(images/wanted_detail_arrow.gif) no-repeat; height:25px; width:40px;  }
+#wanted_user { margin:10px 0px; border-bottom:#dadada 1px dotted; padding-bottom:3px; }
+#wanted_user img { border:#dadada 1px solid; padding:3px; width:32px; height:32px; background:#fff; }
+
+.reply_block { padding:5px; border:#dadada 1px solid; background:#fff; margin-top:10px; }
+.reply_block h2 { font-size:14px; }
+.reply_block ul { list-style:none;}
+.reply_block ul .item { margin:8px; border-bottom:#dadada 1px dotted; padding:3px;}
+.reply_block ul .item p { margin-bottom:3px; margin-left:75px;}
+.reply_block ul .item p span { float:right; font-size:14px; color:#aaa; font-weight:bold; }
+.reply_block ul .item .avatar{ background:#fff; }
+#reply_form { padding:3px; }
+#reply_form p { margin:5px; }

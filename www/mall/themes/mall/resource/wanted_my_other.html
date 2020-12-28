@@ -1,0 +1,20 @@
+<!-- 求购详情页的我的其它求购 -->
+<!-- {if $my_other_wanted.data} -->
+<div id="other_wanted" class="colbox">
+  <h3>{$lang.wanted_my_other}</h3>
+  <div class="colboxcontent">
+    <ul id="other_wanted">
+        <!-- {foreach from=$my_other_wanted.data item=my_af} -->
+        <li><p><a href="{url src=index.php?app=wanted&act=show&id=$my_af.log_id}">{$my_af.subject|escape|truncate:21}</a></p>
+        {if $my_af.price_start neq 0 or $my_af.price_end neq 0}
+            <span class="price">{$my_af.price_start|price}</span>&nbsp;-&nbsp;<span class="price">{$my_af.price_end|price}</span>
+        {else}
+            <span class="price">{$lang.wanted_price_undefined}</span>
+        {/if}
+        </li>
+        <!-- {/foreach} -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

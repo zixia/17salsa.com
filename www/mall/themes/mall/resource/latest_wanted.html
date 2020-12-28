@@ -1,0 +1,20 @@
+<!-- {if $latest_wanted or $editing} -->
+<div id="latest_wanted" class="colbox">
+  <h3><em class="more"><a href="{url src=index.php?app=wanted}">{$lang.more}</a></em>{$lang.latest_wanted}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!-- {foreach name=latestwanted from=$latest_wanted item=af} -->
+      <li>
+        <p><a href="{url src=index.php?app=wanted&amp;act=show&amp;id=$af.log_id}">{$af.subject|escape|truncate:21}</a></p>
+        {if $af.price_start neq 0 or $af.price_end neq 0}
+            <span class="price">{$af.price_start|price}</span>&nbsp;-&nbsp;<span class="price">{$af.price_end|price}</span>
+        {else}
+            <span class="price">{$lang.wanted_price_undefined}</span>
+        {/if}
+        </li>
+      <!-- {/foreach} -->
+    </ul>
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

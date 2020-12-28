@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="admin.php?act=jslang"></script>
+{script src='ajax,ecmall,ui.utils,ui.autocomplete,validator'}
+<script type="text/javascript" src="js/validator.js"></script>
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run("theForm");
+
+  });
+  function check_title(title, id){
+    if(!title){
+        return false;
+    }
+    var m = $class('msg')[0];
+    Ajax.call('admin.php?app=article&act=check_title&id=' + id + '&title=' + title, function(r){
+        if(r.done){
+            Element.removeClass(m, 'error');
+            m.innerHTML = '<img alt="ok" src="admin/images/check_right.gif" />';
+        }
+        else{
+            Element.addClass(m, 'error');
+            m.innerHTML = r.msg;
+        }
+    });
+  }
+</script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{if $smarty.get.act eq 'edit'}{$lang.edit_article}{else}{$lang.add_article}{/if}</h1>
+    <div class="link">[<a href="admin.php?app=article&amp;act=view">{$lang.view_article}</a>]</div>
+    <div id="desc"></div>
+  </li>
+  <li>
+    <form name="theForm" method="post" enctype="multipart/form-data">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+          <li>{$lang.content}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.article_title}:</td>
+              <td><input type="text" size="40" name="title" value="{$info.title|escape:input}" dataType="string" required="true" onblur="check_title(this.value{if $smarty.get.act eq 'edit'}, {$smarty.get.id}{/if});" id="article_title" /></td>
+            </tr>
+            {if $store_id eq '0'}
+            <tr>
+              <td class="label">{$lang.article_cate}:</td>
+              <td><select name="cate_id">
+                  {html_options options=$cate_list selected=$info.cate_id}
+                </select></td>
+            </tr>
+            {/if}
+            <tr>
+              <td class="label">{$lang.if_show}:</td>
+              <td>
+                <label>
+                <input name="if_show" type="radio" value="0" {if $info.if_show eq '0'}checked{/if}>
+                {$lang.if_show_no}</label>
+                <label>
+                <input type="radio" value="1" name="if_show" {if $info.if_show eq '1' or $smarty.get.act neq 'edit'}checked{/if}>
+                {$lang.if_show_yes}</label></td>
+            </tr>
+            <tr>
+                  <td class="label">{$lang.sort_order}:</td><td>
+                  <input name="is_top" type="text" value="{$info.is_top}" />
+                  </td>
+                </tr>
+            <tr>
+                        </table>
+          <table class="form-table">
+            <tr>
+              <td style="text-align:left; padding-left:39px" >{$rich_editor}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <p class="submitlist">
+        <input type="submit" value="{$lang.submit}" />
+        <input type="reset" value="{$lang.reset}" />
+      </p>
+    </form>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

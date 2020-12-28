@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.datagrid"}
+  <script type="text/javascript" src="?act=jslang"></script>
+  <script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.messages}</h1>
+      <div class="link"></div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      <form method="get" action="admin.php">
+        {$lang.keywords}: <input type="text" name="keywords" />
+        <input type="submit" value="{$lang.button_search}" />
+        <input type="hidden" name="app" value="message"/>
+        <input type="hidden" name="act" value="view"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell" width="30%"><input type="checkbox" class="checkAll" /> {sort_link by=goods_name text=$lang.goods_name}</th>
+          <th>{$lang.buyer_name}</th>
+          <th width="25%">{$lang.message_reply}</th>
+          <th>{sort_link by=add_time text=$lang.add_time}</th>
+          <th readOnly=false dataType="bool" columnName="if_show">{sort_link by=if_show text=$lang.if_show}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=message}
+        <tr id="{$message.message_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$message.message_id}" />
+            {if $message.goods_name}{$lang.goods}: <a href="index.php?app=goods&amp;id={$message.goods_id}" target="_blank">{$message.goods_name|escape|truncate:24}</a>{else}{$lang.seller}: {$message.seller_name}{/if}</td>
+          <td>{$message.buyer_name|default:$lang.anonymous}</td>
+          <td title="{if $message.reply}{$lang.reply}: {$message.reply|escape|nl2br}{/if}">{$message.message|truncate:30|escape|nl2br}</td>
+          <td>{$message.formated_add_time}</td>
+          <td>{img_yesorno value=$message.if_show dir=admin/images}</td>
+          <td><a href="admin.php?app=message&amp;act=edit&amp;id={$message.message_id}">{$lang.manage}</a> | <a href="admin.php?app=message&amp;act=drop&amp;id={$message.message_id}" onclick="return confirm('{$lang.drop_confirm}')">{$lang.delete}</a></td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="6" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="12">
+            <ul id="batch-links">
+              <li class="batch-link" action="batch" param="drop">{$lang.delete}</li>
+              <li class="batch-link" action="batch" param="show">{$lang.show}</li>
+              <li class="batch-link" action="batch" param="hide">{$lang.hide}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

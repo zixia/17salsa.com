@@ -1,0 +1,13 @@
+<div id="store_search" class="colbox">
+  <h3>{$lang.store_search}</h3>
+  <div class="colboxcontent">
+    <form action="index.php" method="get">
+      <span class="keywords">{$lang.keywords}: <input type="text" name="keywords" size="30" class="sinput" value="{$keywords}" /></span>
+
+      <input type="submit" value="{$lang.search}" class="sbtn" />
+      <input name="app" type="hidden" value="store" />
+      <input name="store_id" type="hidden" value="{$store_id}" />
+    </form>
+  </div>
+  <div class="colbtm"></div>
+</div>

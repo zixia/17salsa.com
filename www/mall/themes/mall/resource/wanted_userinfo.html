@@ -1,0 +1,28 @@
+<div id="wanted_filter" class="colbox">
+  <h3>{$lang.wanted_user}</h3>
+  <div class="colboxcontent">
+      <div class="avatar">
+      <div class="avatar-link"> <img src="{$info.avatar}" alt="{$info.user_name|escape}" /> </div>
+      <div class="avatar-menu">
+        <ul>
+          <li><img src="images/avatar_ec.gif" /> <a href="./?{$info.user_id}" target="_blank">{$info.user_name|escape} {$lang.someone_store}</a></li>
+          <li><img src="images/avatar_uchome.gif" /> {if $info.uchome_url} <a href="{$store.uchome_url}" target="_blank">{$info.user_name} {$lang.someone_space}</a> {else} <span style="color: #666;">{$info.user_name|escape} {$lang.someone_space}</span> {/if} </li>
+        </ul>
+      </div>
+      </div>
+      <div class="infolist">
+        <p>
+            {$lang.user_name}:<a href="index.php?{$info.user_id}" target="_blank">{$info.user_name}</a>
+        </p>
+        <p>
+            <label>{$lang.seller_rate}: </label>
+            {$seller_rate.rate}%
+        </p>
+        <p>
+            <label>{$lang.buyer_rate}: </label>
+            {$buyer_rate.rate}%
+        </p>
+      </div>
+  </div>
+  <div class="colbtm"></div>
+</div>

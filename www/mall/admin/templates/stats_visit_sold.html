@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>ECMall</title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ui.utils,ui.calendar"}
+</head>
+<body>
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.visit_sold}</h1>
+    <div class="link">[<a href="admin.php?app=statistics&act=visit_sold&do=downxls&store_id={$condition.store_id}{if $smarty.get.sort}&sort={$smarty.get.sort}{/if}{if $smarty.get.order}&order={$smarty.get.order}{/if}">{$lang.downxls}</a>]</div>
+    <div id="desc">
+      <div id="page-selector"> {$lang.goto_page}{page_selector from=$list.info} </div>
+      <span>{$visit_sold_stats}</span> </div>
+  </li>
+  <li id="tips">
+    {if $smarty.session.store_id eq 0}
+    <form method="get">
+      <input type="hidden" name="app" value="statistics" />
+      <input type="hidden" name="act" value="visit_sold" />
+      <select name="store_id">
+        <option value="0">{$lang.all_store}</option>
+        {html_options options=$store_options selected=$condition.store_id}
+      </select>
+      <input type="submit" value="{$lang.button_search}">
+    </form>
+    {/if}
+  </li>
+  <li id="wrapper">
+   <table class="grid" cellspacing="0" cellpadding="4" id="myDataGrid">
+      <tr>
+        <th class="first-cell">{$lang.goods_name}</th>
+        <th>{sort_link by=sales_volume text=$lang.sales_volume}</th>
+        <th>{sort_link by=click_count text=$lang.pageview}</th>
+        <th>{$lang.sales_click_rate}</th>
+        <th>{sort_link by=order_volumn text=$lang.order_volumn}</th>
+        <th>{sort_link by=cart_volumn text=$lang.cart_volumn}</th>
+        <th>{$lang.order_cate_rate}</th>
+      </tr>
+      {foreach from=$list.data item=row}
+      <tr>
+        <td class="first-cell"><a href="index.php?app=goods&id={$row.goods_id}" target="_blank">{$row.goods_name|escape}</a></td>
+        <td>{$row.sales_volume}</td>
+        <td>{$row.click_count}</td>
+        <td>{$row.sales_click_rate}</td>
+        <td>{$row.order_volumn}</td>
+        <td>{$row.cart_volumn}</td>
+        <td>{$row.order_cart_rate}</td>
+      </tr>
+      {foreachelse}
+      <tr><td colspan="5" class="no-records">{$lang.no_records}</td></tr>
+      {/foreach}
+    </table>
+    <div id="page-list" style="clear:both">{page_links from=$list.info url=$url_format}</div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<div class="avatar">
+  <div class="avatar-link"><img src="{$user.avatar}" alt="{$user.user_name|escape}" /></div>
+  <div class="avatar-menu">
+    <ul>
+      <li><img src="images/avatar_ec.gif" /> <a href="./?app=store&amp;store_id={$user.user_id}">{$user.user_name} {$lang.someone_store}</a></li>
+      <li><img src="images/avatar_uchome.gif" /> {if $user.uchome_url} <a href="{$user.uchome_url}">{$user.user_name} {$lang.someone_space}</a> {else} <span style="color: #666;">{$user.user_name} {$lang.someone_space}</span> {/if} </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ajax,ecmall,ui.utils,validator,ui.calendar"}
+  <script type="text/javascript" src="?app=groupbuy&act=jslang"></script>
+
+  <script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.preSubmit = pre_submit;
+   Validator.run('theForm');
+  });
+
+  function duplicateName (obj, id) {
+    Ajax.addVal('app', 'groupbuy');
+    Ajax.addVal('act', 'duplicate_name');
+    Ajax.addVal('act_id', id);
+    Ajax.addVal('act_name', obj.value);
+    var res = Ajax.call('admin.php', null, '', false);
+
+    if (res.done)
+      return true;
+    else
+      return res.msg;
+  }
+  function pre_submit()
+  {
+    var elem = $('goods-spec').getElementsByTagName('INPUT');
+    var is_check = false;
+    for(var i=0; i <elem.length; i++){
+      if (elem[i].checked){
+        is_check = true;
+        break;
+    }}
+    if (!is_check){
+      for (var i=0;i<elem.length; i++) elem[i].checked = true;
+    }
+
+    return true;
+  }
+  </script>
+ </head>
+ <body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.group_buy_add}</h1>
+      <div class="link">[<a href="admin.php?app=groupbuy&amp;act=view">{$lang.group_buy_view}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+              <td class="label">{$lang.act_name}:</td><td>
+              <input type="text" name="act_name" size="30" dataType="string" required="true" value="{$group_buy.act_name|escape}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_name}:</td>
+              <td><strong>{$group_buy.goods_name|escape}</strong></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.goods_spec}:</td><td id="goods-spec">
+                {if $spec_list}
+                {html_checkbox name=goods_spec[] separator="<br/>" options=$spec_list checked=$group_buy.spec_id}
+                {else}
+                <input type="checkbox" value="0" checked="true" disabled="true" /> {$lang.none_goods_spec}
+                {/if}
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.group_buy_price}:</td><td><input type="text" name="groupbuy_price" size="30" dataType="float" required="true" value="{$group_buy.price}" test="1,*" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.groupbuy_limit}:</td>
+              <td><input type="text" name="groupbuy_limit" size="10" dataType="int" required="true" value="{$group_buy.limit}" /><span class="note">{$lang.groupbuy_limit_notice}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.start_time}:</td><td><input type="text" name="start_time" size="20" dataType="date" required="true" value="{$group_buy.start_time}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.end_time}:</td><td><input type="text" name="end_time" size="20" dataType="date" required="true" value="{$group_buy.end_time}" /></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.act_desc}:</td><td><textarea name="act_desc" rows="8" cols="80">{$group_buy.act_desc|escape}</textarea></td>
+            </tr>
+          </table>
+        </div>
+        <p class="submitlist">
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+          <input type="hidden" name="act_id" value="{$group_buy.act_id}" />
+          <input type="hidden" name="goods_id" value="{$group_buy.goods_id}" />
+        </p>
+      </div>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

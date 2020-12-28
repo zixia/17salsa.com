@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title> ECMall </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="?act=jslang"></script>
+  {script src="ecmall,ajax,ui.utils,ui.calendar,validator"}
+  <script type="text/javascript">
+  //<![CDATA[
+  var plz_select_cate = '{$lang.plz_select_cate}';
+  var mall_cate_is_empty = '{$lang.mall_cate_is_empty}';
+  var mall_cate_index = {$mall_cate_index};
+  
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run("theForm");
+   mall_cate_init($('mall_cate_dir').value);
+  });
+  
+  Validator.preSubmit = check_mall_cate;
+  
+  function mall_cate_init($dir){
+    var cate_div = $('cate_div');
+    cate_seq = $dir.split('/');
+    for (var i=0; i < cate_seq.length - 1; i++){
+        create_mall_cate_select(cate_seq[i], cate_seq[i+1],cate_div);
+    }
+    if ((cate_seq[i] != 0) && mall_cate_index[cate_seq[i]]){
+        create_mall_cate_select(cate_seq[i], 0, cate_div);
+    }
+  }
+  
+  function mall_cate_onchange(obj){
+    obj = this;
+    var cate_div = obj.parentNode;
+    for (i=cate_div.children.length; i> obj.cate_index ; i--){
+        cate_div.removeChild(cate_div.children[i-1]);
+    }
+    
+    if (obj.value == 0){
+        //do nothing
+    }else if (mall_cate_index[obj.value]){
+        obj.name = 'mall_cate_id_' + obj.cate_index;
+        create_mall_cate_select(obj.value, 0, cate_div);
+    }else{
+        obj.name = 'mall_cate_id';
+    }
+  }
+  
+  function create_mall_cate_select(parent_id, cate_id, cate_div){
+    $new_select = $ce("SELECT");
+    $new_select.name = "mall_cate_id_" + mall_cate_index[parent_id][0]['level'];
+    $new_select.cate_index = mall_cate_index[parent_id][0]['level'];
+    $new_select.onchange = mall_cate_onchange;
+    
+    var opt = new Option(plz_select_cate, 0);
+    $new_select.options[$new_select.options.length] = opt;
+    
+    for(i=0; i < mall_cate_index[parent_id].length; i++){
+        var opt = new Option(mall_cate_index[parent_id][i]['cate_name'],mall_cate_index[parent_id][i]['cate_id']);
+        if (mall_cate_index[parent_id][i]['cate_id'] == cate_id){opt.selected = true;}
+        $new_select.options[$new_select.options.length] = opt;        
+    }
+    cate_div.appendChild($new_select);   
+  }
+  
+  function create_mall_cate_select(parent_id, cate_id, cate_div){
+    new_select = $ce("SELECT");
+    new_select.name = "mall_cate_id_" + mall_cate_index[parent_id][0]['level'];
+    new_select.cate_index = mall_cate_index[parent_id][0]['level'];
+    new_select.onchange = mall_cate_onchange;
+    
+    var opt = new Option(plz_select_cate, 0);
+    new_select.options[new_select.options.length] = opt;
+    
+    var select_index = 0;
+    for(i=0; i < mall_cate_index[parent_id].length; i++){
+        var opt = new Option(mall_cate_index[parent_id][i]['cate_name'],mall_cate_index[parent_id][i]['cate_id']);
+        if (mall_cate_index[parent_id][i]['cate_id'] == cate_id){opt.selected = true; select_index = i + 1}
+        new_select.options[new_select.options.length] = opt;        
+    }
+    if (select_index > 0) {new_select.selectedIndex = select_index;};
+    cate_div.appendChild(new_select);   
+  }
+  function check_mall_cate(){
+    var cate_div = $('cate_div');
+    if ((cate_div.children.length == 1) && (cate_div.children[0].value == 0)){
+      alert(mall_cate_is_empty);
+      return false;
+      //error;
+    }else{
+      if (cate_div.children[cate_div.children.length - 1].value == 0){
+        cate_div.children[cate_div.children.length - 1].name = "mall_cate_id_" + cate_div.children.length;
+        cate_div.children[cate_div.children.length - 2].name = "mall_cate_id";
+      }else{
+        cate_div.children[cate_div.children.length - 1].name = "mall_cate_id";
+      }
+      
+      return true;
+    }
+  }   
+  //]]>
+  </script>
+</head>
+<body align="center">
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.edit_goods}</h1>
+      <div class="link">[<a href="admin.php?app=goods&amp;act=view">{$lang.view_goods}</a>]</div>
+      <div id="desc"></div>
+    </li>
+    <li>
+      <form name="theForm" method="post">
+      <div id="tab-form" class="tab-form">
+        <ul class="tab-bar">
+          <li>{$lang.general}</li>
+          <li>{$lang.goods_desc}</li>
+        </ul>
+        <div class="tab-page">
+          <table class="form-table">
+            <tr>
+                <td class="label">{$lang.goods_name}:</td><td><input name="goods_name" type="text"  value="{$goods.goods_name}" size="40" dataType="string" required="true"/></td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.brand}:</td><td><input name="brand_name" type="text"  value="{$goods.brand_name}" size="40" dataType="string"/></td>
+            </tr>
+            <tr>
+              <td class="label">{$lang.mall_category}:</td><td><div id="cate_div"></div><input type="hidden" name="mall_cate_dir" id="mall_cate_dir" value="{$goods.mall_cate_dir}" /></td>
+            </tr>
+            {foreach from=$goods.spec item=spec name=spec}
+            <tr>
+                <td class="label">{if $smarty.foreach.spec.first}{$lang.spec}:{else}&nbsp;{/if}</td>
+                <td>{if $spec.sku}{$spec.sku} {/if}
+                    {if $spec.color_name}{$spec.color_name} {/if}
+                    {$spec.store_price|price}
+                </td>
+            </tr>
+            {/foreach}
+            <tr>
+              <td class="label">{$lang.other}:</td>
+              <td>
+                <label><input name="is_on_sale" type="checkbox" value="1" {if $goods.is_on_sale eq '1'}checked="checked"{/if}>{$lang.on_sale}</label>
+                <label><input name="is_deny" type="checkbox" value="1" {if $goods.is_deny eq '1'}checked="checked"{/if}>{$lang.is_deny}</label>
+                <label><input name="is_mi_best" type="checkbox" value="1"  {if $goods.is_mi_best eq '1'}checked="checked"{/if}>{$lang.is_mi_best}</label>
+                <label><input name="is_mw_best" type="checkbox" value="1"  {if $goods.is_mw_best eq '1'}checked="checked"{/if}>{$lang.is_mw_best}</label>
+                <label><input name="is_m_hot" type="checkbox" value="1"  {if $goods.is_m_hot eq '1'}checked="checked"{/if}>{$lang.is_m_hot}</label>
+              </td>
+            </tr>
+            <tr>
+                <td class="label">{$lang.sort_weighing}:</td><td><input name="sort_weighing" type="text"  value="{$goods.sort_weighing}" size="10" dataType="int" test="0," /><span class="note">{$lang.note_sort_weighing}</span></td>
+            </tr>                        
+            <tr>
+              <td class="label">{$lang.goods_brief}:</td><td>
+              <textarea rows="3" cols="40" name="goods_brief">{$goods.goods_brief}</textarea>
+              </td>
+            </tr>                                    
+          </table>
+          <table class="form-table">
+            <tr>
+              <td style="text-align:left; padding-left:39px">{$rich_editor}</td>
+            </tr>
+          </table>          
+        </div>
+      </div>
+      <p class="submitlist">
+          <input type="hidden" name="goods_id" value="{$goods.goods_id|default:0}" />
+          <input type="submit" value="{$lang.submit}" />
+          <input type="reset" value="{$lang.reset}" />
+      </p>
+      </form>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+</body>
+</html>

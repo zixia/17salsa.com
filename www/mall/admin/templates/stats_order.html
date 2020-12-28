@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?app=statistics&amp;act=jslang"></script>
+{script src="ajax,ecmall,charts"}
+<script type="text/javascript">
+    Event.observe(window, 'load', function(){
+    type_change($('type').value);
+      set_order_data("{$data.xml}", "{$data.link}");
+    });
+
+  function set_order_data(xml, link)
+  {
+    var chart = new FusionCharts("admin/images/charts/Pie3D.swf", "ChartId", 600, "250", "0", "0");
+    chart.setDataXML(xml);
+    chart.render('orderchart');
+    $('orderlink').innerHTML = link;
+  }
+  function type_change(type)
+  {
+    $('only_status').style.display = type == 'status' ? '' : 'none';
+    $('only_region').style.display = type == 'region' ? '' : 'none';
+  }
+  </script>
+</head>
+<body align="center">
+<ul id="container">
+  <li id="header">
+    <h1>{$lang.view_order_stats}</h1>
+    <div id="desc"></div>
+  </li>
+  <li id="tips" class="search-bar">
+    <form method="get" action="admin.php">
+      {$lang.sale_type_name}:
+      <select name="type" id="type" onchange="type_change(this.value);">{html_options options=$types selected=$cur_type}</select>
+    <span id="only_status" style="display:none">&nbsp;&nbsp;
+    <input type="checkbox" name="inc_shipped" value="1" {if $condition.inc_shipped}checked="checked"{/if} />{$lang.order_inc_shipped}</span>
+    <span id="only_region" style="display:none">&nbsp;&nbsp;
+    <input type="checkbox" name="if_top" value="1" {if $condition.if_top}checked="checked"{/if} />{$lang.if_top}</span>
+      <input type="submit" value="{$lang.button_search}" />
+      <input type="hidden" name="app" value="statistics"/>
+      <input type="hidden" name="act" value="view_order"/>
+    </form>
+  </li>
+  <li>
+    <div id="orderchart" align="center"></div>
+    <div id="orderlink" align="center"></div>
+  </li>
+  {include file="admin/templates/footer.html"}
+</ul>
+</body>
+</html>

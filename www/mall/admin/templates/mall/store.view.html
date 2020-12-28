@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title> new document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+  <link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+  {script src="ecmall,ajax,validator,ui.datagrid"}
+  <script type="text/javascript" src="admin.php?app=store&act=jslang"></script>
+  <script type="text/javascript">
+    Event.observe(window, 'load', function() {
+      var grid = new ui.DataGrid($("data-grid"));
+      grid.action = "modify";
+    });
+    
+    function updateGoodsCount() {
+      Ajax.call("admin.php?app=store&act=update_goods_count", function(jso){
+        if (jso.done){
+          alert(lang.update_goods_succeed);
+          location.reload();
+        }
+      });
+    }
+  </script>
+ </head>
+
+ <body>
+  <ul id="container">
+    <li id="header">
+      <h1>{$lang.store_view}</h1>
+      <div class="link">[<a href="admin.php?app=store&amp;act=add">{$lang.store_add}</a>][<a href="javascript:updateGoodsCount();">{$lang.update_store_goods_count}</a>]</div>
+      <div id="desc">
+        <div id="page-selector">
+          {$lang.goto_page}{page_selector from=$list.info url=$url_format}
+        </div>
+        <span>{$stats}</span>
+      </div>
+    </li>
+    <li id="tips" class="search-bar">
+      <form method="get" action="admin.php">
+        {$lang.keywords}: <input type="text" name="keywords" />
+        <label for="chk_recommend"><input type="checkbox" id="chk_recommend" name="is_recommend" value="1" />{$lang.recommend_store}</label>
+        <label for="chk_certified"><input type="checkbox" id="chk_certified" name="is_certified" value="1" />{$lang.certified_store}</label>
+        <input type="submit" value="{$lang.button_search}" />
+        <input type="hidden" name="app" value="store"/>
+        <input type="hidden" name="act" value="view"/>
+      </form>
+    </li>
+    <li id="wrapper">
+      <table class="grid" cellspacing="0" id="data-grid">
+        <tr>
+          <th class="first-cell" readOnly="false" columnName="store_name" dataType="string" required="true"><input type="checkbox" class="checkAll" /> {sort_link by=store_name text=$lang.store_name}</th>
+          {if ENABLED_CUSTOM_DOMAIN}
+          <th readOnly="false" columnName="custom" dataType="string" required="true">{sort_link by=custom text=$lang.header_custom}</th>
+          {/if}
+          <th>{sort_link by=owner_name text=$lang.owner_name}</th>
+          <th readOnly="false" columnName="goods_limit" dataType="int" required="true">{sort_link by=goods_limit text=$lang.header_goods_limit}</th>
+          <th readOnly="false" columnName="file_limit" dataType="int" required="true">{sort_link by=file_limit text=$lang.header_file_limit}</th>
+          <th>{sort_link by=goods_count text=$lang.goods_count}</th>
+          <th>{sort_link by=order_count text=$lang.order_count}</th>
+          <th readOnly="false" columnName="is_recommend" dataType="bool">{sort_link by=is_recommend text=$lang.is_recommend}</th>
+          <th readOnly="false" columnName="is_certified" dataType="bool">{sort_link by=is_certified text=$lang.is_certified}</th>
+          <th readOnly="false" columnName="is_open" dataType="bool">{sort_link by=is_open text=$lang.is_open}</th>
+          <th>{sort_link by=add_time text=$lang.add_time}</th>
+          <th>{$lang.handler}</th>
+        </tr>
+        {foreach from=$list.data item=store}
+        <tr id="{$store.store_id}">
+          <td class="first-cell"><input type="checkbox" name="id" value="{$store.store_id}" /> <span>{$store.store_name}</span></td>
+          {if ENABLED_CUSTOM_DOMAIN}
+          <td><span>{$store.custom|default:N/A}</span></td>
+          {/if}
+          <td>{$store.owner_name}</td>
+          <td><span>{$store.goods_limit}</span></td>
+          <td><span>{$store.file_limit}</span></td>
+          <td>{$store.goods_count}</td>
+          <td>{$store.order_count}</td>
+          <td>{img_yesorno value=$store.is_recommend dir=admin/images}</td>
+          <td>{img_yesorno value=$store.is_certified dir=admin/images}</td>
+          <td>{img_yesorno value=$store.is_open dir=admin/images}</td>
+          <td>{$store.add_time}</td>
+          <td>
+            <a href="admin.php?app=store&amp;act=edit&amp;id={$store.store_id}">{$lang.edit}</a>
+            |
+            <a href="index.php?{$store.store_id}" target="_blank">{$lang.view}</a>
+          </td>
+        </tr>
+        {foreachelse}
+        <tr><td colspan="11" class="no-records">{$lang.no_records}</td></tr>
+        {/foreach}
+        <tr>
+          <td colspan="12">
+            <ul id="batch-links">
+              <li class="batch-link" action="batch" param="set_recommend">{$lang.set_recommend}</li>
+              <li class="batch-link" action="batch" param="set_certified">{$lang.set_certified}</li>
+              <li class="batch-link" action="batch" param="set_open">{$lang.set_open}</li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      <div id="page-list">{page_links from=$list.info url=$url_format}</div>
+    </li>
+    {include file="admin/templates/footer.html"}
+  </ul>
+ </body>
+</html>

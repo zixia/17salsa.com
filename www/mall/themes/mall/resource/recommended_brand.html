@@ -1,0 +1,22 @@
+<!-- {if $recommended_logo_brand or $recommended_no_logo_brand or $editing} -->
+<div id="recommended_brand" class="colbox">
+  <h3>{$lang.recommended_brand}</h3>
+  <div class="colboxcontent">
+    <ul>
+      <!-- {foreach name=recommended_logo_brand from=$recommended_logo_brand item=rbrand} 推荐品牌(logo) -->
+      <!-- {if $smarty.foreach.recommended_logo_brand.iteration lte 10} -->
+      <li><a href="{url src=index.php?app=search&amp;brand_id=$rbrand.brand_id}"><img src="{$rbrand.brand_logo}" alt="{$rbrand.brand_name|escape}" /></a></li>
+      <!-- {/if} -->
+      <!-- {/foreach} 推荐品牌logo -->
+    </ul>
+  </div>
+  <div class="colboxcontent textlink">
+      <!-- {foreach name=recommended_no_logo_brand from=$recommended_no_logo_brand item=rbrand} 推荐品牌(no_logo) -->
+      <!-- {if $smarty.foreach.recommended_no_logo_brand.iteration lte 10} -->
+      <a href="{url src=index.php?app=search&amp;brand_id=$rbrand.brand_id}">{$rbrand.brand_name|escape}</a>
+      <!-- {/if} -->
+      <!-- {/foreach} 推荐品牌no_logo -->
+  </div>
+  <div class="colbtm"></div>
+</div>
+<!-- {/if} -->

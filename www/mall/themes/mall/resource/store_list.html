@@ -1,0 +1,64 @@
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="column1">
+      <div id="hot_store" class="colbox">
+        <h3>{$lang.hot_store}</h3>
+        <div class="colboxcontent">
+          <ul class="hot_store">
+            <!-- {foreach from=$hot_store_list.data item=hstore} -->
+            <li><a href="{url src=index.php?app=store&amp;store_id=$hstore.store_id}" target="_blank">{$hstore.store_name|escape}</a></li>
+            <!-- {/foreach} -->
+          </ul>
+        </div>
+        <div class="colbtm"></div>
+      </div>
+      <div id="new_store" class="colbox">
+        <h3>{$lang.new_store}</h3>
+        <div class="colboxcontent">
+          <ul class="new_store">
+            <!-- {foreach from=$new_store_list.data item=nstore} -->
+            <li><a href="{url src=index.php?app=store&amp;store_id=$nstore.store_id}" target="_blank">{$nstore.store_name|escape}</a></li>
+            <!-- {/foreach} -->
+          </ul>
+        </div>
+        <div class="colbtm"></div>
+      </div>
+    </td>
+    <td class="column2">
+      <div id="store_list" class="grid1col">
+        <div class="colbox">
+          <div id="displaymode">
+            <p class="quickchanger">{page_simple from=$store_list.info url=$url_format}</p>
+            {$lang.sort_style} : <select onchange="location.href=this.value">{html_options options=$sort_list selected=$curr_sort}</select>
+          </div>
+          <div class="colboxcontent">
+            <table border="0" cellspacing="0" id="store_item_list">
+              <tr class="title">
+                <th>&nbsp;</th>
+                <th>{$lang.store_name}</th>
+                <th>{$lang.store_owner}</th>
+                <th>{$lang.store_location}</th>
+                <th>{$lang.goods_count}</th>
+                <th>{$lang.seller_credit}</th>
+                <th>{$lang.store_add_time}</th>
+              </tr>
+              <!-- {foreach from=$store_list.data item=store} -->
+              <tr>
+                <td>{include file="themes/mall/resource/avatar.html"}</td>
+                <td><a href="{url src=index.php?app=store&amp;store_id=$store.store_id}" target="_blank">{$store.store_name|escape}</a></td>
+                <td>{$store.user_name|default:&nbsp;}</td>
+                <td>{$store.region_name|default:&nbsp;}</td>
+                <td>{$store.goods_count}</td>
+                <td>{if $store.seller_grade gt 0}<img src="images/rank_sell_{$store.seller_grade}.gif" />{else}-{/if}</td>
+                <td>{$store.formated_add_time}</td>
+              </tr>
+              <!-- {/foreach} -->
+            </table>
+          </div>
+          <div class="pagechanger">{page_links from=$store_list.info url=$url_format}</div>
+          <div class="colbtm"></div>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>

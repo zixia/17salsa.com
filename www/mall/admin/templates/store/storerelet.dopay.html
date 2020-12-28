@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ECMall</title>
+<meta http-equiv="Content-Type" content="text/html; charset={$charset}" />
+<link href="admin/styles/general.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="?act=jslang"></script>
+{script src="ecmall,ui.utils,validator"}
+<script type="text/javascript">
+  Event.observe(window, "load", function() {
+   new ui.utils.tabForm("tab-form");
+   Validator.run('theForm');
+  });
+  </script>
+</head>
+<body align="center">
+<div id="shopping_pay_form" class="colbox flow">
+  <h3>loading...</h3>
+  <form action="{$pay_form.action}" id="pay_form" method="{$pay_form.method}" style="display:none">
+    <!-- {foreach from=$pay_form.fields item=value key=_k} -->
+    <!-- {if $value.type eq 'select'} -->
+    <select name="{$_k}">
+      <!-- {foreach from=$value.data item=select_item key=select_key} -->
+      <option value="{$select_key}">{$select_item}</option>
+      <!-- {/foreach} -->
+    </select>
+    <!-- {else} -->
+    <input type="hidden" name="{$_k}" value="{$value}" />
+    <!-- {/if} -->
+    <!-- {/foreach} -->
+  </form>
+  <script type="text/javascript">
+      $('pay_form').submit();
+    </script>
+  <div class="colbtm"></div>
+</div>
+</body>
+</html>

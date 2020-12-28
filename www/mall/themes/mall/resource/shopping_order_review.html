@@ -1,0 +1,157 @@
+{script src="ui.tip"}
+<link href="js/ui.tip/style.css" rel="stylesheet" type="text/css"  />
+<script type="text/javascript">
+var hasUCH = {$has_uchome};
+var guestBuy = {$guest_buy};
+if (!guestBuy) {
+  Event.observe(window, 'load', function () {
+    var tip = new ui.tip($("logon_anonymous_buy_label_top"));
+    tip.setText("{$lang.tip}", "{$lang.anonymous_buy_help}");
+    tip.height = 50;
+    tip.width = 275;
+    tip.show();
+    tip.hide(8000);
+  });
+}
+function submitOrder(){
+  _url = 'index.php?app={$application}&act=submit_order&guest_buy={$guest_buy}';
+
+  if (hasUCH && !guestBuy)
+  {
+    if ($('send_feed_bottom').checked || $('send_feed_top').checked)
+    {
+      _url += '&send_feed=1';
+    }
+  }
+  if ($('logon_anonymous_buy_top') && $('logon_anonymous_buy_bottom'))
+  {
+    if ($('logon_anonymous_buy_top').checked || $('logon_anonymous_buy_bottom').checked)
+    {
+      _url += '&logon_anonymous_buy=1';
+    }
+  }
+  window.location= _url;
+}
+function checkSendFeed(v){
+  if (hasUCH) {
+    $('send_feed_bottom').checked = v;
+    $('send_feed_top').checked = v;
+  }
+}
+function logonAnonymousBuy(v){
+  if (hasUCH) {
+    if (v)
+    {
+      $('send_feed_label_top').style.display = 'none';
+      $('send_feed_label_bottom').style.display = 'none';
+    }
+    else
+    {
+      $('send_feed_label_top').style.display = '';
+      $('send_feed_label_bottom').style.display = '';
+    }
+  }
+  $('logon_anonymous_buy_top').checked = v;
+  $('logon_anonymous_buy_bottom').checked = v;
+  document.setCookie('logon_anonymous_buy', v ? 1 : 0);
+}
+</script>
+<div id="shopping_order_review" class="colbox flow"> {if !$is_activity}
+  <p id="flowview" class="three"> <span class="cart">{$lang.shopping_cart}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span> <span class="submit">{$lang.submit_order}</span> </p>
+  {else}
+  <p id="flowview" class="three"> <span class="cart">{$lang.activity_apply}</span> <span class="pay">{$lang.shipping_and_payment}</span> <span class="confirm">{$lang.order_review}</span> <span class="submit">{$lang.submit_order}</span> </p>
+  {/if}
+  <h3> <span style="float:right"> {if !$guest_buy}
+    {if $smarty.session.user_id and $has_uchome neq 'false'}
+    <label for="send_feed_top" id="send_feed_label_top"{if $smarty.cookies.logon_anonymous_buy} style="display:none;"{/if}>
+    <input type="checkbox" id="send_feed_top" value="1" onclick="checkSendFeed(this.checked);" {if $feed_status[3]}checked="checked" {/if}/>
+    &nbsp;&nbsp;{$shopping_send_feed}&nbsp;&nbsp;</label>
+    {/if}
+    <label for="logon_anonymous_buy_top" id="logon_anonymous_buy_label_top">
+    <input type="checkbox" id="logon_anonymous_buy_top" value="1" onclick="logonAnonymousBuy(this.checked);" {if $smarty.cookies.logon_anonymous_buy}checked="checked" {/if}/>
+    &nbsp;&nbsp;{$lang.logon_anonymous_buy}&nbsp;&nbsp;</label>
+    {/if}
+    {if !$is_activity} <a href="index.php?app={$application}&amp;act=shopping_cart&amp;go_back=1&amp;guest_buy={$guest_buy}" class="modify"><img src="images/btn_gotocart.gif" alt="{$lang.modify_cart}" /></a> {/if}
+    <input type="image" src="images/btn_submit_order.gif" onclick="submitOrder();" />
+    </span> {$lang.order_info}: <a href="index.php?app={$application}&act=shipping_and_payment&amp;go_back=1&amp;guest_buy={$guest_buy}">[ {$lang.modify} ]</a></h3>
+  <div class="reviewinfo">
+    <table border="0" width="100%">
+      <tr>
+        <td width="15%">{$lang.receiver}:</td>
+        <td class="label">{$order.consignee|escape}</td>
+        <td width="15%">{$lang.shipping_method}:</td>
+        <td class="label">{$order.shipping_name|escape}, {$order.best_time|escape}</td>
+      </tr>
+      <tr>
+        <td>{$lang.shipping_address}:</td>
+        <td class="label">{$order.region}, {$order.address|escape}, {$order.zipcode|escape}</td>
+        <td>{$lang.payment}:</td>
+        <td class="label">{$order.pay_name|escape}</td>
+      </tr>
+      <tr>
+        <td>{$lang.phone}:</td>
+        <td class="label">{ecjoin v1=$order.mobile_phone v2=$order.office_phone v3=$order.home_phone}</td>
+        <td><!--{if $inv_enable}-->{$lang.invoice_payee}:<!--{/if}-->&nbsp;</td>
+        <td class="label"><!--{if $inv_enable}-->{$order.inv_payee|escape}<!--{/if}-->&nbsp;</td>
+      </tr>
+      <tr>
+        <td>{$lang.email}:</td>
+        <td class="label">{$order.email}</td>
+        <td><!--{if $inv_enable}-->{$lang.invoice_content}:<!--{/if}-->&nbsp;</td>
+        <td class="label"><!--{if $inv_enable}-->{$order.inv_content|default:$lang.no_invoice|escape}<!--{/if}-->&nbsp;</td>
+      </tr>
+      <tr>
+        <td>{$lang.post_script}:</td>
+        <td colspan="3" class="label">{$order.post_script|escape}&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+  <h3> {$lang.order_goods}{if !$is_activity}: <a href="index.php?app={$application}&amp;act=shopping_cart&amp;go_back=1&amp;guest_buy={$guest_buy}">[ {$lang.modify} ]</a>{/if} </h3>
+  <table border="0" cellspacing="0" class="datatable">
+    <tr class="title">
+      <th>{$lang.goods_name}</th>
+      <th width="100">{$lang.goods_number}</th>
+      <th width="100">{$lang.goods_price}</th>
+      <th width="100">{$lang.goods_subtotal}</th>
+    </tr>
+    {foreach from=$goods item=g}
+    <tr class="odd">
+      <td><a class="goods_thumb" href="{url src=index.php?app=goods&amp;id=$g.goods_id}" target="_blank"><img src="{image file=$g.default_image width=32 height=32}" alt="{$g.orig_name}" class="goods_thumb" align="left" /></a>
+        <p class="goods_desc"> <a class="goods_name" href="{url src=index.php?app=goods&amp;id=$g.goods_id}" target="_blank">{$g.goods_name|escape}</a><br/>
+          <!-- {if $g.color_name} -->
+          {$lang.goods_color}: <b>{$g.color_name|escape}</b>
+          <!-- {/if} -->
+          <!-- {if $g.spec_name} -->
+          {$lang.goods_spec}: <b>{$g.spec_name|escape}</b>
+          <!-- {/if} -->
+        </p></td>
+      <td>{$g.goods_number}</td>
+      <td>{$g.goods_price|price}</td>
+      <td class="subtotal">{$g.subtotal|price}</td>
+    </tr>
+    {/foreach}
+  </table>
+  <!-- order amount -->
+  <div class="flowinfo">
+    <p> {$lang.goods_amount}: {$order.goods_amount|price}
+      {if $order.pay_fee > 0}<img src="images/plus.gif" />{$lang.pay_fee}: {$order.pay_fee|price}{/if}
+      {if $order.shipping_fee > 0}<img src="images/plus.gif" /> {$lang.shipping_fee}: {$order.shipping_fee|price}{/if}
+      {if $use_insure_fee}<img src="images/plus.gif" /> {$lang.insure_fee}: {$order.insure_fee|price}{/if}
+      {if $need_inv}<img src="images/plus.gif" /> {$lang.inv_fee}: {$order.inv_fee|price}{/if}
+      {if $order.coupon_sn}<img src="images/minus.gif" />{$lang.coupon_value}: <span id="coupon_value">{$order.coupon_value|price}</span>{/if}<img src="images/equal.gif"> {$lang.payable}: <span class="subtotal">{$order.payable|price}</span> </p>
+  </div>
+  <p align="right" class="btnlist"> {if !$guest_buy}
+    {if $smarty.session.user_id and $has_uchome neq 'false'}
+    <label for="send_feed_bottom" id="send_feed_label_bottom"{if $smarty.cookies.logon_anonymous_buy} style="display:none;"{/if}>
+    <input type="checkbox" id="send_feed_bottom" onclick="checkSendFeed(this.checked);" value="1" {if $feed_status[3]}checked="checked" {/if}/>
+    &nbsp;&nbsp;{$shopping_send_feed}&nbsp;&nbsp;</label>
+    {/if}
+    <label for="logon_anonymous_buy_bottom">
+    <input type="checkbox" id="logon_anonymous_buy_bottom" value="1" onclick="logonAnonymousBuy(this.checked);" {if $smarty.cookies.logon_anonymous_buy}checked="checked" {/if}/>
+    &nbsp;&nbsp;{$lang.logon_anonymous_buy}&nbsp;&nbsp;</label>
+    {/if}
+
+    {if !$is_activity} <a href="index.php?app={$application}&amp;act=shopping_cart&amp;go_back=1&amp;guest_buy={$guest_buy}" class="modify"><img src="images/btn_gotocart.gif" alt="{$lang.modify_cart}" /></a> {/if}
+    <input type="image" src="images/btn_submit_order.gif" onclick="submitOrder();" />
+  </p>
+</div>
