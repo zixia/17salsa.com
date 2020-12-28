@@ -296,8 +296,14 @@ class cls_template
             {
                  $source= str_replace('%%%SMARTYSP'.$curr_sp.'%%%', '<?php echo \''.str_replace("'", "\'", $sp_match[1][$curr_sp]).'\'; ?>'."\n", $source);
             }
-         }
-         return preg_replace("/{([^\}\{\n]*)}/e", "\$this->select('\\1');", $source);
+        }
+        // https://stackoverflow.com/a/19343607/1123955
+        // return preg_replace("/{([^\}\{\n]*)}/e", "\$this->select('\\1');", $source);
+        return preg_replace_callback(
+            "/{([^\}\{\n]*)}/", 
+            function ($m) { return $this->select($m[1]); },
+            $source
+        );
     }
 
     /**
@@ -415,7 +421,9 @@ class cls_template
         }
         else
         {
-            $tag_sel = array_shift(explode(' ', $tag));
+            $tmpArray = explode(' ', $tag);
+            // https://stackoverflow.com/a/30392112/1123955
+            $tag_sel = array_shift($tmpArray);
             switch ($tag_sel)
             {
                 case 'if':
