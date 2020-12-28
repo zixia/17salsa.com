@@ -1,0 +1,229 @@
+{template admin_header}
+<script type="text/javascript">
+function jswizard(num){
+	if(num==1){
+		window.open('index.php?plugin-jswizard-admin_jswizard-doc',"_self","");
+	}else if(num==2){
+		window.open('index.php?plugin-jswizard-admin_jswizard-user',"_self","");
+	}else if(num==3){
+		window.open('index.php?plugin-jswizard-admin_jswizard-cate',"_self","");
+	}else if(num==4){
+		window.open('index.php?plugin-jswizard-admin_jswizard-search',"_self","");
+	}else if(num==5){
+		window.open('index.php?plugin-jswizard-admin_jswizard-tag',"_self","");
+	}
+}
+
+function previewx(num){
+	if(document.getElementById('js_name').value==''){
+		alert('请输入调用名称!');
+		document.getElementById('js_name').focus();
+		return false;
+	}
+	if(isNaN(document.getElementById('js_cachetime').value)==true){
+		alert('缓存时间必须为数字！');
+		document.getElementById('js_cachetime').focus();
+		return false;
+	}
+	if(num==0){
+		if(document.getElementById("isedit").value=='1'){
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-editdoc-preview";
+		}else{
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-doc-preview";
+		}
+		myform.submit();
+	}else{
+		if(confirm('{lang baseConfigCoverWarn}')==false){
+			return false;
+		}
+		if(document.getElementById("isedit").value=='1'){
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-editdoc";
+			myform.submit();
+		}else{
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-doc";
+			myform.submit();
+		}
+	}
+}
+function insertunit(tag) {
+        var myField; 
+        myField = document.getElementById('js_code'); 
+        if (document.selection) { 
+                myField.focus(); 
+                sel = document.selection.createRange(); 
+                sel.text = tag; 
+                myField.focus(); 
+        }else if (myField.selectionStart || myField.selectionStart == '0') { 
+                var startPos = myField.selectionStart; 
+                var endPos = myField.selectionEnd; 
+                var cursorPos = endPos; 
+                myField.value = myField.value.substring(0, startPos) 
+                                          + tag 
+                                          + myField.value.substring(endPos, myField.value.length); 
+                cursorPos += tag.length; 
+                myField.focus(); 
+                myField.selectionStart = cursorPos; 
+                myField.selectionEnd = cursorPos; 
+        }else{ 
+                myField.value += tag; 
+                myField.focus(); 
+        } 
+}
+</script>
+<style type="text/css">
+.ainput{
+	background:#FFFFFF none repeat scroll 0 0;
+	border:1px solid #B6CFD9;
+	line-height:220%;
+	margin-right:5px;
+	padding:2px 5px;
+	white-space:nowrap;
+}
+</style>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_plugin-manage-{$pluginid}"  id="current">{lang commonManage}</a></li>
+			<li><a href="index.php?admin_plugin-setvar-{$pluginid}">{lang commonSet}</a></li>
+			<li><a href="index.php?admin_plugin-hook-{$pluginid}">{lang commonHook}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<br/>
+<table align="center" cellpadding="3" cellspacing="0" width="98%" class="list">
+<tbody>
+<tr class="list_title" align="center">
+<td valign="top" colspan='4' align="center">
+添加：
+<input class="btn" value="词条列表" style="background-color:#F5F5F5;" type="button" name="doc" onclick="jswizard(1);" />
+<input class="btn" value="用户列表" type="button" name="user" onclick="jswizard(2);"/>
+<input class="btn" value="分类" type="button" name="cate" onclick="jswizard(3);"/>
+<input class="btn" value="搜索" type="button" name="search" onclick="jswizard(4);"/>
+<input class="btn" value="热门标签" type="button" name="tag" onclick="jswizard(5);"/>
+</td>
+</tr>
+</tbody>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	    <form name="myform" method="POST" action="index.php?plugin-jswizard-admin_jswizard-doc">
+	    	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	    		<tr>
+                  <td height="26" align="center" ></td>
+                  <td height="26" ><strong>使用</strong></td>
+                  <td height="26" ></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >预览</td>
+                  <td height="26" ><input class="btn" onclick="return previewx(0);" name="jssubmit" type="submit" value="预览"  />&nbsp;&nbsp;<input class="btn" name="jssubmit" type="submit" value="{lang commonSave}" onclick="return previewx(1);" /><br /><div style="width:550px;">{$previewcon}</div></td>
+                </tr>
+                <!--{if $type==1}-->
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >外部调用</td>
+                  <td height="26" ><input style="width:550px;" class="box" name="js_wizard" id="js_wizard" type="text" value="{$inputs}" readonly="readonly" onfocus="this.select()" onmouseover="this.focus()" /></td>
+                </tr>
+                <!--{/if}-->
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >数据调用模版</td>
+                  <td height="26" >
+	                  分类名称：<a onclick="insertunit('[category]');" class="ainput" href="###" title="分类">[category]</a>
+	                  词条名称：<a onclick="insertunit('[title]');" class="ainput" href="###" title="词条名称">[title]</a>
+	                  作者：<a onclick="insertunit('[author]');" class="ainput" href="###" title="作者">[author]</a>
+	                  时间：<a onclick="insertunit('[time]');" class="ainput" href="###" title="时间">[time]</a>
+	                  摘要：<a onclick="insertunit('[summary]');" class="ainput" href="###" title="摘要">[summary]</a>
+                  </td>
+                </tr>                
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >代码</td>
+                  <td height="26" ><textarea style="width:550px;" rows="10" name="js_code" id="js_code">{$js_list['js_code']}</textarea></td>
+                </tr>	
+                
+                <tr>
+                  <td height="26" align="center" ></td>
+                  <td height="26" ><strong>设置</strong></td>
+                  <td height="26" ><span style="color:red">(以下用到的"字节",一个汉字代表两个字节,一个字节代表两个英文字母)</span></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td height="26" >调用名称</td>
+                  <td height="26" ><input maxlength="120" style="width:200px;" class="box" name="js_name" id="js_name" type="text" value="{$js_name}" <!--{if $js_list['js_name']!=''}-->readonly="readonly"<!--{/if}--> /><!--{if $js_list['js_name']!=''}--><input type="hidden" id="isedit" name="isedit" value="1"><!--{else}--><input type="hidden" id="isedit" name="isedit" value="0"><!--{/if}--></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >调用说明</td>
+                  <td height="26" ><input style="width:200px;" class="box" name="js_desc" id="js_desc" type="text" value="{$js_list['js_desc']}" /></td>
+                </tr>
+                  <td height="26" ></td>
+                  <td height="26" >缓存时间</td>
+                  <td height="26" ><input maxlength="20" style="width:200px;" class="box" name="js_cachetime" id="js_cachetime" type="text" value="{$js_list['js_cachetime']}" />秒</td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >分类ID</td>
+                  <td height="26" ><input maxlength="20" style="width:200px;" class="box" name="js_cateid" type="text" value="{$js_list['js_cateid']}" />多个分类请用中文“；”隔开</td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >显示数量</td>
+                  <td height="26" >
+					<input maxlength="20" style="width:200px;" class="box" name="js_num" type="text" value="{$js_list['js_num']}" />条(默认显示10条)</td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >词条名长度</td>
+                  <td height="26" ><input maxlength="20" style="width:100px;" class="box" name="js_doc_long" type="text" value="{$js_list['js_doc_long']}" />字节(默认显示全部)</td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td height="26" >作者长度</td>
+                  <td height="26" ><input maxlength="20" style="width:100px;"  name="js_author_long" id="js_author_long" type="text" value="{$js_list['js_author_long']}" />字节(默认显示全部)</td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td height="26" >摘要长度</td>
+                  <td height="26" >
+                    <input maxlength="20" style="width:100px;" name="js_sum_long" type="text" value="{$js_list['js_sum_long']}" />长度(默认为20字节)
+                  </td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td height="26" >类型控制</td>
+                  <td height="26" >
+                  	<input type="radio"  name="js_type" value="0" {if $js_list['js_type']=='0'}checked{/if}/>推荐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_type" value="1" {if $js_list['js_type']=='1'}checked{/if}/>热门&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_type" value="2" {if $js_list['js_type']=='2' or $js_list['js_type']==''}checked{/if}/>最新
+                  </td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >排序</td>
+                  <td height="26" >
+                  	<input type="radio"  name="js_order" value="0" {if $js_list['js_order']=='0' or $js_list['js_order']==''}checked{/if}/>更新时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_order" value="1" {if $js_list['js_order']=='1'}checked{/if}/>推荐时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_order" value="2" {if $js_list['js_order']=='2'}checked{/if}/>热度
+                  </td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >打开方式</td>
+                  <td height="26" >
+                  	<input type="radio"  name="js_target" value="1" {if $js_list['js_target']=='1' or $js_list['js_target']==''}checked{/if}/>新窗口&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_target" value="0" {if $js_list['js_target']=='0'}checked{/if}/>原窗口
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" align="center" height="40">
+                  	<input class="btn" name="jssubmit" type="submit" value="{lang commonSave}" onclick="return previewx(1);" />&nbsp;&nbsp;
+                  	<input class="btn" type="reset" value="{lang commonReset}" />
+                  </td>
+                </tr>
+	    	</table>
+	    </from>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

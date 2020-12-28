@@ -1,0 +1,23 @@
+﻿#html{background:transparent url(html_bg.jpg) no-repeat center top !important;}/*--整站 背景图片和背景颜色--*/
+#html body .columns .col-h2{background-image:url(col_bg.jpg);}/*--整站 栏目背景图片及背景平铺方式--*/
+#html #left .columns{border:1px #e6e6e6 solid;}/*--左侧栏目 边框色--*/
+#html #left .columns .col-h2{background-color:#f7f7f8; border-bottom:1px #efefef solid;}/*--左侧栏目 标题背景色和边框色--*/
+#html #mid .columns {border:1px #eaf1f6 solid;}/*--中间栏目 边框色--*/
+#html #mid .columns .col-h2{background-color:#eaf6fd;border:1px #c4d2db solid;}/*--中间栏目 标题背景色和边框色--*/
+#html .default-r{border:1px #cef2e0 solid;}/*--右侧栏目 边框色--*/
+#html .default-r .col-h2{ border:1px #a3bfb1 solid;background-color:#cef2e0;}/*--右侧栏目 标题背景色和边框色--*/ 
+ /*--
+ 平铺方式对应的值分别是  :
+ 水平平铺 repeat-x
+ 垂直平铺 repeat-y
+ 不平铺   no-repeat
+  
+  背景各个参数排列顺序（各个参数以空格隔开）
+  background:背景色 背景图片 平铺方式 水平位置 垂直位置；
+--*/
+#html #nav{border-bottom:1px #cdcdcd solid;}/*--导航 边框色--*/
+#html #nav li a{font-size:14px;}/*--导航 链接色,字体大小--*/
+
+
+
+

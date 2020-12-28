@@ -1,0 +1,66 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	attachment_size=$.trim($('#attachment_size').val());
+	if(attachment_size==''||isNaN(attachment_size)==true){
+		alert('{lang attachmentSizeTrip}');
+		return false;
+	}
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment"  id="current">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>	
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+		<form method="POST" action="index.php?admin_setting-attachment" onsubmit="return doSubmit();">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+                <tr>
+	                  <td width="10%" height="26" align="center" ></td>
+	                  <td width="25%" height="26" ><strong>{lang commonParameterName}</strong></td>
+	                  <td height="26" ><strong>{lang commonParameterValue}</strong></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang attachmentOpenTag}</td>
+					<td ><input type="radio" name="attachment_open" value="1" <!--{if $setting['attachment_open']==1}-->checked<!--{/if}--> />{lang commonYes}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="attachment_open" value="0" <!--{if $setting['attachment_open']!=1}-->checked<!--{/if}--> />{lang commonNo}</td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang attachmentSize}</td>
+					<td ><input class="box" name="attachment_size" id="attachment_size" value="{$setting['attachment_size']}">KB</td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang attachmentType}<br />{lang attachmentTypeTrip}</td>
+					<td ><textarea  name="attachment_type"   rows="20" cols="80">{$setting['attachment_type']}</textarea></td>
+                </tr>
+                <tr>
+                	<td height="40" colspan="3" align="center"><input class="btn" type="submit" value="{lang commonSave}" name="attachmentsubmit" /></td>
+                </tr>
+            </table>
+		</form>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

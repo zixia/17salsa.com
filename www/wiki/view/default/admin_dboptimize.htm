@@ -1,0 +1,36 @@
+{template admin_header}
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_db-tablelist" id="current">{lang dbOptimize}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="99%">
+  <tr>
+    <td valign="top">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+<tr align=center class="list_title"><td width=200>{lang dbTable}</td><td>{lang dbTableType}</td><td width=50>{lang dbRecordCount}</td><td width=80>{lang commonData}</td><td width=50>{lang commonFragment}</td><td width=100>{lang commonCharset}</td><td width=50>{lang commonState}</td></tr>
+<!--{loop $tablelist $key $value}-->
+<tr class="b">
+<td align="center">{$value['table']}</td>
+<td align="center">{$value['type']}</td>
+<td align="center">{$value['rec_num']}</td>
+<td align="center">{$value['rec_index']}</td>
+<td align="center">{$value['rec_chip']}</td>
+<td align="center">{$value['chartset']}</td>
+<td align="center">{$value['status']}</td>
+</tr>
+<!--{/loop}-->
+</table>
+{lang dbFragmentTotal}:{$num}&nbsp;
+<input type="button" class="btn" value="{lang dbStartOptimize}" name="opsubmit" onclick="javascript:window.location='index.php?admin_db-optimize'" />
+<input type="button" class="btn" value="{lang dbStartFix}" name="resubmit" onclick="javascript:window.location='index.php?admin_db-repair'" />
+</td>
+  </tr>
+</table>
+{template admin_footer}

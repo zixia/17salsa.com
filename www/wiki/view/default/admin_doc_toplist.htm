@@ -1,0 +1,52 @@
+{template admin_header}
+<style type="text/css">
+.outtable{margin:0.5em auto; width:99%; border: 1px #CCCCCC solid; }
+.table_title{margin:0.5em auto;width:99%;color:#333;font-size:14px;border-bottom:1px #ccc solid;padding:4px;}
+.table_title a {color:#333;text-decoration:none;}
+.outtable td{height:20px;line-height:20px;padding:7px 8px 3px 8px;color:#666;border-bottom:1px #ddd solid;}
+.td_b{ background-color:#eee; font-weight:bold;color:#333;border-bottom:0;}
+</style>
+<h2 class="table_title"><a href="{$setting['seo_prefix']}admin_statistics-stand{$setting['seo_suffix']}" id="current">{lang doc_toplist}</a></h2>
+<table border="0" cellpadding="10" cellspacing="0" class='outtable' >
+  <tr>
+    <td width="33%" class="td_b">{lang doc_view_toplist}</td> 
+    <td width="34%" class="td_b">{lang doc_edit_toplist}</td>
+    <td width="33%" class="td_b">{lang doc_comment_toplist}</td>
+  </tr>
+  
+  <tr>
+    <td valign="top" >
+    <!--{if !(bool)$doc_toplist[doc_view_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_view_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+     </td>
+    <td valign="top" >
+    <!--{if !(bool)$doc_toplist[doc_edit_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_edit_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$doc_toplist[doc_comment_toplist]}-->
+    {lang no_doc}
+    <!--{else}-->
+    <!--{loop $doc_toplist[doc_comment_toplist] $key $doc}-->
+    <a href="{$setting['seo_prefix']}doc-view-{$doc[did]}{$setting['seo_suffix']}" target="_blank" >{$doc[title]}</a> ({$doc[num]})<br/>
+    <!--{/loop}-->
+    <!--{/if}-->   
+    </td>
+  </tr>
+</table>
+<table class='outtable' align="center" cellpadding="10" cellspacing="0" >
+  <tr>
+    <td class="td_b">{lang statistics_message1} {$doc_toplist[last_cache_time]} {lang statistics_message2} {$doc_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

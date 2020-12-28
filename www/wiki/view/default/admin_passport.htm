@@ -1,0 +1,115 @@
+{template admin_header}
+<style type="text/css">
+.list td{ padding-left:10px; padding-top:5px;}
+.txt { width:200px;}
+</style>
+<script type="text/javascript">
+function randomAuthKey()
+{
+    var pwchars = "abcdefhjmnpqrstuvwxyz23456789ABCDEFGHJKLMNPQRSTUVWYXZ";
+    var passwordlength = 20;    // do we want that to be dynamic?  no, keep it simple :)
+	var passwd='';
+    for ( i = 0; i < passwordlength; i++ )
+	{
+        passwd += pwchars.charAt( Math.floor( Math.random() * pwchars.length ) )
+    }
+	document.getElementById('authKey').value = passwd;
+    return passwd;
+}
+
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail"  >{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport" id="current">{lang passport}</a>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>
+		 </ul>
+		</div>
+	    </td>
+	</tr>
+	<tr>
+		<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+	</tr>
+	<tr>
+	  <td colspan="2" ><li>{lang pp_tip}</li></td>
+	</tr>
+</table>
+<br />
+
+	<form action="index.php?admin_setting-passport" method="post">
+	
+    <table width="95%" border="0" cellpadding="0" cellspacing="0" class="list" align="center">
+	<tr>
+		<td width="100px"><strong>{lang pp_open}</strong></td>
+		<td>
+		<input name="ppopen" type="radio" value="1" <!--{if $pp_open == "1"}-->checked="checked"<!--{/if}-->/> 
+		{lang adv_enable}   <input name="ppopen" type="radio" value="0" <!--{if $pp_open != "1"}-->checked="checked"<!--{/if}-->/> {lang adv_disable}</td>
+	</tr>
+    <tr>
+		<td ><strong>{lang pp_type}</strong></td>
+        <td>      
+        <input name="ppname" type="radio" value="PHPCMS" 
+		<!--{if $pp_name == "PHPCMS"}-->checked="checked"<!--{/if}-->
+		/> 
+        PHPCMS   <input name="ppname" type="radio" value="DEDECMS" 
+		<!--{if $pp_name == "DEDECMS"}-->checked="checked"<!--{/if}-->
+		/> DEDECMS    <input name="ppname" type="radio" value="PHPWIND" 
+		<!--{if $pp_name == "PHPWIND"}-->checked="checked"<!--{/if}-->
+		/> PHPWIND     </td>
+    </tr>
+    <tr>
+		<td ><strong>{lang pp_way}</strong></td>
+        <td>      
+        <select name="pptype" onChange="if(this.value=='client'){document.getElementById('ppclient').style.display = '';}else{document.getElementById('ppclient').style.display = 'none';}">
+			<option value="server" <!--{if $pp_type != "client"}-->selected="selected"<!--{/if}-->> {lang pp_server}</option>
+            <option value="client" <!--{if $pp_type == "client"}-->selected="selected"<!--{/if}-->> {lang pp_client}</option>
+        </select></td>
+    </tr>
+    <tr>
+		<td ><strong>{lang pp_key}</strong></td>
+        <td><input id="authKey" type="text" class="txt" name="ppkey" value="{$pp_key}" />  <a href="#" onClick="javascript:randomAuthKey();" class="sgbtn"><font color="#FF0000">{lang pp_givekey}</font></a></td>
+    </tr>
+	<tr>
+		<td ><strong>{lang pp_connect_site}</strong></td>
+		<td><input type="text" class="txt" name="ppapi" value="{$pp_api}" />
+			{lang pp_dis1}</td>
+	</tr>
+	</table>
+	<table width="95%" border="0" cellpadding="0" cellspacing="0" class="list" id="ppclient"  <!--{if $pp_type != "client"}-->style="display:none;"<!--{/if}--> align="center">
+		<tr>
+			<td width="100px"><strong>{lang pp_regsite}</strong></td>
+			<td>
+			<input type="text" class="txt" name="ppreg" value="{$pp_reg}" />	
+			{lang pp_dis2}</td>		
+		</tr>               
+		<tr>
+			<td ><strong>{lang pp_loginsite}</strong></td>
+			<td>
+			<input type="text" class="txt" name="pplogin" value="{$pp_login}" />	
+			{lang pp_dis3}</td>		
+		</tr>
+		<tr>
+			<td ><strong>{lang pp_logoutsite}</strong></td>
+			<td>
+			<input type="text" class="txt" name="pplogout" value="{$pp_logout}" />	
+			{lang pp_dis4}</td>		
+		</tr>                
+	</table>
+	<table width="95%" border="0" cellpadding="0" cellspacing="0" class="list" align="center" >
+		<tr>
+			<td width="100px"></td>
+			<td ><input type="submit" name="passport" value=" 提 交 " class="btn" tabindex="3" /></td>
+		</tr>
+	</table>
+	</form>
+{template admin_footer}

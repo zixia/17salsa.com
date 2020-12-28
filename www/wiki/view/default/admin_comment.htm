@@ -1,0 +1,178 @@
+{template admin_header}
+<script type="text/javascript" src="js/popWindow.js"></script> 
+<script type="text/javascript">
+function deletecomment(){
+	if(confirm('{lang commonConfirmRemove}')){
+	$('#formcommentlist').attr("action","index.php?admin_comment-delete");
+	$('#formcommentlist').submit();
+	}else{
+		return false;
+	}
+}
+function selectAll(obj){
+	$("input[name='id[]']").attr('checked',obj.checked);
+}
+
+function edit_comment(id){
+	var comment=$('#c_'+id).html();
+	var msg="<textarea id='editcomment' name='editcomment' cols='62' rows='6' >"+comment+"</textarea><br/>"+
+	"<input name='editsubmit' type='button' onclick='saveedit("+id+")' value='{lang commonOK}'>"+
+	"&nbsp;&nbsp;&nbsp;<input name='cancel' type='button' onclick='closepop()' value='{lang commonCancel}'>";
+	setPopMsg(msg);
+	divDance('popmsg');
+	showPop(465,165);
+}
+function saveedit(id){
+	var comment=$.trim($('#editcomment').val());
+	if(comment==""){
+		alert('{lang commentCannone}');
+		return false;
+	}else if(bytes(comment)>200){
+		alert('{lang commentLongSize}');
+		return false;
+	}
+	$.post(
+		"{$setting['seo_prefix']}comment-edit",
+		{id:id,comment:comment},
+		function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message){
+				setPopMsg('{lang commentEditSucc}');
+				//$('z_'+id).innerHTML=message;
+			}else{
+				setPopMsg('{lang commentWrong}');
+			}
+			divDance('popmsg');
+			showPop(300,100);
+			setTimeout(hidePop,3000);
+		}
+	);
+}
+function closepop(){
+	$('#popmsg').html('');
+	setTimeout(hidePop,0);
+}
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+	<div id="poptitle" style="border-bottom:1px solid #DDDDDD; color:#333333; overflow:hidden; border-bottom:1px solid #DDDDDD; color:#FFFFFF; height:20px; overflow:hidden; padding-left:10px; padding-left:10px; background-color: #336699;">
+		{lang commentmanage}
+	</div>
+	<div>
+		<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+	</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_comment" id="current">{lang commentmanage}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_comment-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px"><strong> {lang commentSearch}:</strong></td>
+          <td  width="80px"> {lang attachCate}:</td><td>
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr><tr>
+		<td width="80px"></td>
+          <td width="80px"> {lang attachDocName}:</td><td>
+            <input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />
+        </tr>
+		<tr>
+		<td></td>
+          <td width="80px"> {lang attachAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="80px"></td>
+          <td width="80px"> {lang attachTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$commentsum}</b> {lang commentCom}]</td>
+      </tr>
+    </table>
+    <form name="formcommentlist" id="formcommentlist"  method="POST">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+		  <td width="8%">ID</td>
+            <td width="8%">{lang commonSelect}</td>
+            <td width="55%">{lang commentCom}</td>
+            <td width="11%">{lang commonTitle}</td>
+			<td width="12%">{lang attachAuthorName}</td>
+            <td width="14%">{lang commentTime}</td>
+          </tr>
+          	<!-- {if $commentsum} -->
+			<!--{loop $commentlist $comment}-->
+          <tr>
+		  <td align='center'>{$comment['id']}</td>
+            <td align='center'><input type="checkbox" name="id[]" value="{$comment['id']}_{$comment['did']}" /></td>
+            <td ><a href="javascript:void(0)" id="z_{$comment['id']}"  onclick="edit_comment({$comment['id']});">{$comment['partcomment']}</a><span id="c_{$comment['id']}" style="display:none">{$comment['comment']}</span></td>
+            <td align='center'><a target="_blank" class="e" href="index.php?doc-view-{$comment['did']}" title="{$comment['title']}">{$comment['title']}</a></td>
+            <td align='center'><a target="_blank" class="e" href="index.php?user-space-{$comment['authorid']}"  title="{$comment['author']}">{$comment['author']}</a></td>
+            <td align='center'>{$comment['time']}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {else} -->
+          <tr>
+            <td colspan="8">{$message}{lang commentHaveNone}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox"  type="checkbox" id="chkall" onclick="selectAll(this);">
+                        <label id="tip">{lang commonAllSelect}</label></td>
+                    <td><input type="button" class="btn" name="casemanage" onClick="deletecomment();" value="{lang commonDel}" /></td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+
+{template admin_footer}

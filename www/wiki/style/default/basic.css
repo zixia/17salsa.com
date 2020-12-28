@@ -1,0 +1,101 @@
+html,body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,input,p,blockquote,th,td,form{margin:0;padding:0;}
+ol,ul,li,dd,dt,dl{ list-style:none;}
+address,caption,cite,code,dfn,th,var{font-style:normal;font-weight:normal;}
+img{border:0;}
+caption,th{text-align:left;}
+table{border-collapse:collapse;empty-cells:show;}
+input,select,textarea{font-size:12px; color:#111111;font-family:'lucida grande',taho,verdana,'trebuchet ms',sans-serif;}
+textarea {padding:2px; border:1px #DBE6EF solid; color:#666;}
+html{text-align:center;background:#fff;}
+body{width:950px;margin:0 auto;text-align:left;font:12px/1.2 SimSun, Arial, Helvetica, sans-serif;}
+.table{border-spacing:0;font-size:12px;}
+:focus{	outline:none;}
+h1{font-size:16px;}
+h2,.h2{	font-size:14px;font-weight:bold;}
+h3,.h3{font-size:12px; font-weight:normal;}
+.width{width:99%;}
+.wid-full{width:950px !important;}
+.clear{clear:both;display:inline;}
+.inline{display:inline;}
+.indent{text-indent:2em;}
+.hidden{overflow:hidden;}
+.ov-h,.ov-h li{overflow:hidden;word-break:break-all;}
+.block{display:block;}
+.none{display:none;}
+.bg_no{background:none !important;padding-right:0 !important;}
+a.underline{ text-decoration:underline;}
+/*-----align----*/
+.l{float:left;}
+.r{float:right;}
+.a-c{text-align:center;margin:0 auto;}
+.a-l{text-align:left;}
+.a-r{text-align:right;}
+/*------------*/
+.mar-t8{margin-top:8px;}
+.height3{height:3px;width:99%;overflow:hidden;}
+.height{height:8px;width:99%;overflow:hidden;}
+.height15{height:15px;line-height:15px;padding:0 10px;}
+.pad10{padding:0 10px;}
+.pad-t8{padding-top:8px;}
+.pad-b8{padding-bottom:8px;}
+.pad-lr15{padding-left:15px;padding-right:15px;}
+.mar-lr8{margin-left:8px;margin-right:8px;}
+.mar-r8{margin-right:8px;}
+.mar-l-40{margin-left:40px;}
+/*-----font size----*/
+.font12{font-size:12px;font-weight:normal;}
+.font14{font-size:14px;font-weight:bold;}
+.bold{font-weight:bold;}
+/*-------color------*/
+.red{color:red !important;}
+.blue,a.blue{color:#002bb8;}
+.orange{color:#FF9900 !important;}
+.gray{color:#666;}
+/*------border-----*/
+.bor-gray{border:1px #aaa solid;}
+.bor-gray-das{border:1px #ccc dashed;}
+.bor-white-t{border-top:1px #fff solid;}
+.bor_no{border:0 !important;}
+/*------image-----*/
+.a-img,.a-img2{display:inline-block;border:1px #e6e6e6 solid;}
+.a-img2 img{padding:2px;}
+.a-img img{padding:3px;}
+/*------mouse-----*/
+.hand,.hand label{cursor:pointer;text-decoration:underline;color:red !important;margin-left:8px;}
+.cur-no{cursor:none !important;}  
+
+ a{color:#0268cd ; text-decoration:none;}
+ a:hover{color:#f30;text-decoration:underline;}  
+/*------link white to black-----*/
+.link_white a{color:#fff; text-decoration:none;} 
+.link_white a:hover{color:black;text-decoration:underline;}
+/*------link orange-----*/
+.link_orange a{color:#ff3300; text-decoration:none;}
+.link_orange a:hover{color:#ff3300;text-decoration:underline;}
+/*------link gray to black-----*/ 
+.link_gray a{color:#4e4e4e; text-decoration:none;}
+.link_gray a:hover{color:black;text-decoration:underline;}
+/*------link white to gray-----*/ 
+.link_black a{color:black; text-decoration:none;}
+.link_black a:hover{color:#4e4e4e;text-decoration:underline;}
+/*------link blue to orange-----*/ 
+.link_blue a{color:#2C5594; text-decoration:none;}
+.link_blue a:hover{color:#ff3300;text-decoration:underline;}
+/*------link green to orange-----*/
+.link_green a{color:#44b02f; text-decoration:none;}
+.link_green a:hover{color:#ff3300;text-decoration:underline;}
+
+/*------advertisement css 09-02-02-----*/
+.net_adv{width:100%;margin:0 auto;clear:both;display:block;overflow:hidden;}
+.viewdoc_adv{float:right;width:450px;display:block;overflow:hidden;}
+.col_r_adv{width:98%;margin:8px auto;}
+/*------statistics css 09-03-12-----*/
+.license a{margin:8px 0;}
+/*------comment css 09-04-16--by xxz---*/
+.build{margin:3px; border:#d1ebff solid 1px; background-color: #f8fcff}
+.re_user{color: #0066FF; font-weight: normal;}
+.com2{ margin:0px 20px 0px 20px}
+.com_left{float:left; clear:both; color:#666666}
+ol li p{ margin-top:8px;}
+.inp_com2 {height:24px;padding:3px 8px 0 8px;margin:5px 0 0px 0px; background:#d4d0c8;
+ 					border:1px solid;border-color:#f3f0f0 #404040 #404040 #f3f0f0;}

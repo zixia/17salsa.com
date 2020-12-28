@@ -1,0 +1,55 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	$.post(
+		"index.php?admin_focus-edit",
+		{did: {$focus['did']} , summary: $('#summary').val(),image: $('#image').val(),displayorder: $('#displayorder').val(),editsubmit:'true',doctype:$('#doctype').val()},
+		function(xml){
+		   parent.parent.location="index.php?admin_focus-focuslist";
+		   parent.parent.GB_hide();
+		}
+	);
+}
+</script>
+<form name="focusform">
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="list">
+  <tr>
+    <td width="100" valign="top"><div align="right"><strong>{lang focusmanageTitle}:</strong></div></td>
+    <td>{$focus['title']}</td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang focusmanageTag}:</strong></div></td>
+    <td>{$focus['tag']}</td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang focusmanageSum}:</strong></div></td>
+    <td><textarea name="summary" id="summary" cols="50" rows="6">{$focus['summary']}</textarea></td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang doctype}:</strong></div></td>
+    <td> 
+		<select name="doctype" id="doctype">
+			<option value="1" <!--{if {$focus['type']}==1}-->selected="selected"<!--{/if}-->>{lang focusmanage}</option>
+			<option value="2" <!--{if {$focus['type']}==2}-->selected="selected"<!--{/if}-->>{lang hotdoc}</option>
+			<option value="3" <!--{if {$focus['type']}==3}-->selected="selected"<!--{/if}-->>{lang wonderdoc}</option>
+		</select>
+	</td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang focusmanageImg}:</strong></div></td>
+    <td><input name="image" id="image" value="{$focus['image']}"  size="40"/></td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang focusmanageComTime}:</strong></div></td>
+    <td>{$focus['time']}</td>
+  </tr>
+  <tr>
+    <td valign="top"><div align="right"><strong>{lang focusmanageOrder}:</strong></div></td>
+    <td><input name="displayorder" id="displayorder" type="text" value="{$focus['displayorder']}" size="2" maxlength="4" /></td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center"><input name="yes" class="btn" type="button" value="{lang commonOK}" onclick="docheck();"   /></td>
+  </tr>
+</table>
+</form>
+{template admin_footer}

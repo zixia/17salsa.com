@@ -1,0 +1,149 @@
+{template admin_header}
+<script type="text/javascript">
+var searchdata = "{$searchdata}".replace(/-/g, ",");
+function ChangeRadionew(number){
+   	if($("input[name='chkid[]']:checked").length==0){
+   		alert('请至少选择一个礼品！}');
+		return false;
+  	 }else{
+		switch(number){
+			case 1:
+				if(confirm('确认删除选中的礼品？')){
+					document.giftform.action='index.php?admin_gift-remove';
+					document.giftform.submit();
+				}
+			break;
+			case 2:
+				if(confirm('确认设置选中礼品为过期状态？')){
+					document.giftform.action='index.php?admin_gift-available-0';
+					document.giftform.submit();
+				}
+		 	break;
+			case 3:
+				if(confirm('确认设置选中礼品为可用状态？')){
+					document.giftform.action='index.php?admin_gift-available-1';
+					document.giftform.submit();
+				}
+		 	break;
+		}
+	}
+}
+function selectAll(){
+	$("input[name='chkid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="index.php?admin_gift" id="current">礼品管理</a></li>
+	<li><a href="index.php?admin_gift-add">添加礼品</a></li>
+	<li><a href="index.php?admin_gift-price">礼品价格区间</a></li>
+	<li><a href="index.php?admin_gift-notice">礼品公告</a></li>
+  </ul>
+</div>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="post" action="index.php?admin_gift-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px">价格范围:</td>
+          <td > <select name="type">
+				<option value="-1" >全部</option>
+				<!--{loop $minprice $index $price}-->
+					<option value="$index" {if $type===$index}selected{/if} >$price—$maxprice[$index] 金币</option> 
+ 				<!--{/loop}-->
+	    	</select>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td width="80px">礼品名称:</td>
+	      <td><input name="title" type="text" class="wenben" size="30" value="{$title}" />          
+	    </tr>
+		<tr>
+          <td width="80px">添加时间:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="endtime"   onclick="showcalendar(event, this);" value="{$endtime}" />
+            <input name="submit" class="btn" type="submit" value="搜索" />          </td>
+        </tr>
+      </table>
+    </form>
+
+	<form method="post" name="giftform">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td width="40">选择</td>
+            <td>礼品图片</td>
+			<td width="20%">礼品名称</td>
+			<td width="60">所需金币</td>
+			<td width="50%">礼品描述</td>
+			<td width="80">更新时间</td>
+			<td width="60">是否过期</td>
+			<td width="40">操作</td>
+          </tr>
+		<!-- {if $giftlist} -->
+			<!--{loop $giftlist $gift}-->
+		          <tr align="center">
+		            <td align='center'><input type="checkbox" name="chkid[]" value="{$gift['id']}" />
+		            </td>
+		            <td>
+		            {if file_exists($gift['image'])}
+						<img src="{$gift['image']}"/>
+					{else}
+						<img src="style/default/plugin.jpg"/>
+					{/if}
+		            </td>
+		            <td>{$gift[title]}</td>
+		            <td>{$gift[credit]}</td>
+		            <td align="left">{$gift['description']}</td>
+		            <td>{$gift['addtime']}</td>
+		            <td><!--{if $gift[available]}-->{lang adv_disable}<!--{else}--><font class="red">{lang adv_enable}</font><!--{/if}--></td>
+		            <td><a href="index.php?admin_gift-edit-$gift['id']">编辑</a></td>
+		          </tr>
+	          <!--{/loop}-->
+          <!-- {else} -->
+			<tr>
+            	<td colspan="5">没有任何礼品！</td>
+            </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();"><label id="tip">全选</label></td>
+                    <td>
+						<input type="button" value="删除" onclick="ChangeRadionew(1);" class="btn_plug"/>
+						<input type="button" value="设为过期" onclick="ChangeRadionew(2);" class="btn_plug"/>
+						<input type="button" value="设为可用" onclick="ChangeRadionew(3);" class="btn_plug"/>
+		           </td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+{template admin_footer}

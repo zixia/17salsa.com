@@ -1,0 +1,62 @@
+{template admin_header}
+<style type="text/css">
+.outtable{margin:0.5em auto; width:99%; border: 1px #CCCCCC solid; }
+.table_title{margin:0.5em auto;width:99%;color:#333;font-size:14px;border-bottom:1px #ccc solid;padding:4px;}
+.table_title a {color:#333;text-decoration:none;}
+.outtable td{height:20px;line-height:20px;padding:7px 8px 3px 8px;color:#666;border-bottom:1px #ddd solid;}
+.td_b{ background-color:#eee; font-weight:bold;color:#333;border-bottom:0;}
+</style>
+<h2 class="table_title"><a href="{$setting['seo_prefix']}admin_statistics-stand{$setting['seo_suffix']}" id="current">{lang cat_toplist}</a></h2>
+<table class='outtable' cellpadding="10" cellspacing="0" >
+  <tr>
+    <td width="25%" class="td_b">{lang create_toplist}</td> 
+    <td width="25%" class="td_b">编辑分类排行</td>
+    <td width="25%" class="td_b">{lang last_month_toplist}</td>
+    <td width="25%" class="td_b">{lang last_day_toplist}</td>
+  </tr>  
+  <tr>
+    <td valign="top" >
+    <!--{if !(bool)$cat_toplist[create_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[create_toplist] $key $category}-->
+   <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$cat_toplist[edit_toplist]}-->
+    {lang no_edit}
+    <!--{else}-->
+    <!--{loop $cat_toplist[edit_toplist] $key $category}-->
+    <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$cat_toplist[last_month_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[last_month_toplist] $key $category}-->
+   <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+    <td valign="top" >
+    <!--{if !(bool)$cat_toplist[last_day_toplist]}-->
+    {lang no_create}
+    <!--{else}-->
+    <!--{loop $cat_toplist[last_day_toplist] $key $category}-->
+    <a href="{$setting['seo_prefix']}category-view-{$category[cid]}{$setting['seo_suffix']}" target="_blank" >{$category[name]}</a> ({$category[num]})
+    <!--{/loop}-->
+    <!--{/if}-->
+    </td>
+  </tr>
+  
+</table>
+<table class='outtable' align="center" cellpadding="10" cellspacing="0" >
+  <tr>
+    <td class="td_b">{lang statistics_message1} {$cat_toplist[last_cache_time]} {lang statistics_message2} {$cat_toplist[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

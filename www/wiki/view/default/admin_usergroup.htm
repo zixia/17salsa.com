@@ -1,0 +1,352 @@
+{template admin_header}
+<script type="text/javascript" src="js/pickcolor.js"></script>
+<script type="text/javascript">
+var MEMBER_I = 0, SPECIAL_I = 0, old_value, old_input;
+
+function docheck(){
+	var value ,creditslower;
+	creditslower = $("input[name*='creditslower']:visible");
+	if (creditslower.length > 1){
+		value = creditslower.val(); //first value
+		value = parseInt(value);
+		
+		if (value >=0){
+			alert('{lang usergroupFirstLevel}');
+			$("input[name*='creditslower']:first").val(-999999).focus();
+			return false;
+		}
+			
+		for (key in creditslower){
+			value = parseInt(creditslower[key].value);
+			if (value > 999999000){
+				alert('{lang usergroupLastLevel}'+999999000);
+				$(creditslower[key]).val(999999000).focus();
+				return false;
+			}
+		}
+		
+		if(!dochecktitle()){
+			return false;
+		}
+	}else {
+		alert('{lang usergroupLevelNumber}');
+		return false;
+	}
+}
+
+function dochecktitle(){
+	var temp=[], temp2=[], groupnames=[], grouptitle=$("input[name*='grouptitle']");
+	grouptitle.each(function(i){
+		if(!this.value) return;
+		if(!temp[this.value]){
+			groupnames.push(this.value);
+		}else{
+			temp2.push(this.value);
+		}
+		temp[this.value]=1;
+	});
+	
+	if(temp2.length>0){
+		alert("组名称["+temp2.join(",")+"]存在重复！");
+		return false;
+	}
+	return true;
+}
+
+function disabled_submit(){
+	$(":submit").removeClass('btn').attr('disabled',true);
+}
+
+function ok_submit(){
+	$(":submit").addClass('btn').attr('disabled',false);
+}
+
+function on_focus(E){
+	old_input = E;
+	old_value = E.value;
+	if (E.value !== ''){
+		disabled_submit();
+	}
+}
+
+function isNumber(E){
+	var value = $.trim(E.value);
+	var re = /^-?\d{1,9}$/;
+	
+	if (value == ''){
+		if (old_value !== '' && re.test(old_value)){
+			$(E).val(old_value);
+		}
+	}else {
+		if (!re.test(value)){//error
+			$(E).val(old_value);
+			return false;
+		}
+	}
+	ok_submit();
+}
+
+function isColor(E){
+	var value = $.trim(E.value);
+	var re = /^(#[0-9a-z]{2,6})$|^([a-z]{3,7})$/i;
+	
+	if (value == ''){
+		if (old_value !== '' && re.test(old_value)){
+			//$(E).val(old_value);
+		}
+	}else {
+		if (!re.test(value)){//error
+			$(E).val(old_value);
+			return false;
+		}
+	}
+	ok_submit();
+}
+
+function addUserGroup(tab){
+	var html = $("#tr_"+ tab +"Template").html();
+	
+	switch(tab){
+		case 'usergroupMember':
+		html = html.replace(/MEMBER_I/g, MEMBER_I);
+		MEMBER_I ++;
+		break;
+		case 'usergroupSpecial':
+		html = html.replace(/SPECIAL_I/g, SPECIAL_I);
+		SPECIAL_I ++;
+		break;
+	}
+	html = "<tr>"+html+"</tr>";
+	$("#tr_"+ tab +"Add").before(html);
+	PickColor.hide();
+}
+
+function changeTab(tab, E){
+	$('form:visible').hide();
+	$("form[name="+ tab +"]").show();
+	
+	$('#current').attr('id', '');
+	$(E).attr('id', 'current');
+	PickColor.hide();
+}
+
+$(document).ready(function(){
+	$("input[name*='creditslower'],input[name*='stars']").focus(function(){
+		on_focus(this);
+	}).blur(function(){
+		isNumber(this);
+	});
+	
+	$("input[name*='color']").focus(function(){
+		on_focus(this);
+	}).blur(function(){
+		isColor(this);
+	});
+	
+	$("tr.submit").mousemove(function(){
+		if (old_input == null) return false;
+		if ($(old_input).attr('name').indexOf('color') > -1){
+			isColor(old_input);
+		} else {
+			isNumber(old_input);
+		}
+	});
+	
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="#" onclick="changeTab('usergroupMember', this)" id="{$usergroupMember}">{lang usergroupMember}</a></li>
+		<li><a href="#" onclick="changeTab('usergroupSystem', this)" id="{$usergroupSystem}">{lang usergroupSystem}</a></li>
+		<li><a href="#" onclick="changeTab('usergroupSpecial', this)" id="{$usergroupSpecial}">{lang usergroupSpecial}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+	<td ><strong>{lang message_title}</strong></td>
+  </tr>
+  <tr>
+	<td>{lang usergroups_tips}</td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" class="padding">
+	
+<form name="usergroupMember"  action="index.php?admin_usergroup-change"  method="post" onsubmit="return docheck();" style="display:{$displayMember}">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+    <tr class="list_title">
+	    <td width="50"></td>
+	    <td>{lang usergroupTitle}</td>
+	    <td>{lang usergroupCreditSrange}</td>
+	    <td>{lang usergroupStars}</td>
+	    <td>{lang usergroupColor}</td>
+	    <td style="display:none">{lang usergroupAvatar}</td>
+	    <td></td>
+    </tr>
+<!--{loop $usergroupMemberList $usergroup}-->
+  <tr>
+    <td>
+	<input name="usergroup[{$usergroup[groupid]}][groupid]" type="hidden" value="{$usergroup[groupid]}">
+	<input name="deleteids[]" type="checkbox" value="{$usergroup[groupid]}" title="{lang usergroupDelete}" <!--{if  !$usergroup[empty] }-->disabled<!--{/if}-->>
+	</td>
+    <td><input name="usergroup[{$usergroup[groupid]}][grouptitle]" value="{$usergroup[grouptitle]}" size="12" maxlength="30"/></td>
+    <td>
+	<input name="usergroup[{$usergroup[groupid]}][creditslower]" value="{$usergroup[creditslower]}" size="12" maxlength="10"/> ~ 
+	<input name="usergroup[{$usergroup[groupid]}][creditshigher]" value="{$usergroup[creditshigher]}" size="12" readonly="true"/>
+	</td>
+    <td><input name="usergroup[{$usergroup[groupid]}][stars]" value="{$usergroup[stars]}" size="5" maxlength="2"/></td>
+	<td><input name="usergroup[{$usergroup[groupid]}][color]" value="{$usergroup[color]}" size="16" maxlength="7" 
+		onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)"/>
+	<input type="button" onclick="PickColor.init(this)" style="background-color:{$usergroup[color]}" class="line_high"/></td>
+	<td style="display:none"><input name="usergroup[{$usergroup[groupid]}][groupavatar]" value="{$usergroup[groupavatar]}" size="20" maxlength="60"/></td>
+	<td><!--{if  $usergroup[groupid]!=4 }--><a href="index.php?admin_regular-groupset-{$usergroup[groupid]}">[{lang commonEdit}]</a><!--{/if}--></td>
+  </tr>
+<!--{/loop}-->
+    <tr id="tr_usergroupMemberAdd">
+	    <td width="50"></td>
+	    <td><a href="#" onclick="addUserGroup('usergroupMember')">[+]{lang usergroupsAdd}</a></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+    <tr class="submit">
+	    <td width="50"></td>
+	    <td><input type="submit" class="btn" value="{lang submit}"/>
+		<input type="hidden" name="usergroupType" value="usergroupMember" />
+		</td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+    <tr id="tr_usergroupMemberTemplate" style="display:none">
+	    <td width="50"></td>
+	    <td><input name="usergroupadd[MEMBER_I][grouptitle]" value="" size="12" maxlength="30"/></td>
+	    <td><input   name="usergroupadd[MEMBER_I][creditslower]" value="" size="12" maxlength="7"/></td>
+	    <td><input   name="usergroupadd[MEMBER_I][stars]" value="" size="5" maxlength="2"/></td>
+	    <td>
+		<select name="usergroupadd[MEMBER_I][projectid]">
+		<option value="0">{lang usergroupProject}</option>
+		<option value="0">------------</option>
+		<!--{loop $usergroupMemberList $usergroup}-->
+		<option value="{$usergroup[groupid]}">{$usergroup[grouptitle]}</option>
+		<!--{/loop}-->
+		<option value="0">------------</option>
+		</select></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+</table>
+</form>
+
+
+<form name="usergroupSystem"  action="index.php?admin_usergroup-change"  method="post" style="display:{$displaySystem}" onsubmit="return dochecktitle()">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+    <tr class="list_title">
+	    <td width="50"></td>
+	    <td>{lang usergroupTitle}</td>
+	    <td>{lang usergroupStars}</td>
+	    <td>{lang usergroupColor}</td>
+	    <td style="display:none">{lang usergroupAvatar}</td>
+	    <td></td>
+    </tr>
+<!--{loop $usergroupSystemList $usergroup}-->
+  <tr>
+    <td><input name="usergroup[{$usergroup[groupid]}][groupid]" type="hidden" value="{$usergroup[groupid]}">
+	<input name="deleteids[]" type="checkbox" value="{$usergroup[groupid]}" style="display:none"></td>
+    <td><input name="usergroup[{$usergroup[groupid]}][grouptitle]" value="{$usergroup[grouptitle]}" size="12" maxlength="30"/></td>
+    <td><input   name="usergroup[{$usergroup[groupid]}][stars]" value="{$usergroup[stars]}" size="5" maxlength="2"/></td>
+	<td><input   name="usergroup[{$usergroup[groupid]}][color]" value="{$usergroup[color]}" size="16" maxlength="7" 
+	onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)"/>
+	<input type="button" onclick="PickColor.init(this)" style="background-color:{$usergroup[color]}" class="line_high"/></td>
+	<td style="display:none"><input name="usergroup[{$usergroup[groupid]}][groupavatar]" value="{$usergroup[groupavatar]}" size="20" maxlength="60"/></td>
+	<td><!--{if  $usergroup[groupid]!=4 }--><a href="index.php?admin_regular-groupset-{$usergroup[groupid]}">[{lang commonEdit}]</a><!--{/if}--></td>
+  </tr>
+<!--{/loop}-->
+    <tr class="submit">
+	    <td width="50"></td>
+	    <td><input type="submit" class="btn" value="{lang submit}">
+		<input type="hidden" name="usergroupType" value="usergroupSystem" />
+		</td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+</table>
+</form>
+
+<form name="usergroupSpecial"  action="index.php?admin_usergroup-change"  method="post" style="display:{$displaySpecial}" onsubmit="return dochecktitle()">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+    <tr class="list_title">
+	    <td width="50"></td>
+	    <td>{lang usergroupTitle}</td>
+	    <td>{lang usergroupStars}</td>
+	    <td>{lang usergroupColor}</td>
+	    <td style="display:none">{lang usergroupAvatar}</td>
+	    <td></td>
+    </tr>
+<!--{loop $usergroupSpecialList $usergroup}-->
+  <tr>
+    <td>
+	<input name="usergroup[{$usergroup[groupid]}][groupid]" type="hidden" value="{$usergroup[groupid]}">
+	<input name="deleteids[]" type="checkbox" value="{$usergroup[groupid]}" <!--{if  !$usergroup[empty] }-->disabled<!--{/if}-->></td>
+    <td><input name="usergroup[{$usergroup[groupid]}][grouptitle]" value="{$usergroup[grouptitle]}" size="12" maxlength="30"/></td>
+    <td><input   name="usergroup[{$usergroup[groupid]}][stars]" value="{$usergroup[stars]}" size="5" maxlength="2"/></td>
+	<td><input   name="usergroup[{$usergroup[groupid]}][color]" value="{$usergroup[color]}" size="16" maxlength="7" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)"/>
+	<input type="button" onclick="PickColor.init(this)" style="background-color:{$usergroup[color]}" class="line_high"/></td>
+	<td style="display:none"><input name="usergroup[{$usergroup[groupid]}][groupavatar]" value="{$usergroup[groupavatar]}" size="20" maxlength="60"/></td>
+	<td><!--{if  $usergroup[groupid]!=4 }--><a href="index.php?admin_regular-groupset-{$usergroup[groupid]}">[{lang commonEdit}]</a><!--{/if}--></td>
+  </tr>
+<!--{/loop}-->
+    <tr id="tr_usergroupSpecialAdd">
+	    <td width="50"></td>
+	    <td><a href="#" onclick="addUserGroup('usergroupSpecial')">[+]{lang usergroupsSepcialAdd}</a></td>
+	    <td></td>
+	    <td></td>
+	    <td></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+    <tr class="submit">
+	    <td width="50"></td>
+	    <td><input type="submit" class="btn" value="{lang submit}">
+		<input type="hidden" name="usergroupType" value="usergroupSpecial" />
+		</td>
+	    <td></td>
+	    <td></td>
+	    <td style="display:none"></td>
+	    <td></td>
+    </tr>
+    <tr id="tr_usergroupSpecialTemplate" style="display:none">
+	    <td width="50"></td>
+	    <td><input name="usergroupadd[SPECIAL_I][grouptitle]" value="" size="12" maxlength="30"/></td>
+	    <td><input name="usergroupadd[SPECIAL_I][stars]" value="" size="5" maxlength="2"/></td>
+	    <td><input name="usergroupadd[SPECIAL_I][color]" value="" size="16" maxlength="7"/></td>
+	    <td>
+		<select name="usergroupadd[SPECIAL_I][projectid]">
+		<option value="0">{lang usergroupProject}</option>
+		<option value="0">------------</option>
+		<!--{loop $usergroupSpecialList $usergroup}-->
+		<option value="{$usergroup[groupid]}">{$usergroup[grouptitle]}</option>
+		<!--{/loop}-->
+		<option value="0">------------</option>
+		</select></td>
+	    <td style="display:none"></td>
+    </tr>
+</table>
+</form>
+	</td>
+  </tr>
+</table>
+{template admin_footer}

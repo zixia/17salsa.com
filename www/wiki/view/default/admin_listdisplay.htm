@@ -1,0 +1,105 @@
+{template admin_header}
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+				<li><a href="index.php?admin_setting-listdisplay" id="current">{lang listDisplay}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+		<form method="post" action="index.php?admin_setting-listdisplay" >
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+                <tr>
+	                  <td width="10%" height="26" align="center" ></td>
+	                  <td width="40%" height="26" ><strong>{lang commonParameterName}</strong></td>
+	                  <td height="26" ><strong>{lang commonParameterValue}</strong></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang indexCommend}</td>
+					<td ><input class="box" name="listplay[index_commend]"  maxlength="10" value="{$listdisplay['index_commend']}"></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang indexHotdoc}</td>
+					<td ><input class="box" name="listplay[index_hotdoc]"  maxlength="10" value="{$listdisplay['index_hotdoc']}"></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang indexWonderdoc}</td>
+					<td ><input class="box" name="listplay[index_wonderdoc]"  maxlength="10" value="{$listdisplay['index_wonderdoc']}"></td>
+                </tr>                <tr>
+					<td height="26" ></td>
+					<td >{lang indexRecentUpdate}</td>
+					<td ><input class="box" name="listplay[index_recentupdate]"  maxlength="10" value="{$listdisplay['index_recentupdate']}"></td>
+                </tr>
+                <tr>
+                  	<td height="26" ></td>
+                  	<td >{lang indexpicture}</td>
+					<td ><input class="box" name="listplay[index_picture]"  maxlength="10" value="{$listdisplay['index_picture']}"></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td >{lang indexRecentComment}</td>
+                  <td ><input class="box" name="listplay[index_recentcomment]"  maxlength="10" value="{$listdisplay['index_recentcomment']}" /></td>
+                </tr>
+                 <tr>
+                  <td height="26" ></td>
+                  <td >首页待完善词条显示数</td>
+                  <td ><input class="box" name="listplay[index_cooperate]"  maxlength="10" value="{$listdisplay['index_cooperate']}" /></td>
+                </tr>               
+                <tr>
+                  <td height="26" ></td>
+                  <td >{lang listFocus}</td>
+                  <td ><input class="box" name="listplay[list_focus]"  maxlength="10" value="{$listdisplay['list_focus']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang listRecentUpdate}</td>
+                  <td ><input class="box" name="listplay[list_recentupdate]"  maxlength="10" value="{$listdisplay['list_recentupdate']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang listWeekuser}</td>
+                  <td ><input class="box" name="listplay[list_weekuser]"  maxlength="10" value="{$listdisplay['list_weekuser']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang listAllcredit}</td>
+                  <td ><input class="box" name="listplay[list_allcredit]"  maxlength="10" value="{$listdisplay['list_allcredit']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang listPopularity}</td>
+                  <td ><input class="box" name="listplay[list_popularity]"  maxlength="10" value="{$listdisplay['list_popularity']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang listLetter}</td>
+                  <td ><input class="box" name="listplay[list_letter]"  maxlength="10" value="{$listdisplay['list_letter']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang categoryView}</td>
+                  <td ><input class="box" name="listplay[category_view]"  maxlength="10" value="{$listdisplay['category_view']}" /></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td >{lang categoryLetter}</td>
+                  <td ><input class="box" name="listplay[category_letter]"  maxlength="10" value="{$listdisplay['category_letter']}" /></td>
+                </tr>
+                <tr>
+                	<td height="40" colspan="3" align="center"><input class="btn" type="submit" value="{lang commonSave}" name="submit" /></td>
+                </tr>
+            </table>
+		</form>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

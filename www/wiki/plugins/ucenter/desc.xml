@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme>
+<author><![CDATA[互动在线（北京）科技有限公司]]></author>
+<authorurl><![CDATA[http://kaiyuan.hudong.com]]></authorurl>
+<name><![CDATA[UC整合]]></name>
+<tag><![CDATA[UC整合 dz论坛 ucenter]]></tag>
+<desc><![CDATA[整合UCenter。适用于UC1.5版本—HDwiki4.05版。提供的功能有：用户接口、头像接口、积分兑换、事件接口。此编码为utf8。]]></desc>
+<weburl><![CDATA[http://kaiyuan.hudong.com/bbs/viewthread.php?tid=6000]]></weburl>
+<version><![CDATA[1.51]]></version>
+<hdversion><![CDATA[4.1]]></hdversion>
+<copyright><![CDATA[hudong.com]]></copyright>
+<charset><![CDATA[UTF-8]]></charset>
+</theme>

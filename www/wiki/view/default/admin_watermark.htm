@@ -1,0 +1,184 @@
+{template admin_header}
+<style type="text/css">
+<!--
+.styenone ,.styenone li{display:block;list-style:none; margin:0;padding:0;}
+-->
+</style>
+<script type="text/javascript" src="js/pickcolor.js"></script>
+<script type="text/JavaScript">
+	function textareasize(obj) {
+		if(obj.scrollHeight > 90) {
+			obj.style.height = obj.scrollHeight + 'px';
+		}
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a></li>
+			<li><a href="index.php?admin_setting-watermark" id="current">{lang watermark}</a></li>
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+		<form id="waterform" method="POST" action="index.php?admin_setting-watermark" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	<tr>
+		<td width="44%" class="padding"><b>{lang water_type}</b><br/>
+		  {lang water_notice1}
+		</td>
+		<td width="55%" >
+		<ul class="styenone">
+			<li><input  name="settingsnew[imagelib]" value="0" <!--{if $settingsnew[imagelib]=="0"}-->checked="checked"<!--{/if}--> onclick="$('#imagelibext').attr('style','display:none');" type="radio"> GD</li>
+			<li><input  name="settingsnew[imagelib]" value="1" <!--{if $settingsnew[imagelib]=="1"}-->checked="checked"<!--{/if}--> onclick="$('#imagelibext').attr('style','display:');" type="radio"> ImageMagick</li>
+		</ul>
+		</td>
+	</tr>
+	
+	<tr id="imagelibext" <!--{if $settingsnew[imagelib]!=="1"}-->style="display:none"<!--{/if}-->>
+	<td class="padding"><b>{lang im_path}</b><br/>{lang water_notice2}</td>
+	<td ><input name="settingsnew[imageimpath]" value="$settingsnew[imageimpath]"  type="text"></td>
+	</tr>
+	
+	<tr>
+	<td class="padding"><b>{lang water_mark}</b><br/>{lang water_notice3}</td>
+	<td >
+		<table border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td colspan="3"><input name="settingsnew[watermarkstatus]" value="0" <!--{if $settingsnew[watermarkstatus]=="0"}-->checked="checked"<!--{/if}--> type="radio">{lang no_water}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="1" <!--{if $settingsnew[watermarkstatus]=="1"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="2" <!--{if $settingsnew[watermarkstatus]=="2"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="3" <!--{if $settingsnew[watermarkstatus]=="3"}-->checked="checked"<!--{/if}--> type="radio"> {lang top_right}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="4" <!--{if $settingsnew[watermarkstatus]=="4"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="5" <!--{if $settingsnew[watermarkstatus]=="5"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="6" <!--{if $settingsnew[watermarkstatus]=="6"}-->checked="checked"<!--{/if}--> type="radio"> {lang mid_right}</td>
+				</tr>
+				<tr>
+					<td><input name="settingsnew[watermarkstatus]" value="7" <!--{if $settingsnew[watermarkstatus]=="7"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_left}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="8" <!--{if $settingsnew[watermarkstatus]=="8"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_mid}</td>
+					<td><input name="settingsnew[watermarkstatus]" value="9" <!--{if $settingsnew[watermarkstatus]=="9"}-->checked="checked"<!--{/if}--> type="radio"> {lang botom_right}</td>
+				</tr>
+		</table>
+	</td>
+	</tr>
+	
+	<tr >
+		<td class=" padding"><b>{lang water_pic_size}</b><br/>{lang water_notice4}</td>
+		<td ><input  name="settingsnew[watermarkminwidth]" value="$settingsnew[watermarkminwidth]" style="width: 108px; margin-right: 5px;" type="text"> X <input name="settingsnew[watermarkminheight]" value="$settingsnew[watermarkminheight]"  style="width: 108px; margin-left: 5px;" type="text"></td>
+	</tr>
+	
+	<tr>
+		<td class="padding"><b>{lang water_pic_type}</b><br/>{lang water_notice5}</td>
+		<td ><ul class="styenone">
+		<li><input name="settingsnew[watermarktype]" value="0" <!--{if $settingsnew[watermarktype]=="0"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:none');" type="radio" checked="checked">{lang gif_type}</li>
+		<li><input name="settingsnew[watermarktype]" value="1" <!--{if $settingsnew[watermarktype]=="1"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:none');" type="radio">{lang png_type}</li>
+		<li><input name="settingsnew[watermarktype]" value="2" <!--{if $settingsnew[watermarktype]=="2"}-->checked="checked"<!--{/if}-->  onclick="$('#watermarktypeext').attr('style','display:');" type="radio">{lang text_type}</li></ul></td><td width="1%" class="vtop tips2"></td>
+	</tr>
+
+	<tr>
+		<td class="padding"><b>{lang water_pic_trans}</b><br/>{lang water_notice6}</td>
+		<td ><input name="settingsnew[watermarktrans]" <!--{if $settingsnew[watermarktrans] !=="0"}-->value="{$settingsnew[watermarktrans]}" <!--{else}--> value="65" <!--{/if}-->  type="text"></td>
+	</tr>
+	
+	<tr>
+		<td class="padding"><b>{lang water_pic_quality}</b><br/>{lang water_notice7}</td>
+		<td ><input name="settingsnew[watermarkquality]" <!--{if $settingsnew[watermarkquality] !=="0"}-->value="$settingsnew[watermarkquality]" <!--{else}--> value="80" <!--{/if}-->  type="text"></td>
+	</tr>
+
+<tbody id="watermarktypeext" <!--{if $settingsnew[watermarktype]!=="2"}-->style="display:none"<!--{/if}-->>
+	<tr>
+		<td class="padding"><b>{lang water_text_text}</b><br/>{lang water_notice8}</td>
+		<td ><textarea rows="6" onkeyup="textareasize(this)" name="settingsnew[watermarktext][text]" id="settingsnew[watermarktext][text]" cols="50" >$settingsnew[watermarktext][text]</textarea></td><td class="vtop tips2"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_font}</b><br/>{lang water_notice9}</td>
+		<td>
+		<select name="settingsnew[watermarktext][fontpath]">
+		<!--{loop $ttf $value}-->
+			<option value="{$value}" <!--{if $value==$settingsnew[watermarktext][fontpath]}--> selected <!--{/if}--> >{$value}</option>
+		<!--{/loop}-->
+		</select>
+		</td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_size}</b><br/>{lang water_notice10}</td>
+		<td ><input name="settingsnew[watermarktext][size]" value="$settingsnew[watermarktext][size]"  type="text"></td><td class="vtop tips2"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_angle}</b><br/>{lang water_notice11}</td>
+		<td ><input name="settingsnew[watermarktext][angle]" value="$settingsnew[watermarktext][angle]"  type="text"></td><td class="vtop tips2"></td></tr>
+		
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_color}</b><br/>{lang water_notice12}</td>
+		<td >
+		<input name="settingsnew[watermarktext][color]" id="left_framcolor" maxlength="7" value="$settingsnew[watermarktext][color]" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$settingsnew[watermarktext][color]}" class="get_color"/>
+		</td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_shadowx}</b><br/>{lang water_notice13}</td>
+		<td ><input name="settingsnew[watermarktext][shadowx]" value="$settingsnew[watermarktext][shadowx]"  type="text"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_shadowy}</b><br/>{lang water_notice14}</td>
+		<td ><input name="settingsnew[watermarktext][shadowy]" value="$settingsnew[watermarktext][shadowy]"  type="text"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_shadow_color}</b><br/>{lang water_notice15}</td>
+		<td >
+		<input name="settingsnew[watermarktext][shadowcolor]" id="leftitle_bgcolor" maxlength="7" value="$settingsnew[watermarktext][shadowcolor]" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$settingsnew[watermarktext][shadowcolor]}" class="get_color"/></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_translatex}</b><br/>{lang water_notice16}</td>
+		<td ><input name="settingsnew[watermarktext][translatex]" value="$settingsnew[watermarktext][translatex]"  type="text"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_translatey}</b><br/>{lang water_notice17}</td>
+		<td ><input name="settingsnew[watermarktext][translatey]" value="$settingsnew[watermarktext][translatey]"  type="text"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_skewx}</b><br/>{lang water_notice18}</td>
+		<td ><input name="settingsnew[watermarktext][skewx]" value="$settingsnew[watermarktext][skewx]"  type="text"></td>
+	</tr>
+	<tr>
+		<td class="padding"><b>{lang water_text_skewy}</b><br/>{lang water_notice19}</td>
+		<td ><input name="settingsnew[watermarktext][skewy]" value="$settingsnew[watermarktext][skewy]"  type="text"></td>
+	</tr>
+</tbody>
+	<tr>
+		<td colspan="15"><div class="fixsel"><input class="btn" onclick="
+		$('#waterform').attr('action','index.php?admin_setting-preview'); 
+		$('#waterform').attr('target','_blank'); 
+		$('#waterform').submit();
+		$('#waterform').attr('action','index.php?admin_setting-watermark'); 
+		$('#waterform').attr('target',''); 
+		return false;" 
+		value="{lang water_preview}" style="vertical-align: middle;" type="button"> 
+		<input class="btn" name="settingsubmit" value="{lang submit}" type="submit"></div>
+		</td>
+	</tr>
+</table>
+	  </form>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

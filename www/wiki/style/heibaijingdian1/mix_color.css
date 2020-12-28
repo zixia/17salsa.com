@@ -1,0 +1,12 @@
+#html{background:transparent url(html_bg.jpg) no-repeat center top !important;}
+#html body .columns .col-h2{background-image:url(col_bg.jpg);}
+#html #left .columns{border:1px #000000 solid;}
+#html #left .columns .col-h2{background-color:#737373; border-bottom:1px #efefef solid;}
+#html #mid .columns {border:1px #000000 solid;}
+#html #mid .columns .col-h2{background-color:#737373;border:1px #efefef solid;}
+#html .default-r{border:1px #000000 solid;}
+#html .default-r .col-h2{ border:1px #efefef solid;background-color:#737373;}
+#html #nav{}
+#html #nav ul{}
+#html #nav li a{color:#000000;font-size:14px;}
+#html #nav li a:hover{color:#434343;}

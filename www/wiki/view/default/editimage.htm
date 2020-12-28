@@ -1,0 +1,74 @@
+{template header}
+<script type="text/javascript" src="js/popWindow.js"></script>
+<script type="text/javascript">
+	function expand(id){
+		if(id=='usermanage'){
+			$("ul#usermanage").toggle(); 
+		}else{
+			$('ul#userpms').toggle();
+		}
+	}
+	function updateavatar() {
+		window.location.reload();
+	}
+</script>
+<div class="hd_map">
+	<a href="{$setting['site_url']}">{$setting['site_name']}</a> &gt; <a href="{url user-profile}">个人管理</a> &gt; 修改头像</div>
+	
+<div class="r w-710 o-v m-t10 p-b10 gl_manage_main">
+	<h2 class="h3 bold">修改头像</h2>
+	<!--{if isset($image_html)}-->
+        <img  src="<!--{if isset($uid_image)}-->$uid_image<!--{else}-->style/default/user.jpg<!--{/if}-->" name="userimage" width="90" id="userimage"/>
+        <caption>
+        <h2>{lang config_new_avatar}</h2>
+        <p>{lang select_new_picture}</p>
+        </caption>
+        $image_html
+	<!--{else}-->
+        <form   name="profileform" method="post" enctype="multipart/form-data" action="{url user-editimage}">
+        <!--{if isset($message)}-->
+        <span style="color:#FF0000">$message</span><br/>
+        <!--{/if}-->
+        <dl class="col-dl h3">
+        <dd><a href="<!--{if $user[image]}-->$user[image]<!--{else}-->style/default/user.jpg<!--{/if}-->" target="_blank" class="a-img2 l">
+        <img id="userimage"  src="<!--{if $user[image]}-->$user[image]<!--{else}-->style/default/user.jpg<!--{/if}-->"/>
+        </a></dd>
+        <dd class="m-t10">说明：</dd>
+        <dd>支持图片格式：jpg、jpeg</dd>
+        <dd>图片大小不超过1M</dd>	
+        <dd>建议头像尺寸：90×90px</dd>
+        </dl>
+        <label class="up_load">
+        <input id="image" name="image" type="file" value="{lang view}..."/>
+            <input name="submit" type="submit" value="{lang upload}"  class="btn-submit2"/>
+        </label>
+        </form>
+	<!--{/if}-->
+
+</div>
+
+<div class="l w-230">
+<div class="m-t10 p-b10 sidebar gl_manage">
+	<h2 class="col-h2"><span onclick="expand('usermanage');">{lang profile}</span></h2>	
+	<ul id="usermanage">
+		<li><a href="{url user-profile}" target="_self"><img alt="" src="style/default/gl_manage/grzl.gif" />个人资料</a></li>
+		<li><a href="{url user-editprofile}" target="_self" ><img src="style/default/gl_manage/grzl_set.gif"/>个人资料设置</a></li>
+		<li><a href="{url user-editpass}" target="_self"><img src="style/default/gl_manage/change_pw.gif"/>修改密码</a></li>
+		<li><a href="{url user-editimage}" target="_self" class="on"><img src="style/default/gl_manage/grzl_set.gif" />修改头像</a></li>
+		<li><a href="{url doc-managesave}" target="_self"><img src="style/default/gl_manage/ctbccgx.gif"/>词条保存草稿箱</a></li>
+	</ul>
+	<h2 class="col-h2"><span onclick="expand('userpms');">短消息</span></h2>		
+	<ul id="userpms">
+		<li><a href="{url pms-box-inbox}" target="_self"><img alt="" src="style/default/gl_manage/sjx.gif" />收件箱</a></li>
+		<li><a href="{url pms-box-outbox}" target="_self" ><img src="style/default/gl_manage/fjx.gif"/>发件箱</a></li>
+		<li><a href="{url pms-sendmessage}" target="_self" ><img src="style/default/gl_manage/fdxx.gif"/>发短消息</a></li>
+		<li><a href="{url pms-box-drafts}" target="_self"><img src="style/default/gl_manage/cgx.gif" />草稿箱</a></li>
+		<li><a href="{url pms-blacklist}" target="_self"><img src="style/default/gl_manage/hllb.gif"/>忽略列表</a></li>
+	</ul>
+</div>
+</div>
+<div class="c-b"></div>
+<script type="text/javascript">
+	$('#userimage').attr('src',$('#userimage').attr('src')+'?'+Math.random());
+</script>
+{template footer}

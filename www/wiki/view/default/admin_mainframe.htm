@@ -1,0 +1,323 @@
+{template admin_header}
+<style type="text/css">
+.red{color:red !important;}
+.bold{font-weight:bold;}
+.bor-t{	border-top:1px #999 solid;}
+#notice{width:610px;background:#fff;border:1px #8cabd7 solid;padding:2px 2px 10px 2px;font-size:12px;z-index:100;position:absolute;top:8px;left:50px}
+#notice h2{ background:#d3e8fd;color:#000080;font-size:12px;padding:6px 12px;margin:0;}
+#notice p{padding:8px 0 0 0;margin:5px 20px;line-height:18px;color:#444;}
+.close{ cursor:pointer; float:right; margin:5px 25px 0 0;}
+.clearfix:after {content:"copyright hdwiki4.0"; height:0;visibility:hidden; display:block; clear:both; }
+</style>
+<script type="text/javascript">
+$.post(
+	"{$setting['seo_prefix']}admin_main-update",
+	function(xml){
+		try{
+			var msg = eval('('+xml+')');
+		}catch(e){
+			return;
+		}
+		if(msg.isupdate){
+			$('body').append('<div id=notice class=clearfix><h2>{lang updateMessage}</h2>'+
+			'<p class="red bold">{lang updateAttention}</p>'+
+			'<p>'+msg.description+'</p>'+
+			'<p class="red">	{lang updateAddress}:<a href="'+msg.url+'" target="_blank">'+msg.url+'</a></p>'+
+			'<span class="close" onclick = "javascript:removenotice(this);">[{lang updateClose}]</span></div>');
+		}
+	}
+);
+function removenotice(obj){
+	obj.parentNode.parentNode.removeChild(obj.parentNode);
+}
+</script>
+<table border="0" cellpadding="5" cellspacing="0" width="100%">
+	<tr>
+		<td>
+		<table class="home_shortcut" align="center" border="0" cellpadding="6" cellspacing="0" width="637">
+			<tr valign="top">
+				<td width="50%">
+				<div class="tag" onmouseover="javascript:this.style.bgcolor='#aaa'">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/baseconfig.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><span class="title"><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></span></td>
+								</tr>
+								<tr>
+									<td>{lang siteConfigBaseDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/docmanage.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_doc">{lang docmanage}</a></td>
+								</tr>
+								<tr>
+									<td>{lang docmanageDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/task.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_task">{lang siteConfigTask}</a></td>
+								</tr>
+								<tr>
+									<td>{lang siteConfigTaskDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/usermanage.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_user">{lang commonUserManage}</a></td>
+								</tr>
+								<tr>
+									<td>{lang commonUserManageDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/usergroups.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_usergroup">{lang commonUsergroupMng}</a></td>
+								</tr>
+								<tr>
+									<td>{lang commonUsergroupMngDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/ipban.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_banned">{lang siteConfigIPBan}</a></td>
+								</tr>
+								<tr>
+									<td>{lang siteConfigIPBanDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/catmanage.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_category">{lang magManageCat}</a></td>
+								</tr>
+								<tr>
+									<td>{lang magManageCatDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/catadd.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_category-add">{lang magAddCat}</a></td>
+								</tr>
+								<tr>
+									<td>{lang magAddCatDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/catjoin.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_category-merge">{lang magUniteCat} </a></td>
+								</tr>
+								<tr>
+									<td>{lang magUniteCatDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/dbbackup.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_db-backup">{lang dbBackup}</a></td>
+								</tr>
+								<tr>
+									<td>{lang dbBackupDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/dboptimize.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td><a href="index.php?admin_db-tablelist">{lang dbOptimize}</a></td>
+								</tr>
+								<tr>
+									<td>{lang dbOptimizeDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+				<td>
+				<div class="tag">
+					<table align="center" border="0" cellpadding="8" cellspacing="0" width="200">
+						<tr>
+							<td align="center" width="50">
+							<img src="style/default/admin/clearcache.gif" height="45" width="45" /></td>
+							<td valign="middle">
+							<table border="0" cellpadding="0" cellspacing="1" width="100%">
+								<tr>
+									<td>
+									<a href="index.php?admin_setting-removecache">{lang cacheClear} </a></td>
+								</tr>
+								<tr>
+									<td>{lang cacheClearDesc}</td>
+								</tr>
+							</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+				</td>
+			</tr>
+		</table>
+		</td>
+	</tr>
+</table>
+<div class="c-t">
+	<dl class="deve_team">
+		<dt class="bold">{lang sysInformation}</dt>
+		<dt>{lang commonHDWikiVersion} </dt>
+		<dd class="bold">HDWiki V{HDWIKI_VERSION}  release {HDWIKI_RELEASE} </dd>
+		<dt>{lang commonOSandPHPVersion}</dt>
+		<dd>{$sys['server']}</dd>
+		<dt>{lang commonMysqlVersion} </dt>
+		<dd>{$sys['mysql']}</dd>
+		<dt>{lang commonServerRoot}</dt>
+		<dd>{HDWIKI_ROOT}</dd>
+		<dt>{lang attsize}</dt>
+		<dd>{$attsize}</dd>
+		<dt>{lang uploadsize}</dt>
+		<dd>{$uploadsize}</dd>
+		<dt>{lang basesize}</dt>
+		<dd>{$dbsize}</dd>
+	</dl>
+</div>
+  <div class="c-t">
+	<dl class="deve_team">
+		<dt class="bold">HDWiki&#24320;&#21457;&#22242;&#38431;</dt>
+		<dt>&#29256;&#26435;&#25152;&#26377;</dt>
+		<dd class="bold"><a href="http://www.hudong.com" target="_blank">&#20114;&#21160;&#22312;&#32447;(&#21271;&#20140;)&#31185;&#25216;&#26377;&#38480;&#20844;&#21496;</a></dd>
+		<dt>&#20135;&#21697;&#32463;&#29702;{lang obeisance}&#25216;&#26415;&#32463;&#29702;</dt>
+		<dd><a href="http://www.cioworld.org" target="_blank">&#39134;&#40560;</a> <a href="http://hi.baidu.com/songdenggao" target="_blank">lovewiki</a></dd>
+		<dt>&#24320;&#21457;&#19982;&#25903;&#25345;&#22242;&#38431;</dt>
+		<dd><a href="http://hi.baidu.com/jobs_lee" target="_blank">jobs</a><a href="http://hi.baidu.com/gottwolf" target="_blank">&#30355;&#19998;</a><a href="http://wiki.hudong.com/u/gdwFRBHZmXGdZaUJx/indexg.com/aadesign/index" target="_blank">&#22812;&#38745;&#28982;</a><a href="http://www.sgooo.com/xxz/" target="_blank">&#32474;&#28866;</a> <a href="http://wiki.hudong.com/amy_036/index" target="_blank">Amy</a><a href="http://dushii.blog.163.com/blog/" target="_blank">&#38634;&#40527;</a></dd>
+		<dt>&#30028;&#38754;&#35774;&#35745;&#19982;&#21069;&#21488;&#39029;&#38754;</dt>
+		<dd><a href="http://wiki.hudong.com/aadesign/index" target="_blank">&#26472;&#32650;&#32650;</a><a href="http://wiki.hudong.com/banma" target="_blank">&#33831;&#33831;&#29677;&#39532;</a><a href="http://wiki.hudong.com/wenyanwen/index" target="_blank">&#20250;&#28216;&#27891;&#30340;&#40060;</a></dd>
+	</dl>
+</div>
+{template admin_footer}

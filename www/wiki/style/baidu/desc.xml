@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<theme name="default" version="1.0.1" active="true">
+<author><![CDATA[小兵归来]]></author>
+<authorurl><![CDATA[http://www.wiki511.com]]></authorurl>
+<name><![CDATA[Z百度]]></name>
+<tag><![CDATA[ 蓝色 三栏布局]]></tag>
+<desc><![CDATA[为HDwiki4.1更新的模板。小兵倾情奉献]]></desc>
+<sitename><![CDATA[http://www.wiki511.com]]></sitename>
+<weburl><![CDATA[http://www.wiki511.com]]></weburl>
+<version><![CDATA[4.1]]></version>
+<hdversion><![CDATA[4.1]]></hdversion>
+<copyright><![CDATA[banma@vip.qq.com]]></copyright>
+<charset><![CDATA[UTF-8 GBK]]></charset>
+</theme>

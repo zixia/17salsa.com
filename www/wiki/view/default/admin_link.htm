@@ -1,0 +1,103 @@
+{template admin_header}
+<script type="text/javascript" src="js/ui/ui.core.js"></script>
+<script type="text/javascript" src="js/ui/ui.sortable.js"></script>
+<script type="text/javascript">
+var beginMoving=false;
+function checkAll(eleName,state){
+	$("input[name='"+eleName+"']").attr('checked',state);
+}
+function checkdel()
+{
+	if(checkAllCheckbox('link_id[]')!=false){
+   		if(confirm('{lang msgJsDelLink}')==false){
+			return false;
+		}else{
+			$("form[name='linkinfo']").attr('action','index.php?admin_friendlink-remove');
+			$("form[name='linkinfo']").submit();
+		}
+  	 }
+}
+function checkAllCheckbox(eleName)
+{
+	flag= false;
+	if($("input[name='"+eleName+"']:checked").length>0)
+		flag= true;
+	return flag;
+}
+$(document).ready(function() {
+	$("#list").sortable({
+		update : function () {
+			var order="";
+			var numValue=$("input[name='linknum[]']");
+			for(var i=0;i<numValue.length;i++){
+			order+=$(numValue[i]).val()+",";
+			}
+			$.post("index.php?admin_friendlink-updateorder",{order:order});
+		  }
+	});
+});
+
+</script>
+<form name="linkinfo" method="POST" action="">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_friendlink" id="current">{lang magLinkTitle}</a></li>
+			<li><a href="index.php?admin_friendlink-add">{lang magAddLink}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+	<tr>
+		<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+	</tr>
+	<tr>
+		<td colspan="2" ><li>{lang magLinkNoteA}</li></td>
+	</tr>
+	<tr>
+		<td colspan="2"  ><li>{lang magLinkNoteB}</li></td>
+	</tr>
+	<tr>
+		<td height="50" colspan="2" valign="top" ><li>{lang magLinkNoteC}</li></td>
+	</tr>
+	</table>
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+		<tr align=center class="list_title" >
+  			<td align=center width="50">{lang magSelectAction}</td>
+  			<td width="80" align=center>{lang magLinkWebName}</td>
+  			<td align=center width=220 >{lang magLinkWebUrl}</td>
+  			<td align=center width=220 >{lang magLinkWebIntro}</td>
+  			<td align=center width=100 >{lang magOperate}</td>
+  		</tr>
+	</table>
+    <ul id="list" style="cursor: hand; cursor: pointer; margin:0 auto; padding:0;">
+	<!--{loop $linklist $key $value}-->
+    <li style="list-style:none;">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list"  >
+        <tr  style="background:#f7f7f7;"  >
+            <td align='center' height="64" width="50">
+                <input type="checkbox" name="link_id[]" value="{$value['id']}" />
+                <input type="hidden" name="linkid[]" value = "{$value['id']}" />
+                <input type="hidden" name="linknum[]" value = "{$value['id']}" />
+                <input type="hidden" class="box" id="link_num[{$key}]" name="link_num[]" value="{$value['displayorder']}" size=4  readonly/>
+            </td>
+            <td align='center' height="64" width="80">{$value['name']}</td>
+            <td align='center' height="64" width=220 ><a href="{$value['url']}" target="_blank">{$value['url']}</a></td>
+            <td align='center' height="64" width=220 >{$value['description']}</td>
+            <td align='center' height="64" width=100><a href="index.php?admin_friendlink-edit-{$value['id']}">[{lang magEditLinkInfo}]</a></td>
+        </tr>
+	</table>
+    </li>
+    <!--{/loop}-->
+	</ul>
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+		<tr>
+  			<td width="80px"><input name="chkall" onclick="checkAll('link_id[]',this.checked)" type="checkbox" /><b>{lang magSelectAll}</b></td>
+			<td><input type="submit" class="btn" name="delsel" value="{lang magDelCurrentItem}" onclick="checkdel();"/> <input type="button" class="btn" value="{lang openSortable}" onclick="$('#list').sortable('enable')"/> <input type="button" class="btn"  value="{lang offSortable}" onclick="$('#list').sortable('disable')"/></td>
+			<td>&nbsp;</td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

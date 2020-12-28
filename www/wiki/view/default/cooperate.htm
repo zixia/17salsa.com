@@ -1,0 +1,24 @@
+{template header}
+<div class="l w-710">
+	<div class="hd_map">
+		<a href="{$setting['site_url']}">{$setting['site_name']}</a> &gt;&gt; <a href="{url doc-cooperate}">{lang cooperatedoc}</a></div>
+	<div class="m-t10 dws_list">	
+	<!--当词条没有创建的时候，显示待创建词条小图标-->
+	<ul>
+	<!--{loop $coopdoc $cooperatedoc}-->
+	<li><a href="index.php?doc-innerlink-{eval echo urlencode({$cooperatedoc['title']})}" target="_blank" title="{$cooperatedoc['title']}">{$cooperatedoc['title']}</a></li>
+	<!--{/loop}-->
+	</ul>
+	</div>
+</div>
+<div class="r w-230">
+<div class="m-t10 font-14 columns">
+<h2 class=" m-t10 m-lr8"><img alt="" src="style/default/dwsct_tit.gif"/></h2>
+<p class="col-p">完善词条内容、图片、参考资料等 使词条更丰富更具价值。</p>
+<p class="col-p">更多人因为您的参与而受益匪浅。</p>
+<p class="col-p">完善词条会得到更多经验提升您的 专业等级</p>
+</div>
+</div>
+<div class="c-b"></div>
+{template footer}
+

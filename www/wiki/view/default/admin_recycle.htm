@@ -1,0 +1,148 @@
+{template admin_header}
+<script type="text/javascript">
+function selectAll(){
+	$("input[name='chkdid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+function updatestatus(type){
+	if($("input[name='chkdid[]']:checked").length==0){
+		alert('请先选择回收站内容');
+		return false;
+	}else{
+		if(type=='recover'){
+			if(confirm('确认要恢复回收站内容吗?')==false){
+				return false;
+			}else{
+				document.formdoclist.action='index.php?admin_recycle-recover';
+				document.formdoclist.submit();
+			}
+		}else if(type== 'remove'){
+			if(confirm('删除回收站内容不可恢复,确认删除吗?')==false){
+				return false;
+			}else{
+				document.formdoclist.action='index.php?admin_recycle-remove';
+				document.formdoclist.submit();
+			}
+		}
+	}
+}
+function clearrecycle(){
+	if(confirm('清空回收站会删除回收站所有内容,确认要清空回收站吗?')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_recycle-clear';
+	}
+}
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+			<div>
+				<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+			</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<div id="navcontainer"  class="mar-t12">
+	<ul id="navlist">
+		<li><a href="index.php?admin_recycle" id="current">回收站</a></li>
+	</ul>
+</div>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+	<tr>
+		<td valign="top">
+		<form name="list" method="POST" action="index.php?admin_recycle-search"  style="margin: 0px;">
+			<table width="100%" cellspacing="0" cellpadding="3" class="list">
+				<tr>
+					<td width="80px"><strong>查找内容:</strong></td>
+					<td width="80px">关键字:</td>
+					<td><input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />          
+				</tr>
+				<tr>
+					<td></td>
+					<td width="80px"> 类型:</td>
+					<td><select name="qtype"><option value="0" {if !$qtype}selected{/if}>全部类型</option>
+											 <option value="doc" {if $qtype=='doc'} selected{/if}>&nbsp;>词条</option>
+											 <option value="edition" {if $qtype=='edition'}selected{/if}>&nbsp;>版本</option>
+											 <option value="category" {if $qtype=='category'}selected{/if}>&nbsp;>分类</option>
+											 <option value="user" {if $qtype=='user'}selected{/if}>&nbsp;>用户</option>
+											 <option value="gift" {if $qtype=='gift'}selected{/if}>&nbsp;>礼品</option>
+											 <option value="attachment" {if $qtype=='attachment'}selected{/if}>&nbsp;>附件</option>
+											 <option value="comment" {if $qtype=='comment'}selected{/if}>&nbsp;>评论</option></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td width="80px"> 操作人:</td>
+					<td><input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+				</tr>
+				<tr>
+					<td width="80px"></td>
+					<td width="80px">操作时间:</td>
+					<td><input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+					<input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+					<input name="recyclesubmit" class="btn" type="submit" value="{lang commonSearch}" /></td>
+				</tr>
+			</table>
+		</form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td height="40px">回收站共 <b>{$count}</b>个内容</td>
+		</tr>
+	</table>
+	<form method="POST" name="formdoclist">
+		<table width="100%" cellspacing="0" cellpadding="3" class="list">
+			<tr align="center" class="list_title">
+				<td>{lang commonSelect}</td>
+				<td>类型</td>
+				<td>关键字</td>
+				<td>操作人</td>
+				<td>操作时间</td>
+			</tr>
+			<!-- {if $count} -->
+			<!--{loop $recyclelist $recycle}-->
+			<tr align="center">
+				<td align='center'><input type="checkbox" name="chkdid[]" value="{$recycle['id']}" /></td>
+				<td>{$recycle['type']}</td>
+				<td>{$recycle['keyword']}</td>
+				<td><a href="index.php?user-space-{$recycle['adminid']}" target="_blank">{$recycle['admin']}</a></td>
+				<td>{$recycle['dateline']}</td>
+			</tr>
+			<!--{/loop}-->
+			<!-- {else} -->
+			<tr>
+				<td colspan="5">回收站内容为空</td>
+			</tr>
+			<!-- {/if} -->
+		</table>
+		<table cellpadding="0" cellspacing="0" width="100%">
+			<tr><td width="800" id="pagebar">{$departstr}</td></tr>
+			<tr>
+				<td width="100%" valign="top">
+					<table width="100%" cellspacing="0" cellpadding="3" class="list">
+						<tr>
+							<td width="60"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();"><label id="tip">{lang commonAllSelect}</label></td>
+							<td> <input type="button" value="恢复" onclick="updatestatus('recover');" class="btn_plug"/>
+								<input type="button" value="删除" onclick="updatestatus('remove');" class="btn_plug"/>
+								<input type="button" value="清空回收站" onclick="clearrecycle();" class="btn_plug"/></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</form>
+</td></tr></table>
+{template admin_footer}

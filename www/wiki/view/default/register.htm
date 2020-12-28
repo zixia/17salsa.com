@@ -1,0 +1,202 @@
+{template header}
+<script type="text/javascript" src="js/function.js"></script>
+<script type="text/javascript">
+function check_username(){
+	$('#checkusername').fadeOut();
+	var result=false;
+	var username=$.trim($('#username').val());
+	var length=bytes(username);
+	if(length==0){
+		$('#checkusername').html('{lang loginTip1}').fadeIn();
+		divDance('checkusername');
+	}else if( length <{$minlength} || length >{$maxlength}){
+		$('#checkusername').html('{$loginTip2}').fadeIn();
+		divDance('checkusername');
+	}else{
+		jQuery.ajax({
+			url: "index.php?user-checkusername",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:false, 
+			data: { username: username ,type:2 },
+			success: function(xml){
+			   var	message=xml.lastChild.firstChild.nodeValue;
+			   if(message!='OK'){
+				   	$('#checkusername').html(message).fadeIn();
+				   	divDance('checkusername');
+			   }else{
+			       $('#checkusername').html("<font color='green'>OK</font>").fadeIn();
+			       result=true;
+			   }
+			}
+		});
+	}
+	return result;
+}
+
+function check_passwd(){
+	$('#checkpasswd').fadeOut();
+	var result=false;
+	var passwd=$('#password').val();
+	if( bytes(passwd) <1|| bytes(passwd)>32){
+		$('#checkpasswd').html('{lang editPassTip1}').fadeIn();
+		divDance('checkpasswd');
+	}else{
+		$('#checkpasswd').html("<font color='green'>OK</font>").fadeIn();
+		result=true;
+	}
+	return result;
+}
+
+function check_repasswd(){
+	$('#checkrepasswd').fadeOut();
+	var result=false;
+	var repassword=$('#repassword').val();
+	if( bytes(repassword) <1|| bytes(repassword)>32){
+		$('#checkrepasswd').html('{lang editPassTip1}').fadeIn();
+		divDance('checkrepasswd');
+	}else{
+		if($('#password').val()==$('#repassword').val()){
+			$('#checkrepasswd').html("<font color='green'>OK</font>").fadeIn();
+			result=true;
+		}else{
+			$('#checkrepasswd').html('{lang editPassTip3}').fadeIn();
+			divDance('checkrepasswd');
+		}
+	}
+	return result;
+}
+
+function check_email(email){
+	$('#checkemail').fadeOut();
+	var result=false;
+	var email=$.trim($('#email').val());
+	if (email=="" || !email.match(/^[\w\.\-]+@([\w\-]+\.)+[a-z]{2,4}$/ig)){
+        $('#checkemail').html('{lang getPassTip2}').fadeIn();
+		divDance('checkemail');
+    }else{
+		jQuery.ajax({
+			url: "index.php?user-checkemail",
+			cache: false,
+			dataType: "xml",
+			async:false, 
+			type:"post",
+			data: { email: email },
+			success: function(xml){
+			   var	message=xml.lastChild.firstChild.nodeValue;
+			   if(message!='OK'){
+				   	 $('#checkemail').html(message).fadeIn();
+				   	 divDance('checkemail');
+			   }else{
+			   		 $('#checkemail').html("<font color='green'>OK</font>").fadeIn();
+			   		 result=true;
+			   }
+			}
+		});
+	}
+   return result;
+}
+
+function check_code(){
+	$('#checkcode').fadeOut();
+	var result=false;
+	var code=$.trim($('#code').val());
+	jQuery.ajax({
+			url: "index.php?user-checkcode",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:false, 
+			data: { code: code },
+			success: function(xml){
+			   var	message=xml.lastChild.firstChild.nodeValue;
+	   			if(message=='OK'){
+			   		$('#checkcode').html("<font color='green'>OK</font>").fadeIn();
+			   		result=true;
+			   }else{
+					$('#checkcode').html('{lang loginTip4}').fadeIn();
+					divDance('checkcode');
+			   }
+			}
+	});
+	return result;
+}
+
+function docheck(){
+	if( check_username()&&check_passwd()&&check_repasswd()&&check_email()){
+		if(! $('#agree').attr('checked')){
+			$('#chkagree').html('{lang registerTip1}').fadeIn();
+			return false;
+		}
+		<!--{if $checkcode != 3 }-->
+			return check_code();
+	    <!--{/if}-->
+	   return true;
+	}else{
+	   return false;
+	}
+}
+
+function updateverifycode() {
+	var img = "index.php?user-code-"+Math.random();
+	$('#verifycode').attr("src",img);
+}
+
+</script>
+<div class="register">
+	<div class="r reg-r">
+	<div class="login-static reg_main">
+	<form id="registerform" method="post" action="{url user-register}" onsubmit="return docheck();">
+		<h2 class="h3 a-r">如已注册，请<a href="{url user-login}" target="_blank" class="m-l8">登录</a></h2>
+		<ul class="col-ul">
+			<!--{if isset($forward) && $forward }-->
+			<input name="forward"   type="hidden" value='{$forward}' />
+			<!--{/if}-->
+			<!--{if (isset($error))}-->
+			<li><span  style='color:red'>{$error}</span></li>
+			<!--{/if}-->
+			<li><span>用户名：</span>	<input name="username" tabindex="3"  id="username" type="text" maxlength="{$maxlength}" class="inp_txt" onblur="check_username()" /><label id="checkusername">{$loginTip2}</label></li>
+			
+			<li><span>密码：</span>	<input name="password" tabindex="4" id="password" type="password" class="inp_txt" onblur="check_passwd()" maxlength="32" /><label id="checkpasswd">*{lang editPassTip1}</label></li>
+			
+			
+			<li><span>确认密码：</span><input name="repassword" tabindex="5" id="repassword" type="password" class="inp_txt" onblur="check_repasswd()" maxlength="32"/><label id="checkrepasswd"></label></li>
+
+			<li><span>E-mail：</span><input name="email" tabindex="6" id="email"  type="text" class="inp_txt" onblur="check_email()"  maxlength="50"/><label id="checkemail">*{lang registerTip3}</label></li>
+			<!--{if $checkcode != "3"}-->
+			<li class="yzm">
+				<span>{lang verifyCode}</span>
+				<input name="code" tabindex="7" type="text" id="code"  maxlength="4" onblur="check_code()" />
+					<label class="m-lr8"><img id="verifycode" src="{url user-code}" onclick="updateverifycode();" /></label>&nbsp;
+					<a  href="javascript:updateverifycode();">{lang codeNotClear}</a>
+					<label id="checkcode">&nbsp;</label> 
+			</li>
+			<!--{/if}-->			
+			
+			<li><input name="agree" id="agree" type="checkbox"  checked="checked" />我已看过并同意“<a href="{url doc-innerlink-{eval echo urlencode('{lang registerTip5}')}}" target="_blank">{lang registerTip5}</a>" <label id="chkagree">&nbsp;</label></li>
+			<li><input type="hidden" id="fromuid" name="fromuid" value="{$fromuid}"><input name="submit" tabindex="8" type="submit" value="提 交" class="btn_inp" /></li>
+
+
+		</ul>
+	</form>
+	</div>
+	</div>
+<dl class="col-dl">
+<dt><img alt="想把自己的知识分享给所有人么？"  src="style/default/reg_01.gif"/></dt>
+<dd>在这里您可以得到其他朋友共享的知识，也可以把你的知识贡献给其他需要帮助的朋友们！</dd>
+</dl>
+<dl class="col-dl">
+<dt><img alt="创建自己的百科词条！"  src="style/default/reg_02.gif"/></dt>
+<dd>这里不仅能让你创建自己想创建的词条，还可以通过编辑更多词条认识和帮助更多的朋友。</dd>
+</dl>
+<dl class="col-dl">
+<dt><img alt="多套风格模板供您选择！"  src="style/default/reg_03.gif"/></dt>
+<dd>提供多套实用模板供您选择。体验视觉盛宴，享受饕餮大餐。</dd>
+</dl>
+</div>
+<script type="text/javascript"> 
+$('#username').focus();
+</script>
+<div class="c-b"></div>
+{template footer}

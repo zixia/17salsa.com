@@ -1,0 +1,184 @@
+{template admin_header}
+<script type="text/javascript">
+var searchdata = "{$searchdata}".replace(/-/g, ",");
+function ChangeRadionew(number){
+   	if($("input[name='chkdid[]']:checked").length==0){
+   		alert('{lang imageSelectDoc}');
+		return false;
+  	 }else{
+		switch(number){
+			case 1:
+				if(confirm('{lang imageremove}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_image-remove'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+			break;
+			case 2:
+				if(confirm('{lang imagesetfocus}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_image-editimage-focus-1'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+		 	break;
+			case 3:
+				if(confirm('{lang imagecanclefocus}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_image-editimage-focus-0'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+		 	break;
+		 	default:
+		 		alert("{lang commonSelectMng}");
+		 	break;
+		}
+	}
+}
+function selectAll(){
+	$("input[name='chkdid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("img").each(function(i){
+		var img = this; 
+		var w = img.offsetWidth - 8;
+		var h = img.offsetHeight - 8;
+		if(w > 60 || h > 60){	
+			if(w/h>1){
+				img.style.width = "60px"
+			}else if( w/h<=1){
+				img.style.height = "60px"
+			}
+		}
+	});
+});
+
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+			<div>
+				<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+			</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="index.php?admin_image" id="current">{lang image_wiki}</a></li>
+  </ul>
+</div>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_image-default"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px"><strong>{lang docmanageSearch}:</strong></td>
+          <td  width="80px">{lang commonChoiceCat}:</td><td>
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td width="80px">{lang commonTitleKey}:</td>
+	      <td><input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />          
+	    </tr>
+		<tr>
+		<td></td>
+          <td width="80px"> {lang commonAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="80px"></td>
+          <td width="80px">{lang commonCreateTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$docsum}</b>{lang imgmanageImgNum}</td>
+      </tr>
+    </table>
+	<form method="POST" name="formdoclist">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td>{lang commonSelect}</td>
+            <td>{lang focusmanageImg}</td>
+			<td>{lang image_title}</td>
+			<td>{lang image_filesize}</td>
+			<td>{lang pluginDescript}</td>
+			<td>{lang imagefocus}</td>
+          </tr>
+			<!--{loop $imagewiki $image}-->
+          <tr align="center">
+            <td align='center' width="10%"><input type="checkbox" name="chkdid[]" value="{$image['id']}" />
+            </td>
+            <td width="20%">
+            {if file_exists($image['attachment'])}
+				<img src="{$image['attachment']}" width="60" height="60" />
+			{else}
+				<img src="style/default/plugin.jpg" />
+			{/if}
+            </td>
+            <td width="20%">{$image[filename]}</td>
+            <td width="20%">{$image[filesize]}</td>
+            <td width="20%">{$image['description']}</td>
+            <td width="10%"><!--{if $image[focus]==1}--><font class="red">{lang adv_enable}</font><!--{else}-->{lang adv_disable}<!--{/if}--></td>
+          </tr>
+          <!--{/loop}-->
+		<!-- {if $imagewiki == null} -->
+          <tr>
+            <td colspan="5">{lang imageSearchMsg}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();">
+                        <label id="tip">{lang commonAllSelect}</label></td>
+                    <td>
+						<input type="button" value="{lang imagerecycle}" onclick="ChangeRadionew(1);" class="btn_plug"/>
+						<input type="button" value="{lang image_focus}" onclick="ChangeRadionew(2);" class="btn_plug"/>
+						<input type="button" value="{lang image_cancelfocus}" onclick="ChangeRadionew(3);" class="btn_plug"/>
+		           </td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+{template admin_footer}

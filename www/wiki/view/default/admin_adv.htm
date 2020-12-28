@@ -1,0 +1,171 @@
+{template admin_header}
+<script type="text/javascript">
+	function selectALL(obj){
+		$(".box").attr("checked",obj.checked);
+	}
+	function edit_available(advid){
+		jQuery.ajax({
+			url: "{$setting['seo_prefix']}admin_adv-edit",
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:false, 
+			data: { advid: advid },
+			success: function(xml){
+			   var	message=xml.lastChild.firstChild.nodeValue;
+			   if(message=='ok'){
+			   		var available = $('#available_'+advid);
+					if('{lang adv_enable}'==$.trim(available.html())){
+						available.html('{lang adv_disable}');
+					}else{
+						available.html('{lang adv_enable}');
+					}
+			   }
+			}
+		});
+	}
+	function deleteadv(){
+		if(confirm('{lang advConfirmRemove}')){
+			if($(".box:checked").length==0){
+				alert('{lang docRemoveAdvNull}');
+				return false;
+			}
+			$('#formadvlist').attr("action","index.php?admin_adv-remove");
+			$('#formadvlist').submit();
+		}else{
+			return false;
+		}
+	}
+	$(function(){
+		$("#time").attr("value",'{$time}')
+		$("#type").attr("value",'{$type}')
+		$("#orderby").attr("value",'{$orderby}')
+	}); 
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_adv-config">{lang config_adv}</a></li>
+            <li><a href="index.php?admin_adv-default" id="current">{lang admin_adv}</a></li>
+			<li><a href="index.php?admin_adv-add">{lang add_adv}</a></li>
+		  </ul>
+		</div> 
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="seachadv" method="POST" action="index.php?admin_adv-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="8%" valign="top"><strong> {lang advSearch}</strong></td>
+          <td  width="9%">{lang adv_input_title}</td>
+	      <td colspan="2"><input class="txt" name="title" value="{$title}" size="15"  type="text"></td>
+        </tr>
+        <tr>
+          <td width="8%" valign="top">&nbsp;</td>
+          <td>{lang adv_starttime}:</td>
+          <td colspan="2"><select name="time" id="time">
+            <option value="">{lang adv_target_all}</option>
+            <option value="86400"> {lang adv_oneday}</option>
+            <option value="604800"> {lang adv_oneweek}</option>
+            <option value="2592000"> {lang adv_onemonth}</option>
+            <option value="7776000"> {lang adv_threemonths}</option>
+            <option value="15552000"> {lang adv_sixmonths}</option>
+            <option value="31536000"> {lang adv_oneyear}</option>
+          </select></td>
+        </tr>
+        <tr>
+          <td width="8%" valign="top">&nbsp;</td>
+          <td>{lang adv_advtype}:</td>
+          <td colspan="2"><select name="type" id="type">
+            <option value=""> {lang adv_target_all}</option>
+            <option value="0">{lang adv_position_0}</option>
+            <option value="1">{lang adv_position_1}</option>
+            <option value="2">{lang adv_position_2}</option>
+            <option value="3">{lang adv_position_3}</option>
+            <option value="4">{lang adv_position_4}</option>
+            <option value="5">{lang adv_position_5}</option>
+            <option value="6">{lang adv_position_6}</option>
+          </select></td>
+        </tr>
+        <tr>
+          <td width="8%" valign="top">&nbsp;</td>
+          <td>{lang adv_order}</td>
+          <td width="14%">
+            <select name="orderby" id="orderby">
+                <option value="type"> {lang adv_advtype}</option>
+                <option value="starttime"> {lang adv_starttime}</option>
+            </select></td>
+          <td width="69%"><input class="btn" name="searchsubmit" value="{lang commonSearch}" onclick="if(this.form.title.value=='{lang adv_input_title}'){this.form.title.value=''}window.loacation='admincp.php?action=adv&amp;title='+this.form.title.value+'&amp;starttime='+this.form.starttime.value+'&amp;type='+this.form.type.value+'&amp;orderby='+this.form.orderby.value;" type="submit" /></td>
+        </tr>
+      </table>
+    </form>
+    
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$advsum}</b> {lang advCom}]</td>
+      </tr>
+    </table>
+    
+    <form name="formadvlist" id="formadvlist"  method="POST">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td width="10%">{lang commonSelect}</td>
+            <td width="10%">{lang adv_available}</td>
+            <td width="10%">{lang adv_title}</td>
+			<td width="15%">{lang adv_type}</td>
+            <td width="15%">{lang adv_style}</td>
+            <td width="10%">{lang adv_starttime}</td>
+            <td width="10%">{lang adv_endtime}</td>
+            <td width="10%">{lang adv_targets}</td>
+			<td width="10%"></td>
+          </tr>
+          	<!-- {if $advsum} -->
+			<!--{loop $advlist $adv}-->
+          <tr>
+            <td align='center'><input type="checkbox" class="box" name="advid[]" value="{$adv['advid']}" /></td>
+            <td align="center" ><a href="javascript:void(0)" onclick="edit_available({$adv['advid']});">
+            <!-- {if $adv['available']} -->
+            <span id="available_{$adv['advid']}">{lang adv_enable}</span>
+            <!-- {else} -->
+            <span id="available_{$adv['advid']}">{lang adv_disable}</span>
+            <!-- {/if} -->
+            </a></td>
+            <td align='center'>{$adv['title']}</td>
+            <td align='center'>{$adv['type']}</td>
+            <td align='center'>{$adv['parameters']['style']}</td>
+            <td align='center'>{$adv['starttime']}</td>
+            <td align='center'>{$adv['endtime']}</td>
+			<td align='center'><!-- {if $adv['targets']!==''} -->{$adv['targets']}<!-- {else} -->{lang adv_default_targets}<!-- {/if} --></td>
+            <td align='center'><a href="index.php?admin_adv-edit-{$adv['advid']}" ><font color="#FF0000">{lang adv_detailedit}</font></a></td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {else} -->
+          <tr>
+            <td colspan="8">{$message}{lang advHaveNone}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox"  type="checkbox" id="chkall" onclick="selectALL(this);">
+                        <label id="tip">{lang commonAllSelect}</label></td>
+                    <td><input type="button" class="btn" name="casemanage" onClick="deleteadv();" value="{lang commonDel}" /></td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+
+{template admin_footer}

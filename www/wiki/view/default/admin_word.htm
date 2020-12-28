@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+function checkAll(id,bool)
+{
+	$("input[name='"+id+"']").attr('checked',bool);	
+}
+function showMuli(){
+	var state = $("#muli").css('display');
+	if(state == 'none'){
+		$("#muli").css('display','');
+	}else{
+		$("#muli").css('display','none');
+	}
+}
+
+</script>
+
+<form name="badword" method="post" action=""  enctype="multipart/form-data">
+<table width="100%" align=center cellspacing=0 cellpadding=0 >
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+			<li><a href="#" id="current">{lang siteConfigWord}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+<tr>
+	<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+</tr>
+<tr>
+	<td colspan="2" ><li>{lang badwordTip1}</li></td>
+</tr>
+</table>
+  <div class="gnaj">
+    <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+           	<td height="23" align="left"  width="50"><input type="checkbox" name="selectAll" value="checkbox" onclick="checkAll('word_id[]',this.checked)" /><strong>{lang commonTitleDelete}</strong></td>
+		    <td  align="center" ><strong>{lang badword}</strong></td>
+		    <td  align="center" ><strong>{lang badwordreplace}</strong></td>
+		    <td  align="center" ><strong>{lang badwordadd}</strong></td>
+		</tr>
+		{if is_array($words)}
+		{loop $words $id $word}
+		 <tr>
+	   	  	 <td height="23"  align="left" width="50"><input type="checkbox" name="word_id[]" value="{$word[id]}" /><input type="hidden" name="upword_id[]" value="{$word[id]}" /></td>
+			 <td align="center"><input class="box" type="text" name="find[]" size="18" maxlength="18" value="{$word[find]}"></td>
+			 <td align="center"><input class="box" type="text" name="replacement[]" size="18" maxlength="18" value="{$word[replacement]}"></td>
+			 <td align="center">{$word[admin]}</td>
+	     </tr>
+	     {/loop}
+		<tr>
+			<td colspan="4" align="right"><span id="pagebar">{$departstr}</span></td>
+		</tr>
+	     {else}
+			<tr>
+				<td colspan="4" align="center">{lang badwordNull}</td>
+			</tr>
+	     {/if}
+	<tr>
+		<td height="23" width="50">&nbsp;{lang commonAddNew}:</td>
+		<td align="center"><input class="box" type="text" name="newfind" size="18" maxlength="18" /></td>
+		<td align="center"><input class="box" type="text" name="newreplacement" size="18" maxlength="18" value="*" /></td>
+		<td width="25%"  align="center" ><span style="border:1px solid #999999; padding:3px;background:#CCCCCC; margin-left:10px;"><a href="javascript:showMuli();">{lang wordmuli}</a></span> </td>
+	</tr>
+	
+	<tr id="muli" style="display:none">
+      <td height="23"></td>
+      <td colspan="3" align="left" style="padding-left:200px;">
+	  	 <p>
+			<textarea id="muliword" name="muliword" cols="20" rows="5"></textarea>
+			<span style="color:blue;">{lang wordbannedmuli}</span></br>
+		 </p>
+        <p>       
+          <input name="file_path" id="file_path" type="file" style="width:200px;"/>
+         </p></td>
+    </tr>
+	
+	<tr>
+		<td height="40" colspan="4" align="center"><input class="btn" name="submit" value="{lang commonOK}" type="submit"></td>
+	</tr>
+     </table>
+</form>
+{template admin_footer}

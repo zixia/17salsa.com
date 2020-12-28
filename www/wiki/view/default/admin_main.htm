@@ -1,0 +1,473 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={WIKI_CHARSET}" />
+<title>{lang commonAdminMngCenter}</title>
+<link href="style/default/admin/common.css" rel="stylesheet" type="text/css" />
+<link href="style/default/admin/gray.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+.v_line{background:url('style/default/admin/cp_body_line_dot.gif') repeat-y center;}
+.h_line{background:url('style/default/admin/cp_body_line_dot.gif') repeat-x left bottom;}
+.copyright{text-align: center;ont-family: Arial;font-weight:bold;
+	color:#737573;
+	font-size:12px;
+	height:5px;
+	margin-bottom: 5px;
+	width: 100%;
+	padding-top: 5px;
+}
+.box1{ padding:0px;}
+.box1_left_top{width:7px;height:7px;background:url('style/default/admin/b1_left_top.gif') no-repeat left top;}
+.box1_right_top{width:7px;height:7px;background:url('style/default/admin/b1_right_top.gif') no-repeat right top;}
+.box1_left_bottom{width:7px;height:7px;background:url('style/default/admin/b1_left_bottom.gif') no-repeat left bottom;}
+.box1_right_bottom{width:7px;height:7px;background:url('style/default/admin/b1_right_bottom.gif') no-repeat right bottom;}
+.box1_top_bg{height:7px;background:url('style/default/admin/b1_top_bg.gif') repeat-x top;}
+.box1_bottom_bg{ height:7px;background:url('style/default/admin/b1_bottom_bg.gif') repeat-x bottom;}
+.box1_left_bg{background:url('style/default/admin/b1_left_bg.gif') repeat-y left top;}
+.box1_right_bg{background:url('style/default/admin/b1_right_bg.gif') repeat-y right top;}
+</style>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+if(self!=top){
+    top.location=self.location;
+}
+
+function expandMenu(menu_id,img_id){
+    var menuObj = $("#"+menu_id);
+    var imgObj  = $("#"+img_id);
+    if(menuObj.css("display") == 'none'){
+        menuObj.css('display',"");
+        imgObj.attr('src',"./style/default/admin/open.gif");
+    }else{
+		menuObj.css('display',"none");
+        imgObj.attr('src',"./style/default/admin/close.gif");
+    }
+}
+
+function setDocumentHeight(height){
+	$("iframe").height(height);
+}
+</script> 
+</head>
+<body style="margin: 0px auto; padding:0px; width:98%;" >
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td valign="top">
+    <table style="margin-top: 10px;" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
+    <tr>
+        <td><table border="0" cellpadding="1" cellspacing="0">
+        <tr>
+            <td class="cp_title"><a href="index.php?admin_main-mainframe" target="main">{lang commonMngCenter}</a></td>
+            <td style="padding-left: 15px;"><table border="0" cellpadding="1" cellspacing="0">
+                    <tr>
+                        <td>({$user['username']})</td>
+                    </tr>
+                    </table></td>
+        </tr>
+        </table></td>
+        <td width="50%">
+        <table align="right" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td><table border="0" cellpadding="3" cellspacing="0">
+                <tr>
+                    <td style="padding-left: 10px;"><a href="{$setting[site_url]}">{lang commonIndexPage}</a></td>
+                    <td><a href="index.php?user-editpass" target="_blank">{lang editPass}</a></td>
+                    <td style="padding-left: 10px;"><a href="index.php?admin_main-mainframe" target="main">{lang commonMngCenter}</a></td>
+                    <td style="padding-left: 10px;">[<a href="index.php?admin_main-logout" class="logout">{lang commonMngLogout}</a>]</td>
+                </tr>
+            </table></td>
+        </tr>
+        </table>
+        </td>
+    </tr>
+    </table>
+    <table class="box1" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+          <td class="box1_left_top"></td>
+          <td class="box1_top_bg"></td>
+          <td class="box1_right_top"></td>
+        </tr>
+        <tr>
+          <td class="box1_left_bg"></td>
+          <td style="padding: 5px;" bgcolor="#ffffff">
+            <table width="100%">
+            <tr>
+                <td valign="top"><table align="center" bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td>
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" height="100%">
+                            <tr>
+                              <td valign="top" width="126"  height="100%" >
+                                  <table class="cp_menu" style="border: 1px solid #8cabd7;padding:2px 0; width:120px; " align="center" cellpadding="0" cellspacing="0">
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px; " class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_1','img_1')" bgColor="#d3e8fd">
+                                            <td align="center"   width="15"><img id="img_1" src="style/default/admin/open.gif"  border="0" height="9" width="9" />                                            </td>
+                                            <td><span >{lang commonWebsiteMng}</span></td>
+                                        </tr>
+                                        </table>
+                                        <table id="menu_1" class="sub_name" width="100%" >
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-baseregister"  target="main">{lang siteConfigRegister}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-base"  target="main">{lang siteConfigBase}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-listdisplay" target="main">{lang listDisplay}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-sec" target="main">{lang secConfig}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-seo" target="main">{lang siteConfigSEO}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_banned" target="main">{lang siteConfigIPBan}</a></td>
+	                                        </tr>
+	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_channel" target="main">{lang channel_manage}</a></td>
+	                                        </tr>	                                        <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_friendlink" target="main">{lang siteConfigFriendlink}</a></td>
+	                                        </tr>
+											<tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_setting-notice" target="main">{lang sitenotice}</a></td>
+	                                        </tr>
+                                            <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_adv" target="main">{lang custom_adv}</a></td>
+	                                        </tr>
+											 <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_log" target="main">{lang siteoperationlog}</a></td>
+	                                        </tr>
+											<tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_log-phpinfo" target="main">{lang serverInfo}</a></td>
+	                                        </tr>
+                                        </table>
+
+                                    </td>
+                                  </tr>
+                                  
+   
+								  
+                                <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_7','img_7')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_7" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td>{lang commonHDWikiPlugin}</td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_7"  class="sub_name" width="100%" ><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_plugin" target="main" onClick="scroll(0,0);">{lang pluginMange}</a></td>
+                                        </tr><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_plugin-will" target="main" onClick="scroll(0,0);">{lang pluginLayout}</a></td>
+                                        </tr></table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+								  </td>
+                                  </tr>
+								  
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_3','img_3')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"> <img id="img_3" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td><span >{lang commonContentMng}</span></td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_3" class="sub_name" width="100%">
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_doc" target="main" onClick="scroll(0,0);">{lang docmanage}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_synonym" target="main" onClick="scroll(0,0);">{lang synonymmanage}</a></td>
+                                        </tr>
+										<tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_attachment" target="main" onClick="scroll(0,0);">{lang attachmanage}</a></td>
+                                        </tr>
+                                       <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_comment" target="main" onClick="scroll(0,0);">{lang commentmanage}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_focus-focuslist" target="main" onClick="scroll(0,0);">{lang focusmanage}</a></td>
+                                        </tr>
+                                        	<tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_tag-hottag" target="main">{lang message_hottag}</a></td>
+	                                     </tr>
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_word" target="main">{lang siteConfigWord}</a></td>
+                                          </tr>
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_relation" target="main">{lang relatedtitle}</a></td>
+                                          </tr>
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_image" target="main">{lang image_wiki}</a></td>
+                                          </tr>
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_edition" target="main">{lang edition_audit}</a></td>
+                                          </tr>
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_hotsearch" target="main">{lang hot_search}</a></td>
+                                          </tr>   
+	                                      <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_cooperate" target="main">{lang cooperate}</a></td>
+                                          </tr>  
+                                          <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_recycle" target="main">回收站</a></td>
+                                          </tr>   
+                                          </table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_4','img_4')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_4" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td>礼品商店</td>
+                                        </tr>
+                                        </table>
+                                        <table id="menu_4" class="sub_name" width="100%" >
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_gift"  target="main" onClick="scroll(0,0);">礼品管理</a></td>
+                                        </tr>
+										<tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_gift-add"  target="main" onClick="scroll(0,0);">添加礼品</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_gift-price" target="main" onClick="scroll(0,0);">价格区间</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_gift-notice" target="main" onClick="scroll(0,0);">礼品公告</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_gift-log" target="main" onClick="scroll(0,0);">礼品兑换日志</a></td>
+                                        </tr>
+                                        </table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_4','img_4')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_4" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td>{lang commonUserManage}</td>
+                                        </tr>
+                                        </table>
+                                        <table id="menu_4" class="sub_name" width="100%" >
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_user"  target="main" onClick="scroll(0,0);">{lang commonMngUser}</a></td>
+                                        </tr>
+										<tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_regular-groupset"  target="main" onClick="scroll(0,0);">{lang regularMng}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_usergroup" target="main" onClick="scroll(0,0);">{lang commonUsergroupMng}</a></td>
+                                        </tr></table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_5','img_5')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_5" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td>{lang commonCatMng}</td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_5" class="sub_name" width="100%" ><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_category-list" target="main" onClick="scroll(0,0);">{lang magManageCat}</a></td>
+                                        </tr><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_category-add" target="main" onClick="scroll(0,0);">{lang magAddCat}</a></td>
+                                        </tr><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_category-merge" target="main" onClick="scroll(0,0);">{lang magUniteCat}</a></td>
+                                        </tr></table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+
+                               <tr>
+                                    <td style="padding-top: 1px;">
+                                    <table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0" >
+                                        <tr onClick="expandMenu('menu_2','img_2')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_2" src="style/default/admin/open.gif"  border="0" height="9" width="9" /></td>
+                                            <td><span >{lang commonLangAndStyleMng}</span></td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_2" class="sub_name" width="100%"><tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_style" target="main">{lang stylemanage}</a></td>
+	                                    </tr>
+	                                    <tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_style-create" target="main">{lang stylecreatenew}</a></td>
+	                                    </tr>
+										<tr>
+	                                            <td align="center" width="15"></td>
+	                                            <td height="20"><a href="index.php?admin_language" target="main">{lang langmanage}</a></td>
+	                                        </tr></table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+								  </td>
+                                  </tr>
+                                  
+                                    <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_9','img_9')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_9" src="style/default/admin/close.gif"  border="0" height="9" width="9" /></td>
+                                            <td>{lang dbMange}</td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_9" class="sub_name" width="100%" style="display:none"><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_db-backup" target="main" onClick="scroll(0,0);">{lang dbBackup}</a></td>
+                                        </tr><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_db-tablelist" target="main" onClick="scroll(0,0);">{lang dbOptimize}</a></td>
+                                        </tr><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_db-sqlwindow" target="main" onClick="scroll(0,0);">{lang sqlWindow}</a></td>
+                                        </tr></table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									  </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding-top: 1px;"><table style="border: 1px solid #8cabd7;margin:0 2px; width:120px" class="big_name" border="0" cellpadding="1" cellspacing="0">
+                                        <tr onClick="expandMenu('menu_10','img_10')" bgColor="#d3e8fd">
+                                            <td align="center" height="20" width="15"><img id="img_10" src="style/default/admin/close.gif"  border="0" height="9" width="9" /></td>
+                                            <td>{lang statistics}</td>
+                                        </tr>
+                                        </table>
+
+                                        <table id="menu_10" class="sub_name" width="100%" style="display:none"><tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-stand" target="main" onClick="scroll(0,0);">{lang stand}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-cat_toplist" target="main" onClick="scroll(0,0);">{lang cat_toplist}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-doc_toplist" target="main" onClick="scroll(0,0);">{lang doc_toplist}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-edit_toplist" target="main" onClick="scroll(0,0);">{lang edit_toplist}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-credit_toplist" target="main" onClick="scroll(0,0);">{lang credit_toplist}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" width="15"></td>
+                                            <td height="20"><a href="index.php?admin_statistics-admin_team" target="main" onClick="scroll(0,0);">{lang admin_team}</a></td>
+                                        </tr>
+                                        </table>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0">
+										  <tr>
+											<td height="5"></td>
+										  </tr>
+										</table>
+									</td>
+                                  </tr>
+                               </table>
+                              </td>
+                                <td class="v_line" width="13"></td>
+                                <td valign="top">
+								<iframe  name="main" id="main" src="index.php?{$admin_mainframe}" width="100%" height="100%" frameborder="0" 
+								scrolling="yes" style="overflow: visible;" ></iframe>
+								</td>
+                            </tr>
+                            </table>
+
+                      </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top: 5px;" valign="top"><div class="copyright">Copyright 2005-2009 <a href="http://kaiyuan.hudong.com/" target="_blank">HDWiki V{HDWIKI_VERSION} release {HDWIKI_RELEASE}</a>, All rights reserved</div></td>
+                    </tr>
+                    </table></td>
+              </tr>
+            </table></td>
+          <td class="box1_right_bg"></td>
+        </tr>
+        <tr>
+          <td class="box1_left_bottom"></td>
+          <td class="box1_bottom_bg"></td>
+          <td class="box1_right_bottom"></td>
+        </tr>
+      </table>
+       <br />
+    </td>
+  </tr>
+</table>
+<!--{if $env}--><script src="{$env}"></script><!--{/if}-->
+</body>
+</html>

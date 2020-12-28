@@ -1,0 +1,167 @@
+{template admin_header}
+<script type="text/javascript">
+function deletecomment(){
+	if(confirm('{lang commonConfirmRemove}')){
+		$('#formattachlist').attr("action","index.php?admin_attachment-remove");
+		$('#formattachlist').submit();
+	}else{
+		return false;
+	}
+}
+function selectAll(obj){
+	$("input[name='attach[]']").attr('checked',obj.checked);
+}
+
+function showimg(){
+	$.dialog();
+}
+
+$(document).ready(function(){
+	$('a[att]').click(function(){
+		var url = $(this).attr('att');
+		if(url.match(/\.(jpg|gif|png)$/i)){
+			$.dialog.box("image", $(this).text(), 'img:'+url);
+			return false;
+		}
+	});
+});
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+			<div>
+				<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+			</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_attachment" id="current">{lang attachmanage}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_attachment-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px"><strong> {lang attachSearch}:</strong></td>
+          <td  width="80px"> {lang attachCate}:</td><td>
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr>
+	    <tr>
+          <td width="80px"></strong></td>
+          <td  width="80px"> {lang attachAttachtype}:</td><td>
+            <select name="qfiletype">
+				<option value="0" >{lang commonAllType}</option>
+				<!--{loop $filetype $type}-->
+				<option value="{$type}" >{$type}</option>
+				<!--{/loop}-->
+				{$filetype}
+	    	</select>
+	      </td>
+	    </tr>
+	    <tr>
+		<td width="80px"></td>
+          <td width="80px"> {lang attachDocName}:</td><td>
+            <input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />
+        </tr>
+		<tr>
+		<td></td>
+          <td width="80px"> {lang attachAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="80px"></td>
+          <td width="80px"> {lang attachTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$attachsum}</b> {lang attachAttach}</td>
+      </tr>
+    </table>
+    <form name="formattachlist" id="formattachlist"  method="POST">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td>{lang commonSelect}</td>
+            <td>{lang attachName}</td>
+            <td>{lang commonTitle}</td>
+            <td>{lang pluginDescript}</td>
+            <td>{lang attachFileSize}</td>
+			<td>{lang attachAuthorName}</td>
+            <td>{lang attachUpTime}</td>
+            <td>{lang attachDownTimes}</td>
+          </tr>
+          	<!-- {if $attachlist != null} -->
+			<!--{loop $attachlist $attach}-->
+          <tr>
+            <td align='center'><input type="checkbox" class="box" name="attach[]" value="{$attach['id']}_{$attach['attachment']}"  /></td>
+            <td ><a href="index.php?admin_attachment-download-{$attach['id']}-{$attach['isimage']}" att="{$attach['attachment']}">{$attach['filename']}</a></td>
+            <td align='center'><a target="_blank" class="e" href="index.php?doc-view-{$attach['did']}" title="{$attach['title']}">{$attach['title']}</a></td>
+            <td align='center'>{$attach['description']}</td>
+            <td align='center'>{$attach['filesize']}</td>
+            <td align='center'><a target="_blank" class="e" href="index.php?user-space-{$attach['uid']}"  title="{$attach['author']}">{$attach['author']}</a></td>
+            <td align='center'>{$attach['time']}</td>
+            <td align='center'>{$attach['downloads']}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {else} -->
+          <tr>
+            <td colspan="8">{$message}{lang attachHaveNone}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60">
+                    <input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);"><label id="tip">{lang commonAllSelect}</label>
+                    </td>
+                    <td><input type="button" class="btn" name="casemanage" onClick="deletecomment();" value="{lang commonDel}" /></td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td>
+</tr>
+</table>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+{template admin_footer}

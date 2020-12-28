@@ -1,0 +1,50 @@
+{template admin_header}
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="index.php?admin_gift" >礼品管理</a></li>
+	<li><a href="#" id="current">编辑礼品</a></li>
+	<li><a href="index.php?admin_gift-price">礼品价格区间</a></li>
+	<li><a href="index.php?admin_gift-notice">礼品公告</a></li>
+  </ul>
+</div>
+
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+  <td valign="top">
+     <form action="index.php?admin_gift-edit" enctype="multipart/form-data"  method="post" name="giftform" id="giftform">
+     	<input type='hidden' name='id' value="$gift['id']"/>
+        <table width="98%" align="center" cellspacing="1" cellpadding="3" class="table_area">
+          <tr class="b" align="left">
+            <td width="80">礼品名称：</td>
+            <td><input type='text' class="box" name='title' id="title" size="50" value="$gift['title']"/>*<span id="v_title"></span></td>
+          </tr>
+          <tr class="b" align="left">
+            <td>礼品图片：</td>
+            <td><input type='file' class="box" name='giftfile' id="giftfile" size="50"/>*<img src="$gift['image']" width="106px" height="106px"/></td>
+          </tr>
+          <tr class="b" align="left">
+            <td>需要的金币：</td>
+            <td><input type="text" class="box" name='credit' id="credit"  size="50"  value="$gift['credit']"/>*<span id="v_credit"></span></td>
+          </tr>
+		 <tr class="b" align="left">
+            <td>礼品描述：</td>
+            <td><textarea type="text"   name='description' id="description"   rows="15" cols="60" >$gift['description']</textarea></td>
+          </tr>
+          <tr class="b" align="left">
+            <td colspan="2" align="center"> 
+                <input name="submit" class="btn" type="submit" value="{lang commonOK}"/>
+                <input name="reset" class="btn" type="reset" value="{lang commonReset}" />
+              </td>
+          </tr>
+        </table>
+    </form>
+  </td>
+  </tr>
+  </table>
+<script type="text/javascript" src="js/validator.js"></script>
+<script type="text/javascript" language="javascript">
+	var vld=new Validator("giftform",false,'');
+	vld.bind("title",[["empty","礼品名称不能为空"]]);
+	vld.bind("credit",[["empty","所需金币不能为空"],["number","金币必须为数字"]]);
+</script>
+{template admin_footer}

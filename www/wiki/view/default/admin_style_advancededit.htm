@@ -1,0 +1,89 @@
+{template admin_header}
+<script type="text/javascript">
+window.onload = function(){
+	readfile("{$editfilename}");
+}
+function readfile(filename){
+	var str = filename; 
+	var name=str.replace("*", "."); 
+	$('#finame').html(name);
+	$('#filename').val(name);
+	$.ajax({
+		url: "index.php?admin_style-readfile",
+		cache: false,
+		dataType: "html",
+		type:"post",
+		async:false, 
+		data: {id:filename,style_path:"$style_path"},
+		success: function(xml){
+			$('#html_con').val(xml);
+			$('#html_con_bak').val(xml);
+		}
+	});
+
+}
+function checknull(){
+	if($.trim($("#html_con").val())==""){
+		alert("{lang styleConNotNull}");
+		$('#html_con').focus();
+		return false;
+	}
+}
+function reset(){
+	$('#html_con').val($.trim($("#html_con_bak").val()));
+}
+function search(){
+	window.location = "index.php?admin_style-advancededit-"+$.trim($("#select_style").val()); 
+	return false;
+}
+</script>
+<div id="navcontainer"  class="mar-t12 block" >
+  <ul id="navlist">
+	<li><a href="index.php?admin_style">{lang styleListSet}</a></li>
+    <li><a href="index.php?admin_style-list" >{lang styleInstall}</a></li>
+    <li><a href="index.php?admin_style-create">{lang stylecreatenew}</a></li>
+    <li><a href="index.php?admin_style-edit-{$style_path}" id="current">{lang styleEdit}</a></li>
+  </ul>
+</div>
+<span class="edit_level ">
+	<a href="index.php?admin_style-edit-{$style_path}" class="edit_easy edit_on">{lang stylejunioredit}</a>
+	<a href="index.php?admin_style-advancededit-{$style_path}" class="edit_senior">{lang stylehighedit}</a>
+</span>
+<h3 class="tem_edit_h2 h2 block">
+<form action="" name="select_form" id="select_form" method="post" onsubmit="return search();" >
+	<span class="r">{lang styleNameEdit}:
+		<select name="select_style" id="select_style" class="mar-lr4">
+			<option value="{$defaultstyle[path]}-{$style_path}">{$defaultstyle[name]}</option>
+			<!--{if $select_con[path]!=$defaultstyle[path]}-->
+			<option <!--{if $style_path==$select_con['path']}-->selected="selected"<!--{/if}--> value="{$select_con[path]}">{$select_con[name]}</option>
+			<!--{/if}-->
+		</select>
+		<input type="submit" value="{lang magSelectAction}" class="inp_sum"/>
+	</span>
+</form>
+	{$select_con[name]}:(<span id="finame" name="finame"></span>)</h3>
+	<span class="mar-lr">{lang styleedittip}</span>
+<form action="index.php?admin_style-savefile-{$style_path}" method="post" name="styleform" onsubmit="return checknull();">
+<div id="tem_edit_r" class="link_blue">
+	<h3 class="style_list h2">{lang styleFile}</h3>
+	<dl>
+	<dt>{lang styleView}</dt>
+	<!--{loop $viewlist $view_key $view_list}-->
+	<dd><a href="javascript:void(0)" onclick="readfile('{$view_key}*{$view_list}');">{eval echo $stylelang[$view_key]}({$view_key}.{$view_list})</a></dd>
+	<!--{/loop}-->
+</dl>	
+<dl>
+	<dt>{lang styleCss}</dt>
+	<!--{loop $stylelist $style_key $style_list}-->
+	<dd><a href="javascript:void(0)" onclick="readfile('{$style_key}*{$style_list}');">{eval echo $stylelang[$style_key]}({$style_key}.{$style_list})</a></dd>
+	<!--{/loop}-->
+</dl>
+</div>
+<div id="tem_edit_l">
+	<textarea name="html_con" id="html_con" class="edit_area" rows="50"></textarea>
+	<textarea name="html_con_bak" id="html_con_bak" style="visibility:hidden;"></textarea>
+	<input value="" id="filename" name="filename" style="visibility:hidden;" />
+	<input type="submit" class="inp_sum" value="{lang styleEditConfirm}" />	<input type="button" onclick="reset();" class="inp_sum mar-lr" value="{lang styleReset}"/>
+</div>
+</form>
+{template admin_footer}

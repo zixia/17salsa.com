@@ -1,0 +1,58 @@
+{template admin_header}
+<style type="text/css">
+<!--
+.styenone ,.styenone li{display:block;list-style:none; margin:0;padding:0;}
+-->
+</style>
+<script type="text/javascript" src="js/pickcolor.js"></script>
+<script type="text/JavaScript">
+	function textareasize(obj) {
+		if(obj.scrollHeight > 90) {
+			obj.style.height = obj.scrollHeight + 'px';
+		}
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a></li>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr" id="current">{lang prevent_content}</a></li></ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+		<form id="waterform" method="POST" action="index.php?admin_setting-randomstr" >
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	<tr>
+		<td width="44%" class="padding"><b>{lang randomstr_open}</b><br/>{lang randomstr_notice2}</td>
+		<td >
+		<label><input {if $settingsnew[random_open] }checked{/if} type="radio" name="setting[random_open]" value="1"/>{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input {if !$settingsnew[random_open] }checked{/if} type="radio" name="setting[random_open]" value="0"/>{lang commonNo}</label></td>
+	</tr>
+	<tr>
+		<td width="44%" class="padding"><b>{lang randomstr_text}</b><br/>{lang randomstr_notice3}</td>
+		<td ><textarea name="setting[random_text]" cols="50" rows="7">{$settingsnew[random_text]}</textarea></td>
+	</tr>
+	<tr>
+		<td colspan="15"><div class="fixsel">
+		<input class="btn" name="settingsubmit" value="{lang submit}" type="submit"></div>
+		</td>
+	</tr>
+</table>
+	  </form>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

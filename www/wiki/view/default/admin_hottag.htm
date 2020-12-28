@@ -1,0 +1,44 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+function remake(){
+	$.post(
+		"index.php?admin_tag-hottag",
+		{ type: '1' },
+		function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			$('#hottag').html(message);
+		}
+	);
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_tag-hottag" id="current">{lang message_hottag}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+
+<form method="POST" action="index.php?admin_tag-hottag" onsubmit="return docheck();">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list" >
+        <tr>
+			<td align="left" height="211" width="100%"><textarea name="hottag" id="hottag" rows="20" cols="80"><!--{if $hottag!=''}-->{$hottag}<!--{else}-->{lang focusmanageNoComTag}<!--{/if}--></textarea></td>
+        </tr>
+        <tr>
+        	<td height="40" align="left" class="red">{lang hottagtip}</td>
+        </tr>
+        <tr>
+        	<td height="40"   align="left"><input class="btn" type="submit" value="{lang commonSave}" name="submit" />     <input class="btn" style="width:140px;"  type="button" value="{lang focusmanageRecomp}" onclick="remake()" /></td>
+        </tr>
+    </table>
+</form>
+{template admin_footer}

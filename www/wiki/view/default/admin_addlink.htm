@@ -1,0 +1,64 @@
+{template admin_header}
+<script type="text/javascript">
+function checknull(){
+	if($.trim($('#website').val())==""){
+		alert("{lang msgJsNullWebName}");
+		$('#website').focus();
+		return false;
+	}
+	if($.trim($('#siteurl').val())==""){
+		alert("{lang msgJsNullWebUrl}");
+		$('#siteurl').focus();
+		return false;
+	}else if(IsURL($.trim($('#siteurl').val()))==false){
+		alert("{lang msgUrlWrong}");
+		$('#siteurl').focus();
+		return false;
+	}
+}
+	function IsURL(str_url){
+    	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+	}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+	  	<li><a href="index.php?admin_friendlink">{lang magLinkTitle}</a></li>
+		<li><a href="index.php?admin_friendlink-add" id="current">{lang magAddLink}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name=linkedit id=linkedit method="post" action="index.php?admin_friendlink-add" onsubmit="return checknull();">
+		<table width=100% align=center cellspacing=0 cellpadding=5 class=table_area>
+			<input type = 'hidden' name='linkid' id='linkid' value="{$link_id}" />
+			<tr class=b align=left>
+				<td width=80>{lang magLinkWebName}</td>
+				<td><input type='text' class="box" name='website' id="website" value="" size='50'>*</td>
+			</tr>
+			<tr class=b align=left>
+				<td>{lang magLinkWebUrl}</td>
+				<td><input type='text' class="box" name='siteurl' id="siteurl" value="http://" size='50'>*</td>
+			</tr>
+			<tr class=b align=left>
+				<td>{lang magLinkWebIntro}</td>
+				<td><input type='text' class="box" name='description' id="description" value="" size='50'></td>
+			</tr>
+			<tr class=b align=left>
+				<td colspan="2"  align='center'>
+					<input name="linksubmit" class="btn" type="submit" value="{lang commonOK}"  />
+		      		<input name="reset" class="btn" type=reset value="{lang commonReset}" />
+		        </td>
+		  	</tr>
+		</table>
+	</form>
+	</td>
+  </tr>
+</table>
+{template admin_footer}

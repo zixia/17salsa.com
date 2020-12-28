@@ -1,0 +1,380 @@
+{template admin_header}
+<style type="text/css">
+.pos li{ float:left; list-style-type:none;}
+
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<script type="text/javascript">
+	<!--{if isset($adv)}--> 
+	$(function(){
+		$("select[name='type']")[0].disabled = true;
+		$("input[name='advnew[title]']").val("{$adv[title]}");
+		<!--{if !empty($adv[targets])}--> 
+		var objSelect=$("select[name='advnew[targets][]'] option") ;
+		for(var i=0;i<objSelect.length;i++){
+			objSelect[i].selected = false;
+			<!--{loop $adv[targets] $target}-->
+			if(objSelect[i].value=='{$target}'){
+				objSelect[i].selected = true; 
+			}
+			<!--{/loop}-->
+		}
+		<!--{/if}-->
+		<!--{if isset($adv[position]) && $adv[position]!=='0'}--> 
+		$("input[name='advnew[position]']").get({$adv[position]}-1).checked = true;
+		<!--{/if}-->
+		<!--{if isset($adv[parameters][floath])}--> 
+		$("input[name='advnew[floath]']").val('{$adv[parameters][floath]}');
+		<!--{/if}-->
+		<!--{if $adv[starttime]!=='0' }--> 
+		$("input[name='advnew[starttime]']").val('$adv[starttime]');
+		<!--{/if}-->
+		<!--{if $adv[endtime]!=='0' }--> 
+		$("input[name='advnew[endtime]']").val('{$adv[endtime]}');
+		<!--{/if}-->
+		
+		$("#advstyle").attr("value",'{$adv['parameters']['style']}');
+		var styles, key;
+		styles=new Array('code','text','image','flash'); 
+		for(key in styles) {
+			var obj=$('#style_'+styles[key]);
+			var dis=styles[key]=='{$adv[parameters][style]}'?'':'none';
+			obj.css('display',dis);
+		}
+		<!--{if {$adv[parameters][style]}=='text' }--> 
+		$("input[name='advnew[text][title]']").val('{$adv[parameters][title]}');
+		$("input[name='advnew[text][link]']").val('{$adv[parameters][link]}');
+		$("input[name='advnew[text][size]']").val('{$adv[parameters][size]}');
+		<!--{/if}-->
+		<!--{if {$adv[parameters][style]}=='image' }--> 
+		$("input[name='advnew[image][url]']").val('{$adv[parameters][url]}');
+		$("input[name='advnew[image][link]']").val('{$adv[parameters][link]}');
+		$("input[name='advnew[image][width]']").val('{$adv[parameters][width]}');
+		$("input[name='advnew[image][height]']").val('{$adv[parameters][height]}');
+		$("input[name='advnew[image][alt]']").val('{$adv[parameters][alt]}');
+		<!--{/if}-->
+		<!--{if {$adv[parameters][style]}=='flash' }--> 
+		$("input[name='advnew[flash][url]']").val('{$adv[parameters][url]}');
+		$("input[name='advnew[flash][width]']").val('{$adv[parameters][width]}');
+		$("input[name='advnew[flash][height]']").val('{$adv[parameters][height]}');
+		<!--{/if}-->
+	}); 
+	<!--{else}-->
+	function change(type){
+		window.location='{$setting[seo_prefix]}admin_adv-add-'+type+'{$setting[seo_suffix]}';
+	}
+	<!--{/if}-->
+	function check(){
+		var image_num = $("input[name='advnew[image][width]']").val()+$("input[name='advnew[image][height]']").val();
+		var flash_num = $("input[name='advnew[flash][width]']").val()+$("input[name='advnew[flash][height]']").val();
+		if($("input[name='advnew[title]']").val()=='') {
+			alert('{lang adv_title_invalid}');
+			return false;
+		}
+		<!--{if $position==6}-->
+		else if($("input[name='advnew[floath]']").val()<40 || $("input[name='advnew[floath]']").val()>600){
+			alert('{lang adv_float_height_error}');
+			return false;
+		}else if( /\D+/.test( $("input[name='advnew[floath]']").val() ) ){
+			alert('{lang adv_float_height_notnum}');
+			return false;
+		}
+		<!--{/if}-->
+		else if(($("#advstyle").val() == 'code' && $("textarea[name='advnew[code][html]']").val()=='')
+			|| ($("#advstyle").val() == 'text' && ($("input[name='advnew[text][title]']").val()=='' || $("input[name='advnew[text][link]']").val()==''))
+			|| ($("#advstyle").val() == 'image' && ($("input[name='advnew[image][url]']").val()=='' || $("input[name='advnew[image][link]']").val()==''))
+			|| ($("#advstyle").val() == 'flash' && ($("input[name='advnew[flash][url]']").val()=='' || $("input[name='advnew[flash][width]']").val()=='' || $("input[name='advnew[flash][height]']").val()==''))) {
+			alert('{lang adv_parameter_invalid}');
+			return false;
+		}else if(  (image_num != '' && /\D+/.test(image_num))||(flash_num != '' && /\D+/.test(flash_num))  ){
+			alert('{lang adv_not_num}');
+			return false;
+		}
+		return true;;
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_adv-config" >{lang config_adv}</a></li>
+            <li><a href="index.php?admin_adv-default">{lang admin_adv}</a></li>
+           <!--{if isset($adv)}-->  
+           <li><a href="index.php?admin_adv-add">{lang add_adv}</a></li>
+           <li><a href="index.php?admin_adv" id="current">{lang edit_adv}</a></li>
+           <!--{else}-->
+           <li><a href="index.php?admin_adv-add" id="current">{lang add_adv}</a></li>
+            <!--{/if}-->
+		  </ul>
+		</div> 
+	    </td>
+	</tr>
+</table>
+    <br />
+<!--{if isset($adv)}--> 
+<form action="index.php?admin_adv-edit" method="post">
+<input name="advid" value="{$adv[advid]}" type="hidden">
+<!--{else}-->
+<form action="index.php?admin_adv-add" method="post">
+<!--{/if}-->
+<table width="100%" cellspacing="3" cellpadding="2" class="list">
+		<tr>
+			<td bgcolor="#eeeeee"><b>{lang adv_select}</b></td>
+  </tr>
+        <tr>
+			<td><select name="type" onchange="change(this.value);">
+            <option value="0" <!--{if $position==0}--> selected <!--{/if}-->>{lang adv_position_0}</option>
+            <option value="1" <!--{if $position==1}--> selected <!--{/if}-->>{lang adv_position_1}</option>
+            <option value="2" <!--{if $position==2}--> selected <!--{/if}-->>{lang adv_position_2}</option>
+            <option value="3" <!--{if $position==3}--> selected <!--{/if}-->>{lang adv_position_3}</option>
+            <option value="4" <!--{if $position==4}--> selected <!--{/if}-->>{lang adv_position_4}</option>
+			<option value="7" <!--{if $position==7}--> selected <!--{/if}-->>{lang adv_position_7}</option>
+            <option value="5" <!--{if $position==5}--> selected <!--{/if}-->>{lang adv_position_5}</option>
+            <option value="6" <!--{if $position==6}--> selected <!--{/if}-->>{lang adv_position_6}</option>
+			
+          </select></td>
+  </tr>
+</table>
+    <br />
+<!--{if isset($adv)}--> 
+<input name="type" value="{$adv[type]}" type="hidden">
+<!--{/if}-->
+<table width="100%" cellspacing="3" cellpadding="2" class="list">
+    <tr>
+        <td bgcolor="#EEEEEE"><b>{lang adv_notes}</b></td>
+    </tr>
+    <tr>
+        <td>{$adv_note}</td>
+  	</tr>
+</table>
+    <br />
+<table width="100%" cellspacing="3" cellpadding="2" class="list">
+<tbody>
+    <tr>
+    	<th colspan="2" align="left" bgcolor="#EEEEEE">{lang add_adv} - {$adv_position}</th>
+    </tr>
+    <tr>
+    	<td colspan="2">{lang adv_titles}:</td>
+    </tr>
+    <tr>
+        <td width="27%">
+        <input name="advnew[title]" value="" class="txt" type="text">
+        </td>
+        <td width="73%" align="left">{lang adv_tip}</td>
+    </tr>
+	
+    <!--{if isset($adv_range)}--> 
+    <tr>
+    <td colspan="2">{lang adv_totarget}:</td>
+    </tr>
+    <tr>
+    <td>
+        <select name="advnew[targets][]" size="10" multiple="MULTIPLE" id="advrange">
+        {$adv_range}
+        </select>
+    </td>
+    <td>{lang adv_forums}</td>
+    </tr>
+    <!--{/if}--> 
+    <!--{if isset($dis_pos)}--> 
+    <tr>
+    <td colspan="2">{lang adv_show_position}:</td>
+    </tr>
+    <tr>
+    <td>
+        <ul class="pos">
+        {$dis_pos}
+        </ul>
+    </td>
+    <td>{lang adv_tip2}</td>
+    </tr>
+    <!--{/if}-->
+    <!--{if isset($isfloat)}--> 
+    <tr>
+    <td colspan="2">{lang adv_fload_height}:</td>
+    </tr>
+	<tr>
+    <td>
+    <input name="advnew[floath]" value="200" class="txt" type="text"></td>
+    <td>{lang adv_tip3}</td>
+	</tr>
+    <!--{/if}-->
+    <tr>
+    	<td colspan="2" >{lang adv_start_time}:</td>
+    </tr>
+    
+    <tr>
+    	<td>
+    	<input class="txt" name="advnew[starttime]" value="" onclick="showcalendar(event, this);"  type="text">
+    	</td>
+    	<td align="left">{lang adv_tip4}</td>
+    </tr>
+    <tr>
+    	<td colspan="2" >{lang adv_end_time}:</td>
+    </tr>
+    <tr >
+        <td >
+        <input class="txt" name="advnew[endtime]" value="" onclick="showcalendar(event, this);"  type="text">
+        </td><td align="left" >{lang adv_tip5}</td>
+    </tr>
+    <tr>
+    	<td colspan="2" >{lang adv_show}:</td>
+    </tr>
+    <tr >
+        <td >
+        <select name="advnew[style]" id="advstyle" onchange="
+            var styles, key;
+            styles=new Array('code','text','image','flash'); 
+            for(key in styles) {
+                var obj=$('#style_'+styles[key]);
+                var dis=styles[key]==this.options[this.selectedIndex].value?'':'none';
+                obj.css('display',dis);
+            }">
+            <!--{if $position!=5 && $position!=6}-->
+            <option value="code" selected="selected"> {lang adv_style_code}</option>
+            <option value="text"> {lang adv_style_text}</option>
+            <!--{/if}-->
+            <option value="image"> {lang adv_style_image}</option>
+            <option value="flash"> {lang adv_style_flash}</option>
+        </select>
+        </td>
+        <td align="left" >{lang adv_showchoose}</td>
+    </tr>
+</tbody>
+  <!--{if $position!=5 && $position!=6}-->  
+<tbody id="style_code">
+        <tr>
+            <th colspan="15" align="left" class="partition">{lang adv_htmlcode}</th>
+      </tr>
+        <tr>
+            <td colspan="2" >{lang adv_htmlcodes}:</td>
+        </tr>
+        <tr >
+            <td >
+            <textarea rows="6" name="advnew[code][html]" cols="50" class="tarea"><!--{if {$adv[parameters][style]}=='code' }--> {$adv[parameters][html]}<!--{/if}--></textarea></td><td align="left" >{lang adv_import_code}
+            </td>
+      </tr>
+</tbody>
+    
+<tbody id="style_text" style="display: none;">
+    <tr>
+    <th colspan="15" align="left" class="partition">{lang adv_charactor}</th>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_charactornotnull}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[text][title]" value="" class="txt" type="text"></td><td align="left" >{lang adv_charactor_con}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_charactor_link}:</td>
+    </tr>
+    
+    <tr >
+    <td >
+    <input name="advnew[text][link]" value="http://" class="txt" type="text"></td><td align="left" >{lang adv_charactor_url}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_charsize}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[text][size]" value="" class="txt" type="text"></td><td align="left" >{lang adv_charactor_tip}</td>
+    </tr>
+</tbody>
+    <!--{/if}-->
+<tbody id="style_image"  <!--{if $position!=5 && $position!=6}-->style="display: none;" <!--{else}--> style="display: block;" <!--{/if}-->>
+    <tr>
+    <th colspan="15" align="left" class="partition">{lang adv_img}</th>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_img_add}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[image][url]" value="" class="txt" type="text"></td><td align="left" >{lang adv_img_tip}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_img_link}:</td>
+    </tr>
+    
+    <tr >
+    <td >
+    <input name="advnew[image][link]" value="http://" class="txt" type="text"></td><td align="left" >{lang adv_img_url}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_img_width}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[image][width]" value="" class="txt" type="text"></td><td align="left" >{lang adv_img_widthtip}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_img_height}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[image][height]" value="" class="txt" type="text"></td><td align="left" >{lang adv_img_heighttip}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >{lang adv_imgtochar}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[image][alt]" value="" class="txt" type="text"></td><td align="left" >{lang adv_moutip}</td>
+    </tr>
+</tbody>
+    
+<tbody id="style_flash" style="display: none;">
+    
+    <tr>
+    <th colspan="15" align="left" class="partition">Flash {lang adv_flash}</th>
+    </tr>
+    <tr>
+    <td colspan="2" >Flash {lang adv_flash_add}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[flash][url]" value="" class="txt" type="text"></td><td align="left" >{lang adv_flashtip}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >Flash {lang adv_flashwidth}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[flash][width]" value="" class="txt" type="text"></td><td align="left" >{lang adv_flashwidth_tip}</td>
+    </tr>
+    <tr>
+    <td colspan="2" >Flash {lang adv_flash_height}:</td>
+    </tr>
+    <tr >
+    <td >
+    <input name="advnew[flash][height]" value="" class="txt" type="text"></td><td align="left" >{lang adv_falsh_heighttip}</td>
+    </tr>
+</tbody>
+
+<tbody>
+	<tr>
+    <td colspan="15"><div class="fixsel"><input class="btn" name="advsubmit" onclick="return check()" value="{lang submit}" type="submit"></div></td>
+    </tr>
+</tbody>
+</table>
+</form>
+{template admin_footer}

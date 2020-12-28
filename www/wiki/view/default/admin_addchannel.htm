@@ -1,0 +1,68 @@
+{template admin_header}
+<script type="text/javascript">
+function checknull(){
+	if($.trim($('#name').val())==""){
+		alert("{lang channel_nameNotNull}");
+		$('#name').focus();
+		return false;
+	}
+	if($.trim($('#url').val())==""){
+		alert("{lang channel_urlNotNull}");
+		$('#url').focus();
+		return false;
+	}else if(IsURL($.trim($('#url').val()))==false){
+		alert("{lang msgUrlWrong}");
+		$('#siteurl').focus();
+		return false;
+	}
+}
+	function IsURL(str_url){
+    	return(/(?:https?:\/\/)?\w+\.\w+/.test(str_url));
+	}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_channel" >{lang channel_tomanage}</a></li>
+		<li><a href="index.php?admin_channel-add" id="current">{lang channel_add}</a></li>
+
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="channeledit" id="channeledit" method="post" action="index.php?admin_channel-add" onsubmit="return checknull();">
+		<table width="100%" align="center" cellspacing="0" cellpadding="5" class="table_area">
+			<input type = 'hidden' name='id' id='id' value="{$channel['id']}" />
+			<tr class="b" align='left'>
+				<td width='80'>{lang channel_name}</td>
+				<td><input type='text' class="box" name='name' id="name" value="" size='50'>*</td>
+			</tr>
+			<tr class='b' align='left'>
+				<td>{lang channel_url}</td>
+				<td><input type='text' class="box" name='url' id="url" value="http://" size='50'>*</td>
+			</tr>
+			<tr class='b' align='left'>
+				<td>{lang channel_start}</td>
+				<td>
+					<input type="radio" name="available" value="1" checked="checked" />{lang adv_enable}
+					<input type="radio" name="available" value="0" />{lang adv_disable}
+				</td>
+			</tr>
+			<tr class='b' align='left'>
+				<td colspan="2"  align='center'>
+					<input name="channelsubmit" class="btn" type="submit" value="{lang commonOK}"  />
+		      		<input name="reset" class="btn" type='reset' value="{lang commonReset}" />
+		        </td>
+		  	</tr>
+		</table>
+	</form>
+	</td>
+  </tr>
+</table>
+{template admin_footer}

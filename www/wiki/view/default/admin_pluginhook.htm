@@ -1,0 +1,40 @@
+{template admin_header}
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+			<li><a href="index.php?admin_plugin-manage-{$pluginid}" >{lang commonManage}</a></li>
+			<li><a href="index.php?admin_plugin-setvar-{$pluginid}" >{lang commonSet}</a></li>
+			<li><a href="index.php?admin_plugin-hook-{$pluginid}" id="current">{lang commonHook}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<br/>
+<!--{if !empty($pluginhooks) }-->
+	<table align="center" cellpadding="10" cellspacing="0" width="98%" class="list">
+	  <tr>
+	    <td valign="top">
+		    	<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+	    		<tr>
+	              <td height="26" ><strong>{lang pluginHookName}</strong></td>
+	              <td height="26" ><strong>{lang pluginHookCode}</strong></td>
+	              <td height="26" ><strong>{lang pluginHookSum}</strong></td>
+	            </tr>
+	<!--{loop $pluginhooks $pluginhook}-->
+	     		<tr>
+	              <td height="26" >{$pluginhook[title]}</td>
+	              <td height="26" ><input type="text" value="{$pluginhook[code]}" /></td>
+	              <td height="26" >{$pluginhook[description]}</td>
+	            </tr>
+	<!--{/loop}-->
+		    	</table>
+	    </td>
+	  </tr>
+	</table>
+<!--{else}-->
+	{lang pluginNoHook}
+<!--{/if}-->
+{template admin_footer}

@@ -1,0 +1,203 @@
+{template header}
+<script type="text/javascript">
+ $(document).ready(function(){
+ 	$("input[name*='searchtext']") .focus();
+	$("#yzwkb ul.tab a").click(function(){
+		var id = $(this).attr('href');
+		$("#weekuser, #topuser").hide();
+		$("#yzwkb ul.tab a").removeClass();
+		$(this).addClass('on');
+		$(id).show();
+		return false;
+	});
+  });
+</script>
+
+<div id="left">
+
+<div id="bkfl" class="columns">
+	<h2 class="col-h2">{lang wikiCategory}</h2>
+	<div class="bor-white-t"></div>
+	<!--{loop $categorylist  $category}-->
+	<dl>
+	  <dt><a href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+        <!--{if isset($category['child'])}-->
+		<dd class="link_gray">
+      	<!--{loop $category['child'] $value}-->
+	 	 <a href="{url category-view-$value['cid']}" >{$value['name']}</a>
+         <!--{/loop}-->
+		 </dd>
+         <!--{/if}-->
+	</dl>
+    <!--{/loop}-->
+</div>
+
+<div id="azmsx" class="columns">
+	<h2 class="col-h2">{lang letterOrderView}</h2>
+	<ul class="col-ul">
+		<li><a href="{url list-letter-A}" >A</a></li>
+		<li><a href="{url list-letter-B}" >B</a></li>
+		<li><a href="{url list-letter-C}" >C</a></li>
+		<li><a href="{url list-letter-D}" >D</a></li>
+		<li><a href="{url list-letter-E}" >E</a></li>
+		<li><a href="{url list-letter-F}" >F</a></li>
+		<li><a href="{url list-letter-G}" >G</a></li>
+		<li><a href="{url list-letter-H}" >H</a></li>
+		<li><a href="{url list-letter-I}" >I</a></li>
+		<li><a href="{url list-letter-J}" >J</a></li>
+		<li><a href="{url list-letter-K}" >K</a></li>
+		<li><a href="{url list-letter-L}" >L</a></li>
+		<li><a href="{url list-letter-M}" >M</a></li>
+		<li><a href="{url list-letter-N}" >N</a></li>
+		<li><a href="{url list-letter-O}" >O</a></li>
+		<li><a href="{url list-letter-P}" >P</a></li>
+		<li><a href="{url list-letter-Q}" >Q</a></li>
+		<li><a href="{url list-letter-R}" >R</a></li>
+		<li><a href="{url list-letter-S}" >S</a></li>
+		<li><a href="{url list-letter-T}" >T</a></li>
+		<li><a href="{url list-letter-U}" >U</a></li>
+		<li><a href="{url list-letter-V}" >V</a></li>
+		<li><a href="{url list-letter-W}" >W</a></li>
+		<li><a href="{url list-letter-X}" >X</a></li>
+		<li><a href="{url list-letter-Y}" >Y</a></li>
+		<li><a href="{url list-letter-Z}" >Z</a></li>
+		<li><a href="{url list-letter-0}" >0</a></li>
+		<li><a href="{url list-letter-1}" >1</a></li>
+		<li><a href="{url list-letter-2}" >2</a></li>
+		<li><a href="{url list-letter-3}" >3</a></li>
+		<li><a href="{url list-letter-4}" >4</a></li>
+		<li><a href="{url list-letter-5}" >5</a></li>
+		<li><a href="{url list-letter-6}" >6</a></li>
+		<li><a href="{url list-letter-7}" >7</a></li>
+		<li><a href="{url list-letter-8}" >8</a></li>
+		<li><a href="{url list-letter-9}" >9</a></li>
+		<li><a href="{url list-letter-*}" >{lang otherOrderView}</a></li>
+	</ul>
+</div>
+
+
+<div id="zxpl" class="columns">
+   <h2 class="col-h2">{lang recentComment}</h2>
+   <ul class="col-ul a-c mar-t8">
+   <!--{loop $indexcache['recentcommentlist'] $comment}-->
+      		<li><a href="{url comment-view-$comment['did']}"  class="ctm l" title="{$comment['comment']}">{$comment['tipcomment']}</a><br/>{$comment['time']}</li>
+   <!--{/loop}-->
+   </ul>
+</div>
+
+</div>
+
+<div id="mid">
+
+<div id="tjct"  class="columns">
+	<h2 class="col-h2 link_black"><span class="l">{lang focusDoc}</span><a href="{url list-focus}"  class="r font12">{lang more}&gt;&gt;</a></h2>
+	<!--{if isset($indexcache['fistcommenddoc'])}-->
+	<dl>
+		<dt>
+		<a href="{url doc-view-$indexcache['fistcommenddoc']['did']}"  class="a-img">
+			<img src="{$indexcache['fistcommenddoc']['image']}" alt="{$indexcache['fistcommenddoc']['title']}"  />
+		</a></dt>
+		<dt><a href="{url doc-view-$indexcache['fistcommenddoc']['did']}"  class="font14 title" >
+			{$indexcache['fistcommenddoc']['title']}
+		</a></dt>
+		<dd><p class="p">{$indexcache['fistcommenddoc']['summary']}...<a href="{url doc-view-$indexcache['fistcommenddoc']['did']}" class="r-b">{lang readFullText}&gt;&gt;</a></p></dd>	
+	</dl>
+	<div id="other-word">
+		<!--{loop $indexcache['commenddocs'] $doc}-->
+    	<dl class="tpct_list">
+			<dt><a href="{url doc-view-$doc['did']}"  class="a-img l">
+				<img src="{$doc['simage']}" alt="{$doc['title']}" />
+			</a></dt>
+			<dd><a href="{url doc-view-$doc['did']}"  class="font14 title" >{$doc['title']}</a></dd>
+		</dl>
+ 		<!--{/loop}-->
+	</div>
+	<!--{/if}-->
+</div>
+
+<!--ad start -->
+
+<!--{if isset($advlist[2]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="net_adv pad-b8" id="advlist_2">
+{$advlist[2][code]}
+</div>
+<!--{elseif isset($advlist[2]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="net_adv pad-b8" id="advlist_2">
+</div>
+<!--{/if}-->
+
+<!--ad end -->
+
+
+<div id="zjgx" class="columns">
+	<h2 class="col-h2 link_black"><span class="l til-fl">{lang recentUpdate}</span><a href="{url list-recentupdate}"  class="r font12">{lang more}&gt;&gt;</a></h2>
+   <ul class="col-ul a-c">
+   <!--{loop $indexcache['recentupdatelist'] $doc}-->
+      		<li><a href="{url category-view-$doc['cid']}"  class="l til-fl">[{$doc['category']}] </a><a href="{url doc-view-$doc['did']}"  class="ctm" title="{$doc['title']}">{$doc['shorttitle']}</a><a href="{url user-space-$doc['lasteditorid']}"  class="name">$doc['lasteditor']</a><span class="r">{if $doc['iscreate']}{lang indexTip3}{else}{lang indexTip4}{/if} $doc['lastedit'] </span></li>
+   <!--{/loop}-->
+   </ul>
+</div>
+
+</div>
+
+<div id="right" class="default-r">
+<div class="zwf">
+  <li><a onclick="return doLogin(this)" href="{url doc-sandbox}"  id="bjsy"></a>
+	<a onclick="return doLogin(this)" href="{url doc-create}"  id="cjct"></a></li>
+</div>
+<div id="notice" class="columns">
+	<h2 class="col-h2 link_black"><span class="l">{lang webnotice}</span></h2>
+	<p class="mar-lr8 mar-t8">$setting[site_notice]</p>
+</div>
+<div id="yzwkb" class="columns">
+	<h2 class="col-h2 link_black"><span class="l">{lang list}</span></h2>
+ 	<ul class="tab">
+	    <li><a href="#weekuser" target="_self" <!--{if $base_toplist==1}--> class="on"<!--{/if}-->>{lang weekUserList}</a></li>
+	    <li><a href="#topuser" target="_self"  <!--{if $base_toplist==0}--> class="on"<!--{/if}-->>{lang allcredit}</a></li>
+	</ul>
+	
+	<ul id="weekuser" class="col-ul a-c <!--{if $base_toplist==0}-->none<!--{/if}-->">
+		<!--{loop $indexcache['weekuserlist']  $i $user}-->
+		<li class="<!--{if $i==0}-->red<!--{elseif $i==1}-->orange<!--{elseif $i==2}-->orange<!--{/if}-->"><span class="ranking">{eval echo $i+1}</span><a href="{url user-space-$user['uid']}" target="_blank" class="l">{$user['username']}</a> <span class="r">{$user['credit']}</span></li>
+		<!--{/loop}-->
+		<li><a href="{url list-weekuserlist}" class="r bg_no">{lang more}&gt;&gt;</a></li>
+	</ul>
+	
+	<ul id="topuser" class="col-ul a-c <!--{if $base_toplist==1}-->none<!--{/if}-->">
+		<!--{loop $indexcache['topuserlist'] $i $user}-->
+		<li class="<!--{if $i==0}-->red<!--{elseif $i==1}-->orange<!--{elseif $i==2}-->orange<!--{/if}-->"><span class="ranking">{eval echo $i+1}</span><a href="{url user-space-$user['uid']}" class="l" target="_blank">{$user['username']}</a> <span class="r">{$user['credit']}</span></li>
+		<!--{/loop}-->
+		<li><a href="{url list-allcredit}" class="r bg_no">{lang more}&gt;&gt;</a></li>
+	</ul>
+	
+</div>
+
+<div id="rmbq" class="columns">
+	<h2 class="col-h2 link_black"><span class="l">{lang hotTag}</span></h2>
+	<ul class="col-ul a-c">
+    <!--{loop $indexcache['hottag']	 $tag}-->
+    	<!--{if $tag['tagcolor']=='orange'}-->
+        <li class="link_orange"><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{elseif $tag['tagcolor']=='blue'}-->
+        <li class="link_blue"><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{elseif $tag['tagcolor']=='green'}-->
+        <li class="link_green"><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{else}-->
+        <li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{/if}-->
+    <!--{/loop}-->
+	</ul>
+</div>
+
+</div>
+
+<!--{if count($indexcache['friendlink'])!=0}-->
+<div id="links" class="link_gray">
+<strong class="gray">{lang friendLink}</strong>
+<!--{loop $indexcache['friendlink'] $link}-->
+<a href="{$link['url']}" target="_blank" title="{$link['description']}">{$link['name']}</a>
+<!--{/loop}-->
+</div>
+<!--{/if}-->
+
+{template footer}

@@ -1,0 +1,101 @@
+{template admin_header}
+<script type="text/javascript">
+function jswizard(num){
+	if(num==1){
+		window.open('index.php?plugin-jswizard-admin_jswizard-doc',"_self","");
+	}else if(num==2){
+		window.open('index.php?plugin-jswizard-admin_jswizard-user',"_self","");
+	}else if(num==3){
+		window.open('index.php?plugin-jswizard-admin_jswizard-cate',"_self","");
+	}else if(num==4){
+		window.open('index.php?plugin-jswizard-admin_jswizard-search',"_self","");
+	}else if(num==5){
+		window.open('index.php?plugin-jswizard-admin_jswizard-tag',"_self","");
+	}
+}
+function docheck(){
+	if(confirm('确定要删除所选项么？')){
+		$('jsform').submit();
+	}else{
+		return false;
+	}
+}
+function selectALL(obj){
+	var uids=document.getElementsByClassName('box');
+ 	for (var index = 0; index < uids.length; ++index) {
+		var item = uids[index];
+		if(!item.disabled){
+			item.checked=obj.checked;
+		}
+  }
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_plugin-manage-{$pluginid}"  id="current">{lang commonManage}</a></li>
+			<li><a href="index.php?admin_plugin-setvar-{$pluginid}">{lang commonSet}</a></li>
+			<li><a href="index.php?admin_plugin-hook-{$pluginid}">{lang commonHook}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<br/>
+<form name="jsform" id="jsform" action="index.php?plugin-jswizard-admin_jswizard-remove"  method="post" onSubmit="return docheck();">
+<table align="center" cellpadding="3" cellspacing="0" width="98%" class="list">
+<tbody>
+<!--{if $jsstatus==0}-->
+  <tr class="list_title" align="center">
+    <td valign="top" colspan='4'><strong><font color="#FF0000">您还没有开通数据调用!</font></strong></td>
+  </tr>
+<!--{else}-->
+<tr class="list_title" align="center">
+<td valign="top" colspan='4' align="center">
+添加：
+<input class="btn" value="词条列表" type="button" name="doc" onclick="jswizard(1);" />
+<input class="btn" value="用户列表" type="button" name="user" onclick="jswizard(2);"/>
+<input class="btn" value="分类" type="button" name="cate" onclick="jswizard(3);"/>
+<input class="btn" value="搜索" type="button" name="search" onclick="jswizard(4);"/>
+<input class="btn" value="热门标签" type="button" name="tag" onclick="jswizard(5);"/>
+</td>
+</tr>
+  <tr class="list_title" align="center">
+    <td valign="top"><strong>选择</strong></td>
+    <td valign="top"><strong>唯一标识</strong></td>
+    <td valign="top"><strong>类型</strong></td>
+    <td valign="top"><strong>操作</strong></td>
+  </tr>
+<!--{loop $jswizardlist $jswizard}-->
+  <tr class="b">
+  	<td align="center"><input type="checkbox" class="box"  name="jswizard[]" value="{$jswizard[variable]}" /></td>
+    <td align="center">{$jswizard[variable]}</td>
+    <td align="center"><!--{if $jswizard[type]==1}-->词条列表<!--{elseif $jswizard[type]==2}-->用户列表<!--{elseif $jswizard[type]==3}-->分类<!--{elseif $jswizard[type]==4}-->搜索<!--{elseif $jswizard[type]==5}-->热门标签<!--{/if}--></td>
+    <!--{if $jswizard[type]==1}-->
+    <td align="center"><a href="index.php?plugin-jswizard-admin_jswizard-doc-edit-{$jswizard[variable]}">编辑</a></td>
+    <!--{elseif $jswizard[type]==2}-->
+    <td align="center"><a href="index.php?plugin-jswizard-admin_jswizard-user-edit-{$jswizard[variable]}">编辑</a></td>
+    <!--{elseif $jswizard[type]==3}-->
+    <td align="center"><a href="index.php?plugin-jswizard-admin_jswizard-cate-edit-{$jswizard[variable]}">编辑</a></td>
+    <!--{elseif $jswizard[type]==4}-->
+    <td align="center"><a href="index.php?plugin-jswizard-admin_jswizard-search-edit-{$jswizard[variable]}">编辑</a></td>
+    <!--{elseif $jswizard[type]==5}-->
+    <td align="center"><a href="index.php?plugin-jswizard-admin_jswizard-tag-edit-{$jswizard[variable]}">编辑</a></td>
+    <!--{/if}-->
+    
+    
+  </tr>
+<!--{/loop}-->  
+  <tr class="b">
+        <td width="80px"><input name="chkall" class="box" onclick="selectALL(this);"  type="checkbox" /><b><label id="tip">全选</label></b></td>
+        <td><input type="submit" class="btn" value="{lang commonDel}"   />&nbsp;&nbsp;</td>
+  		<td></td>
+  		<td></td>
+	</tr>
+<!--{/if}-->
+</tbody>
+</table>
+</form>
+{template admin_footer}

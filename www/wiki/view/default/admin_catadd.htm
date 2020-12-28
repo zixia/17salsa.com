@@ -1,0 +1,100 @@
+{template admin_header}
+<script type="text/javascript">
+	function checkCatname(){
+		if($("input[name='catname[]'][value!='']").length>0)
+			return true;
+		return false;
+	}
+	function doSubmit(){
+		if(!checkCatname()){
+			alert("{lang msgJsNullCatName}");
+			return false;
+		}
+	}
+
+	function addInput(){
+		$('#catblock').append("<dd><input name=\"catname[]\" class=\"wenben\" type=\"text\" size=\"22\" maxlength=\"40\" />&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\">{lang commonDel}</a></dd>");
+	}
+
+	function delInput(obj){
+		var j = $('#catblock');
+		j[0].removeChild(obj.parentNode);
+	}
+</script>
+<style type="text/css">
+dd{margin:0px;padding:0px;}
+</style>
+ 
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_category-list">{lang magManageCat}</a></li>
+		<li><a href="index.php?admin_category-add" id="current">{lang magAddCat}</a></li>
+		<li><a href="index.php?admin_category-merge">{lang magUniteCat}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+<form action="index.php?admin_category-add" onsubmit="return doSubmit();" method="POST">
+<table width=98% align=center cellspacing=1 cellpadding=3 class=table_area>
+<tr>
+<td width="10%">{lang magParentCat}</td>
+<td>
+<select name='pcid'>
+	{if is_array($tcat)}
+		<option value="{$tcat[cid]}" selected="selected">{$tcat[name]}</option>
+	{else}
+		<option value="0">{lang magTopLevelCat}</option>
+		{$cats}
+	{/if}
+</select>
+</td>
+</tr>
+<tr>
+<td  valign="top">{lang magCatName}</td>
+<td>
+	<dl id="catblock" >
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;</dd>
+	<dd><input name="catname[]" class="wenben" type="text" size="22" maxlength="40" value=""/>&nbsp;&nbsp;[<a href="javascript:void(0)" onclick="javascript:addInput()">{lang commonAdd}</a>]</dd>
+	</dl>
+</td>
+</tr>
+ 
+<tr style="display:none">
+<td width=100 align=center>{lang magCatIco}</td>
+<td><input id="catico" name="catico" class="wenben" type="text" size="22" maxlength="40" value=""/></td>
+</tr>
+
+<tr style="display:none">
+<td width=100 align=center>{lang magCatIntro}</td>
+<td><textarea id="catintro" name="catintro" class="wenben" cols="23" rows="8"></textarea></td>
+</tr>
+ 
+
+<tr>
+  <td colspan="2" align=center><center>
+      <input name="submit" class="btn" type="submit" value="{lang commonOK}" />
+      <input name="reset" class="btn" type=reset value="{lang commonReset}" />
+    </center>
+   </td>
+</tr>
+</table>
+</form>
+{template admin_footer}

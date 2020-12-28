@@ -1,0 +1,54 @@
+{template admin_header}
+<script language="JavaScript" type="text/javascript">
+  function changepic(picurl){
+  	$("#sitelogo").attr('src',picurl);
+  }
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo"  id="current">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>	
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+		<form name="_modifyico" enctype="multipart/form-data" action="index.php?admin_setting-logo" method="POST">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+				<tr>
+					<td height="24" >&nbsp;&nbsp;<strong>{lang uploadLogoSelectImage}</strong></td>
+				</tr>
+				<tr>
+					<td height="80">&nbsp;&nbsp;<img width="183px" height="51px" id="sitelogo" src="style/default/logo.gif"/></td>
+				</tr>
+				<tr>
+					<td height="30">&nbsp;&nbsp;<input style="width:200px;" class="box" name="logo" type="file" onchange="changepic(this.value);"/></td>
+				</tr>
+				<tr>
+					<td height="24">&nbsp;&nbsp;<font color="red">{lang uploadLogoWarn}</font></td>
+				</tr>
+				<tr>
+					<td height="40">&nbsp;&nbsp;<input class="btn" type="submit" value="{lang commonUpload}" name="logsubmit" /></td>
+				</tr>
+			</table>
+		</form>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+document.getElementById('sitelogo').src=document.getElementById('sitelogo').src+'?'+Math.random();
+</script>
+{template admin_footer}

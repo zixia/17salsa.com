@@ -1,0 +1,63 @@
+{template admin_header}
+<style type="text/css">
+.outtable{margin:0.5em auto; width:99%; border: 1px #CCCCCC solid;color:#333; }
+.table_title{margin:0.5em auto;width:99%;color:#333;font-size:14px;border-bottom:1px #ccc solid;padding:4px;}
+.table_title a {color:#333;text-decoration:none;}
+.outtable td{height:20px;line-height:20px;padding:7px 8px 3px 8px;}
+.td_b{ background-color:#eee; font-weight:bold;}
+.stats{list-style: decimal inside;width:70%;padding-left:0px; margin-left:0;}
+.stats li{ border-bottom:1px #ddd solid;line-height:230%;}
+</style>
+<h2 class="table_title"><a href="{$setting['seo_prefix']}admin_statistics-stand{$setting['seo_suffix']}" id="current">{lang stand}</a></h2>
+<table class='outtable' cellpadding="10" cellspacing="0" >
+  <tr>
+    <td colspan="2" class="td_b">{lang count_member}</td> 
+  </tr>
+    <tr>
+    <td width="50%">{lang register} {$stand[register]}</td>
+    <td>{lang edit_user} {$stand[edit_user]}</td>
+  </tr>
+    <tr>
+    <td>{lang manage_user} {$stand[manage_user]}</td>
+    <td>{lang unedit_user} {$stand[unedit_user]}</td>
+  </tr>
+    <tr>
+    <td>{lang new_user} <a href="{$setting['seo_prefix']}user-space-{$stand[new_user][uid]}{$setting['seo_suffix']}" target="_blank">{$stand[new_user][username]}</a></td>
+    <td>{lang edit_user_percent} {$stand[edit_user_percent]}</td>
+  </tr>
+    <tr>
+    <td>{lang star_today} <a href="{$setting['seo_prefix']}user-space-{$stand[star_today][authorid]}{$setting['seo_suffix']}" target="_blank">{$stand[star_today][author]}</a></td>
+    <td>{lang average_edition} {$stand[average_edition]}</td>
+  </tr>
+</table>
+<table class='outtable' align="center" cellpadding="10" cellspacing="0" >
+  <tr>
+    <td colspan="3" class="td_b">{lang count_doc}</td>
+  </tr>
+    <tr>
+    <td width="33%">{lang category_num} {$stand[category_num]}</td>
+    <td width="34%">{lang average_day_doc} {$stand[average_day_doc]}</td>
+    <td width="33%">{lang hot_category} <a href="{$setting['seo_prefix']}category-view-{$stand[hot_category][cid]}{$setting['seo_suffix']}" target="_blank" >{$stand[hot_category][name]}</a></td>
+  </tr>
+    <tr>
+    <td>{lang create_doc_num} {$stand[create_doc_num]}</td>
+    <td>{lang average_day_user} {$stand[average_day_user]}</td>
+    <td>{lang doc_comment_num} {$stand[doc_comment_num]}</td>
+  </tr>
+    <tr>
+    <td>{lang edition_num} {$stand[edition_num]}</td>
+    <td>{lang day_recent_doc} {$stand[day_recent_doc]}</td>
+    <td>{lang average_doc_edition} {$stand[average_doc_edition]}</td>
+  </tr>
+    <tr>
+    <td>{lang day_recent_user} {$stand[day_recent_user]}</td>
+    <td>{lang activity_index} {$stand[activity_index]}</td>
+    <td></td>
+  </tr>
+</table>
+<table class='outtable' align="center" cellpadding="10" cellspacing="0" >
+  <tr>
+    <td class="td_b">{lang statistics_message1} {$stand[last_cache_time]} {lang statistics_message2} {$stand[cache_time]} {lang statistics_message3}</td>
+  </tr>
+</table>
+{template admin_footer}

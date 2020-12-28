@@ -1,0 +1,33 @@
+{template admin_header}
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_adv-config" id="current">{lang config_adv}</a></li>
+            <li><a href="index.php?admin_adv-default" >{lang admin_adv}</a></li>
+			<li><a href="index.php?admin_adv-add">{lang add_adv}</a></li>
+		  </ul>
+		</div> 
+	    </td>
+	</tr>
+	</table>
+    <br />
+<form action="index.php?admin_adv-config" method="post">
+	<table width="100%" cellspacing="3" cellpadding="2" class="list">
+		<tr>
+			<td colspan="2"><b>{lang adv_config_mode}</b></td>
+		</tr>
+        <tr>
+			<td><select name="advmode">
+            <option value="0" <!--{if $advmode==0}--> selected <!--{/if}-->>{lang adv_config_mode_0}</option>
+            <option value="1" <!--{if $advmode==1}--> selected <!--{/if}-->>{lang adv_config_mode_1}</option>
+            </select></td>
+		    <td>&nbsp;</td>
+        </tr>
+        <tr>
+			<td colspan="2" ><input name="advsubmit" class="btn" type="submit" value="{lang commonOK}"  /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

@@ -1,0 +1,47 @@
+{template header}
+<div id="category" class="l w-710 o-v bor-c_dl category">
+	<div class="hd_map">
+	<a href="{$setting[site_url]}">{$setting[site_name]}</a> &gt;&gt;{lang wikiCategory}
+	</div>
+	<!--{loop $subcategory  $category}-->
+	<dl class="i6-ff m-t10 p-b10">
+	  <dt><a href="{url category-view-$category['parent']['cid']}" >{$category['parent']['name']}</a></dt>
+	  <!--{if isset($category['child'])}-->
+	  <!--{loop $category['child']  $child}--><dd><a href="{url category-view-$child['cid']}">{$child['name']}</a></dd><!--{/loop}-->
+	 <!--{/if}-->
+	</dl>
+	<!--{/loop}-->
+</div>
+<div class="r w-230">
+	<div class="columns rmbq i6-ff">
+	<h2 class="col-h2">{lang hotTag}</h2>
+	<ul class="col-ul list-s">
+	<!--{loop $hottag $tag}-->
+    	<!--{if $tag['tagcolor']=='red'}-->
+        <li class="$tag['tagcolor']"><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{else}-->
+        <li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+        <!--{/if}-->
+    <!--{/loop}-->
+	</ul>
+	</div>
+	
+	<!--ad start -->
+	<div class="ad" id="advlist_7">
+	<!--{if isset($advlist[7]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+	{$advlist[7][code]}
+	<!--{/if}-->
+	</div>
+	<!--ad end -->	
+	
+	<div class="columns i6-ff">
+	<h2 class="col-h2">{lang cooperatedoc}</h2>
+	<ul class="col-ul list2">
+	<!--{loop $cooperatedocs $cooperatedoc}-->
+		<li><a href="index.php?doc-innerlink-{eval echo urlencode($cooperatedoc)}" target="_blank">$cooperatedoc</a></li>
+	<!--{/loop}-->
+	</ul>
+	</div>
+
+</div>
+{template footer}

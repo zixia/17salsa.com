@@ -1,0 +1,65 @@
+{template admin_header}
+<script language="javascript">
+function download(appid){
+	if(confirm('{lang style_download}')){
+		window.location.href="index.php?admin_style-install-"+appid;
+	}
+}
+
+</script>
+<div id="navcontainer"  class="mar-tb" >
+  <ul id="navlist">
+	<li><a href="index.php?admin_style" >{lang styleListSet}</a></li>
+    <li><a href="index.php?admin_style-list" id="current">{lang styleInstall}</a></li>
+    <li><a href="index.php?admin_style-create">{lang stylecreatenew}</a></li>
+  </ul>
+</div>
+<table>
+<tr>
+	<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+</tr>
+<tr>
+	<td colspan="2" ><li>{lang styledeclare}</li></td>
+</tr>
+</table>
+<div id="plug-in" >
+	<div id="navcontainer"  class="mar-t12">
+	  <ul class="navlist">
+		<li><a href="index.php?admin_style-list-time" <!--{if $orderby=='time'}--> id="current"<!--{/if}-->>{lang attachTime}</a></li>
+		<li><a href="index.php?admin_style-list-install" <!--{if $orderby=='install'}--> id="current"<!--{/if}-->>{lang orderbyinstall}</a></li>
+		<li><a href="index.php?admin_style-list-downloads" <!--{if $orderby=='downloads'}--> id="current"<!--{/if}-->>{lang orderbydownload}</a></li>
+	  </ul>
+	</div>
+<!--{loop $stylelist $i $style}-->
+<div class="plug-in-cell link_blue {if $i%2}bg_gray{/if}"> 
+	<div class="angle_t">
+		<b class="angle_t_l"></b>
+		<b class="angle_t_r"></b>
+	</div>	
+	<dl>
+	    <dt><a href="{$style['name']}" target="_blank"><img src="{$style['image']}" class="plugin_img"/></a></dt>
+		<dd class="link_orange bold"><a href="{$style['homepage']}" target="_blank">{$style['name']}</a> version: {$style['version']}  BY <a href="{$style['homepage']}" target="_blank"> {$style['copyright']}</a></dd>
+		<dd>{lang focusmanageTag}:
+        <!--{loop $style['tag'] $tag}-->
+        <a href="{$tag_url}{eval echo urlencode(string::hiconv($tag,'utf-8','gbk'))}" target="_blank">{$tag}</a>
+        <!--{/loop}--></dd>
+        <dd>{lang suit_edition}:{$style['suit']}</dd>
+        <dd>{lang install_num}:{$style['install']}<a href="{$style['install_list']}" target="_blank">{lang install_list}</a></dd>
+      <dd>{lang pluginDescript}:{$style['description']}</dd>
+        <dd></dd>
+	</dl>
+	<a class="install_plug" href="javascript:download('{$style['appid']}')"><b class="block">{lang pluginDownload}</b>({$style['downloads']})</a>
+<div class="angle_b">
+		<b class="angle_b_l"></b>
+		<b class="angle_b_r"></b>
+	</div>
+</div>
+<!--{/loop}-->
+<table cellpadding="0" cellspacing="0" width="750px">
+<tr>
+	<td id="pagebar">{$departstr}</td>
+</tr>
+</table>
+
+</div>
+{template admin_footer}

@@ -1,0 +1,119 @@
+{template admin_header}
+<script type="text/javascript" src="js/pickcolor.js"></script>
+<script type="text/javascript">
+function checkimg(){
+	if($.trim($("#bg_file").val())!=""){
+		if($.trim($("#background_img").val())==""){
+			alert("{lang styleBgImgName}");
+			$('#background_img').focus();
+			return false;
+		}
+	}
+	if($.trim($("#title_file").val())!=""){
+		if($.trim($("#titlebg_img").val())==""){
+			alert("{lang styleTitleImgName}");
+			$('#titlebg_img').focus();
+			return false;
+		}
+	}
+}
+function reset(){
+	$('#html_con').val($.trim($("#html_con_bak").val()));
+}
+function search(){
+	window.location = "index.php?admin_style-edit-"+$.trim($("#select_style").val()); 
+	return false;
+}
+</script>
+<div id="navcontainer"  class="mar-t12 block" >
+  <ul id="navlist">
+	<li><a href="index.php?admin_style">{lang styleListSet}</a></li>
+    <li><a href="index.php?admin_style-list" >{lang styleInstall}</a></li>
+    <li><a href="index.php?admin_style-create">{lang stylecreatenew}</a></li>
+    <li><a href="index.php?admin_style-edit-{$style_path}"  id="current">{lang styleEdit}</a></li>
+  </ul>
+</div>
+
+<span class="edit_level ">
+	<a href="index.php?admin_style-edit-{$style_path}" class="edit_easy">{lang stylejunioredit}</a>
+	<a href="index.php?admin_style-advancededit-{$style_path}" class="edit_senior edit_on">{lang stylehighedit}</a>
+</span>
+	<h2 class="tem_style_h2">{lang styleBgImgSet}</h2>
+<form name="_modifyico" enctype="multipart/form-data" action="index.php?admin_style-edit-{$style_path}" method="POST" onsubmit="return checkimg();">
+	<!--{if $styleimg==1}-->
+	<div class="preview_img"><img src="style/{$style_path}/screenshot.jpg" class="x_img"/></div>
+	<!--{/if}-->
+	<div class="up_img">{lang styleOnloadScreen}:<input type="file" class="inp_file" name="screenshot_file" id="screenshot_file" /><br/><label class="red">{lang styleScreenTip}</label></div>
+<h2 class="tem_style_h2">{lang style_cssset}</h2>
+<table cellpadding="0" cellspacing="0" class="table mix_eidt"> 
+	<tr>
+		<td style="width:150px;">{lang style_webbg}</td>
+		<td style="width:150px;"><input name="style[bg_color]" id="bg_color" maxlength="11" value="{$style['bg_color']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['bg_color']}" class="get_color"/></td>
+		<td style="width:110px;"><input type="text" class="inp_txt wid90" name="background_img" id="background_img" value="{$style['bg_imgname']}" /></td>
+		<td style="width:225px;"><input type="file" class="inp_file wid90" name="bg_file" id="bg_file" /><label class="red block">{lang styleBgImgTip}</label></td>
+	</tr>
+	
+	<tr>
+		<td>{lang style_titlebg}</td>
+		<td><input name="style[titlebg_color]" id="titlebg_color" maxlength="11" value="{$style['titlebg_color']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['titlebg_color']}" class="get_color"/></td>
+		<td><input type="text" class="inp_txt wid90" name="titlebg_img" id="titlebg_img" value="{$style['titbg_imgname']}" /></td>
+		<td><input type="file" class="inp_file wid90" name="title_file" id="title_file" /><label class="red block">{lang styletitlegImgTip}</label></td>
+	</tr>
+	<tr>
+		<td>标题的底部边框</td>
+		<td><input name="style[title_framcolor]" id="title_framcolor" maxlength="7" value="{$style['title_framcolor']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['title_framcolor']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>栏目的边框</td>
+		<td><input name="style[nav_framcolor]" id="nav_framcolor" maxlength="7" value="{$style['nav_framcolor']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['nav_framcolor']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>		
+	<tr>
+		<td>文本框边框颜色</td>
+		<td><input name="style[input_bgcolor]" id="input_bgcolor" maxlength="7" value="{$style['input_bgcolor']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:$style['input_bgcolor']" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>	
+	<tr>
+		<td>文本框字体颜色</td>
+		<td><input name="style[input_color]" id="input_color" maxlength="7" value="{$style['input_color']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['input_color']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>	
+	<tr>
+		<td>链接颜色</td>
+		<td><input name="style[link_color]" id="link_color" maxlength="7" value="{$style['link_color']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['link_color']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>		
+	<tr>
+		<td>鼠标放到链接文字上的颜色</td>
+		<td><input name="style[link_hovercolor]" id="link_hovercolor" maxlength="7" value="{$style['link_hovercolor']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['link_hovercolor']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>
+
+	<tr>
+		<td>突出链接显示颜色</td>
+		<td><input name="style[link_difcolor]" id="link_difcolor" maxlength="7" value="{$style['link_difcolor']}" type="text" class="inp_txt wid90" onclick="PickColor.init(this)" onkeyup="PickColor.keyup(this.value)" onchange="PickColor.change(this.value)" />
+		<input type="button" onclick="PickColor.init(this)" style="background-color:{$style['link_difcolor']}" class="get_color"/></td>
+		<td></td>
+		<td></td>
+	</tr>		
+	<tr>
+		<td colspan="4"><input type="submit" class="inp_sum" name="imgupload" value="{lang commonEdit}"/></td>
+	</tr>
+</table>
+</form>
+{template admin_footer}

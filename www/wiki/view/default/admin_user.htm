@@ -1,0 +1,306 @@
+{template admin_header}
+<script src="js/jquery.dialog.js"></script>
+<script type="text/javascript">
+function docheck(E){
+	var action = $(E).attr('name'), str='';
+	var F = $("form#userform");
+	F.attr('action', F.attr('action') +'-'+action);
+
+	if(action == 'remove'){
+		str = '{lang commonConfirmRemove}';
+	}else{
+		str = '{lang userConfirmCheckup}';
+	}
+	
+	
+	if(confirm(str)){
+		$('#userform').submit();
+	}else{
+		return false;
+	}
+}
+function selectALL(obj){
+	$("input[type=checkbox].box:enabled").attr('checked',obj.checked);
+}
+
+var Coin = {
+	num:5,
+	names: '',
+	ids:'',
+	coinPms: "{lang coinPms}",
+	
+	getUserId : function(){
+		var checkedbox = $("input[type=checkbox].box:checked");
+		var idlist = [];
+		checkedbox.each(function(i){
+			idlist.push(this.value);
+		});
+		
+		return idlist.join(",");
+	},
+	getUsername : function(){
+		var checkedbox = $("input[type=checkbox].box:checked");
+		var namelist = [];
+		checkedbox.each(function(i){
+			namelist.push($(this).attr('username'));
+		});
+		
+		return namelist.join(",");
+	},
+	box : function(){
+		var names = this.getUsername();
+		if (!names){
+			return alert('{lang userNoneChoose}');
+		}
+		this.names = names;
+		
+		$.dialog({
+			id:'coin',
+			align:'left',
+			width:400,
+			title:'{lang coinManage}',
+			type:'selector',
+			content:"#box-coin"
+		});
+		
+		this.blur();
+	},
+	
+	send: function(){
+		var self=this;
+		var url = "index.php?admin_user-addcoins-"+Math.random();
+		var names=this.names, uid=this.getUserId();
+		
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		num = parseInt(num);
+		if (num == '' || isNaN(num)){
+			num = this.num;
+		}else{
+			this.num = num;
+		}
+		var content = dialog.find('textarea').val();
+		var ispms = dialog.find('input[name=ispms]').attr('checked')?1:0;
+		
+		
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{uid:uid, names:names, coin:num, ispms:ispms, content:content},
+			timeout: 25000,
+			type: 'POST',
+			success:function(data){
+				if('OK' == data){
+					alert('{lang coinSendOk}');
+				}else{
+					alert(data)
+				}
+			},
+			complete:function(xmlhttp, status){
+				switch(status){
+					case 'success':
+						self.sendOk();
+						self.close();
+					break;
+					case 'error':
+					
+					break;
+					case 'timeout':
+					
+					break;
+				}
+			}
+		});
+		return false;
+	},
+	
+	pms: function(){
+		
+	},
+	
+	close: function(){
+		$.dialog.close('coin');
+	},
+	
+	blur:function(){
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		num = parseInt(num);
+		if (num == '' || isNaN(num)){
+			num = this.num;
+		}
+		dialog.find('input[name=coin_num]').val(num);
+		var coinPms = this.coinPms.replace('$', num);
+		dialog.find('textarea').val(coinPms);
+	},
+	sendOk:function(){
+		var el, uid=this.getUserId();
+		if (!uid) return;
+		uid = uid.split(",");
+		for (var i=0; i<uid.length; i++){
+			el = $("#user"+uid[i]);
+			el.html( this.num + parseInt(el.html()));
+		}
+	}
+	
+}
+
+
+$(document).ready(function(){
+
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_user" <!--{if $checkup==1}-->id="current"<!--{/if}--> >{lang usermanageUserList}</a></li>
+		<li><a href="index.php?admin_user-uncheckeduser" <!--{if $checkup==0}-->id="current"<!--{/if}--> >{lang usermanageUncheckedUser}</a></li>		
+		<li><a href="index.php?admin_user-add">{lang usermanageAddUser}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+<!--{if $checkup==1}-->
+  <tr>
+    <td valign="top">
+     <form name="usersearch"  action="index.php?admin_user-list"  method="post">
+	 <table width="100%" cellspacing="0" cellpadding="3">
+        <tr>
+          <td>{lang usermanageUserNick}</td>
+          <td><input type="text" class="wenben" name="username" value="$username"></td>
+        </tr>
+         <tr>
+          <td width="10%">{lang usermanageUserGroup}</td>
+          <td>
+             <select class="box" name="groupid">
+             	<option value="0"  >{lang commonUnlimit}</option>
+				<!--{loop $usergrouplist $usergroup}-->
+				 	<option value="{$usergroup[groupid]}" <!--{if $groupid==$usergroup[groupid]}-->selected<!--{/if}--> >{$usergroup[grouptitle]}</option>
+				<!--{/loop}-->
+              </select>
+          &nbsp;&nbsp;  <input type="submit" class="btn" name="searchsubmit" value="{lang commonSearch}"></td>
+        </tr>
+      </table>
+    </form>
+	</td>
+  </tr>
+  <!--{else}-->
+  <tr>
+    <td valign="top">
+     <form name="usersearch"  action="index.php?admin_user-uncheckeduser"  method="post">
+	 <table width="100%" cellspacing="0" cellpadding="3">
+        <tr>
+          <td width="50">{lang usermanageUserNick}</td>
+          <td width="100"><input type="text" class="wenben" name="username" value="$username"></td>
+		  <td><input type="submit" class="btn" name="searchsubmit" value="{lang commonSearch}"></td>
+        </tr>
+      </table>
+    </form>
+	</td>
+  </tr>
+<!--{/if}-->
+  
+  <tr>
+    <td valign="top">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="30">{lang usermanageUserCount}</td>
+      </tr>
+    </table>
+	<form name="userform" id="userform" action="index.php?admin_user"  method="post" >
+	  <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr align="center" class="list_title">
+          <td width="35">{lang commonSelect}</td>
+          <td align="center">{lang usermanageUserNick}</td>
+          <td align="center">{lang coin}</td>
+          <td align="center">{lang usermanageEmail}</td>
+          <td align="center">{lang usermanageLastLoginTime}</td>
+          <td align="center">{lang usermanageRegTime}</td>
+          <td align="center">{lang commonPass}</td>
+          <td align="center">{lang usermanageUserGroup}</td>
+	  	  <td align="center">{lang commonEdit}</td>
+        </tr>
+        <!-- {if $userlist}  -->
+  		<!--{loop $userlist $user}-->
+       	 <tr class='b'>
+          <td align='center'>
+		  <input type="checkbox" class="box" <!--{if $user[disabled]}-->disabled="disabled"<!--{/if}--> name="uid[]" value="{$user[uid]}" username="{$user[username]}" />
+		  </td>
+ 	  	  <td><a href="index.php?user-space-{$user[uid]}" target="_blank">{$user[username]}</a></td>
+ 	      <td align='center' id="user{$user[uid]}">$user[credit1]</td>
+ 	      <td align='center'>$user[email]</td>
+          <td align='center'>$user[lasttime]</td>
+          <td align='center'>$user[regtime]</td>
+          <td align='center'>
+		  <!--{if  $user[checkup]==1  }-->
+			{lang commonPassed}
+		  <!--{else}-->
+			{lang commonUnpass}
+		  <!--{/if}--></td>
+          <td align='center'>{$user[grouptitle]}</td>
+          <td align="center"><!--{if $user[disabled]}-->X<!--{else}--><a href="index.php?admin_user-edit-{$user[uid]}">{lang commonEdit}</a><!--{/if}--> </td>
+        </tr>
+        <!--{/loop}-->
+        <!--{else} -->
+          <tr class='b'>
+            <td colspan="7">{lang userCannotSearch}</td>
+          </tr>
+          <!-- {/if} -->
+      </table>
+	  <table cellpadding="0" cellspacing="0" width="100%">
+	     <tr>
+            <td width="80px">
+			<b><label id="tip"><input name="chkall" class="box" onclick="selectALL(this);"  type="checkbox" />{lang commonAllSelect}</label></b></td>
+            <td><input name="remove" type="submit" class="btn" value="{lang commonDel}" onclick="return docheck(this);"/>
+			<!-- {if $checkup==1 } -->
+			&nbsp;&nbsp; <input name="checkup" type="button" class="btn" value="{lang coinManage}" onclick="Coin.box()"/>
+			<!-- {/if} -->
+			<!-- {if $checkup==0 } -->
+			&nbsp;&nbsp; <input name="checkup" type="submit" class="btn" value="{lang commonPass}" onclick="return docheck(this);"/>
+			<!-- {/if} -->
+			</td>
+      		<td width="800"  id="pagebar">{$departstr}</td>
+      	</tr>
+      </table>
+</form>
+</td>
+</tr>
+</table>
+<div id="box-coin" style="display:none">
+<form onsubmit="return Coin.send()">
+<table width="350" border="0" align="center" valign="top">
+  <tr style="display:none">
+    <td></td>
+    <td height="20" align="left" name="error"></td>
+  </tr>
+  <tr>
+    <td width="50" height="30">{lang coinNum}:</td>
+    <td><input name="coin_num" type="text" class="reg-inp" style="width:240px;" maxlength="5" onblur="Coin.blur()"/></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td height="25" align="left">
+	<input type="checkbox" name="ispms" checked="true"/>{lang issendPms}
+	</td>
+  </tr>
+  <tr name="trpms">
+    <td height="30" valign="top">{lang pms}:</td>
+    <td><textarea name="pms" type="textarea" class="reg-inp" style="width:240px;height:60px;"></textarea></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td height="24">
+	<input type="button" value="{lang commonOK}" onclick="Coin.send()"/>
+	<input type="button" value="{lang commonCancel}" onclick="Coin.close();"/>
+	</td>
+  </tr>
+ </table>
+ </form>
+</div>
+{template admin_footer}

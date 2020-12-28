@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme>
+<author>互动在线</author>
+<authorurl>http://kaiyuan.hudong.com</authorurl>
+<name>互动摸摸</name>
+<tag>互动摸摸 内文广告</tag>
+<desc>互动摸摸插件是为了方便用户在网站内随时随地可以查百科而开发的插件。</desc>
+<sitename>HDWiki官方网站</sitename>
+<weburl>http://kaiyuan.hudong.com</weburl>
+<version>v1.2</version>
+<hdversion>4.0.4</hdversion>
+<copyright>hudong.com</copyright>
+<charset>UTF-8</charset>
+</theme>

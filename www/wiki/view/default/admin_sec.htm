@@ -1,0 +1,71 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var forbidden_edit_time = $("#forbidden_edit_time").val();
+	if ( forbidden_edit_time=='' || !/^\d+$/.test(forbidden_edit_time) || forbidden_edit_time < 0){
+		alert('{lang secForbidEditTimeWarning}');
+		$("#forbidden_edit_time").focus();
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td><br>
+			<div id="navcontainer">
+				<ul id="navlist">
+					<li><a href="index.php?admin_setting-sec" id="current">{lang secConfig}</a></li>
+				</ul>
+			</div>
+		</td>
+	</tr>
+</table>
+<table align="left" cellpadding="5" cellspacing="0" width="100%">
+	<tr>
+		<td valign="top">
+			<form method="POST" action="index.php?admin_setting-sec" onsubmit="return doSubmit();">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+				<tr>
+					<td width="5%"></td>
+					<td width="30%"><strong>{lang commonParameterName}</strong></td>
+					<td width="30%"><strong>{lang commonParameterValue}</strong></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><strong>{lang secVerificationCreateCode}</strong><br/>{lang secVerificationCodeTrip}</td>
+					<td>
+					<label><input type="radio"  name="doc_verification_create_code" value="1"
+					{if $basecfginfo['doc_verification_create_code']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="doc_verification_create_code" value="0" 
+					{if $basecfginfo['doc_verification_create_code']=='0'}checked{/if}/>{lang commonNo}</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><strong>{lang secVerificationEditCode}</strong><br/>{lang secVerificationCodeTrip}</td>
+					<td>
+					<label><input type="radio"  name="doc_verification_edit_code" value="1"
+					{if $basecfginfo['doc_verification_edit_code']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="doc_verification_edit_code" value="0" 
+					{if $basecfginfo['doc_verification_edit_code']=='0'}checked{/if}/>{lang commonNo}</label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><strong>{lang secForbidEditTime}</strong><br/>{lang secForbidEditTimeTrip}</td>
+					<td><input class="box" id="forbidden_edit_time" name="forbidden_edit_time"  type="text" style="width:200px;"  maxlength="3" value="{$basecfginfo['forbidden_edit_time']}" /></td>
+				</tr>
+				<tr>
+					<td colspan="3" align="center" height="40">
+						<input class="btn" name="secsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+						<input class="btn" type="reset" value="{lang commonReset}" />
+					</td>
+				</tr>
+			</table>
+			</from>
+		</td>
+	</tr>
+</table>
+{template admin_footer}

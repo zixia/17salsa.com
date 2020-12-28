@@ -1,0 +1,382 @@
+{template admin_header}
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+			<div>
+				<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+			</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_edition" id="current">{lang edition_audit}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_edition-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px"><strong>{lang docmanageSearch}:</strong></td>
+          <td  width="80px">{lang commonChoiceCat}:</td><td>
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr><tr>
+		<td width="80px" height="29"></td>
+          <td width="80px">{lang typesearch}:</td>
+          <td><select name="typename">
+            <option value="" >{lang alltype}</option>
+			<option value="1" >{lang excellent}</option>	
+			<option value="2" >{lang edition_audit_1}</option>	
+			<option value="3" >{lang edition_audit_0}</option>			    	
+          </select>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td width="80px">{lang commonTitleKey}:</td>
+	      <td><input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />          
+	    </tr>
+		<tr>
+		<td></td>
+          <td width="80px"> {lang commonAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="80px"></td>
+          <td width="80px">{lang commonCreateTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$docsum}</b>{lang docmanageEditionNum}</td>
+      </tr>
+    </table>
+	<form method="POST" name="formdoclist">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td>{lang commonSelect}</td>
+			<td>{lang commonTitle}</td>
+			<td>{lang edition}</td>
+			<td>{lang commonCat}</td>
+			<td>{lang commonCreateTime}</td>
+            <td>{lang commonAuthor}</td>
+			<td>{lang coin}</td>
+            <td>{lang modify_reason}</td>
+            <td>{lang excellent}</td>
+            <td>{lang state}</td>
+          </tr>
+          	<!-- {if $doclist != null} -->
+			<!--{loop $doclist $doc}-->
+          <tr align="center" id="tr{$doc['eid']}">
+            <td align='center'><input type="checkbox" name="chkdid[]" class="box" value="{$doc['eid']}" /></td>
+            <td><a target="_blank" class="e" href="index.php?edition-view-{$doc['eid']}-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a>
+            <input type="hidden" value="{$doc['title']}" id="{$doc['eid']}_title" name="{$doc['eid']}_title"></td>
+            <td>
+			<input type="button" onClick="Coin.compare({$doc['did']},{$doc['eid']})" value="对比" title="和上一版本进行对比"/>
+			</td>
+			<td>{$doc['category']}</td>
+            <td>{$doc['time']}</td>
+            <td><a target="_blank" class="e" href="index.php?user-space-{$doc['authorid']}"  title="{$doc['author']}">{$doc['author']}</a></td>
+            <td id="edition{$doc['eid']}">{$doc['coins']}</td>
+			<td>{$doc['reason']}</td>
+			<td id="excellent{$doc['eid']}">{if $doc['excellent']}<img src="style/default/excellent.gif"/>{/if}</td>
+            <td id="judge{$doc['eid']}">{if $doc['judge'] == 0}{lang edition_audit_0}{else}<font color="Red">{lang edition_audit_1}</font>{/if}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {/if} -->
+		<!-- {if $doclist == null} -->
+          <tr>
+            <td colspan="8">{lang docmanageSearchMsg}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60">
+					<label><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll(this);">
+					{lang commonAllSelect}</label>
+					</td>
+                    <td>
+                    <input type="button" class="btn" name="casemanage" onClick="Coin.box()" value="版本奖惩" />
+                    <input type="button" class="btn" name="casemanage" onClick="Coin.set('excellent',this)" value="{lang excellent}" />
+                    <input type="button" class="btn" name="casemanage" onClick="Coin.set('unexcellent',this)" value="{lang unexcellent}" />
+                    <input type="button" class="btn" name="casemanage" onClick="Coin.set('remove',this)" value="{lang commonDel}" />
+                    </td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td>
+</tr>
+</table>
+
+<div id="box-coin" style="display:none">
+<form onsubmit="return Coin.send()">
+<table width="300" border="0" align="center" valign="top">
+  <tr style="display:none">
+    <td></td>
+    <td height="20" align="left" name="error"></td>
+  </tr>
+  <tr>
+    <td width="50" height="30">{lang coinNum}:</td>
+    <td><input name="coin_num" type="text" class="reg-inp" style="width:240px;" maxlength="8" onblur="Coin.blur()"/></td>
+  </tr>
+  <tr>
+    <td width="50" height="30"></td>
+    <td>
+	<label><input type="radio" name="iscoin" value="+" checked="true"/>奖励</label>&nbsp;&nbsp;
+	<label><input type="radio" name="iscoin" value="-"/>惩罚</label>
+	</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td height="25"><br/>
+	<input type="button" value="{lang commonOK}" onclick="Coin.send(this)"/>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="button" value="{lang commonOff}" onclick="Coin.close();"/>
+	</td>
+  </tr>
+ </table>
+ </form>
+</div>
+
+<script type="text/javascript" src="js/calendar.js"></script>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+<script type="text/javascript">
+function selectAll(){
+	$("input[type=checkbox].box:enabled").each(function(i){
+		$(this).attr('checked', !$(this).attr('checked'));
+	});
+}
+var Coin = {
+	num:5,
+	names: '',
+	ids:'',
+	img:'<img src="style/default/excellent.gif"/>',
+	iscoin:'',
+	
+	getId : function(){
+		var checkedbox = $("input[type=checkbox].box:checked");
+		var idlist = [];
+		checkedbox.each(function(i){
+			idlist.push(this.value);
+		});
+		
+		return idlist.join(",");
+	},
+	box : function(){
+		var names = this.getId();
+		if (!names){
+			return alert('没有选择要操作的版本！');
+		}
+		this.names = names;
+		
+		$.dialog({
+			id:'coin',
+			align:'left',
+			width:350,
+			title:'对选中的版本进行奖励或惩罚',
+			type:'selector',
+			content:"#box-coin"
+		});
+		
+		this.blur();
+	},
+	
+	compare: function(did, eid){
+		this.names = eid.toString();
+		var content = '<iframe src="index.php?edition-compare-'+did+'-'+eid
+			+'-box" width="100%" height="500" border="0" scrolling="no" frameborder="no"></iframe>'
+			+'<form onsubmit="return Coin.send()">对待评版本进行 '
+			+'<label><input type="radio" name="iscoin" value="+" checked="true"/>奖励</label>&nbsp;&nbsp;'
+			+'<label><input type="radio" name="iscoin" value="-"/>惩罚</label>'
+			+' {lang coinNum}:<input name="coin_num" type="text" class="reg-inp" style="width:60px;" maxlength="8" onblur="Coin.blur()"/>'
+			+' <input type="button" value="{lang commonOK}" onclick="Coin.send(this)"/>&nbsp;&nbsp;'
+			+'<input type="button" value="{lang commonOff}" onclick="Coin.close();"/>'
+			+'</form>';
+		
+		$.dialog({
+			id:'coin',
+			align:'center',
+			width:730,
+			title:'版本对比',
+			content:content
+		});
+		this.blur();
+	},
+	
+	send: function(el){
+		var self=this;
+		var url = "index.php?admin_edition-addcoin-"+Math.random();
+		var eids=this.names;
+		
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		num = parseInt(num);
+		if (num == '' || isNaN(num)){
+			num = this.num;
+		}else{
+			this.num = num;
+		}
+		
+		var iscoin = dialog.find('input[name=iscoin]:checked').val();
+		this.iscoin = iscoin;
+		
+		num = (iscoin == '+') ? num : -num;
+		
+		$(el).attr('disabled', true);
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{eids:eids, coin:num},
+			timeout: 25000,
+			type: 'POST',
+			success:function(data){
+				if('OK' == data){
+					alert('金币设置成功！');
+				}else{
+					alert(data)
+				}
+			},
+			complete:function(xmlhttp, status){
+				switch(status){
+					case 'success':
+						self.sendOk(el);
+						self.close();
+					break;
+					case 'error':
+					
+					break;
+					case 'timeout':
+					
+					break;
+				}
+				$(el).attr('disabled', false);
+			}
+		});
+		return false;
+	},
+	
+	close: function(){
+		$.dialog.close('coin');
+	},
+	
+	blur:function(){
+		var dialog = $._dialog.parts['coin'].content;
+		var num = dialog.find('input[name=coin_num]').val();
+		num = $.trim(num);
+		if (num == '' || isNaN(parseInt(num))){
+			num = this.num;
+		}
+		num = parseInt(num);
+		this.num = num;
+		dialog.find('input[name=coin_num]').val(num);
+	},
+	sendOk:function(el){
+		var el, eid=this.names, coin=0;
+		if (!eid) return;
+		eid = eid.split(",");
+		for (var i=0; i<eid.length; i++){
+			el = $("#edition"+eid[i]);
+			coin = parseInt(el.html());
+			if(isNaN(coin)){coin = 0}
+			if(this.iscoin == '+'){
+				el.html(coin + this.num);
+			}else{
+				el.html(coin - this.num);
+			}
+			$("#judge"+eid[i]).html('<font color="Red">{lang edition_audit_1}</font>');
+		}
+	},
+	
+	//设置、取消优秀、删除， flag= excellent | unexcellent | remove
+	set: function(flag, el){
+		var self=this, action='excellent';
+		if (flag == "remove") action = "remove";
+		var url = "index.php?admin_edition-"+action+"-"+Math.random();
+		var eids=this.getId();
+		
+		$(el).attr("disabled", true);
+		$.ajax({
+			url:url,
+			dataType:'html',
+			data:{eids:eids, flag:flag},
+			timeout:25000,
+			type: 'POST',
+			success:function(data){
+				if('OK' == data){
+					eids = eids.split(",");
+					for(var i=0;i<eids.length;i++){
+						if(flag == 'excellent'){
+							$("#excellent"+eids[i]).html(Coin.img);
+						}else if(flag == 'unexcellent'){
+							$("#excellent"+eids[i]).html('');
+						}else{
+							$("#tr"+eids[i]).remove();
+							if ($("tr[id^=tr]").size() == 0){
+								location.reload();
+							}
+						}
+					}
+				}else{
+					alert('操作失败!');
+				}
+			},
+			complete:function(xmlhttp, status){
+				switch(status){
+					case 'success':
+						
+					break;
+					case 'error':
+					
+					break;
+					case 'timeout':
+					
+					break;
+				}
+				$(el).attr("disabled", false);
+			}
+		});
+		return false;
+	}
+}
+</script>
+
+{template admin_footer}

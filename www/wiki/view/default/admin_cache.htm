@@ -1,0 +1,81 @@
+{template admin_header}
+<script type="text/javascript">
+function clearcache(){
+	window.location="index.php?admin_setting-removecache";
+}
+function checkcachedata(){
+	/*
+	var cachedata=/^[0-9]\d*?$/;
+	if(!cachedata.test(document.cacheset.{$cache[variable]}_value.value))
+	{
+		alert("index_cache_time{lang commonNotNumber}");
+		cacheset.index_cache_time.focus();
+		return false;
+	}
+	*/
+	document.cacheset.action="index.php?admin_setting-updatecache";
+	document.cacheset.submit();
+}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache"  id="current">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>	
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+    	<form name="cacheset"  method="post">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+				<tr>
+				  <td width="5%" height="26" align="center" ></td>
+				  <td width="30%" height="26" ><strong>{lang cacheName}</strong></td>
+				  <td width="40%" height="26" ><strong>{lang cacheDescribe}</strong></td>
+				  <td height="26" ><strong>{lang cacheTime}</strong></td>
+				</tr>
+				<tr>
+				  <td colspan="4" height="10" ></td>
+				</tr>
+				<!-- {if $cachelist==""} -->
+				<tr>
+				  <td colspan="4" align="center">{lang cacheNoConfig}</td>
+				</tr>
+				<!-- {/if} -->
+				<!-- {if $cachelist!=""} -->
+				<!-- {loop $cachelist $cache} -->
+				<input type="hidden" name="$cache[]" value = "{$cache[variable]}" />
+				<tr>
+				  <td height="30" align="center"></td>
+				  <td height="30" >{$cache[cache_name]}</td>
+				  <td height="30" >{$cache[describ]}</td>
+				  <td height="30" ><input class="box"  name="{$cache[variable]}_value" type="text" value="{$cache[value]}" maxlength="5" /></td>
+				</tr>
+				<!-- {/loop} -->
+				<tr>
+				  <td height="40" colspan="4" align="center">
+				  	<input class="btn"  type="button" name="cachesetsubmit" value="{lang cacheSaveConfig}" onclick="checkcachedata();"/>&nbsp;&nbsp;
+				  	<input class="btn"  type="button" name="cacheclear" value="{lang cacheClear}" onclick="clearcache();"/>
+				  </td>
+				</tr>
+				<!-- {/if} -->
+			</table>
+		</form>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

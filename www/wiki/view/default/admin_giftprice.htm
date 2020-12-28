@@ -1,0 +1,64 @@
+{template admin_header}
+<script type="text/javascript">
+
+	function addInput(){
+		$('#priceblock').append("<tr class=\"b\" align=\"left\"><td><input type=\"input\" class=\"box\" name=\"minprice[]\" size=\"20\" /> 到 <input type=\"input\" class=\"box\" name=\"maxprice[]\" size=\"20\" />&nbsp;&nbsp;<a href=\"javascript:void(0)\" onclick=\"javascript:delInput(this)\">{lang commonDel}</a></td></tr>");
+		 
+	}
+
+	function delInput(obj){
+		var tr = obj.parentNode.parentNode;
+		if($.browser.msie ){
+			tr.removeNode(true);
+		}else{
+			var parent = tr.parentNode;
+			parent.removeChild(tr);
+		}
+	}
+	
+	function docheck(){
+		return true;
+	}
+</script>
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="index.php?admin_gift" >礼品管理</a></li>
+	<li><a href="index.php?admin_gift-add">添加礼品</a></li>
+	<li><a href="index.php?admin_gift-price" id="current">礼品价格区间</a></li>
+	<li><a href="index.php?admin_gift-notice">礼品公告</a></li>
+  </ul>
+</div>
+<form action="index.php?admin_gift-price" method="post" name="priceform"  onsubmit="return docheck();">	
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+	<tr>
+		<td valign="top">
+		    <table id="priceblock" width="98%" align="center" cellspacing="1" cellpadding="3" class="table_area" >
+		    	<!--{loop $minprice $index $price}-->
+		      <tr class="b" align="left">
+		        <td><input type="input" class="box" name="minprice[]" value="{eval echo (int)$price;}" size="20" /> 到 <input type="input" class="box" name="maxprice[]" value="{eval echo (int)$maxprice[$index];}" size="20" /></td>
+		      </tr>
+		      	<!--{/loop}-->
+		      <tr class="b" align="left">
+		        <td><input type="input" class="box" name="minprice[]" size="20" /> 到 <input type="input" class="box" name="maxprice[]" size="20" /></td>
+		      </tr>
+		      <tr class="b" align="left">
+		        <td><input type="input" class="box" name="minprice[]" size="20" /> 到 <input type="input" class="box" name="maxprice[]" size="20" /></td>
+		      </tr>
+				<tr class="b" align="left">
+		        <td><input type="input" class="box" name="minprice[]" size="20" /> 到 <input type="input" class="box" name="maxprice[]" size="20" /></td>
+		      </tr>
+			  <tr class="b" align="left">
+		        <td><input type="input" class="box" name="minprice[]" size="20" /> 到 <input type="input" class="box" name="maxprice[]" size="20" />&nbsp;&nbsp;[<a href="javascript:void(0)" onclick="javascript:addInput()">{lang commonAdd}</a>]</td>
+		      </tr>
+		    </table>
+		</td>
+	</tr>
+	<tr>
+		<td valign="top" align="center">
+		    <input name="submit" class="btn" type="submit" value="{lang commonOK}"/>
+		    <input name="reset" class="btn" type="reset" value="{lang commonReset}" />
+		</td>
+	</tr>
+</table>
+</form>
+{template admin_footer}

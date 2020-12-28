@@ -1,0 +1,188 @@
+{template admin_header}
+<script type="text/javascript">
+function jswizard(num){
+	if(num==1){
+		window.open('index.php?plugin-jswizard-admin_jswizard-doc',"_self","");
+	}else if(num==2){
+		window.open('index.php?plugin-jswizard-admin_jswizard-user',"_self","");
+	}else if(num==3){
+		window.open('index.php?plugin-jswizard-admin_jswizard-cate',"_self","");
+	}else if(num==4){
+		window.open('index.php?plugin-jswizard-admin_jswizard-search',"_self","");
+	}else if(num==5){
+		window.open('index.php?plugin-jswizard-admin_jswizard-tag',"_self","");
+	}
+}
+
+function previewx(num){
+	if(document.getElementById('js_name').value==''){
+		alert('请输入调用名称!');
+		document.getElementById('js_name').focus();
+		return false;
+	}
+	if(isNaN(document.getElementById('js_cachetime').value)==true){
+		alert('缓存时间必须为数字！');
+		document.getElementById('js_cachetime').focus();
+		return false;
+	}
+	if(num==0){
+		if(document.getElementById("isedit").value=='1'){
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-editsearch-preview";
+		}else{
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-search-preview";
+		}
+		myform.submit();
+	}else{
+		if(confirm('{lang baseConfigCoverWarn}')==false){
+			return false;
+		}
+		if(document.getElementById("isedit").value=='1'){
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-editsearch";
+			myform.submit();
+		}else{
+			document.myform.action="index.php?plugin-jswizard-admin_jswizard-search";
+			myform.submit();
+		}
+	}
+}
+function insertunit(tag) {
+        var myField; 
+        myField = document.getElementById('js_code'); 
+        if (document.selection) { 
+                myField.focus(); 
+                sel = document.selection.createRange(); 
+                sel.text = tag; 
+                myField.focus(); 
+        }else if (myField.selectionStart || myField.selectionStart == '0') { 
+                var startPos = myField.selectionStart; 
+                var endPos = myField.selectionEnd; 
+                var cursorPos = endPos; 
+                myField.value = myField.value.substring(0, startPos) 
+                                          + tag 
+                                          + myField.value.substring(endPos, myField.value.length); 
+                cursorPos += tag.length; 
+                myField.focus(); 
+                myField.selectionStart = cursorPos; 
+                myField.selectionEnd = cursorPos; 
+        }else{ 
+                myField.value += tag; 
+                myField.focus(); 
+        } 
+}
+</script>
+<style type="text/css">
+.ainput{
+	background:#FFFFFF none repeat scroll 0 0;
+	border:1px solid #B6CFD9;
+	line-height:220%;
+	margin-right:5px;
+	padding:2px 5px;
+	white-space:nowrap;
+}
+</style>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_plugin-manage-{$pluginid}"  id="current">{lang commonManage}</a></li>
+			<li><a href="index.php?admin_plugin-setvar-{$pluginid}">{lang commonSet}</a></li>
+			<li><a href="index.php?admin_plugin-hook-{$pluginid}">{lang commonHook}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<br/>
+<table align="center" cellpadding="3" cellspacing="0" width="98%" class="list">
+<tbody>
+<tr class="list_title" align="center">
+<td valign="top" colspan='4' align="center">
+添加：
+<input class="btn" value="词条列表" type="button" name="doc" onclick="jswizard(1);" />
+<input class="btn" value="用户列表" type="button" name="user" onclick="jswizard(2);"/>
+<input class="btn" value="分类" type="button" name="cate" onclick="jswizard(3);"/>
+<input class="btn" value="搜索" style="background-color:#F5F5F5;" type="button" name="search" onclick="jswizard(4);"/>
+<input class="btn" value="热门标签" type="button" name="tag" onclick="jswizard(5);"/>
+</td>
+</tr>
+</tbody>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	    	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	    		<tr>
+                  <td height="26" align="center" ></td>
+                  <td height="26" ><strong>使用</strong></td>
+                  <td height="26" ></td>
+                </tr>
+                <tr>
+                  <td height="26" align="center" ></td>
+                  <td height="26" ></td>
+                  <td height="26" >{$previewcon}</td>
+                </tr>
+	    <form name="myform" method="POST" action="index.php?plugin-jswizard-admin_jswizard-search">
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >预览</td>
+                  <td height="26" ><input class="btn" onclick="return previewx(0);" name="jssubmit" type="submit" value="预览"  />&nbsp;&nbsp;<input class="btn" name="jssubmit" type="submit" value="{lang commonSave}" onclick="return previewx(1);" /><br /></td>
+                </tr>
+                <!--{if $type==1}-->
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >外部调用</td>
+                  <td height="26" ><input style="width:550px;" class="box" name="js_wizard" id="js_wizard" type="text" value="{$inputs}" readonly="readonly" onfocus="this.select()" onmouseover="this.focus()" /></td>
+                </tr>
+                            
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >代码</td>
+                  <td height="26" ><textarea style="width:550px;" rows="10" name="js_code" id="js_code">{$js_list['js_code']}</textarea></td>
+                </tr>
+                <!--{/if}--> 
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" ></td>
+                  <td height="26" ><font color="red">注意：请慎重修改代码,否则会造成页面显示不正确。<br />小提示：若想重新生成代码，则将代码清除，点“预览”或“保存”即可。</font></td>
+                </tr>	
+                
+                <tr>
+                  <td height="26" align="center" ></td>
+                  <td height="26" ><strong>设置</strong></td>
+                  <td height="26" ></td>
+                </tr>
+				<tr>
+                  <td height="26" ></td>
+                  <td height="26" >调用名称</td>
+                  <td height="26" ><input maxlength="120" style="width:200px;" class="box" name="js_name" id="js_name" type="text" value="{$js_name}" <!--{if $js_list['js_name']!=''}-->readonly="readonly"<!--{/if}--> /><!--{if $js_list['js_name']!=''}--><input type="hidden" id="isedit" name="isedit" value="1"><!--{else}--><input type="hidden" id="isedit" name="isedit" value="0"><!--{/if}--></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >调用说明</td>
+                  <td height="26" ><input style="width:200px;" class="box" name="js_desc" id="js_desc" type="text" value="{$js_list['js_desc']}" /></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >缓存时间</td>
+                  <td height="26" ><input maxlength="20" style="width:200px;" class="box" name="js_cachetime" id="js_cachetime" type="text" value="{$js_list['js_cachetime']}" />秒</td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td height="26" >打开方式</td>
+                  <td height="26" >
+                  	<input type="radio"  name="js_target" value="1" {if $js_list['js_target']=='1' or $js_list['js_target']==''}checked{/if}/>新窗口&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"  name="js_target" value="0" {if $js_list['js_target']=='0'}checked{/if}/>原窗口
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" align="center" height="40">
+                  	<input class="btn" name="jssubmit" type="submit" value="{lang commonSave}" onclick="return previewx(1);" />&nbsp;&nbsp;
+                  	<input class="btn" type="reset" value="{lang commonReset}" />
+                  </td>
+                </tr></from>
+	    	</table>
+	    
+    </td>
+  </tr>
+</table>
+{template admin_footer}

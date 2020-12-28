@@ -1,0 +1,37 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_relation" id="current">{lang relatedtitle}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+
+<form method="POST" action="index.php?admin_relation" onsubmit="return docheck();">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list" >
+        <tr>
+        	<td height="40" align="left"><input type="checkbox" name="isrelate" id="isrelate" value="1" <!--{if $isrelate==1}--> checked="checked"<!--{/if}--> />{lang setrelateddoc}</td>
+        </tr>          <tr>
+			<td align="left" height="50" width="100%"><textarea name="relatedoc" id="relatedoc" rows="20" cols="80"><!--{if $relatedoc!=''}-->{$relatedoc}<!--{else}-->{lang relateddocNone}<!--{/if}--></textarea></td>
+        </tr>
+        <tr>
+        	<td height="40" align="left">{lang setrelateddoctip}</td>
+        </tr>  
+        <tr>
+        	<td height="40" align="left"><input class="btn" type="submit" value="{lang commonSave}" name="submit" /></td>
+        </tr>
+    </table>
+</form>
+{template admin_footer}

@@ -1,0 +1,91 @@
+{template admin_header}
+<script language="JavaScript" type="text/javascript">
+function checknull(path){
+	if(confirm('{lang styledefaultconfirm}')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_style-setdefaultstyle-'+path.replace(/\./g,'*');
+	}
+}
+function add(pathname){
+	if(confirm('{lang styleaddconfirm}')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_style-add-'+pathname.replace(/\./g,'*');
+	}
+}
+</script>
+		<div id="navcontainer" class="mar-t12">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_style" id="current">{lang styleListSet}</a></li>
+            <li><a href="index.php?admin_style-list" >{lang styleInstall}</a></li>
+            <li><a href="index.php?admin_style-create" >{lang stylecreatenew}</a></li>
+		  </ul>
+		</div>
+		<!--{if $defaultstyle[name]!=''}-->
+		<h2 class="tem_style_h2">{lang styleDefaultStyle}</h2>
+  		<div class="tem_style link_blue">	  		
+	  		<!--{if $defaultstyle[img]!='1'}-->
+				<img alt="{$defaultstyle[name]}" src="style/default/screenshot.jpg"/>
+			<!--{else}-->
+				<img alt="{$defaultstyle[name]}" src="style/{$defaultstyle[path]}/screenshot.jpg"/>
+			<!--{/if}-->
+	  		<ul>
+	  			<li><a href="{$defaultstyle[weburl]}" target="_blank">{$defaultstyle[name]}</a> version:{$defaultstyle[version]}  BY <a href="{$defaultstyle[authorurl]}" target="_blank"> {$defaultstyle[author]}</a></li>
+	  			<li>{lang pluginDescript}:{$defaultstyle[desc]}</li>
+	  			<li>{lang focusmanageTag}:
+	  			<!--{loop $defaultstyle[tag] $defaulttag}-->
+		  			<a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($defaulttag,'utf-8','gbk'))}" target="_blank">{$defaulttag}</a>
+	  			<!--{/loop}-->
+	  			<!--{loop $defaultstyle[charset] $defaultcharset}-->
+		  			<a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($defaultcharset,'utf-8','gbk'))}" target="_blank">{$defaultcharset}</a>
+	  			<!--{/loop}-->
+	  			</li>
+	  			<li><input name="Button1" type="button" onclick="javascript:window.location='index.php?admin_style-editxml-{$defaultstyle[path]}-share'" value="{lang pluginShare}" /><input type="button" onclick="javascript:window.location='index.php?admin_style-edit-{$defaultstyle[path]}';" value="{lang styleEdit}"/></li>
+	  		</ul>
+  		</div>
+  		<!--{/if}-->
+  		<!--{if $toaddlist!=null}-->
+  		<h2 class="tem_style_h2">{lang styleToAdd}</h2>
+  		<div class="tem_style link_blue">
+	  		<ul>
+	  			<li>
+	  		<!--{loop $toaddlist $style}-->
+	  			<a href="#" onclick="return add('{$style}')">{$style}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	  		<!--{/loop}-->	  			
+	  			</li>
+	  		</ul>
+  		</div>
+  		<!--{/if}-->
+  		<!--{if $stylelist!=null}-->
+  		<h2 class="tem_style_h2">{lang styleCanUse}</h2>
+		<!--{loop $stylelist $style}-->
+		<div class="plugin_list">
+			<!--{if $style[img]!=1}-->
+				<img alt="{$style[name]}" class="plugin_img" src="style/default/screenshot.jpg"/>
+			<!--{else}-->
+				<img alt="{$style[name]}" class="plugin_img" src="style/{$style[path]}/screenshot.jpg"/>
+			<!--{/if}-->
+			<dl>
+				<dt><a href="{$style[weburl]}" target="_blank" class="h2">{$style[name]}</a>{lang pluginVersion} {$style[version]}</dt>
+				<dd><span>{lang focusmanageTag}:</span><!--{loop $style[tag] $tag}--><a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($tag,'utf-8','gbk'))}" target="_blank">{$tag}</a> <!--{/loop}--><!--{loop $style[charset] $charset}--><a href="{$appurl}/template.php?action=search&tag={eval echo urlencode(string::hiconv($charset,'utf-8','gbk'))}" target="_blank">{$charset}</a> <!--{/loop}--></dd>
+				<dd>{lang pluginWriter}:<a href="{$style[authorurl]}" target="_blank">{$style[author]}</a></dd>
+				<dd>{lang pluginDescript}:{$style[desc]}</dd>
+				<dd>{lang suit_edition}:{$style[hdversion]}</dd>
+			</dl>
+			<div class="a-c"> 
+				<input type="button" value="{lang pluginShare}" onclick="window.location='index.php?admin_style-editxml-{$style[path]}-share';" class="btn_plug"/>
+				<input type="button" value="{lang commonEdit}" onclick="window.location='index.php?admin_style-edit-{$style[path]}'" class="btn_plug"/>
+				<input type="button" value="{lang stylesetdefault}" onclick="checknull('{$style[path]}');" class="btn_plug"/>
+				<input type="button" value="{lang pluginUninstall}" onclick="window.location='index.php?admin_style-removestyle-{$style[path]}'" class="btn_plug"/>
+			</div>
+		</div>
+		<!--{/loop}-->
+		<div id="fenye" class="link_gray">
+			{$departstr}
+		</div>
+  		<!--{/if}-->
+  		<p class="get_more mar-tb">
+  			{lang styleTip}
+  		</p>
+{template admin_footer}

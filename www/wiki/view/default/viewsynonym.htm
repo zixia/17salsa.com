@@ -1,0 +1,101 @@
+{template header}
+<div id="right" class="viewdoc">
+
+<div id="ct-info" class="columns basic-info">
+	<h2 class="col-h2" >{lang docInformation}</h2>
+	<ul class="col-ul a-c">
+		<li>{lang viewTimes}: {$doc['views']} {lang times}</li>
+		<li>{lang editTimes}: {$doc['editions']} {lang times}  <a href="{url edition-list-$doc['did']}"  >{lang edition}</a></li>
+		<li class="bor-gray-das">{lang updateTime}: {$doc['lastedit']}</li>
+	</ul>
+	<dl class="col-ul a-c">
+		<dt><a href="{url user-space-$doc['authorid']}"  class="a-img2 l" >
+		<img alt="{$doc['author']}" title="{$doc['author']}" src="<!--{if $doc[userimage]}-->$doc[userimage]?{$randnum}<!--{else}-->style/default/user.gif<!--{/if}-->"/>
+		</a></dt>
+		<dd><a href="{url user-space-$doc['authorid']}" class="user-name l">{$doc['author']}</a></dd>
+		<dd class="a-l"><label class="l mar-r8" style="color:{$doc['groupcolor']}">{$doc['grouptitle']}</label>
+		<label title="{lang userstars} {$doc['userstars']}"><!--{for $i=0; $i<$doc['editorstar'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$doc['editorstar'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$doc['editorstar'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}--></label>
+		</dd>
+		<dd class="a-r"><label class="l">{lang creator}</label> <a onclick="return Message.box('{$doc['author']}')" href="#">{lang sendmessage}</a></dd>
+	</dl>
+
+	<!--{loop $recenteditor  $editor}-->
+	<dl class="col-ul a-c">
+		<dt><a href="{url user-space-$editor['authorid']}"  class="a-img2 l" >
+		<img alt="{$editor['author']}" title="{$editor['author']}" src="<!--{if $editor[userimage]}-->$editor[userimage]?{$randnum}<!--{else}-->style/default/user.gif<!--{/if}-->"/>
+		</a></dt>
+		<dd><a href="{url user-space-$editor['authorid']}" class="user-name l">{$editor['author']}</a></dd>
+		<dd class="a-l"><label class="l mar-r8" style="color:{$editor['groupcolor']}">{$editor['grouptitle']}</label>
+		<label title="{lang userstars} {$editor['userstars']}"><!--{for $i=0; $i<$editor['editorstar'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$editor['editorstar'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$editor['editorstar'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}-->
+		</label>
+		</dd>
+		<dd class="a-r"><label class="l">{lang recentEditor}</label> <a onclick="return Message.box('{$editor['author']}')" href="#">{lang sendmessage}</a></dd>
+	</dl>
+	<!--{/loop}-->
+</div>
+
+<div id="ct-similar" class="columns">
+	<h2 class="col-h2" >{lang similarDoc}</h2>
+	<ul class="col-ul a-c ov-h"> 
+		<!--{loop $similardoc $key $similar}-->
+		<!--{if $similar['did']!=$doc['did']}-->
+		<li><a href="{url doc-view-$similar['did']}" title="{$similar['title']}">{$similar['title']}</a></li>
+		<!--{/if}-->
+		<!--{/loop}-->
+	</ul>
+</div>
+
+</div>
+
+<div id="map" class="bor-gray-das"><a href="{$setting[site_url]}">{$setting[site_name]}</a> <label id='catenavi'><!--{loop $navigation $key $category}-->&gt;&gt; <a href="{url category-view-$category['cid']}" target=""> {$category['name']} </a><!--{/loop}--></label></div>
+
+<h1 class="bor-gray ct-title"><span class="l blue" id='changename'>{$doc['title']}</span><label id='auditmsg'></label></h1>
+<div id="main" class="main mar-t8">
+	<div class="content_1 wordcut">
+	<span class="synonyms">"{$synonym['srctitle']}"{lang synonymis}"<a href="{$setting["seo_prefix"]}doc-view-{$synonym['destdid']}">{$synonym['desttitle']}</a>"{lang synonymTitle} <a href="{$setting["seo_prefix"]}doc-view-{$synonym['destdid']}">{lang synonymClickhere}</a> {lang synonymDetail}</div>
+	</span>
+</div>
+<!--{if count($attachment)>0}-->
+<div class="main l mar-t8 fj_list">
+	<h3>{lang attachList}</h3>
+	<!--{if $attach_download}-->
+	<dl>
+		<!--{loop $attachment $attach}-->
+		<dt><a  href="{url attachment-download-$attach['id']}"><img src="style/default/attachicons/
+		<!--{if in_array($attach['filetype'],array('doc','docx','xls','xlsx','ppt','pptx','mdb','accdb'))}-->msoffice.gif
+		<!--{elseif in_array($attach['filetype'],array('jpg','jpeg','bmp','gif','ico','png'))}-->image.gif
+		<!--{elseif in_array($attach['filetype'],array('pdf','rar','zip','swf','txt','wav'))}-->{$attach['filetype']}.gif
+		<!--{else}-->common.gif<!--{/if}-->" class="fj_img"/>{$attach['filename']}</a>
+		<span class="l"><label class="mar-r8">({eval echo sprintf('%.2f',$attach['filesize']/1024)}k)</label><label> {lang attachDownloadNum}{$attach['downloads']}</label></span></dt>
+		<dd>{$attach['description']}</dd>
+		<!--{/loop}-->
+	</dl>
+	<!--{else}-->
+	{lang attachRefuseTrip}
+	<!--{/if}-->
+</div>
+<!--{/if}-->
+
+<p class="main l ct-label"><span class="bold">{lang tag}:</span><!--{loop $doc['tag'] $key $tag}--> <a href="{url search-tag-{eval echo urlencode($tag)}}" >{$tag}</a> <!--{/loop}--></p>
+
+<p class="main l ct-label">
+	<span class="bold">{lang synonym}:</span>
+    <span id="synonyms">
+        <!--{if !empty($synonyms)}-->
+            <span><!--{loop $synonyms $synonym}-->{$synonym['srctitle']} <!--{/loop}--></span>
+        <!--{else}-->
+        	{lang noneSynonym}
+        <!--{/if}-->
+    </span>
+</p>
+<!--{if isset($doclink)}-->
+	<p class="main l">{if $tit_url}
+		{lang hdapiPlugin1}<a href="{$tit_url[lastsiteurl]}">{$tit_url[lastsitename]}</a>{lang hdapiPlugin2}<a href="{$tit_url[lastsiteurl]}/index.php?doc-innerlink-{eval echo urlencode($doc[title])}" target="_blank">{$doc[title]}</a>
+	{else}
+		{lang hdapiPlugin3}<a target="_blank" href="http://www.hudong.com/wiki/{$uniontitle}">{$doc[title]}</a>
+	{/if}
+	</p>
+<!--{/if}-->
+
+<p class="main l mar-t8 ct-label">{lang commentAboutDoc}{$doc[comments]}{lang commentUnit}<a href="{url comment-view-$doc['did']}" class="font14"><!--{if $doc[comments]}-->{lang commentView}<!--{else}-->{lang publishComment}<!--{/if}-->&gt;&gt;</a></p>
+{template footer}

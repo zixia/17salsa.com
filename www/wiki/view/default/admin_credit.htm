@@ -1,0 +1,120 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(isNaN($('#credit_register').val())==true||isNaN($('#credit_login').val())==true||isNaN($('#credit_create').val())==true||isNaN($('#credit_edit').val())==true||isNaN($('#credit_upload').val())==true||isNaN($('#credit_pms').val())==true||isNaN($('#credit_comment').val())==true){
+		alert('{lang baseConfigCredit}');
+		return false;
+	}
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_setting-base">{lang siteConfigBase}</a></li>
+			<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+			<li><a href="index.php?admin_setting-credit"  id="current">{lang siteConfigBonus}</a></li>
+			<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+			<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+			<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+			<li><a href="index.php?admin_setting-passport">{lang passport}</a>
+			<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>	
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<form method="POST" action="index.php?admin_setting-credit" onsubmit="return doSubmit();">
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+                <tr>
+	                  <td width="10%" height="26" align="center" ></td>
+	                  <td width="24%" height="26" ><strong>{lang commonParameterName}</strong></td>
+	                  <td width="23%" height="26" ><strong>{lang admin_credit}</strong></td>
+                      <td width="43%" ><strong>{lang coin}</strong></td>
+                </tr>
+                <tr style="display:none">
+                  <td height="26" ></td>
+                  <td >{lang unit}</td>
+                  <td ><input class="box" name="credit_unit" id="credit_unit" maxlength="10" value="{$creditconfig['credit_unit']}" /></td>
+                  <td ><input class="box" name="coin_unit" id="coin_unit" maxlength="10" value="{$creditconfig['coin_unit']}" /></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang bonusRegister}</td>
+					<td ><input class="box" name="credit_register" id="credit_register" maxlength="10" value="{$creditconfig['credit_register']}"></td>
+                    <td ><input class="box" name="coin_register" id="coin_register" maxlength="10" value="{$creditconfig['coin_register']}" /></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang bonusLogin}</td>
+					<td ><input class="box" name="credit_login" id="credit_login" maxlength="10" value="{$creditconfig['credit_login']}"></td>
+                    <td ><input class="box" name="coin_login" id="coin_login" maxlength="10" value="{$creditconfig['coin_login']}" /></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang bonusCreateDoc}</td>
+					<td ><input class="box" name="credit_create" id="credit_create" maxlength="10" value="{$creditconfig['credit_create']}"></td>
+                    <td ><input class="box" name="coin_create" id="coin_create" maxlength="10" value="{$creditconfig['coin_create']}" /></td>
+                </tr>
+                <tr>
+					<td height="26" ></td>
+					<td >{lang bonusEditDoc}</td>
+					<td ><input class="box" name="credit_edit" id="credit_edit" maxlength="10" value="{$creditconfig['credit_edit']}"></td>
+                    <td ><input class="box" name="coin_edit" id="coin_edit" maxlength="10" value="{$creditconfig['coin_edit']}" /></td>
+                </tr>
+                <tr>
+                  	<td height="26" ></td>
+                  	<td >{lang bonusUpload}</td>
+					<td ><input class="box" name="credit_upload" id="credit_upload" maxlength="10" value="{$creditconfig['credit_upload']}"></td>
+                    <td ><input class="box" name="coin_upload" id="coin_upload" maxlength="10" value="{$creditconfig['coin_upload']}" /></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td >{lang bonusPms}</td>
+                  <td ><input class="box" name="credit_pms" id="credit_pms" maxlength="10" value="{$creditconfig['credit_pms']}" /></td>
+                  <td ><input class="box" name="coin_pms" id="coin_pms" maxlength="10" value="{$creditconfig['coin_pms']}" /></td>
+                </tr>
+                <tr>
+                  <td height="26" ></td>
+                  <td >{lang bonusComment}</td>
+                  <td ><input class="box" name="credit_comment" id="credit_comment" maxlength="10" value="{$creditconfig['credit_comment']}" /></td>
+                  <td ><input class="box" name="coin_comment" id="coin_comment" maxlength="10" value="{$creditconfig['coin_comment']}" /></td>
+                </tr>
+	
+                <tr style="display:none">
+                  <td height="40">&nbsp;</td>
+                  <td height="40">&nbsp;</td>
+                  <td height="40">&nbsp;</td>
+                  <td height="40">&nbsp;</td>
+                </tr>
+                <tr style="display:none">
+                  <td height="40">&nbsp;</td>
+                  <td height="40">{lang allowExchange}</td>
+                  <td height="40"><input type="checkbox" name="credit_exchange" value="1"  {if $creditconfig['credit_exchange']}checked{/if} /></td>
+                  <td height="40"><input type="checkbox" name="coin_exchange" value="1" {if $creditconfig['coin_exchange']}checked{/if} /></td>
+                </tr>
+                
+                <tr style="display:none">
+                  <td height="40">&nbsp;</td>
+                  <td height="40">{lang exchangeRate}</td>
+                  <td height="40"><input class="box" name="credit_exchangeRate" id="credit_exchangeRate" maxlength="10" value="{$creditconfig['credit_exchangeRate']}" /></td>
+                  <td height="40"><input class="box" name="coin_exchangeRate" id="coin_exchangeRate" maxlength="10" value="{$creditconfig['coin_exchangeRate']}" /></td>
+                </tr>
+               
+                <tr>
+                	<td height="40" colspan="4" align="center"><input class="btn" type="submit" value="{lang commonSave}" name="creditsubmit" /></td>
+                </tr>
+            </table>
+	  </td>
+  </tr>
+</table>
+</form>
+{template admin_footer}

@@ -1,0 +1,80 @@
+{template admin_header}
+
+<script type="text/javascript">
+	function docheck(){
+		var catname=$("#catname");
+		if($.trim(catname.val()).length==0){
+			alert("{lang msgJsNullCatName}");
+			catname.focus();
+			return false;
+		}
+	}
+	
+	function changepid(){
+		var d = document.getElementById('pcid');
+		var v = parseInt('{$pid}');
+		for(i=0;i<d.options.length;i++){
+			if(parseInt(d.options[i].value) == v){
+				d.options[i].selected = true;
+				break;
+			}
+		}
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_category-list">{lang magManageCat}</a></li>
+		<li><a href="#" id="current">{lang magCatEdit}</a></li>
+		<li><a href="index.php?admin_category-merge">{lang magUniteCat}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+<form action="index.php?admin_category-edit" onsubmit="return docheck();" method="POST">
+<table width=98% align=center cellspacing=1 cellpadding=3 class=table_area>
+<tr class='b'>
+<td align='center'>{lang magParentCat}</td>
+<td>
+<select class="box" name='pcid' id='pcid'>
+<option value="0">&nbsp;&nbsp;&gt; {lang magTopLevelCat}</option>
+{$cats}
+</select></td>
+</tr>
+<tr>
+<td width=100 align=center>{lang magCatName}</td>
+<td><input type="hidden" name="catid" value="{$cat[cid]}">
+<input id="catname" name="catname" class="wenben" type="text" size="22" maxlength="40"  value="{$cat[name]}"/></td>
+</tr>
+
+<tr style="display:none">
+<td width=100 align=center>{lang magCatIco}</td>
+<td><input id="catico" name="catico" class="wenben" type="text" size="22" value="{$cat[image]}"/></td>
+</tr>
+
+<tr style="display:none">
+<td width=100 align=center>{lang magCatIntro}</td>
+<td><textarea id="catintro" name="catintro" class="wenben" cols="23" rows="8">{$cat[description]}</textarea></td>
+</tr>
+
+<tr>
+  <td colspan="2" align=center><center>
+      <input name="submit" class="btn" type="submit" value="{lang commonEdit}" />
+      <input name="reset" class="btn" type=reset value="{lang commonReset}" />
+    </center>
+   </td>
+  </tr>
+</table>
+<center></center>
+</form>
+<script type="text/javascript">
+changepid();
+</script>
+{template admin_footer}

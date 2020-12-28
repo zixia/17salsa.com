@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={WIKI_CHARSET}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>{$navtitle} {$setting['site_name']} {$setting['seo_title']} </title>
+{$setting['seo_headers']}
+
+<meta name="keywords" content="{$setting['seo_keywords']}" />
+<meta name="description" content="{$setting['seo_description']}" />
+<meta name="generator" content="HDWiki {HDWIKI_VERSION}" />
+<meta name="author" content="HDWiki Team and Hudong UI team" />
+<meta name="copyright" content="2005-2009 Hudong.com" />
+<!--{if $docrewrite=='1'}--><base href="{$setting['site_url']}/" /><!--{/if}-->
+<link href="style/{$style}/hdwiki.css" rel="stylesheet" type="text/css" media="all"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="lang/{$setting['lang_name']}/front.js"></script>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript">
+$.dialog.setConfig('base', './style/default');
+var g_isLogin, g_isUcenter=false, g_forward = '',g_api_url='', g_regulars = '', g_uname_minlength, g_uname_maxlength;
+<!--{if $user['groupid']=='1'}-->
+g_regulars = "{$header_regulars}";
+g_isLogin = false;
+<!--{else}-->
+g_isLogin = true;
+<!--{/if}-->
+<!--{if isset($pp_api)}-->
+g_api_url = '{$pp_api}';
+<!--{/if}-->
+<!--{if $isUcenter}-->
+g_isUcenter = true;
+<!--{/if}-->
+g_seo_prefix = "{$setting['seo_prefix']}";
+g_seo_suffix = "{$setting['seo_suffix']}";
+g_uname_minlength = "{$setting[name_min_length]}"||3;
+g_uname_maxlength = "{$setting[name_max_length]}"||15;
+{if $newpms[0]}
+	var titlestate = 0, clock, flashingtime = 20;
+	var oldtitle = "{$navtitle} {$setting['site_name']} {$setting['seo_title']} ";
+	function changeTitle(){
+		if(titlestate%2 == 0){
+			document.title='【新消息】'+oldtitle;
+		}else{
+			document.title='【　　　】'+oldtitle;
+		}
+		titlestate++;
+		if(titlestate == flashingtime){
+			clearInterval(clock);
+			document.title = oldtitle;
+		}
+	}
+	clock = setInterval("changeTitle()", 1000);
+
+{/if}
+</script>
+</head>
+<body>
+
+<ul id="login" class="w-950 bor_b-ccc"> 
+<!--{if count($channellist)!=0}-->
+<!--{loop $channellist $channel}-->
+<li class="l bor_no"><a href="{$channel['url']}" target="_blank">{$channel['name']}</a></li>
+<!--{/loop}-->
+<!--{/if}-->
+<!--{if $user['groupid']=='1'}-->
+<li name="login"><a href="{url user-login}">{lang login}</a></li>
+<li name="register"><a href="{url user-register}" >{lang register}</a></li>
+<!--{else}-->
+	<li class="bor_no pad10">{lang headerTip}<a href="{url user-space-$user['uid']}">{$user['username']}</a></li>
+	<!--{if $user['password']!=''}-->
+	<li><a href="
+    {if $newpms[3]}
+    	{url pms-box-inbox-system}
+    {else}
+    	{url pms}
+    {/if}
+    " id="header-pms" style="text-decoration:none">
+    {if $newpms[0]}
+     <span style="background:url(style/default/shine.gif); padding:0px 40px 0px 30px; ">$newpms[0]新</span>
+    {else}
+    <img alt="HDWiki" src="style/default/noshine.gif"/>
+    {/if}</a></li>
+	<li><a  href="{url user-profile}">{lang selfManage}</a></li>
+	<!--{if $adminlogin }--><li><a href="{url admin_main}">{lang sysConfig}</a></li><!--{/if}-->
+	<li><a href="{url user-logout$referer}" >{lang logout}</a></li>
+	<!--{else}-->
+	<li><a href="{url user-login}" >{lang active}</a></li>
+	<li><a href="{url user-logout$referer}" >{lang logout}</a></li>
+	<!--{/if}-->
+<!--{/if}-->
+<li class="bor_no"><a href="index.php?doc-innerlink-{eval echo urlencode('{lang help}')}">{lang help}</a></li>
+</ul>
+<div class="bg_book">
+	<a href="{$setting[site_url]}"  id="logo"><img alt="HDWiki" src="style/default/logo.gif" width='168px' height='54px'/></a>
+    <!--{if $isimage }-->
+    <form name="searchform" method="post" action="{url pic-search}">
+	<p id="search">
+	<input name="searchtext" type="text" class="btn_txt"  maxlength="80" size="42"  value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->"/>
+	<input name="searchfull"    type="submit" value="{lang pic_search}"class="btn_inp " />
+	</p>
+	</form>
+    <!--{else}-->
+	<form name="searchform" method="post" action="{url search-default}">
+	<p id="search"><input name="searchtext" class="btn_txt" maxlength="80" size="42" value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->" type="text"/>
+	<input name="default" value="{lang goin}" tabindex="1" class="btn_inp inp_btn" type="submit"/>
+	<input name="full" value="{lang search}" tabindex="2" class="btn_inp" onclick="document.searchform.action='index.php?search-fulltext';" type="submit"/>
+	<a href="index.php?search-fulltext" class="m-t8">{lang searchAdvance}</a>
+	</form>
+	<label>{lang hotsearch}
+		<!--{loop $hotsearch $hotname}-->
+			<!--{if $hotname[name]}-->
+				<a href="<!--{if $hotname[url]}-->{$hotname[url]}<!--{else}-->index.php?doc-innerlink-{eval echo urlencode($hotname[name])}<!--{/if}-->" target="_blank">{$hotname[name]}</a>
+			<!--{/if}-->
+		<!--{/loop}-->
+	</label>
+	</p>
+    <!--{/if}-->
+	<div id="nav" class="w-950 bor_b-ccc">
+	<ul>
+		<li><a href="{$setting[site_url]}">{lang index}</a></li>
+		<li><a href="{url category}" >{lang wikiCategory}</a></li>
+		<li><a href="{url list}" >{lang list}</a></li>
+		<li><a href="{url doc-random}" >{lang randomDoc}</a></li>
+		<li><a href="{url pic-piclist-2}" >{lang picture}</a></li>
+		<li><a href="{url gift}">礼品商店</a></li>
+		<!--{loop $pluginlist $plugin}-->
+			<!--{if $plugin[type]}-->
+				<li><a href="{url plugin-$plugin[identifier]}">{$plugin[name]}</a></li>
+			<!--{/if}-->
+		<!--{/loop}-->
+	</ul>
+	<label><a href="{url doc-create}">{lang createDoc}</a><a href="{url doc-sandbox}">{lang sandbox}</a></label>
+	</div>
+</div>
+
+<!--ad start -->
+
+<!--{if isset($advlist[0]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="ad" id="advlist_0">
+{$advlist[0][code]}
+</div>
+<!--{elseif isset($advlist[0]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="ad" id="advlist_0">
+</div>
+<!--{/if}-->
+
+<!--ad end -->

@@ -1,0 +1,453 @@
+{template admin_header}
+<script type="text/javascript" src="js/popWindow.js"></script> 
+<script type="text/javascript">
+var searchdata = "{$searchdata}".replace(/-/g, ",");
+function ChangeRadionew(number){
+   	if($("input[name='chkdid[]']:checked").length==0){
+   		alert('{lang docmanageSelectDoc}');
+		return false;
+  	 }else{
+		switch(number){
+			case 2:
+				if(confirm('{lang docmanageAuditDoc}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_doc-audit'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+			break;
+			case 3:
+				if(confirm('{lang docmanageComfirmLock}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_doc-lock'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+		 	break;
+			case 4:
+				if(confirm('{lang docmanageComfirmUnlock}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_doc-unlock'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+		 	break;
+			case 7:
+				if (confirm('{lang commonDel}')==false){
+					return false;
+				}else{
+					document.formdoclist.action='index.php?admin_doc-remove'+'-'+searchdata;
+					document.formdoclist.submit();
+				}
+			break;
+		 	case 1:
+				if(confirm('{lang DoEditdoctype}')==false){
+					return false;
+				}else{
+					if($('#doctype').val()==0){
+						document.formdoclist.action='index.php?admin_doc-cancelrecommend'+'-'+searchdata;
+					}else{
+						document.formdoclist.action='index.php?admin_doc-recommend-'+$('#doctype').val()+'-'+searchdata;
+					}
+					document.formdoclist.submit();
+				}
+		 	break;
+		 	default:
+		 		alert("{lang commonSelectMng}");
+		 	break;
+		}
+	}
+}
+function closepop(){
+	$('#popmsg').html("");
+	setTimeout(hidePop,0);
+}
+function changecategory(cats){
+	if(!cats){
+		$('#scnames').fadeOut();
+		$('#scnames').html('&nbsp;&nbsp;分类不允许为空').fadeIn();
+		return false;
+	}
+	var chk=document.getElementsByName('chkdid[]');
+	var num='',	tag='';
+	for(var i=0;i<chk.length;i++){	
+		if(chk[i].checked==true){
+			num+=tag+chk[i].value;
+			tag=",";
+		}
+	}
+	$.post(
+		"index.php?admin_doc-move",
+		{chkdid:num,cid:cats},
+		function(xml){
+			if(xml!='0'){
+				setPopMsg('{lang docmanageMoveSuccess}');
+				location.href="index.php?{$searchdata}";
+			}else{
+				setPopMsg('{lang docmanageMoveFail}');
+			}
+			divDance('popmsg');
+			showPop(300,100);
+			setTimeout(hidePop,3000);
+		}
+	);
+	return true;
+}
+function inputnewname(){
+		if (CheckboxNum('chkdid[]') > 1){
+			alert('{lang docmanageSlt1doc}');
+			return false;
+		}else if(CheckboxNum('chkdid[]') == 0){
+			alert('{lang docmanageSelectDoc}');
+			return false;
+		}else{
+			
+			var name, num=$("input[name='chkdid[]']:checked").val();
+			name=num + '_title';
+
+			var msg="{lang docmanageImputName}<input id='newname' name='newname' type='text' value='"
+			+ document.getElementById(name).value+"' maxlength='80'><br><br>"
+			+ "<input name='renamesbumit' type='button' onclick='changename()' value='{lang commonOK}'>"
+			+ "<input name='cancel' type='button' onclick='closepop()' value='{lang commonCancel}'>";
+
+			setPopMsg(msg);
+			divDance('popmsg');
+			showPop(300,100);
+		}
+}
+function changename(){
+	var num=$("input[name='chkdid[]']:checked").val();
+	$.post(
+		"index.php?admin_doc-rename",
+		{did:num, newname:$('#newname').val()},
+		function(xml){
+			if(xml=='1'){
+				setPopMsg('{lang docmanageRenameSuccess}');
+				location.href="index.php?admin_doc";
+			}else if(xml=='-2'){
+				setPopMsg('{lang docmanageRenameName}');
+			}else if(xml=='-1'){
+				setPopMsg('{lang docmanageNewName}');
+			}else{
+				setPopMsg('{lang docmanageRenameFail}');
+			}
+			divDance('popmsg');
+			showPop(300,100);
+			setTimeout(hidePop,3000);
+		}
+	);
+}
+
+function CheckboxNum(eleName){
+	return $("input[name='"+eleName+"']:checked").length;
+}
+
+function selectAll(){
+	$("input[name='chkdid[]']").attr('checked',$("input[name='checkbox']").attr('checked'));
+}
+function changepage(){
+	document.formdoclist.action='index.php?admin_doc-list';
+	document.formdoclist.submit();
+}
+var catevalue = {
+	input:null,
+	scids:new Array(),
+	scnames:new Array(),
+	ajax:function(cateid, E){
+		var snum=$("input[name='chkdid[]']:checked").length;
+	   	if(snum==0){
+			alert('{lang docmanageSelectDoc}');
+			return false;
+  	 	}else if(snum==1 && arguments.length==2){
+			var did=$("input[name='chkdid[]']:checked")[0].value;
+			$.ajax({
+				url: 'index.php?doc-hdgetcat',				
+				data: {did:did},
+				cache: false,
+				dataType: "xml",
+				type:"post",
+				async:false, 
+				success: function(xml){
+					var message=xml.lastChild.firstChild.nodeValue;
+					if(message!=''){
+						eval(message);
+					}
+				}
+			});
+		}
+		if(!cateid)cateid=0;
+		$.ajax({
+			url: 'index.php?category-ajax-'+cateid,
+			cache: false,
+			dataType: "xml",
+			type:"get",
+			async:false, 
+			success: function(xml){
+				var message=xml.lastChild.firstChild.nodeValue;
+				var p = $('#flsx');
+				if(!p.length){
+					$('body').append("<div id='flsx' style='position:absolute;display:block' class='chose_cate'></div>"); 
+					p = $('#flsx');
+				}
+				p.html(message).width(600);
+				var left, top, height;
+				E = E || catevalue.input;
+				
+				var w1 = $("body").width(),w2 = $(window).width(),w3=0;
+				if (w2 > w1) w3 = (w2 - w1)/2;
+				
+				if (E){
+					catevalue.input = E;
+					top = $(E).offset().top;
+					left = $(E).offset().left - w3;
+					p.css({left:left,top:top-25-p.height()}).find('dl').css({left:0,top:0});
+				}else{
+					p.html(message);
+				}
+				p.show();
+			}
+		});
+	},
+	
+	cateOk:function(id,title,handle){
+		var point;
+		if(handle){
+			this.scids.push(id);
+			this.scnames.push(title);				
+		}else{
+			for(i=0;i<this.scids.length;i++){
+				if(this.scids[i]==id){
+					point=i;
+				}
+			}
+			this.scids.splice(point,1);
+			this.scnames.splice(point,1);
+		}
+		catevalue.pushCategory()
+	},
+	
+	pushCategory:function(){
+		$('#category').val(this.scids.toString());
+		$('#scnames').text(this.scnames.toString());
+	},
+	
+	getCatUrl:function(){
+		var catstring='';
+		for(i=0;i<this.scids.length;i++){
+			catstring=catstring+'<a target="_blank" href="{$setting['seo_prefix']}category-view-'+this.scids[i]+'">'+this.scnames[i]+'</a>,';
+		}
+		catstring=catstring.substring(0, catstring.length-1);   
+		return catstring;
+	},
+	
+	selectCategory:function(){
+		var cb=$(":checkbox");
+		catevalue.pushCategory();
+		for(i=0;i<cb.length;i++){
+			if(catevalue.inArray(cb[i].id, this.scids)){
+				cb[i].checked = true; 
+			}
+		}		
+	},
+	
+	inArray:function(stringToSearch, arrayToSearch) {
+		for (s = 0; s <arrayToSearch.length; s++) {
+			if (stringToSearch == arrayToSearch[s]) {			 
+				 return true;
+			}
+		}
+		return false;
+	},
+	
+	removeCateTree:function(){
+		this.clear();
+		$('#flsx').hide();
+	},
+	
+	ok:function(){
+		if(changecategory(this.scids.toString())){
+			this.clear();
+			$('#flsx').hide();
+		}
+	},
+	
+	init:function(){
+		if('{$category[cid]}'!=''){
+			this.scids.push({$category[cid]});
+			this.scnames.push('{$category[name]}');
+		}
+	},
+	
+	clear:function(){
+		this.scids.length=0;
+		this.scnames.length=0;	
+	}
+	
+}
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+/*--chose categroy tan chuang--*/
+.chose_cate {width:570px;padding:10px 0;border:2px #ccc solid; background:#fff url(chose_cate_bg.gif) no-repeat right bottom;position:absolute;top:290px;left:190px; z-index:100;}
+.chose_cate h3{border-bottom:1px #ccc dashed;margin:0 10px;padding-bottom:4px;margin-bottom:10px;}
+.chose_cate dl{clear:both;padding:8px 0;}
+.chose_cate label{margin-right:4px;color:#0169cc;}
+.chose_cate label input,.chose_cate img{ margin-right:4px;cursor:pointer;}
+.chose_cate dt{margin-bottom:4px;height:22px;color:#474747;}
+.chose_cate dd{float:left;padding:4px 0;margin-right:10px; white-space:nowrap; zoom:1;}
+.chose_cate p.a-c{margin:0 12px;border-top:1px #ccc dashed;padding-top:6px;overflow:hidden;width:570px;}
+.chose_cate p.a-r{ overflow:hidden;clear:both;zoom:1;}
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute" class='chose_cate'>
+			<div>
+				<div id="popmsg" align="center" style="clear: both;margin-top: 20px;" ></div>
+			</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_doc" id="current">{lang docmanage}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_doc-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="80px"><strong>{lang docmanageSearch}:</strong></td>
+          <td  width="80px">{lang commonChoiceCat}:</td><td>
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr><tr>
+		<td width="80px" height="29"></td>
+          <td width="80px">{lang typesearch}:</td>
+          <td><select name="typename">
+            <option value="" >{lang alltype}</option>
+			<option value="1" >{lang focusmanage}</option>
+			<option value="2" >{lang hotdoc}</option>
+			<option value="3" >{lang wonderdoc}</option>
+			<option value="4" >{lang commonLock}</option>
+			<option value="5" >{lang commonPassed}</option>	
+			<option value="6" >{lang commonUnpass}</option>
+          </select>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td width="80px">{lang commonTitleKey}:</td>
+	      <td><input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />          
+	    </tr>
+		<tr>
+		<td></td>
+          <td width="80px"> {lang commonAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="80px"></td>
+          <td width="80px">{lang commonCreateTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$docsum}</b>{lang docmanageDocNum}</td>
+      </tr>
+    </table>
+	<form method="POST" name="formdoclist">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td>{lang commonSelect}</td>
+            <td>{lang commonTitle}</td>
+			<td>{lang commonAuthor}</td>
+			<td>{lang commonCat}</td>
+			<td>{lang commonClickCount}</td>
+            <td>{lang commonCreateTime}</td>
+			<td>{lang doctype}</td>
+            <td>{lang commonLock}</td>
+            <td>{lang commonPass}</td>
+          </tr>
+          	<!-- {if $doclist != null} -->
+			<!--{loop $doclist $doc}-->
+          <tr align="center">
+            <td><input type="checkbox" name="chkdid[]" value="{$doc['did']}" /></td>
+            <td><a target="_blank" class="e" href="index.php?doc-view-{$doc['did']}" title="{$doc['title']}">{$doc['title']}</a>
+            <input type="hidden" value="{$doc['title']}" id="{$doc['did']}_title" name="{$doc['did']}_title">
+            </td>
+            <td><a target="_blank" class="e" href="index.php?user-space-{$doc['authorid']}"  title="{$doc['author']}">{$doc['author']}</a></td>
+            <td>{$doc['category']}</td>
+            <td>{$doc['views']}</td>
+            <td>{$doc['time']}</td>
+			<td>{if $doc['doctype'] == 1}<font color="Red">{lang focusmanage}</font>{elseif $doc['doctype'] == 2}<font color="blue">{lang hotdoc}</font>{elseif $doc['doctype'] == 3}<font color="green">{lang wonderdoc}</font>{else}{lang focusmanageNone}{/if}</td>
+		
+            <td>	<input type = "hidden" name = "{$doc['did']}focus" value = "{$doc['title']}">{if $doc['locked'] == 0}{lang commonNo}{else}<font color="Red">{lang commonYes}</font>{/if}</td>
+            <td>{if $doc['visible'] == 0}{lang commonUnpass}{else}<font color="Red">{lang commonPassed}</font>{/if}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {/if} -->
+		<!-- {if $doclist == null} -->
+          <tr>
+            <td colspan="8">{lang docmanageSearchMsg}</td>
+          </tr>
+          <!-- {/if} -->
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox" type="checkbox" id="chkall" onclick="selectAll();">
+                        <label id="tip">{lang commonAllSelect}</label></td>
+                    <td>
+                    <input type="button" class="btn" name="casemanage" onClick="ChangeRadionew(2);" value="{lang commonPass}" />
+                    <input type="button" class="btn" name="casemanage" onClick="ChangeRadionew(3);" value="{lang commonLock}" />
+                    <input type="button" class="btn" name="casemanage" onClick="ChangeRadionew(4);" value="{lang commonUnlock}" />
+                    <input type="button" class="btn" name="casemanage" onClick="ChangeRadionew(7);" value="{lang commonDel}" />
+	              	<input type="button" class="btn" name="casemanage" onClick="javascript:catevalue.ajax(0,this);" value="{lang commomMovecat}" />
+	              	<input type="button" class="btn" name="casemanage" onClick="inputnewname();" value="{lang commomRename}" />                    
+		            <select name="doctype" id="doctype">
+						<option value="0" >{lang cancledoctype}</option>
+						<option value="1" >{lang focusmanage}</option>
+						<option value="2" >{lang hotdoc}</option>
+						<option value="3" >{lang wonderdoc}</option>
+			    	</select>
+			    	<input type="button" class="btn" name="casemanage" onClick="ChangeRadionew(1);" value="{lang commonSelect}" />
+                    </td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+
+{template admin_footer}

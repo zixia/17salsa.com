@@ -1,0 +1,343 @@
+{template header}
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#tpbk img,#tjct img").each(function(i){
+		var w = this.width;
+		var h = this.height;
+		if(w > 100 || h > 75){
+			if(w/h>4/3){
+				this.style.width = "100px"
+			}else{
+				this.style.height = "75px"
+			}
+		}
+	});
+	
+	$("input[name*='searchtext']") .focus();
+	$("#notice h2 a").click(function(){
+		var id = $(this).attr('href');
+		$("#zxdt, #zngg").hide();
+		$("#notice h2  a").toggleClass('on');
+		$(id).show();
+		return false;
+	});
+	
+	if($("#zxdt").height()>440){
+		$("#zxdt").height(440);
+		$("#zxdt").css("overflow","hidden");
+		var scroll=new s('zxdt',2000,30);
+		scroll.bind();
+		scroll.start();
+	}
+});
+
+function s(zxdt, delay, speed){
+    this.rotator = $("#"+zxdt);
+	this.delay = delay || 1000;
+	this.speed = speed || 20;
+	this.tid = this.tid2 = this.firstp = null;
+	this.pause = false;
+	this.num=0;
+	this.p_length=$("#zxdt p").length;
+}
+s.prototype = {
+	bind:function(){
+		var o = this;
+		this.rotator.hover(function(){o.end();},function(){o.start();});
+	},
+	start:function(){
+		this.pause=false;
+		if($("#zxdt p").length==this.p_length){
+			this.firstp=$("#zxdt p:first-child");
+			this.rotator.append(this.firstp.clone());
+		}
+		var o = this;
+		this.tid = setInterval(function(){o.rotation();}, this.speed);
+	},
+	end:function(){
+		this.pause=true;
+		clearInterval(this.tid);
+		clearTimeout(this.tid2);
+	},
+	rotation:function(){
+		if(this.pause)return;
+		var o=this;
+		var firstp=$("#zxdt p:first-child");
+		this.num++;
+		this.rotator[0].scrollTop=this.num;
+		if (this.num == this.firstp[0].scrollHeight+8){
+			clearInterval(this.tid);
+			this.firstp.remove();
+			this.num = 0;
+			this.rotator[0].scrollTop = 0;
+			this.tid2 = setTimeout(function m(){o.start();},this.delay);
+		}
+	}
+}
+
+</script>
+<script type="text/javascript">
+var indexlogin = 1;
+var loginTip1 = '{lang loginTip1}';
+var loginTip2 = '{$loginTip2}';
+var loginTip3 = '{lang loginTip3}';
+var logincodewrong = '{lang logincodewrong}';
+var name_max_length = $name_max_length;
+var name_min_length = $name_min_length;
+var editPassTip1 = '{lang editPassTip1}';
+var loginTip4 = '{lang loginTip4}';
+var checkcode = '{$checkcode}';
+</script> 
+<div class="w-950 columns azmsx">
+<h2 class="col-h2">{lang letterOrderView}:</h2>
+	<a href="{url list-letter-A}" >A</a>
+	<a href="{url list-letter-B}" >B</a>
+	<a href="{url list-letter-C}" >C</a>
+	<a href="{url list-letter-D}" >D</a>
+	<a href="{url list-letter-E}" >E</a>
+	<a href="{url list-letter-F}" >F</a>
+	<a href="{url list-letter-G}" >G</a>
+	<a href="{url list-letter-H}" >H</a>
+	<a href="{url list-letter-I}" >I</a>
+	<a href="{url list-letter-J}" >J</a>
+	<a href="{url list-letter-K}" >K</a>
+	<a href="{url list-letter-L}" >L</a>
+	<a href="{url list-letter-M}" >M</a>
+	<a href="{url list-letter-N}" >N</a>
+	<a href="{url list-letter-O}" >O</a>
+	<a href="{url list-letter-P}" >P</a>
+	<a href="{url list-letter-Q}" >Q</a>
+	<a href="{url list-letter-R}" >R</a>
+	<a href="{url list-letter-S}" >S</a>
+	<a href="{url list-letter-T}" >T</a>
+	<a href="{url list-letter-U}" >U</a>
+	<a href="{url list-letter-V}" >V</a>
+	<a href="{url list-letter-W}" >W</a>
+	<a href="{url list-letter-X}" >X</a>
+	<a href="{url list-letter-Y}" >Y</a>
+	<a href="{url list-letter-Z}" >Z</a>
+	<a href="{url list-letter-0}" >0</a>
+	<a href="{url list-letter-1}" >1</a>
+	<a href="{url list-letter-2}" >2</a>
+	<a href="{url list-letter-3}" >3</a>
+	<a href="{url list-letter-4}" >4</a>
+	<a href="{url list-letter-5}" >5</a>
+	<a href="{url list-letter-6}" >6</a>
+	<a href="{url list-letter-7}" >7</a>
+	<a href="{url list-letter-8}" >8</a>
+	<a href="{url list-letter-9}" >9</a>
+	<a href="{url list-letter-*}" >{lang otherOrderView}</a>
+</div>
+<div class="l bd_l">
+	<div id="jcct" class="columns w-390 jcct l">
+		<h2 class="col-h2">{lang wonderDoc}</h2>
+		<a href="{url list-focus-3}"  class="more">{lang more}</a>
+		<!--{if isset($indexcache['fistwonderdoc'])}-->
+			<dl class="col-dl">
+				<dd class="l"><a href="{url doc-view-$indexcache['fistwonderdoc']['did']}"  class="a-img"><img title="{$indexcache['fistwonderdoc']['title']}" src="{$indexcache['fistwonderdoc']['image']}"/></a></dd>
+				<dt class="h1 link_orange a-c bold"><a href="{url doc-view-$indexcache['fistwonderdoc']['did']}" title="{{$indexcache['fistwonderdoc']['title']}" >{$indexcache['fistwonderdoc']['shorttitle']}</a></dt>
+				<dd><p>{$indexcache['fistwonderdoc']['summary']}...<a href="{url doc-view-$indexcache['fistwonderdoc']['did']}" >{lang readFullText}&gt;&gt;</a></p></dd>
+			</dl>
+			<ul class="col-ul point font-14 ">
+				<!--{loop $indexcache['wonderdocs'] $wondoc}-->
+					<li><a href="{url doc-view-$wondoc['did']}" >{$wondoc['title']}</a>: {$wondoc['summary']}</li>
+				<!--{/loop}-->
+			</ul>
+		<!--{/if}-->
+		<label class="hotsearch"><span class="bold">{lang hotsearch}</span>
+		<!--{loop $hotsearch $hotname}-->
+			<!--{if $hotname[name]}-->
+				<a href="<!--{if $hotname[url]}-->{$hotname[url]}<!--{else}-->index.php?doc-innerlink-{eval echo urlencode($hotname[name])}<!--{/if}-->" target="_blank">{$hotname[name]}</a>
+			<!--{/if}-->
+		<!--{/loop}-->
+	</label>
+	</div>
+		
+		
+	<div id="reci" class="columns w-230 reci r">
+		<h2 class="col-h2">{lang hotDoc}</h2>
+		<a href="{url list-focus-2}" class="more">{lang more}</a>
+		<!--{loop $indexcache['hotdocs'] $key $hotdoc}-->
+			<dl class="col-dl <!--{if $indexcache['hotdocounts']==$key+1}-->bor_no<!--{/if}-->">
+				<dt><a href="{url doc-view-$hotdoc['did']}"  title="{$hotdoc['title']}">{$hotdoc['shorttitle']}</a></dt>
+				<dd>{$hotdoc['summary']}[<a href="{url doc-view-$hotdoc['did']}"  class="entry">{lang detail}</a>]</dd>
+			</dl>
+		<!--{/loop}-->
+	</div>
+	
+	
+<!--ad start -->
+<!--{if isset($advlist[2]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="ad" id="advlist_2">
+{$advlist[2][code]}
+</div>
+<!--{elseif isset($advlist[2]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="ad" id="advlist_2">
+</div>
+<!--{/if}-->
+<!--ad end -->
+	<div id="tjct" class="columns tjct">
+		<h2 class="col-h2">{lang focusDoc}</h2>
+		<a href="{url list-focus}" class="more">{lang more}</a>
+		<!--{loop $indexcache['commenddocs'] $key $fistcomdoc}-->
+			<!--{if $key<5}-->
+			<div class="jc_tj">
+				<a href="{url doc-view-$fistcomdoc['did']}"  class="a-img"><img alt="{$fistcomdoc['title']}" title="{$fistcomdoc['title']}" src="{$fistcomdoc['image']}"/></a>
+				<p class="a-c"><a href="{url doc-view-$fistcomdoc['did']}"  title="{$fistcomdoc['title']}">{$fistcomdoc['shorttitle']}</a></p>
+			</div>
+			<!--{/if}-->
+		<!--{/loop}-->
+		<ul class="col-ul point font-14 c-b">
+			<!--{loop $indexcache['commenddocs'] $key $commenddoc}-->
+				<!--{if $key>=3}-->
+				<li><a href="{url doc-view-$commenddoc['did']}"  title="{$commenddoc['title']}">{$commenddoc['shorttitle']}</a></li>
+				<!--{/if}-->
+			<!--{/loop}-->
+		</ul>
+	</div>
+<div id="rmbq" class="columns i6-ff p-b8 rmbq c-b">
+	<h2 class="col-h2">{lang hotTag}</h2>
+	<ul class="col-ul list-s">
+	<!--{loop $indexcache['hottag']	 $tag}-->
+		<!--{if $tag['tagcolor']=='red'}-->
+			<li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" class="red">{$tag['tagname']}</a></li>
+		<!--{else}-->
+			<li><a href="{url search-tag-{eval echo urlencode($tag['tagname'])}}" >{$tag['tagname']}</a></li>
+	    <!--{/if}-->
+    <!--{/loop}-->
+	</ul>
+</div>	
+	<div id="tpbk" class="columns tpbk c-b">
+		<h2 class="col-h2">{lang picture}</h2>
+		<a href="{url pic-piclist}"  class="more">{lang more}</a>
+		
+		<!--{loop $indexcache['piclist'] $picname}-->
+			<div class="jc_tj">
+				<a href="{url pic-view-{$picname['id']}-{$picname['did']}}"  class="a-img"><img title="{$picname['description']}"  src="{$picname['attachment']}"/></a>
+				<p class="a-c"><a href="{url pic-view-{$picname['id']}-{$picname['did']}}" >{$picname['description']}</a></p>
+			</div>
+		<!--{/loop}-->
+	</div>	
+
+	<div id="zjgx" class="columns zjgx o-v c-b">
+		<h2 class="col-h2">{lang recentUpdate}</h2>
+		<a href="{url list-recentupdate}" class="more">{lang more}</a>
+		<ul class="col-ul font-14 ">
+		   <!--{loop $indexcache['recentupdatelist'] $doc}-->
+				<li><a href="{url doc-view-$doc['did']}"  class="ctm" title="{$doc['title']}">{$doc['shorttitle']}</a><span>$doc['lastedit']</span></li>
+		   <!--{/loop}-->
+		</ul>
+	</div>
+
+
+
+
+	
+</div>
+
+
+<div class="r bd_r">
+<div id="login-static" class="columns login-static i-login">
+		
+		<h2 class="col-h2">用户登录</h2>
+		<!--{if $user['groupid']=='1'}-->
+			<!--{if $passport}-->
+			<span class="red error" style="top:80px">已开启通行证,请直接点击<a href="index.php?user-login">登录</a></span>
+			<!--{else}-->
+			<span class="error" id="logintip"></span>
+			<form action="" onsubmit="return docheck();">
+			<ul class="col-ul" id="nologin" style="display:block">
+				<li><span>用户名：</span><input name="username" id="username" tabindex="3" type="text" class="inp_txt" onblur="check_username()" maxlength="32" /></li>
+				<li><span>密&nbsp;&nbsp;码：</span><input name="password" id="password"  tabindex="4" type="password" class="inp_txt" onblur="check_passwd()" maxlength="32" /></li>
+				<!--{if $checkcode != "3"}-->
+				<li class="yzm"><span>验证码：</span><input name="code" id="code"  tabindex="5" type="text" onblur="check_code()" maxlength="4" /><label class="m-lr8"><img id="verifycode" src="{url user-code}" onclick="updateverifycode();" /></label><a href="javascript:updateverifycode();">换一个</a>
+				</li>
+				<!--{/if}-->
+				<li><input name="submit" type="submit" value="登录" class="btn_inp" tabindex="6" /><input name="Button1" type="button" value="我要注册" class="btn_inp" onclick="location.href='{url user-register}';" /></li>
+			</ul>
+			</form>
+			<!--{/if}-->
+		<!--{else}-->
+		<dl id="islogin" class="col-dl twhp2" >
+		<dd class="block"><a href="{url user-space-$user['uid']}" class="a-img1"><img alt="点击进入用户中心" src="<!--{if $user['image']}-->$user['image']<!--{else}-->style/default/user_l.jpg<!--{/if}-->" width="36"/></a></dd>
+		<dt><a href="{url user-space-$user['uid']}" class="m-r8 bold black">{$user['username']}</a><img title="您现在拥有{$user['credit1']}金币 " src="style/default/jb.gif" class="sign"/></dt>
+		<dd class="m-b8"><span>头衔：{$user['grouptitle']}</span></dd>
+		<dd><span>经验：{$user['credit2']}</span></dd>		
+		<dd><span>创建词条：{$user['creates']}</span><span>人气指数：{$user['views']}</span></dd>
+		<dd class="twhp_dd"><span>编辑词条：{$user['edits']}</span><a href="{url user-space-{$user['uid']}}" class="red">我的百科</a></dd>
+		</dl>
+		<!--{/if}-->
+		<p class="novice">
+		<a href="http://17salsa.com/wiki/doc-view-56.html" >初来乍到，了解一下</a>
+		<a href="http://17salsa.com/wiki/doc-edit-5.html" >我是新手，怎样编写词条</a>
+		<a href="index.php?doc-innerlink-{eval echo urlencode('我要成为词条达人')}" >我要成为词条达人</a>
+		</p>
+		
+	</div>
+
+    <div id="categorylist" class="columns qh notice p-b8">
+        <h2 class="col-h2 h3"><a href="{url category}" target="_self">{lang wikiCategory}</a></h2>
+        <!--{loop $categorylist  $category}-->
+        <dl>
+          <dt><a href="{url category-view-$category['parent']['cid']}" ><b>{$category['parent']['name']}</b></a></dt>
+        <!--{if isset($category['child'])}-->
+                <dd class="link_gray">
+              <!--{loop $category['child'] $value}-->
+                  <a href="{url category-view-$value['cid']}" >{$value['name']}</a>
+         <!--{/loop}-->
+                 </dd>
+         <!--{/if}-->
+        </dl>
+       <!--{/loop}-->
+   </div>
+
+	<div id="notice" class="columns qh notice p-b8">
+		<h2 class="col-h2 h3"><a href="#zngg" target="_self">{lang webnotice}</a><a href="#zxdt" target="_self" class="on">{lang news}</a></h2>
+		<div id="zxdt">
+			<!--{loop $indexnewscache['newslist'] $newslist}-->
+				<p class="col-p">{$newslist}</p>
+			<!--{/loop}-->
+		</div>
+		<div id="zngg" class='none'><p class="col-p">$setting[site_notice]</p></div>
+	</div>
+	<div id="dwsct" class="columns dwsct i6-ff list2">
+		<h2 class="col-h2">{lang cooperatedoc}</h2>
+		<a href="{url doc-cooperate}"  class="more">{lang more}</a>
+		<ul class="col-ul font-14" >
+			<!--{loop $indexcache['cooperatedocs'] $coopdoc}-->
+				<li><a href="index.php?doc-innerlink-{eval echo urlencode({$coopdoc['title']})}"  title="{$coopdoc['title']}">{$coopdoc['shorttitle']}</a></li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+	
+	
+
+	<div id="zjpl" class="columns zjpl ">
+		<h2 class="col-h2">{lang recentComment}</h2>
+		<!--{loop $indexcache['recentcommentlist'] $comment}-->
+			<div class="pl_unit">
+				<a href="{url user-space-$comment['authorid']}"  class="a-img1"><img alt="" src="<!--{if $comment['image'] }-->{$comment['image']}<!--{else}--><!--{/if}-->" width="36px" height="36px" /></a>
+				<p><a href="{url comment-view-$comment['did']}" title="{$comment['comment']}"  class="block">{$comment['tipcomment']}</a>{$comment['time']}</p>
+			</div>
+		<!--{/loop}-->
+	</div>	
+	
+	
+</div>
+
+
+
+<div class="c-b"></div>
+
+
+<!--{if count($indexcache['friendlink'])!=0}-->
+<div  id="yqlj" class="columns no_col-h2 bg-gray yqlj i6-ff">
+	<ul class="col-ul list-s">
+	<li><span class="bold">{lang friendLink}:</span></li>
+	<!--{loop $indexcache['friendlink'] $link}-->
+	<li><a href="{$link['url']}"  title="{$link['description']}">{$link['name']}</a></li>
+	<!--{/loop}-->
+	</ul>
+</div>
+<!--{/if}-->
+{template footer}

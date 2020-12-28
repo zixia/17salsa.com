@@ -1,0 +1,1001 @@
+{template header}
+<div class="w-950 hd_map">
+<a href="{$setting[site_url]}">{$setting[site_name]}</a> &gt;&gt;所属分类 &gt;&gt;<span id="catenavi"><!--{loop $navigation $key $category}--> <a href="{url category-view-$category['cid']}">{$category['name']} </a>&nbsp;&nbsp;<!--{/loop}-->  </span>
+</div>
+
+	
+<div class="l w-710 o-v">
+	<h1 class="title_thema bor_b-ccc"><strong class="l" ><span id='doctitle'>{$doc['doctitle']}</span><label id='auditmsg'><!--{if $doc['visible']=='0'}-->--{lang viewDocTip4}<!--{/if}--></label><label id='lockimage'><!--{if $doc['locked']}--> <image src="style/default/lock.gif"/><!--{/if}--></label></strong>
+		<a href="{url doc-edit-$doc['did']}" target="_self" class="r" <!--{if $doc['locked']}--> onclick="return doc_is_locked()"<!--{/if}-->>编辑词条</a>
+		<a href="{url comment-view-$doc['did']}" class="r">发表评论({$doc[comments]})</a>
+	</h1>
+	<!--{if $editlock['locked']}--><p id="lock" class="red bor-ccc lock_word">{lang viewDocTip5}<a href="{url user-space-$editlock['user']['uid']}">$editlock['user']['username']</a>{lang viewDocTip6}</p><!--{/if}-->
+	<!--{if $synonymdoc}--><p class="red bor-ccc lock_word">"{$synonymdoc}"是"{$doc['doctitle']}"的同义词</p><!--{/if}-->
+	<!--{if isset($advlist[3][1]) && isset($setting['advmode']) && '1'==$setting['advmode']}-->
+	<div class="ad" id="advlist_3_1">
+	{$advlist[3][1][code]}
+	</div>
+	<!--{elseif isset($advlist[3][1]) && (!isset($setting['advmode']) || !$setting['advmode'])}-->
+	<div class="ad" id="advlist_3_1">
+	</div>
+	<!--{/if}-->
+	<div class="content_1 wordcut">				
+		<div class="content_topp">
+		</div>
+		<!--{loop $doc['sectionlist'] $key $section}-->
+		<!--{if $section['flag'] == 1}-->
+		<!--{if ($key==1)&&!empty($sectionlist)}-->
+		
+		<!--{if isset($advlist[3][2]) && isset($setting['advmode']) && '1'==$setting['advmode']}-->
+		<div class="ad" >
+			<span class="r" id="advlist_3_2">
+			{$advlist[3][2][code]}
+			</span>
+		</div>
+		<!--{elseif isset($advlist[3][2]) && (!isset($setting['advmode']) || !$setting['advmode'])}-->
+		<div class="ad" >
+			<span class="r" id="advlist_3_2"></span>
+		</div>
+		<!--{/if}-->
+		
+		<fieldset id="catalog">
+			<legend><a name='section'>{lang catalog}</a></legend>
+			<ul id="hidesection">
+				<!--{loop $sectionlist $k $sec}-->
+				<li <!--{if $k>=4}-->style="display:none"<!--{/if}-->>&#8226; <a href="{url doc-view-$doc['did']}#{$sec['key']}">{$sec['value']}</a></li>
+				<!--{/loop}-->
+			</ul>
+			<!--{if count($sectionlist) > 4}-->
+			<p><a href="javascript:void(0);" onclick="partsection();"  id="partsection" style="display:none">[{lang showPart}]</a><a href="javascript:void(0);" onclick="fullsection();" id="fullsection">[{lang showAll}]</a></p>
+			<!--{/if}-->
+		</fieldset>
+		<!--{/if}-->
+
+		<h3><span class="texts">{$section['value']}</span><a name="{$key}" href="{url doc-editsection-{$doc['did']}-{$key}}" >{lang editSection}</a><a href="{url doc-view-$doc['did']}#section">{lang backCatalog}</a></h3>
+		<!--{else}-->	
+		<div class="content_topp">
+		{$section['value']}
+		</div>
+		<!--{/if}-->	
+		<!--{/loop}-->
+	</div>
+	
+	<!--{if count($referencelist)>0}-->
+	<div>
+	<dl class="reference">
+		<dt>{lang references}</dt>
+		<!--{loop $referencelist $i $ref}-->
+		<dd>
+		<span>[{eval echo ($i+1)}].</span>&nbsp;&nbsp;<!--{if $ref['url']}--><a href="{$ref['url']}" target="_blank">{$ref['name']}</a> &nbsp;&nbsp;<span style="color:#666666">{$ref['url']}</span><!--{else}-->{$ref['name']}<!--{/if}-->
+		</dd>
+		<!--{/loop}-->
+	</dl>
+	</div>
+	<!--{/if}-->
+	
+	<div class="fj_list m-t10">
+		<h3 <!--{if count($attachment)==0}-->style="display:none"<!--{/if}-->>附件列表</h3>
+		<dl style="display: none;">
+			<dt><img class="fj_img"/><a></a><br/>
+			<span class="l"><label> 下载次数：0</label></span></dt>
+			<dd></dd>
+		</dl>
+		<!--{if count($attachment)>0}-->
+		<!--{if $attach_download}-->
+		<!--{loop $attachment $attach}-->
+		<dl id="$attach['id']">
+			<dt><img class="fj_img" src="style/default/attachicons/{$attach['icon']}.gif"/><a href="{url attachment-download-$attach['id']}">{$attach['filename']}</a><br/>
+			<span class="l"><label class="mar-r8">({eval echo sprintf('%.2f',$attach['filesize']/1024)}k)</label> <label>下载次数：{$attach['downloads']}</label> </span><!--{if $attachment_remove && ($attach['uid']==$userid || $groupid==4) }-->[<a href="javascript:;" onclick="Attachment.remove(this, $attach['id'])">{lang remove}</a>]<!--{/if}-->
+
+			</dt>
+			<dd>{$attach['description']}</dd>
+		</dl>
+		<!--{/loop}-->
+		<!--{else}-->
+		<p class="m-lr8 m-t8">您所在的用户组无法下载或查看附件</p>
+		<!--{/if}-->
+		<!--{/if}-->
+						
+		<!--{if $setting['attachment_open'] && $attachment_upload}-->
+		<div>
+			<form id="attachment_upload" action="{url attachment-upload}" enctype="multipart/form-data" 
+			method="post" target="upload" style="display:none" onsubmit="return Attachment.submit(this)">
+			<div><input name="attachment[]" type="file" onkeydown="return false" onpaste="return false" autocomplete="off" onchange="Attachment.add(this)">
+			{lang attachDesc}<input name="attachmentdesc[]" type="text" size="40" maxlength="50" autocomplete="off"/>
+			<a href="javascript:;" onclick="Attachment.unadd(this)" style="display:none">{lang remove}</a>
+			</div>
+			<br/><input type="submit" value="{lang upload}" /><input type="hidden" value="{$doc['did']}" name="did"/>
+			<span>[{lang attachUpload}{lang attachSizeTrip} {$setting['attachment_size']} KB]</span>
+			</form>
+			<a href="javascript:;" onclick="Attachment.upload(this)">{lang attachUpload}</a>
+			<span id="attachment_error" style="color:red"></span>
+		</div>
+		<iframe name="upload" id="upload" style="display:none"></iframe>
+		<!--{/if}-->
+	</div>
+	<!--{if isset($advlist[3][3]) && isset($setting['advmode']) && '1'==$setting['advmode']}-->
+	<br><div class="ad" id="advlist_3_3">
+	{$advlist[3][3][code]}
+	</div>
+	<!--{elseif isset($advlist[3][3]) && (!isset($setting['advmode']) || !$setting['advmode'])}-->
+	<div class="ad" id="advlist_3_3"></div>
+	<!--{/if}-->	
+	<div class="bor_b-ccc m-t10 notes">
+		<p class="l">→如果您认为本词条还有待完善，请 <a class="font14" href="{url doc-edit-$doc['did']}">编辑词条</a></p>
+		<p class="r"><!--{if $neighbor['predoc']}-->上一篇<a href="{url doc-view-$neighbor['predoc']['did']}"  class="m-lr8">{$neighbor['predoc']['title']}</a><!--{/if}--><!--{if $neighbor['nextdoc']}-->下一篇<a href="{url doc-view-$neighbor['nextdoc']['did']}"  class="m-lr8">{$neighbor['nextdoc']['title']}</a><!--{/if}--></p>
+	</div>
+	<p class="useful_for_me">
+	<span>词条内容仅供参考，如果您需要解决具体问题<br/>（尤其在法律、医学等领域），建议您咨询相关领域专业人士。</span>
+	<a href="javascript:vote();"><label id="votemsg">本词条对我有帮助</label><b>{$doc['votes']}</b></a>
+	</p>
+	
+	<div class="bor-ccc m-t10 bg-gray notes add">
+		<p class="i6-ff">
+		<label class="l w-550"><b>标签：</b>
+			<!--{if count($doc['tag'] )>0}-->
+			<!--{loop $doc['tag'] $key $tag}--> <a href="{url search-tag-{eval echo urlencode($tag)}}" name="tag">{$tag}</a> <!--{/loop}-->
+			<!--{else}-->
+			<span name="nonetag">{lang noneTag}</span>
+			<!--{/if}-->
+		</label>
+		<!--{if $doc_edit}-->
+		<span class="r w-110" onclick="Tag.box($doc['did'],this)"><img src="style/default/add_label.gif"/><a href="javascript:void(0);">编辑/添加标签</a></span>
+		<!--{/if}-->
+		</p>
+		
+		<p class="add_synonym"><label class="l w-550"><b>同义词</b>：
+		<!--{if !empty($synonyms)}-->
+		<span ><!--{loop $synonyms $key $synonym}--><a href="{url doc-innerlink-$synonym['srctitle']}" name='synonym'>{$synonym['srctitle']}</a> <!--{/loop}--></span>
+		<!--{else}-->
+		<span name="nonesynonym">{lang noneSynonym}</span>
+		<!--{/if}--></label>
+		
+		<!--{if $synonym_audit}-->
+		<span class="r w-110 cursor" onclick="Synonym.box($doc['did'],this)"><img src="style/default/add_synonym.gif"/><a href="javascript:void(0)" >编辑/添加同义词</a></span>
+		<!--{/if}-->
+		</p>
+
+	</div>
+	<div class="bor-ccc m-t10 notes bg-gray bookmark">
+		<p><span class="bold">收藏到：</span>
+			<img src='style/default/bookmark/ie.gif' alt='Favorites' border='0' onclick="addfav();"  style="cursor:pointer;"> &nbsp;<script language="javascript"src='js/bookmark.js'></script>
+		</p>
+		<!--{if isset($doclink)}-->
+		<label class="m-t10 l" id="uniontitle">{$uniontitle}</label>
+		<script type="text/javascript">
+		$('#uniontitle').hide();
+		$(document).ready(function(){
+			$.get("index.php?plugin-hdapi-hdapi-uniontitle-"+{$doc['did']}, function(data){
+				if (data && data.indexOf('<html>')<0) $('#uniontitle').html(data).show();
+				else $('#uniontitle').hide();
+			});
+		});
+		</script>
+		<!--{/if}-->
+		
+	</div>
+	
+	
+	<!--{if $comment_add}-->
+	<div class="columns comment">
+	<h2 class="col-h2">相关评论</h2>
+	<a href="{url comment-view-$doc['did']}" target="_blank" class="more">查看更多&gt;&gt;</a>
+	<form method="post" action="{url comment-add-$doc['did']}">
+	<ul class="col-ul">
+		<li><textarea id="comment" name="comment" cols="95" rows="10" class="area"></textarea> <input id='anonymity' name="anonymity" type="checkbox"  />匿名</li>
+		<li class="yzm"><!--{if $setting['checkcode'] != "3"}--><span>验证码：</span><input name="code" type="text" /><label class="m-lr8"><img id="verifycode" src="{url user-code}" onclick="updateverifycode();" /></label><a href="javascript:updateverifycode();">换一个</a><!--{/if}-->&nbsp;&nbsp;&nbsp;&nbsp;注：评论长度最大为200个字符。</li>
+		<li><input name="submit" type="submit" value="发表评论"  class="btn_inp"/></li>
+	</ul>
+	</form>
+	</div>
+	<!--{/if}-->
+</div>
+
+<div class="r w-230">
+
+		<!--{if isset($advlist[4][1]) && isset($setting['advmode']) && '1'==$setting['advmode']}-->
+		<div class="ad" id="advlist_4_1">
+		{$advlist[4][1][code]}
+		</div>
+		<!--{elseif isset($advlist[4][1]) && (!isset($setting['advmode']) || !$setting['advmode'])}-->
+		<div class="ad" id="advlist_4_1">
+		</div>
+		<!--{/if}-->
+		
+		<!--{if $audit}-->
+		<div class="columns ctgl">
+		<h2 class="col-h2">词条管理</h2>
+		<form method="post">
+		<dl>
+		<dt>操作</dt>
+		<dd class="a-c">	<input name="Button2" type="button" value="重命名" class="m-lr8 btn_inp" onclick="doc_rename();" /><input id="editcategory" name="Button3" type="button" value="编辑分类" class="m-lr8 btn_inp" onClick="javascript:catevalue.ajax(0,this);"/>
+				</dd>
+		<dt>状态</dt>
+		<dd><label class="l" ><a href='javascript:void(0);' onclick="lock('lock');">锁定</a></label><label class="r" ><a href='javascript:void(0);' onclick="lock('unlock');">解锁</a></label></dd>
+		<dd><label class="l" ><a href='javascript:void(0);' onclick="recommend();">推荐</a></label><label class="r" ><a href='javascript:void(0);' onclick="updatastatus(0);"> 取消推荐</a></label></dd>
+		<dd><label class="l" ><a href='javascript:void(0);' onclick="audit();">审核</a></label><label class="r" ><a href='index.php?doc-remove-{$doc['did']}' onclick="return remove()">删除</a></label></dd>
+		</dl>
+		</form>
+		</div>
+		<!--{/if}-->
+		<div class="columns ctxx">
+		<h2 class="col-h2">词条信息</h2>
+		<!--{if $author}-->
+		<!--{if !isset($lasteditor) || (isset($lasteditor) && $lasteditor['uid']!=$author['uid'])}-->
+		<dl class="col-dl twhp2">
+		<dd><a href="{url user-space-$author['uid']}" target="_blank"  class="a-img1">
+		<img alt="{$author['username']}" title="{$author['username']}" src="<!--{if $author[image]}-->$author[image]<!--{else}-->style/default/user_l.jpg<!--{/if}-->" width="38px" height="38px" />
+		</a></dd>
+		<dt><a href="{url user-space-$author['uid']}" target="_blank">{$author['username']}</a></dt>
+		<dd><span style="" class="l m-r8">{$author['grouptitle']}</span>
+			<span title="星星数 {$author['stars']}" class="l"><!--{for $i=0; $i<$author['userstars'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$author['userstars'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$author['userstars'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}--></span>
+		</dd>
+		<dd>词条创建者 <a onclick="javascript:Message.box('{$author[username]}')"   href="javascript:void(0)">发短消息</a> &nbsp;&nbsp;<img src="style/default/jb.gif" title="{$author['credit1']}金币"></dd>
+		</dl>
+		<!--{/if}-->
+		<!--{/if}-->
+		
+		<!--{if $author_removed}-->
+		<dl class="col-dl twhp2">
+		<dd><a class="a-img1">
+		<img alt="已删除" src="style/default/user_l.jpg" width="38px" height="38px" /></a></dd>
+		<dt>此用户已删除</dt>
+		<dd>词条创建者</dd>
+		</dl>
+		<!--{/if}-->
+		
+		<!--{if isset($lasteditor) }-->
+		<dl class="col-dl twhp2">
+		<dd><a href="{url user-space-$lasteditor['uid']}" target="_blank"  class="a-img1">
+		<img alt="{$lasteditor['username']}" title="{$lasteditor['username']}" src="<!--{if $lasteditor[image]}-->$lasteditor[image]<!--{else}-->style/default/user_l.jpg<!--{/if}-->" width="38px" height="38px" />
+		</a></dd>
+		<dt><a href="{url user-space-$lasteditor['uid']}" target="_blank">{$lasteditor['username']}</a></dt>
+		<dd><span class="l m-r8" style="color:{$lasteditor['color']}" >{$lasteditor['grouptitle']}</span>
+			<span title="星星数 {$lasteditor['stars']}" class="l"><!--{for $i=0; $i<$lasteditor['userstars'][3]; $i++}--><img src="style/default/star_level3.gif"/><!--{/for}--><!--{for $i=0; $i<$lasteditor['userstars'][2]; $i++}--><img src="style/default/star_level2.gif"/><!--{/for}--><!--{for $i=0; $i<$lasteditor['userstars'][1]; $i++}--><img src="style/default/star_level1.gif"/><!--{/for}--></span>
+		</dd>
+		<dd>最近编辑者 <a onclick="javascript:Message.box('{$lasteditor[username]}')"   href="javascript:void(0)">发短消息</a> &nbsp;&nbsp;<img src="style/default/jb.gif" title="{$lasteditor['credit1']}金币"></dd>
+		</dl>
+		<!--{/if}-->
+		
+		<!--{if $lasteditor_removed}-->
+		<dl class="col-dl twhp2">
+		<dd><a class="a-img1">
+		<img alt="已删除" src="style/default/user_l.jpg" width="38px" height="38px" /></a></dd>
+		<dt>此用户已删除</dt>
+		<dd>最近编辑者</dd>
+		</dl>
+		<!--{/if}-->
+		
+		<ul class="col-ul bor-ccc">
+		<li>浏览次数: {$doc['views']} 次</li>
+		<!--{if $doc['editions'] }-->
+				<li>{lang editTimes}: {$doc['editions']}次 <a href="{url edition-list-$doc[did]}" target="_blank" class="m-l8">历史版本</a></li>
+		<!--{/if}-->
+		<li>更新时间: {$doc['lastedit']}</li>
+		</ul>
+
+		</div>
+		
+		<!--{if isset($advlist[4][2]) && isset($setting['advmode']) && '1'==$setting['advmode']}-->
+		<div class="ad" id="advlist_4_2">
+		{$advlist[4][2][code]}
+		</div>
+		<!--{elseif isset($advlist[4][2]) && (!isset($setting['advmode']) || !$setting['advmode'])}-->
+		<div class="ad" id="advlist_4_2">
+		</div>
+		<!--{/if}-->
+		
+		<div class="columns">
+		<h2 class="col-h2">相关词条</h2>
+		<!--{if $relate}--><a href="javascript:void(0)" onclick="relateddoc('block')" class="more">添加</a><!--{/if}-->
+		<ul class="col-ul" id='related_doc' <!--{if empty($relatelist)}-->style="display:none"<!--{/if}-->>
+			
+			
+			<!--{loop $relatelist $key $relate}-->
+			<li><a href="index.php?doc-innerlink-{eval echo urlencode($relate)}" target="_blank" title="{$relate}">{$relate}</a></li>
+			<!--{/loop}-->
+			
+		</ul>
+	</div>
+</div>
+
+<!--{if $setting['checkcode'] != "3"}-->
+<script type="text/javascript">
+function updateverifycode() {
+	var img = "index.php?user-code-"+Math.random();
+	$('#verifycode').attr("src",img);
+}
+</script>
+<!--{/if}-->
+<!--{if $audit}-->
+<script type="text/javascript">
+function doc_rename(){
+	var title=$.trim($('#doctitle').html()).replace(/\s/g,'&nbsp;');
+	var html="词条名称 :  <form action='' onsubmit='update_docname();return false;'><input id='newname' type='text' value="+title+" maxlength='80' height='40'><br><br>"+
+	"<input name='renamesbumit' type='button' onclick='update_docname()' value='{lang submit}'>"+
+	"<input name='cancel' type='button' onclick='closepop(\"rename\")' value='{lang cancel}'></form>";
+	$.dialog.box('rename', '重命名', html);
+}
+function update_docname(){
+		$.post(
+		"index.php?doc-changename",{did:$doc['did'],newname:$('#newname').val()},
+		function(xml){
+			var message=xml.lastChild.firstChild.nodeValue;
+			if(message=='1'){
+				$('#doctitle').html($('#newname').val());
+				$.dialog.close('rename');
+				return;
+			}else if(message=='-2'){
+				$.dialog.box('error', '重命名', '{lang viewDocTip2}');
+			}else if(message=='-3'){
+				$.dialog.box('error', '重命名', '{lang createDocTip15}');
+			}else{
+				$.dialog.box('error', '重命名', '{lang viewDocTip3}');
+			}
+			setTimeout("closepop('error')",3000);
+		}
+	);
+}
+
+function lock(type){
+	$.post(
+		"index.php?doc-"+type,{did:$doc['did']},
+		function(xml){
+			var	message=xml.lastChild.firstChild.nodeValue;
+			if(message=='1'){
+				if(type=='lock'){
+					$('#lockimage').html(" &nbsp;<image src='style/default/lock.gif'>");
+				}else{
+					$('#lockimage').html("");
+				}
+				$.dialog.box('lock', '词条锁定', '已经成功锁定/解锁该词条');
+			}else{
+				$.dialog.box('lock', '词条锁定', '{lang viewDocTip3}');
+			}
+			setTimeout("closepop('lock')",3000);
+		}
+	);
+}
+
+function recommend(){
+	var html="词条状态 :  <select id='recommend_type' ><option value='1'>推荐词条</option><option value='2'>热门词条</option><option value='3'>精彩词条</option></select><br><br>"+
+	"<input name='renamesbumit' type='button' onclick='updatastatus($(\"#recommend_type\").val())' value='{lang submit}'>"+
+	"<input name='cancel' type='button' onclick='closepop(\"recommend\")' value='{lang cancel}'>";
+	$.dialog.box('recommend', '推荐词条', html);
+}
+
+function updatastatus(type){
+	$.post(
+		"index.php?doc-setfocus",{did:$doc['did'],visible:$doc['visible'],doctype:type},
+		function(xml){
+			var	message=xml.lastChild.firstChild.nodeValue;
+			if(message=='1'){
+				$.dialog.box('recommend', '推荐词条', '已经成功设置词条状态');
+			}else{
+				$.dialog.box('recommend', '推荐词条', '{lang viewDocTip3}');
+			}
+			setTimeout("closepop('recommend')",3000);
+		}
+	);
+}
+
+function audit(){
+	$.post(
+		"index.php?doc-audit",{did:$doc['did']},
+		function(xml){
+			var	message=xml.lastChild.firstChild.nodeValue;
+			if(message=='1'){
+				$('#auditmsg').html("");
+				$.dialog.box('audit', '审核词条', '已经成功审核了词条');
+			}else{
+				$.dialog.box('audit', '审核词条', '{lang viewDocTip3}');
+			}
+			setTimeout("closepop('audit')",3000);
+		}
+	);
+}
+
+function remove(){
+	var url="index.php?doc-remove-{$doc['did']}";
+	return confirm("{lang editionTip6}")
+}
+
+function closepop(name){
+	$.dialog.close(name);
+}
+
+	var catevalue = {
+		input:null,
+		scids:new Array(),
+		scnames:new Array(),
+		ajax:function(cateid, E){
+			if(arguments.length==2){
+				this.clear();
+				$.ajax({
+					url: 'index.php?doc-hdgetcat',data: {did:{$doc['did']}},cache: false,dataType: "xml",type:"post",async:false, 
+					success: function(xml){
+						var message=xml.lastChild.firstChild.nodeValue;
+						if(message!=''){
+							eval(message);
+						}
+					}
+				});
+			}
+			if(!cateid)cateid=0;
+			$.ajax({
+				url: 'index.php?category-ajax-'+cateid,cache: false,dataType: "xml",type:"get",async:false, 
+				success: function(xml){
+					var message=xml.lastChild.firstChild.nodeValue;
+					var p = $('#flsx');
+					if(!p.length){
+						message="<div class='chose_cate chose_cate_doc bor_no'>"+message+"</div>"
+						$.dialog({id:'flsx',align:'left',position:'center',width:400,title:'编辑分类',content:message});
+					}
+				}
+			});
+		},
+		
+		cateOk:function(id,title,handle){
+			var point;
+			if(handle){
+				this.scids.push(id);
+				this.scnames.push(title);				
+			}else{
+				for(i=0;i<this.scids.length;i++){
+					if(this.scids[i]==id){
+						point=i;
+					}
+				}
+				this.scids.splice(point,1);
+				this.scnames.splice(point,1);
+			}
+			catevalue.pushCategory()
+		},
+		
+		pushCategory:function(){
+			$('#category').val(this.scids.toString());
+			$('#scnames').text(this.scnames.toString());
+		},
+		
+		getCatUrl:function(){
+			var catstring='';
+			for(i=0;i<this.scids.length;i++){
+				catstring=catstring+'<a target="_blank" href="{$setting['seo_prefix']}category-view-'+this.scids[i]+'">'+this.scnames[i]+'</a>,';
+			}
+			catstring=catstring.substring(0, catstring.length-1);   
+			return catstring;
+		},
+		
+		selectCategory:function(){
+			var cb=$(":checkbox");
+			catevalue.pushCategory();
+			for(i=0;i<cb.length;i++){
+				if(catevalue.inArray(cb[i].id, this.scids)){
+					cb[i].checked = true; 
+				}
+			}		
+		},
+		
+		inArray:function(stringToSearch, arrayToSearch) {
+			for (s = 0; s <arrayToSearch.length; s++) {
+				if (stringToSearch == arrayToSearch[s]) {			 
+					 return true;
+				}
+			}
+			return false;
+		},
+		
+		removeCateTree:function(){
+			closepop('flsx');
+			this.clear();
+		},
+		
+		ok:function(){
+			if(changecategory(this.scids.toString())){
+				closepop('flsx')
+			}
+		},
+		
+		init:function(){
+			if('{$category[cid]}'!=''){
+				this.scids.push({$category[cid]});
+				this.scnames.push('{$category[name]}');
+			}
+		},
+		
+		clear:function(){
+			this.scids.length=0;
+			this.scnames.length=0;	
+		}
+		
+	}
+	
+	function changecategory(cats){
+		if(!cats){
+			$('#scnames').fadeOut();
+			$('#scnames').html('&nbsp;&nbsp;分类不允许为空').fadeIn();
+			return false;
+		}
+		$.ajax({
+			url: "index.php?doc-changecategory",data: {did:$doc['did'],newcategory:cats},cache: false,dataType: "xml",type:"post",async:false,
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message!='0'){
+					$('#catenavi').html(message);
+				}
+			}
+		});
+		return true;
+	}
+</script>
+<!--{/if}-->
+<!--{if $synonym_audit}-->
+<script type="text/javascript">
+	
+	var Synonym = {
+		E:null,
+		did: 0,
+		srctitles: '',
+		tags:null,
+		box : function(did, E){
+			this.E = $(E).parent();
+			this.did = did;
+			var html = '<form onsubmit="Synonym.send();return false;"><table border="0" width="400" class="send_massage">'
+			+'<tr><td height="40"><input id="synonymSubject" type="text" class="inp_txt" maxlength="200" size="50"/></td></tr>'
+			+'<tr><td height="40">多个同义词请分隔开，分割符可以使用中英文逗号分号或空格</td></tr>'
+			+'<tr><td height="40"><input id="synonymSubmit" type="submit" value="'+Lang.Submit+'" />'
+			+'<span id="synonymTip"></span></td></tr></table></form>';
+			
+			$.dialog.box('synonym','编辑同义词', html);
+			
+			var srctitles='',a = $(E).parent().find("a[name=synonym]");
+			this.tags = a;
+			a.each(function(i){
+				srctitles += $(this).text() + '; ';
+			});
+			this.srctitles = $.trim(srctitles);
+			$("#synonymSubject").val(srctitles);
+			$("#synonymSubject").focus();
+			$("#synonymSubmit").attr('disabled', false).val(Lang.Submit);
+
+			return false;
+		},
+		
+		send: function(){
+			var title="{$doc['title']}";
+			var params = {'submit':'ajax', 'desttitle':title,'srctitles':'', 'destdid':this.did};
+			params.srctitles = $.trim($("#synonymSubject").val());
+			if (this.srctitles == params.srctitles){
+				$.dialog.close('synonym');
+				return;
+			}
+			params.srctitles = params.srctitles.replace(new RegExp(Lang.Fenhao+'|,|'+Lang.Douhao, "g"), ";").replace(/ /g,';').replace(/;;+/g,';');
+			var synonymlist=hdunique(params.srctitles.split(';'));
+			var synonyms='';
+			for(var i=0;i<synonymlist.length;i++){
+				if($.trim(synonymlist[i])){
+					synonyms +=synonymlist[i]+';'
+				}
+			}
+			this.srctitles = synonyms;
+			params.srctitles= synonyms;
+			$("#synonymSubmit").attr('disabled', true).val(Lang.Submiting);
+			$.post("index.php?synonym-savesynonym", params, function(data, status){
+				$("#synonymSubmit").attr('disabled', false).val(Lang.Submit);
+				if (status == 'success'){
+					if (data=='ok'){
+						Synonym.change();
+						$("#synonymTip").html('');
+						$.dialog.close('synonym');
+					 }else if(data==0){
+						alert('没有添加任何同义词！');
+					}else if(data==-1){
+						alert("参数错误");
+					}else if(data==-2){
+						alert('同义词本身不能指向自己');
+					}else if(data==-3){
+						alert('有不允许创建的字符');
+					}else if(data==-4){
+						alert('已经被别的同义词指向。');
+					}else if(data==-5){
+						alert('已经指向其他同义词,请勿重复指向');
+					}else if(data==-6){
+						alert('已经被别的同义词指向。');
+					}else{
+						alert('没有添加任何同义词！');
+					}
+				}
+			});
+		},
+		
+		change: function(){
+			var html='', synonymlist = this.srctitles.split(';');
+			synonymlist=hdunique(synonymlist);
+			for (var i=synonymlist.length-1; i>=0; i--){
+				if ('' === synonymlist[i]) continue;
+				html = '<a href="index.php?doc-innerlink-'+encodeURI(synonymlist[i])+'" name="synonym">'+synonymlist[i]+'</a> '+html;
+			}
+			if(html){
+				if (this.tags.size() > 0){
+					$(this.tags[0]).before(html);
+					this.tags.remove();
+				}else{
+					this.E.find("span[name=nonesynonym]").before(html);
+					this.E.find("span[name=nonesynonym]").remove();
+				}
+			}else{
+				html='<span name="nonesynonym">暂无同义词</span>';
+				this.E.find("a[name=synonym]:first").before(html);
+				this.E.find("a[name=synonym]").remove();
+			}
+		}
+	}
+</script>
+<!--{/if}-->
+<!--{if $doc_edit}-->
+<script type="text/javascript">
+var Tag = {
+	E:null,
+	did: 0,
+	tagtext: '',
+	tags:null,
+	box : function(did, E){
+		this.E = $(E).parent();
+		this.did = did;
+		var html = '<form onsubmit="Tag.send();return false;"><table border="0" width="400" class="send_massage">'
+		+'<tr><td height="40"><input id="tagSubject" type="text" class="inp_txt" maxlength="200" size="50"/></td></tr>'
+		+'<tr><td height="40">'+Lang.EditTagTip+'</td></tr>'
+		+'<tr><td height="40"><input id="tagSubmit" type="submit" value="'+Lang.Submit+'" />'
+		+'<span id="tagTip"></span></td></tr></table></form>';
+		
+		$.dialog.box('tag', Lang.EditTag, html);
+		
+		var tagtext='',a = $(E).parent().find("a[name=tag]");
+		this.tags = a;
+		a.each(function(i){
+			tagtext += $(this).text() + '; ';
+		});
+		this.tagtext = $.trim(tagtext);
+		$("#tagSubject").val(tagtext);
+		$("#tagSubject").focus();
+		$("#tagSubmit").attr('disabled', false).val(Lang.Submit);
+
+		return false;
+	},
+	
+	send: function(){
+		var params = {'submit':'ajax', 'tagtext':'', 'did':this.did};
+		params.tagtext = $.trim($("#tagSubject").val());
+		if (this.tagtext == params.tagtext){
+			$.dialog.close('tag');
+			return;
+		}
+		params.tagtext = params.tagtext.replace(new RegExp(Lang.Fenhao+'|,|'+Lang.Douhao, "g"), ";").replace(/ /g,';').replace(/;;+/g,';');
+		var taglist=hdunique(params.tagtext.split(';'));
+		var tags='';
+		for(var i=0;i<taglist.length;i++){
+			if($.trim(taglist[i])){
+				tags +=taglist[i]+';'
+			}
+		}
+		params.tagtext=tags;
+		this.tagtext = tags;
+		$("#tagSubmit").attr('disabled', true).val(Lang.Submiting);
+		$.post("index.php?doc-edit-"+Math.random(), params, function(data, status){
+			$("#tagSubmit").attr('disabled', false).val(Lang.Submit);
+			if (status == 'success'){
+				if (data == 'OK'){
+					Tag.change();
+					$("#tagTip").html('');
+					$.dialog.close('tag');
+				} else {
+					alert(Lang.EditTagError);
+				}
+			} else {
+				alert(Lang.EditTagError);
+			}
+		});
+	},
+	
+	change: function(){
+		var html='', taglist = this.tagtext.split(';');
+		taglist=hdunique(taglist);
+		for (var i=taglist.length-1; i>=0; i--){
+			if ('' === taglist[i]) continue;
+			html = '<a href="index.php?search-tag-'+encodeURI(taglist[i])+'" name="tag">'+taglist[i]+'</a> '+html;
+		}
+		if(html){
+			if (this.tags.size() > 0){
+				$(this.tags[0]).before(html);
+				this.tags.remove();
+			}else{
+				this.E.find("span[name=nonetag]").before(html);
+				this.E.find("span[name=nonetag]").remove();
+			}
+		}else{
+				html='<span name="nonetag">暂无标签</span>';
+				this.E.find("a[name=tag]:first").before(html);
+				this.E.find("a[name=tag]").remove();
+		}
+	}
+}
+</script>
+<!--{/if}-->
+<!--{if $relate}-->
+<script type="text/javascript">
+	function relateddoc(display){
+		for(i=0;i<10;i++){
+			$("#related_"+(i+1)).val('');
+		}
+		var html ='<form onsubmit="addrelatedoc();return false;"><ul class="p-ul" style="line-height:25px">'
+		+'<li><input name="Text2" type="text" class="inp_txt" id="related_1"/>&nbsp;&nbsp;<input name="Text2" type="text"  class="inp_txt" id="related_2"/></li>'
+		+'<li><input name="Text2" type="text" class="inp_txt" id="related_3"/>&nbsp;&nbsp;<input name="Text2" type="text"  class="inp_txt" id="related_4"/></li>'
+		+'<li><input name="Text2" type="text" class="inp_txt" id="related_5"/>&nbsp;&nbsp;<input name="Text2" type="text"  class="inp_txt" id="related_6"/></li>'
+		+'<li><input name="Text2" type="text" class="inp_txt" id="related_7"/>&nbsp;&nbsp;<input name="Text2" type="text"  class="inp_txt" id="related_8"/></li>'
+		+'<li><input name="Text2" type="text" class="inp_txt" id="related_9"/>&nbsp;&nbsp;<input name="Text2" type="text"  class="inp_txt" id="related_10"/></li>'
+		+'<li onclick="addrelatedoc();"><input name="Button1" type="submit" value="保存"  class="btn_inp" /></li></ul></form>';
+		$.dialog.box('relatedoc','编辑相关词条', html);
+
+		$("#related_doc a").each(function(i){
+			$("#related_"+(i+1)).val($(this).text());
+		});
+	}
+	
+	function addrelatedoc(){
+		var relatedata = '';
+		var relatedhtml = '';
+		var arraydoc=[];
+		for(i=0;i<10;i++){
+			if($.trim($("#related_"+(i+1)).val())){
+				relatedata+=$("#related_"+(i+1)).val()+';';
+			}
+		}
+		arraydoc=relatedata.split(";");
+		var unique_doc=hdunique(arraydoc);
+		for(i=0;i<unique_doc.length;i++){
+			if($.trim(unique_doc[i])){
+				relatedhtml+='<li><a href="index.php?doc-innerlink-'+encodeURI(unique_doc[i])+'" target="_blank" title="{$relate}">'+(unique_doc[i])+'</a></li>';
+			}
+		}
+		var title=$.trim("{$doc['doctitle']}").replace(/\s/g,'&nbsp;');
+		$.ajax({
+			url: "index.php?doc-addrelatedoc",data: {did:$doc['did'],title:title,relatename:relatedata},cache: false,dataType: "xml",type:"post",async:false, 
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message=='1'){
+					$('#related_doc').html(relatedhtml);
+					$('#related_doc').css("display",'block');
+					$.dialog.close('relatedoc');return;
+				}else if(message=='2'){
+					alert('{lang viewDocTip12}');
+				}else{
+					alert('{lang viewDocTip3}');
+				}
+			}
+		});
+	}
+</script> 
+<!--{/if}-->
+
+<!--{if $setting['attachment_open'] && $attachment_upload}-->
+<script type="text/javascript">
+String.prototype.Len=function()   
+{ 
+  var j = 0;   
+  var charset = 'UTF-8'=='{WIKI_CHARSET}' ? 3 :2;
+  for(var i=0;i<this.length;i++)   
+  {   
+	if(this.charCodeAt(i) > 255) {
+		j = j + charset;   
+	}
+	else {
+		j++
+	}   
+  }   
+  return j;   
+}
+
+var attachment_type = /\.({$attachment_type})$/i;
+var Attachment = {
+	upload: function(el){
+		$(el).hide();
+		$(el).parent().find('form').show();
+		$("div.fj_list").find("h3").show();
+	},
+	
+	add: function(el){
+		var value = $(el).val();
+		if (!value) return false;
+		if(value.Len() > 100){
+			alert('{lang attachNameLength}');
+		    $(el).before('<input name="attachment[]" type="file" onkeydown="return false" onpaste="return false" autocomplete="off" onchange="Attachment.add(this)">').remove();
+			return false;
+		}
+		if (!attachment_type.test(value)){
+			alert("{lang attachTypeError}");
+		    $(el).before('<input name="attachment[]" type="file" onkeydown="return false" onpaste="return false" autocomplete="off" onchange="Attachment.add(this)">').remove();
+			return false;
+		}
+		var div = $(el).parent('div');
+		var isSelect = div.parent('form').find("input[type=file][value='"+value+"']").size();
+		var isUpload = div.parents("div.fj_list").find("a:contains('"+this.getname(value)+"')").size();
+		if (isSelect > 1 || isUpload>=1) {
+			alert("{lang attachDuplicate}");
+			$(el).before('<input name="attachment[]" type="file" onkeydown="return false" onpaste="return false" autocomplete="off" onchange="Attachment.add(this)">').remove();
+			return false;
+		}
+		
+		if (div.parent('form').find("input[type=file]:last").val() == ''){
+			return false;
+		}
+		
+		var ndiv = div.clone();
+		ndiv.find("input").val('');
+		div.after(ndiv).find('a').show();
+		$("#attachment_error").hide();
+	},
+	
+	getname: function(filename){
+		var re = /[^\/\\]+$/i;
+		var pos = filename.search(re);
+		return (pos > -1) ? filename.substr(pos) : false;
+	},
+	
+	addok: function(upload_success_files){
+		var form = $("#attachment_upload");
+		var files = form.find("input[type=file]");
+		var descs = form.find("input[type=text]");
+		var len= files.size();
+		var dl, name, desc, icon;
+		var div = form.parent("div");
+		for(i=0; i<len; i++){
+			name = this.getname(files.get(i).value);
+			
+			if (/\.(doc|docx|xls|xlsx|ppt|pptx|mdb|accdb)$/i.test(name)){
+				icon = 'msoffice';
+			}else if (/\.(jpg|jpeg|bmp|gif|ico|png)$/i.test(name)){
+				icon = 'image';
+			}else if (/\.(pdf|rar|zip|swf|txt|wav)$/i.test(name)){
+				icon = name.substr(name.length-3);
+			}else {
+				icon = 'common';
+			}
+			desc = descs.get(i).value;
+			if (!name) continue;
+			dl = form.parents("div.fj_list").find("dl:first").clone();
+			dl.find("a").text(name);
+			dl.find("img").attr("src","style/default/attachicons/"+icon+".gif");
+			dl.find("dd").text(desc);
+			if (upload_success_files.indexOf(name)==-1){
+				$(files.get(i)).parent("div").remove();
+				continue;
+			}
+			dl.show();
+			div.before(dl);
+		}
+		//$("#attachment_error").hide();
+	},
+	
+	error: function(err){
+		$("#attachment_error").show().append('<br>'+err);
+	},
+	
+	unadd: function(el){
+		$(el).parent('div').remove();
+	},
+	
+	remove: function(el, id){
+		$.get("index.php?attachment-remove-"+id, function(data, state){
+			if (state == 'success'){
+				data = $.trim(data);
+				if (data == 'OK'){
+					var dl = $(el).parents("dl[id='"+id+"']");
+					dl.remove();
+				}else{
+					alert("{lang delpmserror}");
+				}
+			}else{
+				alert("{lang delpmserror}");
+			}
+		})
+	},
+	
+	submit: function(form){
+		var file = $(form).find("input[type=file]:first");
+		if (file.val() == ''){
+			alert("{lang attachIsEmpty}");
+			return false;
+		}
+		$("#attachment_error").hide().html('');
+	}
+}
+</script>
+<!--{/if}-->
+
+<script type="text/javascript">
+	function partsection(){
+		$('#fullsection').css('display','block');
+		$('#partsection').css('display','none');
+		$("#hidesection > li:gt(3)").css('display','none');
+	}
+	function fullsection(){
+		$('#fullsection').css('display','none');
+		$('#partsection').css('display','block');
+		$("#hidesection > li:gt(3)").css('display','block');
+	}
+	function addfav(){
+		if (window.ActiveXObject){
+			 window.external.AddFavorite('{$setting[site_url]}/index.php?doc-view-{$doc[did]}', '{$doc[title]}-{$setting[site_name]}')
+		} else {
+			window.sidebar.addPanel('{$doc[title]}-{$setting[site_name]}', '{$setting[site_url]}/index.php?doc-view-{$doc[did]}' , "");
+		}
+	}
+	function vote(){
+		$.ajax({
+			url: "index.php?doc-vote",
+			data: {did:$doc['did']},
+			cache: false,
+			dataType: "xml",
+			type:"post",
+			async:false, 
+			success: function(xml){
+				var	message=xml.lastChild.firstChild.nodeValue;
+				if(message=='1'){
+					var votes=parseInt($("#votemsg + b").html())+1;
+					$("#votemsg + b").html(votes);
+					$('#votemsg').html('{lang viewDocTip10}');
+				}else{
+					$('#votemsg').html('{lang viewDocTip11}');
+				}
+			}
+		});
+	}
+	
+	function hdunique(arrayName){
+		var newArray=new Array();
+		label:for(var i=0; i<arrayName.length;i++ ){  
+			for(var j=0; j<newArray.length;j++ ){
+				if(newArray[j]==arrayName[i]) 
+					continue label;
+				}
+				newArray[newArray.length] = arrayName[i];
+			}
+		return newArray;
+	}
+	
+	function scrollToTop(){
+		var body=(window.opera)? (document.compatMode=="CSS1Compat"? $('html') : $('body')) : $('html,body');
+		body.animate({scrollTop:0},500);
+	}
+	
+	$(window).ready(function(){
+		$.dialog({
+			id:'scrolltotop',
+			skin:"noborder",
+			position:'rb',
+			move:false,
+			effects:'',
+			fixed:1,
+			height:200,
+			width:50,
+			minScrollTop:100,
+			overlay:0,
+			content:'<img title="回顶部" style="cursor:pointer" src="style/default/up.png" style="width:23px; height:66px" onclick="scrollToTop()"/>'
+		});
+	});
+
+	<!--{if $doc['locked']}-->
+	var clock_doc_locked=0;
+	function doc_is_locked(){
+		$.dialog.box('fobbiden', '禁止编辑', '<b>{lang viewDocTip8}</b>');
+		clearTimeout(clock_doc_locked);
+		clock_doc_locked=setTimeout(function(){
+			$.dialog.close('fobbiden');
+		},1500);
+		return false;
+	}
+	<!--{/if}-->
+</script>
+<script type="text/javascript" src="js/openremoveimage.js"></script>
+
+{template footer}

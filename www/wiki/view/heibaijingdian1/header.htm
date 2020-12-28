@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={WIKI_CHARSET}" />
+<title>{$navtitle} {$setting['site_name']} {$setting['seo_title']} - Powered by HDWiki!</title>
+{$setting['seo_headers']}
+<meta name="keywords" content="{$setting['seo_keywords']}" />
+<meta name="description" content="{$setting['seo_description']}" />
+<meta name="generator" content="HDWiki {HDWIKI_VERSION}" />
+<meta name="author" content="HDWiki Team and Hudong UI team" />
+<meta name="copyright" content="2005-2009 Hudong.com" />
+<!--{if $docrewrite=='1'}--><base href="{$setting['site_url']}/" /><!--{/if}-->
+<link href="style/{$style}/hdwiki.css" rel="stylesheet" type="text/css" media="all"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="lang/{$setting['lang_name']}/front.js"></script>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+<script type="text/javascript">
+var g_isLogin, g_isUcenter=false, g_forward = '',g_isApi = false,api_url, g_regulars = '', g_uname_minlength, g_uname_maxlength;
+<!--{if $user['groupid']=='1'}-->
+g_regulars = "{$header_regulars}";
+g_isLogin = false;
+<!--{else}-->
+g_isLogin = true;
+<!--{/if}-->
+<!--{if isset($pp_api)}-->
+g_isApi = true;
+api_url = '{$pp_api}';
+<!--{/if}-->
+<!--{if $isUcenter}-->
+g_isUcenter = true;
+<!--{/if}-->
+
+g_seo_prefix = "{$setting['seo_prefix']}";
+g_seo_suffix = "{$setting['seo_suffix']}";
+
+g_uname_minlength = "{$setting[name_min_length]}"||3;
+g_uname_maxlength = "{$setting[name_max_length]}"||15;
+</script>
+<script type="text/javascript" src="js/login.js"></script>
+</head>
+<body>
+<div class="dcbody">
+<div class="wrap">
+<div class="wrap_main">
+		<div id="header_inc">
+		<div id="topheader">
+		<div id="header"><a href="{$setting[site_url]}"><img alt="{$setting[site_name]}"  src="style/default/logo.gif"/></a></div>
+	
+
+<ul id="login">
+<!--{if count($channellist)!=0}-->
+<!--{loop $channellist $channel}-->
+<li class="l bor_no"><a href="{$channel['url']}" target="_blank">{$channel['name']}</a></li>
+<!--{/loop}-->
+<!--{/if}-->
+<!--{if $user['groupid']=='1'}-->
+<li name="login"><a onclick="return doLogin()" href="{url user-login}" >{lang login}</a></li>
+<li name="register"><a href="{url user-register}" >{lang register}</a></li>
+<li><a href="{url search-fulltext}">{lang searchAdvance}</a></li>
+<!--{else}-->
+<li class="bor_no pad10">{lang headerTip}<a href="{url user-space-$user['uid']}">{$user['username']}</a></li>
+	<!--{if $user['password']!=''}-->
+	
+	<li><a  href="{url user-profile}">{lang selfManage}</a></li>
+	<!--{if $adminlogin }--><li><a href="{url admin_main}">{lang sysConfig}</a></li><!--{/if}-->
+	<li><a href="{url user-logout$referer}" >{lang logout}</a></li>
+	<!--{else}-->
+	<li><a href="{url user-login}" >{lang active}</a></li>
+	<li><a href="{url user-logout$referer}" >{lang logout}</a></li>
+	<!--{/if}-->
+<!--{/if}-->
+
+<li class="bor_no"><a href="{url doc-innerlink-{eval echo urlencode('{lang help}')}}">{lang help}</a></li>
+
+</ul>
+<div id="nav">
+	<ul>
+		<li><a href="{$setting[site_url]}" class="bold">{lang index}</a></li>		
+		<li><a href="{url category}" >{lang wikiCategory}</a></li>
+		<li><a href="{url list}" >{lang list}</a></li>
+		<li><a href="{url doc-random}" >{lang randomDoc}</a></li>
+		
+		
+		
+		<!--{if $user['groupid']!='1'}--><li><a href="{url user-space-$user['uid']}">{lang myspace}</a></li><!--{/if}-->
+		<!--{loop $pluginlist $plugin}-->
+			<!--{if $plugin[type]}-->
+				<li><a href="{url plugin-$plugin[identifier]}">{$plugin[name]}</a></li>
+				
+			<!--{/if}-->
+		<!--{/loop}-->
+	</ul>
+</div>
+
+<form name="searchform" method="post" action="{url search-default}">
+<ul id="search">
+	<input name="searchtext" type="text" class="btn_txt"  maxlength="80" size="42"  value="<!--{if isset($searchtext)}-->{$searchtext}<!--{/if}-->"/>
+	<input name="default" type="submit" value="{lang goin}" tabindex="1" class="btn_inp" />
+	<input name="full"    type="submit" value="{lang search}" tabindex="2" class="btn_inp"  onclick="document.searchform.action='{url search-fulltext}';"/>
+	
+</ul>
+</form>
+
+
+</div>
+		</div>
+	</div>
+ 		</div>
+		</div>
+		
+
+
+
+<!--ad start -->
+
+<!--{if isset($advlist[0]) && isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="net_adv pad-t8" id="advlist_0">
+{$advlist[0][code]}
+</div>
+<!--{elseif isset($advlist[0]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="net_adv pad-t8" id="advlist_0">
+</div>
+<!--{/if}-->
+
+<!--ad end -->

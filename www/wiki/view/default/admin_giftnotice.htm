@@ -1,0 +1,41 @@
+{template admin_header}
+<script type="text/javascript">
+	function docheck(type){
+		if(''==$.trim($('#gift_notice').val())){
+			$('#gift_notice').focus();
+			alert('{lang notice_msg4}');
+			return false;
+		}
+	}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_gift" >礼品管理</a></li>
+			<li><a href="index.php?admin_gift-add">添加礼品</a></li>
+			<li><a href="index.php?admin_gift-price">礼品价格区间</a></li>
+			<li><a href="index.php?admin_gift-notice" id="current">礼品公告</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+	<tr>
+		<td colspan="2" >礼品商店首页右侧显示的公告，支持html代码，管理员自行修改文本框<br/>中的公告内容后，点击保存按钮。<br/> <br/></td>
+	</tr>
+</table>
+<form name="noticeform"   method="post" action="index.php?admin_gift-notice"  onsubmit="return docheck();" >
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list" >
+		<tr>
+		  <td width="90%" height="150" valign="middle" >
+			<textarea name="gift_notice"  id="gift_notice" rows="15" cols="80" >{$setting[gift_notice]}</textarea></td>
+		</tr>
+		<tr>
+		  <td >&nbsp;&nbsp;&nbsp;&nbsp;
+		    <input class="btn"  type="submit" name="submit" value="保存"  /></td>
+		</tr>
+	</table>
+</form>
+{template admin_footer}

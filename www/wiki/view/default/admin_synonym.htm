@@ -1,0 +1,236 @@
+{template admin_header}
+<script type="text/javascript" src="js/popWindow.js"></script> 
+<script type="text/javascript">
+function deletesynonym(){
+	if(confirm('{lang commonConfirmRemove}')){
+		$('#formsynonymlist').attr("action","index.php?admin_synonym-delete");
+		$('#formsynonymlist').submit();
+	}else{
+		return false;
+	}
+}
+function addsynonyms(){
+	var synonym=$.trim($('#srctitle').val());
+	var desttitle=$.trim($('#desttitle').val());
+	if(synonym==""){
+		alert('{lang synonymCannone}');
+		return false;
+	}
+	if(desttitle==""){
+		alert('{lang synonymdocnull}');
+		return false;
+	}
+	synonyms=synonym.split(/\s+/);
+	num=synonyms.length;
+	for(i=0;i<num;i++){
+		if(bytes(synonyms[i])>80){
+			alert('{lang synonymLongSize}');
+			return false;
+		}
+	}
+	$.post(
+		"{$setting['seo_prefix']}admin_synonym-save",
+		{synonym:synonym,desttitle:desttitle},
+		function(xml){message(xml,synonym,'');}
+	);
+	$('#srctitle').val("");
+	$('#desttitle').val("");
+}
+function selectAll(obj){
+	$("input[name='id[]']").attr('checked',obj.checked);
+}
+
+function edit_synonym(id){
+	var synonym=$('#s_'+id).html();
+	var msg="<textarea id='editsynonym' name='editsynonym' cols='38' rows='5'>"+synonym+"</textarea><br/>"+
+	"<input name='editsubmit' type='button' onclick='saveedit("+id+")' value='{lang commonOK}'>"+
+	"&nbsp;&nbsp;&nbsp;<input name='cancel' type='button' onclick='closepop()' value='{lang commonCancel}'>";
+	setPopMsg(msg);
+	divDance('popmsg');
+	showPop(300,150);
+}
+function saveedit(id){
+	var synonym=$.trim($('#editsynonym').val());
+	if(synonym==""){
+		alert('{lang synonymCannone}');
+		return false;
+	}
+	synonyms=synonym.split(",");
+	num=synonyms.length;
+	for(i=0;i<num;i++){
+		if(bytes(synonyms[i])>80){
+			alert('{lang synonymLongSize}');
+			return false;
+		}
+	}
+	$.post(
+		"{$setting['seo_prefix']}admin_synonym-save",
+		{synonym:synonym,destdid:id},
+		function(xml){message(xml,synonym,id);}
+	);
+}
+function message(xml,synonym,id){
+	var message=xml.lastChild.firstChild.nodeValue;
+	message=message.split(";");
+	if(message[0]>0){
+		setPopMsg('{lang synonymEditSucc}');
+		if(id!=''){
+			$('#s_'+id).html(message[1]);
+		}else{
+		  $("#lastone").before("<tr><td align='center'><input type='checkbox' name='id[]' value='"+message[4]+"' /></td><td align='center' ><a href='javascript:void(0)' id='s_"+message[4]+"'  onclick='edit_synonym("+message[4]+");'>"+message[5]+"</a></td><td align='center'><a target='_blank' class='e' href='index.php?doc-view-"+message[4]+"' title='"+message[1]+"'>"+message[1]+"</a></td><td align='center'><a target='_blank' class='e' href='index.php?user-space-"+message[2]+"'  title='"+message[2]+"'>"+message[2]+"</a></td><td align='center'>"+message[3]+"</td></tr>");
+		}
+	}else if(message[0]==-1){
+		setPopMsg('{lang synonymWrong}');
+	}else if(message[0]==-2){
+		setPopMsg(message[1]+'{lang synonymWrong2}');
+	}else if(message[0]==-3){
+		setPopMsg(message[1]+'{lang synonymWrong3}');
+	}else if(message[0]==-4){
+		setPopMsg(message[1]+'{lang synonymWrong6}');
+	}else if(message[0]==-5){
+		setPopMsg(message[1]+'{lang synonymWrong5}'+message[2]);
+	}else if(message[0]==-6){
+		setPopMsg(message[1]+'{lang synonymWrong6}');
+	}else{
+		setPopMsg(message[1]+'{lang synonymWrong7}');
+	}
+	divDance('popmsg');
+	showPop(300,100);
+	setTimeout(hidePop,3000);
+}
+function closepop(){
+	$('#popmsg').html('');
+	setTimeout(hidePop,0);
+}
+
+</script>
+<style type="text/css">
+#calendar { border: 1px solid #C1C1C1; background: #FFF; margin-bottom: 0.8em;}
+#calendar td { padding: 2px; font-weight: bold;}
+#calendar_week td { height: 2em; line-height: 2em; border-bottom: 1px solid #E2E2E2;}
+#hourminute td {padding: 4px 2px; border-top: 1px solid #E2E2E2;}
+	.calendar_expire, .calendar_expire a:link, .calendar_expire a:visited {	color: #535353; font-weight: normal; }
+	.calendar_default, .calendar_default a:link, .calendar_default a:visited { color: #535353;}
+	.calendar_checked, .calendar_checked a:link, .calendar_checked a:visited { color: #DD0000; font-weight: bold;}
+	td.calendar_checked, span.calendar_checked{ background: #E2E2E2;}
+	.calendar_today, .calendar_today a:link, .calendar_today a:visited { color: #535353; font-weight: bold; }
+#calendar_header td{ width: 30px; height: 20px; border-bottom: 1px solid #E2E2E2; font-weight: normal; }
+#calendar_year { display: none;	line-height: 130%; background: #FFF; position: absolute; z-index: 10; }
+	#calendar_year .col { float: left; background: #FFF; margin-left: 1px; border: 1px solid #E2E2E2; padding: 4px; }
+#calendar_month { display: none; background: #FFF; line-height: 130%; border: 1px solid #DDD; padding: 4px; position: absolute; z-index: 11; }
+</style>
+<div id="append_parent"></div>
+<script type="text/javascript" src="js/calendar.js"></script>
+
+<div id="pop" style="padding-bottom:10px;background-color:#FFFFFF;border:1px solid #AAAAAA;color:#777777;font-size:14px;text-align:left;display:none;position:absolute">
+	<div id="poptitle" style="border-bottom:1px solid #DDDDDD; color:#333333; overflow:hidden; border-bottom:1px solid #DDDDDD; color:#FFFFFF; height:20px; overflow:hidden; padding-left:10px; padding-left:10px; background-color: #336699;">
+		{lang synonymmanage}
+	</div>
+	<div>
+		<div id="popmsg" align="center" style="clear: both;margin-top: 20px;"></div>
+	</div>
+</div>
+<div id="map" class="bor-gray-das"> <label id='catenavi'> </label></div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_synonym" id="current">{lang synonymmanage}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	<form name="list" method="POST" action="index.php?admin_synonym-search"  style="margin: 0px;">
+      <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr>
+          <td width="150"><strong> {lang synonymSearch}:</strong></td>
+          <td  width="177"> {lang synonymDocCategory}:</td>
+          <td width="1025">
+            <select name="qcattype">
+				<option value="0" >{lang commonAllCat}</option>
+				{$catstr}
+	    	</select>
+	      </td>
+	    </tr><tr>
+		<td width="150"></td>
+          <td width="177"> {lang synonymDocTitle}:</td>
+          <td>
+            <input name="qtitle" type="text" class="wenben" size="30" value="{$qtitle}" />
+        </tr>
+		<tr>
+		<td></td>
+          <td width="177"> {lang synonymDocAuthor}:</td>
+          <td>
+            <input type="text" class="wenben" name="qauthor" size="30" value="{$qauthor}" /></td>
+        </tr>
+		<tr>
+		<td width="150"></td>
+          <td width="177"> {lang synonymDocTime}:</td>
+          <td>
+		    <input readonly  type="text"  name="qstarttime"  onclick="showcalendar(event, this);" value="{$qstarttime}" />-
+	        <input readonly type="text" name="qendtime"   onclick="showcalendar(event, this);" value="{$qendtime}" />
+            <input name="submit" class="btn" type="submit" value="{lang commonSearch}" />          </td>
+        </tr>
+      </table>
+    </form>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="40px">{lang docmanageDoclist} <b>{$synonymsum}</b> {lang synonymCom}]  <span style="color:#FF0000">{lang synonymAdd}</span></td>
+      </tr>
+    </table>
+    <form name="formsynonymlist" id="formsynonymlist"  method="POST">
+        <table width="100%" cellspacing="0" cellpadding="3" class="list">
+          <tr align="center" class="list_title">
+            <td width="10%">{lang commonSelect}</td>
+            <td width="40%">{lang synonymCom}</td>
+            <td width="10%">{lang commonTitle}</td>
+			<td width="25%">{lang synonymDocauthor}</td>
+            <td width="25%">{lang synonymTime}</td>
+          </tr>
+          	<!-- {if $synonymsum} -->
+			<!--{loop $synonymlist $synonym}-->
+          <tr>
+            <td align='center'><input type="checkbox" name="id[]" value="{$synonym['destdid']}" /></td>
+            <td align="center" ><a href="javascript:void(0)" id="s_{$synonym['destdid']}"  onclick="edit_synonym({$synonym['destdid']});">{$synonym['srctitle']}</a></td>
+            <td align='center'><a target="_blank" class="e" href="index.php?doc-view-{$synonym['destdid']}" title="{$synonym['title']}">{$synonym['title']}</a></td>
+            <td align='center'><a target="_blank" class="e" href="index.php?user-space-{$synonym['authorid']}"  title="{$synonym['author']}">{$synonym['author']}</a></td>
+            <td align='center'>{$synonym['time']}</td>
+          </tr>
+          <!--{/loop}-->
+			<!-- {else} -->
+          <tr>
+            <td colspan="8">{$message}{lang synonymHaveNone}</td>
+          </tr>
+          <!-- {/if} -->
+          <tr id="lastone">
+            <td align='center'>{lang commonAdd}:</td>
+            <td align="center" ><textarea name="srctitle" cols="38" id="srctitle"></textarea></td>
+            <td align='center'><input name="desttitle" id="desttitle" type="text" maxlength="80" /></td>
+            <td align='center'><input type="button" class="btn" name="addsynonym" onClick="addsynonyms();" value="{lang commonAdd}" /></td>
+            <td align='center'></td>
+          </tr>
+        </table>
+      <table cellpadding="0" cellspacing="0" width="100%">
+		<tr>
+      		<td width="800" id="pagebar">{$departstr}</td>
+      	</tr>
+        <tr>
+          <td width="100%" valign="top">
+                <table width="100%" cellspacing="0" cellpadding="3" class="list">
+                  <tr>
+                    <td width="60"><input name="checkbox"  type="checkbox" id="chkall" onclick="selectAll(this);">
+                        <label id="tip">{lang commonAllSelect}</label></td>
+                    <td><input type="button" class="btn" name="casemanage" onClick="deletesynonym();" value="{lang commonDel}" /></td>
+                  </tr>
+            </table></td>
+        </tr>
+      </table>
+   </form>
+</td></tr></table>
+
+{template admin_footer}

@@ -1,0 +1,13 @@
+/*--图片--*/
+.content_topp .img {background:#fafafa; border:1px solid #e8e8e8; padding:10px; font-size:12px; color:#666; text-align:center;}
+.content_topp .img_l {margin:5px 20px 5px 0; float:left; clear:left}
+.content_topp .img_r {margin:5px 0 5px 20px; float:right; clear:right}
+.content_topp .img strong{font-size:12px;font-weight:normal; display:block; overflow:hidden;line-height:18px;padding-top:10px;clear:both;}
+/*表格*/
+.content_topp table {margin:10px;font-size:12px;background: #fafafa;border: 1px solid #e8e8e8;}
+.content_topp table td{padding:2px 10px; margin:0; border:none;line-height:20px;}
+.content_topp table td table {margin:0;}
+.content_topp table td table td{padding:2px}
+.content_topp .table {margin: 10px auto;color: #666;font-size:12px;table-layout:auto;}
+.content_topp .table td {background: #fafafa;border: 1px solid #e8e8e8;vertical-align: top;}
+.content_topp .table td .img {border: 0;background: none;padding: 0}

@@ -1,0 +1,34 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_cooperate" id="current">{lang cooperate}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+
+<form method="POST" action="index.php?admin_cooperate" onsubmit="return docheck();">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list" >
+        <tr>
+			<td align="left" height="211" width="100%"><textarea name="cooperate" id="cooperate" rows="20" cols="80"><!--{if $cooperatedoc!=''}-->{$cooperatedoc}<!--{/if}--></textarea></td>
+        </tr>
+        <tr>
+        	<td height="40" align="left" class="red">{lang cooperatetip}</td>
+        </tr>
+        <tr>
+        	<td height="40" align="left"><input class="btn" type="submit" value="{lang commonSave}" name="submit" /> </td>
+        </tr>
+    </table>
+</form>
+{template admin_footer}

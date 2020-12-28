@@ -1,0 +1,346 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	if(isNaN($('#time_diff').val())==true){
+		alert('{lang baseConfigMustNum}');
+		$('#time_diff').focus();
+		return false;
+	}
+	if(isNaN($('#search_time').val())==true){
+		alert('{lang search_time_error}');
+		$('#search_time').focus();
+		return false;
+	}
+	
+	var sandbox_id = $.trim($("input[name*='sandbox_id']").val());
+	if (sandbox_id && !/\d+/.test(sandbox_id)){
+		alert('{lang basesandboxidMustNum}');
+		$("input[name*='sandbox_id']").focus();
+		return false;
+	}
+	
+	var img_width_small=$.trim($('#img_width_small').val());
+	img_width_small = parseInt(img_width_small);
+	if(isNaN(img_width_small)==true){
+		alert('您输入的词条小图尺寸【宽】不是一个有效数字！');
+		$('#img_width_small').focus();
+		return false;
+	}
+	
+	var img_height_small=$.trim($('#img_height_small').val());
+	img_height_small = parseInt(img_height_small);
+	if(isNaN(img_height_small)==true){
+		alert('您输入的词条小图尺寸【高】不是一个有效数字！');
+		$('#img_height_small').focus();
+		return false;
+	}
+	
+	var img_width_big=$.trim($('#img_width_big').val());
+	img_width_big = parseInt(img_width_big);
+	if(isNaN(img_width_big)==true){
+		alert('您输入的词条大图尺寸【宽】不是一个有效数字！');
+		$('#img_width_big').focus();
+		return false;
+	}
+	
+	var img_height_big=$.trim($('#img_height_big').val());
+	img_height_big = parseInt(img_height_big);
+	if(isNaN(img_height_big)==true){
+		alert('您输入的词条大图尺寸【高】不是一个有效数字！');
+		$('#img_height_big').focus();
+		return false;
+	}
+	
+	
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+
+
+function showCloseWebsiteReason(value){
+	if (value == '0'){
+		$("#closeWebsiteReason").hide();
+	}else{
+		$("#closeWebsiteReason").show();
+	}
+}
+
+$(document).ready(function(){
+	if ("$basecfginfo['close_website']" == '1'){
+		$("#closeWebsiteReason").show();
+	}
+	
+	$(":radio[name*=close_website]").click(function(){
+		showCloseWebsiteReason(this.value);
+	});
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_setting-base" id="current">{lang siteConfigBase}</a></li>
+		<li><a href="index.php?admin_setting-logo">{lang siteConfigUploadLogo}</a></li>
+		<li><a href="index.php?admin_setting-credit">{lang siteConfigBonus}</a></li>
+		<li><a href="index.php?admin_setting-cache">{lang siteConfigCache}</a></li>
+		<li><a href="index.php?admin_setting-mail">{lang siteMail}</a></li>
+		<li><a href="index.php?admin_setting-attachment">{lang attachmentConfig}</a></li>
+		<li><a href="index.php?admin_setting-passport">{lang passport}</a>
+		<li><a href="index.php?admin_setting-watermark" >{lang watermark}</a></li>	
+			<li><a href="index.php?admin_setting-randomstr">{lang prevent_content}</a></li> </li>	
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="left" cellpadding="5" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	    <form method="POST" action="index.php?admin_setting-base" onsubmit="return doSubmit();">
+	    	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	    		<tr>
+                  <td width="5%"></td>
+                  <td width="30%"><strong>{lang commonParameterName}</strong></td>
+                  <td width="30%"><strong>{lang commonParameterValue}</strong></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseSiteName}</strong><br/>{lang baseSiteNameTip}</td>
+                  <td><input maxlength="30" style="width:200px;" class="box" name="setting[site_name]" type="text" value="{$basecfginfo['site_name']}" /></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseSiteURL}</strong><br/>{lang baseSiteURLTip}<br/><font color="red">{lang baseSiteURLWarn}</font></td>
+                  <td><input maxlength="120" style="width:200px;" class="box" name="setting[site_url]" type="text" value="{$basecfginfo['site_url']}" /></td>
+                </tr>
+				<tr>
+                  <td></td>
+                  <td><strong>{lang baseCookieDomain}</strong><br/>{lang baseCookieDomainTip}<br/></td>
+                  <td><input maxlength="120" style="width:200px;" class="box" name="setting[cookie_domain]" type="text" value="{$basecfginfo['cookie_domain']}" /></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseCookiePre}</strong><br/>{lang baseCookiePreTip}<br/></td>
+                  <td><input maxlength="120" style="width:200px;" class="box" name="setting[cookie_pre]" type="text" value="{if $basecfginfo['cookie_pre']!=""}{$basecfginfo['cookie_pre']}{else}hd_{/if}" /></td>
+                </tr>
+                 <tr>
+                  <td></td>
+                  <td><strong>{lang statisticCode}</strong><br/>{lang statisticView}</td>
+                  <td><textarea rows="6"  name="setting[statcode]"  cols="50" >{$basecfginfo['statcode']}</textarea></td>
+                </tr>
+                
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseSiteICP}</strong><br/>{lang baseSiteICPTip}</td>
+                  <td><input maxlength="20" style="width:200px;" class="box" name="setting[site_icp]" type="text" value="{$basecfginfo['site_icp']}" /></td>
+                </tr>
+                  <td></td>
+                  <td><strong>{lang baseAuditDoc}</strong><br/>{lang baseAuditDocTip}</td>
+                  <td>
+				  <label><input {if $basecfginfo['verify_doc'] }checked{/if} type="radio" name="setting[verify_doc]" value="1"/>{lang commonYes}</label>
+				  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				  <label><input {if !$basecfginfo['verify_doc'] }checked{/if} type="radio" name="setting[verify_doc]" value="0"/>{lang commonNo}</label></td>
+                </tr>
+
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseDefaultTimezoneConfig}</strong><br/>{lang baseDefaultTimezoneConfigTip}</td>
+                  <td>
+
+                  	<select class="box" name="setting[time_offset]" >
+					<!--{loop $timeoffset $key $value}-->
+						<option value="{$key}" <!--{if $key==$basecfginfo['time_offset']}--> selected <!--{/if}--> >{$value}</option>
+					<!--{/loop}-->
+					</select>
+					</td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseTimeDifference}</strong><br/>{lang baseTimeDifferenceTip}</td>
+                  <td>
+					<input  class="box" name="setting[time_diff]" id="time_diff"  type="text" style="width:200px;"  value="{$basecfginfo['time_diff']}" /></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseDateFormat}</strong><br/>{lang baseDateFormatTip}</td>
+                  <td>
+                  	<select name="setting[date_format]" class="box" style="width:200px;" >
+                  		<option value=""  <!--{if $basecfginfo['date_format']==""}--> selected <!--{/if}-->  >{eval  echo date("Y-n-j");}  Y-n-j</option>
+                  		<option value="Y/m/d" <!--{if $basecfginfo['date_format']=="Y/m/d"}-->selected<!--{/if}-->  >{eval  echo date("Y/m/d");} (Y/M/D)</option>
+						<option value="m/d/Y" <!--{if $basecfginfo['date_format']=="m/d/Y"}-->selected<!--{/if}-->  >{eval  echo date("m/d/Y");} (M/D/Y)</option>
+						<option value="d/m/Y" <!--{if $basecfginfo['date_format']=="d/m/Y"}-->selected<!--{/if}-->>{eval  echo date("d/m/Y");} (D/M/Y)</option>
+						<option value="m/d" <!--{if $basecfginfo['date_format']=="m/d"}-->selected<!--{/if}-->>{eval  echo date("m/d");} (M/D)</option>
+						<option value="d/m" <!--{if $basecfginfo['date_format']=="d/m"}-->selected<!--{/if}-->>{eval  echo date("d/m");} (D/M)</option>
+						<option value="Y.m.d" <!--{if $basecfginfo['date_format']=="Y.m.d"}-->selected<!--{/if}-->>{eval  echo date("Y.m.d");} (Y.M.D)</option>
+						<option value="m.d.Y" <!--{if $basecfginfo['date_format']=="m.d.Y"}-->selected<!--{/if}-->>{eval  echo date("m.d.Y");} (M.D.Y)</option>
+						<option value="d.m.Y" <!--{if $basecfginfo['date_format']=="d.m.Y"}-->selected<!--{/if}-->>{eval  echo date("d.m.Y");} (D.M.Y)</option>
+						<option value="m.d" <!--{if $basecfginfo['date_format']=="m.d"}-->selected<!--{/if}-->>{eval  echo date("m.d");} (M.D)</option>
+						<option value="d.m" <!--{if $basecfginfo['date_format']=="d.m"}-->selected<!--{/if}-->>{eval  echo date("d.m");} (D.M)</option>
+						<option value="Y-m-d" <!--{if $basecfginfo['date_format']=="Y-m-d"}-->selected<!--{/if}-->>{eval  echo date("Y-m-d");} (Y-M-D)</option>
+						<option value="m-d-Y" <!--{if $basecfginfo['date_format']=="m-d-Y"}-->selected<!--{/if}-->>{eval  echo date("m-d-Y");} (M-D-Y)</option>
+						<option value="d-m-Y" <!--{if $basecfginfo['date_format']=="d-m-Y"}-->selected<!--{/if}-->>{eval  echo date("d-m-Y");} (D-M-Y)</option>
+						<option value="m-d" <!--{if $basecfginfo['date_format']=="m-d"}-->selected<!--{/if}-->>{eval  echo date("m-d");}(M-D)</option>
+						<option value="d-m" <!--{if $basecfginfo['date_format']=="d-m"}-->selected<!--{/if}-->>{eval  echo date("d-m");} (D-M)</option>
+						<option value="M d Y" <!--{if $basecfginfo['date_format']=="M d Y"}-->selected<!--{/if}-->>{eval  echo date("M d Y");}</option>
+						<option value="d M Y" <!--{if $basecfginfo['date_format']=="d M Y"}-->selected<!--{/if}-->>{eval  echo date("d M Y");}</option>
+						<option value="M d" <!--{if $basecfginfo['date_format']=="M d"}-->selected<!--{/if}-->>{eval  echo date("M d");}</option>
+						<option value="d M" <!--{if $basecfginfo['date_format']=="d M"}-->selected<!--{/if}-->>{eval  echo date("d M");}</option>
+						<option value="jS F, Y" <!--{if $basecfginfo['date_format']=="jS F, Y"}-->selected<!--{/if}-->>{eval  echo date("jS F, Y");}</option>
+						<option value="l, jS F, Y" <!--{if $basecfginfo['date_format']=="l, jS F, Y"}-->selected<!--{/if}-->>{eval  echo date("l, jS F, Y");}</option>
+						<option value="jS F" <!--{if $basecfginfo['date_format']=="jS F"}-->selected<!--{/if}-->>{eval  echo date("jS F");}</option>
+						<option value="l, jS F" <!--{if $basecfginfo['date_format']=="l, jS F"}-->selected<!--{/if}-->>{eval  echo date("l, jS F");}</option>
+                  	</select>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseTimeFormat}</strong><br/>{lang baseTimeFormatTip}</td>
+                  <td>
+                  	<select name="setting[time_format]" class="box" style="width:200px;" >
+                  		<option value="" <!--{if $basecfginfo['time_format']==""}-->selected<!--{/if}-->>{eval  echo date("H:i");}  H:i</option>
+                  		<option value="H:i" <!--{if $basecfginfo['time_format']=="H:i"}-->selected<!--{/if}-->>{eval echo date("H:i");}</option>
+						<option value="H:i:s" <!--{if $basecfginfo['time_format']=="H:i:s"}-->selected<!--{/if}-->>{eval echo date("H:i:s");}</option>
+						<option value="g:i a" <!--{if $basecfginfo['time_format']=="g:i a"}-->selected<!--{/if}-->>{eval echo date("g:i a");}</option>
+						<option value="g:i A" <!--{if $basecfginfo['time_format']=="g:i A"}-->selected<!--{/if}-->>{eval echo date("g:i A");}</option>
+                  	</select>
+                  </td>
+                </tr>
+				<tr>
+                  <td></td>
+                  <td><strong>{lang stylemanage}</strong><br/>{lang styleDefaultSetInfo}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[style_user_select]" value="1" {if $basecfginfo['style_user_select']=='1'}checked{/if}/>{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[style_user_select]" value="0" {if $basecfginfo['style_user_select']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+				<tr>
+                  <td></td>
+                  <td><strong>{lang auto_picture}</strong><br/>{lang auto_picture_desc}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[auto_picture]" value="1" {if $basecfginfo['auto_picture']=='1'}checked{/if}/>{lang commonYes}</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[auto_picture]" value="0" {if $basecfginfo['auto_picture']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang checkcode}</strong><br/>{lang checkcodeSetInfo}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[checkcode]" value="0" {if $basecfginfo['checkcode']=='0'}checked{/if}/>{lang checkcodeNumEn}</label>
+                  	&nbsp;&nbsp;&nbsp;&nbsp;
+                  	<label><input type="radio"  name="setting[checkcode]" value="1" {if $basecfginfo['checkcode']=='1'}checked{/if}/>{lang checkcodeNum}</label>
+                  	&nbsp;&nbsp;&nbsp;&nbsp;
+                  	<label><input type="radio"  name="setting[checkcode]" value="2" {if $basecfginfo['checkcode']=='2'}checked{/if}/>{lang checkcodeEn}</label>
+                  	&nbsp;&nbsp;&nbsp;&nbsp;
+                  	<label><input type="radio"  name="setting[checkcode]" value="3" {if $basecfginfo['checkcode']=='3'}checked{/if}/>{lang checkcodeClose}</label>
+                  </td>
+                </tr>
+ 				<tr>
+                  <td></td>
+                  <td><strong>{lang search_time}</strong><br/>{lang search_time_desc}</td>
+                  <td>
+                  	<input type="input"  name="setting[search_time]" id="search_time"  {if isset($basecfginfo['search_time'])}value="$basecfginfo['search_time']"{else}value="30"{/if}/>
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td></td>
+                  <td><strong>{lang sandbox_id}</strong><br/>{lang sandbox_id_desc}</td>
+                  <td>
+                  	<input type="input"  name="setting[sandbox_id]" value="$basecfginfo['sandbox_id']"/>
+                  </td>
+                </tr>
+				
+				 <tr>
+                  <td></td>
+                  <td><strong>{lang baseSetComments}</strong><br/>{lang baseCommentsProfile}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[comments]" value="1" {if $basecfginfo['comments']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[comments]" value="0" {if $basecfginfo['comments']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td></td>
+                  <td><strong>{lang searchConsultSwitch}</strong><br/>{lang searchConsultHudong}</td>
+                  <td>
+					<label><input type="radio"  name="setting[search_tip_switch]" value="1" {if $basecfginfo['search_tip_switch']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[search_tip_switch]" value="0" {if $basecfginfo['search_tip_switch']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td></td>
+                  <td><strong>{lang base_toplist}</strong><br/>{lang base_toplist_tip}</td>
+                  <td>
+					<label><input type="radio"  name="setting[base_toplist]" value="1" {if $basecfginfo['base_toplist']=='1'}checked{/if}/>{lang base_toplist_1}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[base_toplist]" value="0" {if $basecfginfo['base_toplist']=='0'}checked{/if}/>{lang base_toplist_2}</label>
+                  </td>
+                </tr>
+                
+                <tr>
+                  <td></td>
+                  <td><strong>{lang base_createdoc}</strong><br/>{lang base_createdoc_tip}</td>
+                  <td>
+					<label>
+					<input type="radio"  name="setting[base_createdoc]" value="1" {if $basecfginfo['base_createdoc']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio"  name="setting[base_createdoc]" value="0" {if $basecfginfo['base_createdoc']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang closeWebsite}</strong><br/>{lang closeWebsiteTip}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[close_website]" value="1" {if $basecfginfo['close_website']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="setting[close_website]" value="0" {if $basecfginfo['close_website']=='0'}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+                <tr id="closeWebsiteReason" style="display:none">
+                  <td></td>
+                  <td><strong>{lang closeWebsiteReason}</strong><br/>{lang closeWebsiteReasonTip}</td>
+                  <td>
+                  	<textarea name="setting[close_website_reason]" style="width:300px" rows="3">{$basecfginfo['close_website_reason']}</textarea>
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseFilterExternal}</strong><br/>{lang baseFilterExternalTip}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[filter_external]" value="1" {if $basecfginfo['filter_external']==='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="setting[filter_external]" value="0" {if $basecfginfo['filter_external']==='0'||is_null($basecfginfo['filter_external'])}checked{/if}/>{lang commonNo}</label>
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td></td>
+                  <td><strong>词条大图尺寸</strong><br/>建议在300～600之间，默认是300*300</td>
+                  <td>
+                  	宽 <input type="input" id="img_width_big" name="setting[img_width_big]" value="$basecfginfo['img_width_big']" size="5" maxlength="3"/> *
+                  	高 <input type="input" id="img_height_big" name="setting[img_height_big]" value="$basecfginfo['img_height_big']" size="5" maxlength="3"/>
+					像素
+                  </td>
+                </tr>
+				
+                <tr>
+                  <td></td>
+                  <td><strong>词条小图尺寸</strong><br/>建议在100～200之间，默认是140*140</td>
+                  <td>
+                  	宽 <input type="input" id="img_width_small" name="setting[img_width_small]" value="$basecfginfo['img_width_small']" size="5" maxlength="3"/> *
+                  	高 <input type="input" id="img_height_small" name="setting[img_height_small]" value="$basecfginfo['img_height_small']" size="5" maxlength="3"/>
+					像素
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colspan="3" align="center" height="40">
+                  	<input class="btn" name="settingsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+                  	<input class="btn" type="reset" value="{lang commonReset}" />
+                  </td>
+                </tr>
+	    	</table>
+	    </from>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

@@ -1,0 +1,125 @@
+{template admin_header}
+<script type="text/javascript" src="js/ui/ui.core.js"></script>
+<script type="text/javascript" src="js/ui/ui.sortable.js"></script>
+<script type="text/javascript">
+var beginMoving=false;
+var isDrag = true;
+function doSubmit(){
+	if(confirm('{lang msgJsRefreshCatSeq}')==false){
+		return false;
+	}
+}
+
+function doEditCat(catid,pcid,catname){
+	window.location="index.php?admin_category-edit-"+catid+"-"+pcid;
+}
+
+function doDelCat(catid){
+	if(confirm('{lang msgJsDelCat}')==false){
+		return false;
+	}else{
+		window.location="index.php?admin_category-remove-"+catid;
+	}
+}
+
+function drag(){
+	isDrag = !isDrag;
+	if (isDrag){
+		$('#list').sortable('enable');
+		$('#switchDrag').val("{lang offSortable}");
+	}else{
+		$('#list').sortable('disable');
+		$('#switchDrag').val("{lang openSortable}");
+	}
+}
+
+$(document).ready(function() {
+	$("#list").sortable({
+		update : function () {
+			var reorderid="";
+			var numValue=$("input[name='order[]']");
+			for(var i=0;i<numValue.length;i++){
+				reorderid+=$(numValue[i]).val()+",";
+			}
+			hiddencid=$("input[name='hiddencid']").val();
+			$.post("index.php?admin_category-reorder",{order:reorderid,hiddencid:hiddencid});
+		  }
+	});
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_category-list" id="current">{lang magManageCat}</a></li>
+		<li><a href="index.php?admin_category-add">{lang magAddCat}</a></li>
+		<li><a href="index.php?admin_category-merge">{lang magUniteCat}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+<tr>
+	<td  height="40" colspan="2" b><strong>{lang message_title}</strong></td>
+</tr>
+<tr>
+	<td colspan="2" >
+	<li>{lang msgCatNotice}<input id="switchDrag" type="button" class="btn" value="{lang offSortable}" onclick="drag()"/></li>
+	</td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top" class="padding"><a href="index.php?admin_category-list">{lang msgCatContents}</a>
+    {if is_array($catnavi)}
+    	{loop $catnavi $tid $tcat}
+    		&gt;&gt;<a href="index.php?admin_category-list-{$tcat[cid]}">{$tcat[name]}</a>
+    	{/loop}
+    {/if}
+    </td>
+  </tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+    <td align="center" valign="top" class="padding">
+	  <table width="100%" cellspacing="0" cellpadding="3" class="list">
+        <tr align="center" class="list_title">
+          <td align="center">{lang magCatName}</td>
+		  <td width="80" align="center">{lang msgViewChildCat}</td>
+          <td width="150" align="center">{lang magCatAdd}</td>
+          <td width="80" align="center">{lang magCatDel}</td>
+          <td width="80" align="center">{lang magCatEdit}</td>
+        </tr>
+	</table>
+	<form name="orderlist" method="post">
+	<input type="hidden" name="hiddencid" value="{$pid}" />
+
+	<ul id="list" style="cursor: hand; cursor: pointer; margin:0 auto; padding:0;">
+	{loop $cats $cid $cat}
+	<li style="list-style:none;">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list" id="table1">
+	{if is_array($cats)}
+		
+		<tr class='b' style="background:#f7f7f7">	
+		  <td style="padding-left:20px;"><input name="order[]" type="hidden" value="{$cat[cid]}"/>
+		  <a href="index.php?admin_category-list-{$cat[cid]}">{$cat[name]}</a></td>
+		  <td width="80" align="center"><a href="index.php?admin_category-list-{$cat[cid]}">{lang msgViewChildCat}</a></td>
+		  <td align="center" width="150"><a href="index.php?admin_category-add-{$cat[cid]}">{lang magAddChildCat}</a></td>
+		  <td align="center" width="80"><a href="#" onclick="doDelCat('{$cat[cid]}');">{lang magCatDel}</a></td>
+		  <td align="center" width="80"><a href="#" onclick="doEditCat('{$cat[cid]}','{$cat[pid]}','{$cat[name]}');">{lang magCatEdit}</a></td>
+		</tr>
+		
+	{else}
+	<tr class="b">
+	  <td colspan="5">{lang magHaveNoCat}<a href="index.php?admin_category-add">{lang magAddCat}</a></td>
+	</tr>
+	{/if}
+	</table>
+	</li>
+	{/loop}
+	</ul>
+	</form>
+  </td>
+ </tr>
+</table>
+{template admin_footer}

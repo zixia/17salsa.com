@@ -1,0 +1,65 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(){
+	var reg = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+    if( reg.test($('#email').val()) == false ){
+        alert("{lang adduserIllegalEmail}");
+        return false;
+    }
+    return true;
+}
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_user-edit-{$user[uid]}" id="current">{lang usermanageEditUser}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="center" cellpadding="10" cellspacing="0" width="100%">
+  <tr>
+  <td valign="top">
+    <form action="index.php?admin_user-edit" method="post" name="userform"  onSubmit="return docheck();">
+        <input type="hidden" name="uid" value="{$user[uid]}">
+        <table width="98%" align="center" cellspacing="1" cellpadding="3" class="table_area">
+          <tr class="b" align="left">
+            <td width="80">{lang commonUserName}</td>
+            <td>{$user[username]}</td>
+          </tr>
+          <tr class="b" align="left">
+            <td>{lang commonPassword}</td>
+            <td><input type='password' class="box" name='password' id="password"    value="" size='50' />*</td>
+          </tr>
+          <tr class="b" align="left">
+            <td>{lang usermanageEmail}</td>
+            <td><input type="text" class="box" name='email' id="email" value="{$user[email]}" size='50' />*</td>
+          </tr>
+          <tr class="b" align="left">
+            <td>{lang usermanageUserGroup}</td>
+            <td>
+             <select class="box" name="groupid">
+				<!--{loop $usergrouplist $usergroup}-->
+				 	<option value="{$usergroup[groupid]}" <!--{if $usergroup[groupid]==$user[groupid]}-->selected<!--{/if}--> >{$usergroup[grouptitle]}</option>
+				<!--{/loop}-->
+              </select>
+            </td>
+          </tr>
+          <tr class="b" align="left">
+            <td colspan="2"><center>
+                <input name="submit" class="btn" type="submit" value="{lang commonOK}"/>
+                <input name="reset" class="btn" type="reset" value="{lang commonReset}" />
+              </center></td>
+          </tr>
+        </table>
+	    <center>
+	    </center>
+    </form>
+  </td>
+  </tr>
+  </table>
+{template admin_footer}

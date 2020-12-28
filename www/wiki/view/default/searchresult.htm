@@ -1,0 +1,80 @@
+{template header}
+<p class="azmsx w-950">按字母顺序浏览：
+	<a href="{url list-letter-A}" >A</a>
+	<a href="{url list-letter-B}" >B</a>
+	<a href="{url list-letter-C}" >C</a>
+	<a href="{url list-letter-D}" >D</a>
+	<a href="{url list-letter-E}" >E</a>
+	<a href="{url list-letter-F}" >F</a>
+	<a href="{url list-letter-G}" >G</a>
+	<a href="{url list-letter-H}" >H</a>
+	<a href="{url list-letter-I}" >I</a>
+	<a href="{url list-letter-J}" >J</a>
+	<a href="{url list-letter-K}" >K</a>
+	<a href="{url list-letter-L}" >L</a>
+	<a href="{url list-letter-M}" >M</a>
+	<a href="{url list-letter-N}" >N</a>
+	<a href="{url list-letter-O}" >O</a>
+	<a href="{url list-letter-P}" >P</a>
+	<a href="{url list-letter-Q}" >Q</a>
+	<a href="{url list-letter-R}" >R</a>
+	<a href="{url list-letter-S}" >S</a>
+	<a href="{url list-letter-T}" >T</a>
+	<a href="{url list-letter-U}" >U</a>
+	<a href="{url list-letter-V}" >V</a>
+	<a href="{url list-letter-W}" >W</a>
+	<a href="{url list-letter-X}" >X</a>
+	<a href="{url list-letter-Y}" >Y</a>
+	<a href="{url list-letter-Z}" >Z</a>
+	<a href="{url list-letter-0}" >0</a>
+	<a href="{url list-letter-1}" >1</a>
+	<a href="{url list-letter-2}" >2</a>
+	<a href="{url list-letter-3}" >3</a>
+	<a href="{url list-letter-4}" >4</a>
+	<a href="{url list-letter-5}" >5</a>
+	<a href="{url list-letter-6}" >6</a>
+	<a href="{url list-letter-7}" >7</a>
+	<a href="{url list-letter-8}" >8</a>
+	<a href="{url list-letter-9}" >9</a>
+	<a href="{url list-letter-*}" >{lang otherOrderView}</a>
+</p>
+<p class="a-r resoult_total">
+搜索“<span class="red">{$searchtext}</span>”找到相关内容{$count}篇，用时{$runtime}秒
+</p>
+<div class="l w-710 o-v p-b10 resoult_list">	
+	<!--{if empty($list)}-->
+	<dl class="col-dl">{lang searchTip}</dl>
+	<!--{else}-->
+	<!--{loop $list $key $doc}-->
+	<dl class="col-dl">
+	<dt class="h2"><a href="{url doc-view-$doc['did']}" target="_blank">{$doc['title']}</a></dt>
+	<dd class="gray ">词条创建者:<a href="{url user-space-$doc['authorid']}" target="_blank">{$doc['author']}</a>创建时间:{$doc['time']} </dd>
+	<dd><span class="bold">标签:</span>
+		<!--{loop $doc['tag'] $key $tag}-->
+		<a href="{url search-tag-{eval echo urlencode($tag)}}" target="_self">{$tag}</a>
+		<!--{/loop}-->
+	</dd>
+	<dd><p><span class="bold">摘要:</span>{$doc['summary']}<a href="{url doc-view-$doc['did']}" >[阅读全文] </a></p></dd>
+	<dd class="gray ">编辑:{$doc['edits']}次| 浏览:{$doc['views']}次</dd>
+	</dl>
+	<!--{/loop}-->
+	<div id="fenye" class="m-t10 a-r">{$departstr}</div>
+	<!--{/if}-->
+</div>
+
+<div class="r w-230">
+	<!--
+	<div class="ad">
+		<a href="#" target="_blank"><img src="style/default/ad-230.jpg"/></a>
+	</div>
+	-->
+	<div class="columns ad">
+	<p class="a-c m-t10 col-p" >
+	更多详情，尽在<a href="http://www.hudong.com/wiki/{$searchtext}" target="_blank">互动百科</a><br/>
+	更多详情，尽在<a href="http://www.google.cn/search?hl=zh-CN&newwindow=1&q={eval echo urlencode({$searchtext})}&aq=f" target="_blank">谷歌搜索</a>
+	</p>
+	</div>
+</div>
+
+<div class="c-b"></div>
+{template footer}

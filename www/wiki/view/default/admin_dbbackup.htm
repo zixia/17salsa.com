@@ -1,0 +1,165 @@
+{template admin_header}
+<script language="JavaScript" >
+function cofirmimport(filename)
+{
+	if(confirm('{lang dbImportSQLWarn}')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_db-import-'+filename.replace(/\./g,'*');
+	}
+}
+
+function removefile(filename)
+{
+	if(confirm('{lang dbBackupDeleteDBFile}')==false){
+		return false;
+	}else{
+		window.location='index.php?admin_db-remove-'+filename.replace(/\./g,'*');
+	}
+}
+
+function download(filename)
+{
+	window.location='index.php?admin_db-downloadfile-'+filename.replace(/\./g,'*');
+}
+
+function selectAll(tipid,chkid,childname)
+{
+	var chk=$("#"+chkid);
+	var infotip=$("#"+tipid);
+	if(chk.attr('checked')==true){
+		checkAll(childname,true);
+		infotip.html("{lang baseConfigSelectNull}");
+	}else{
+		checkAll(childname,false);
+		infotip.html("{lang baseConfigSelectAll}");
+	}
+}
+function checkAll(eleName,state)
+{
+  $("input[name='"+eleName+"']").attr('checked',state);
+}
+function checkname(s){ 
+	var patrn=/^[a-zA-Z0-9]([a-zA-Z0-9]|[_])*$/;
+	return patrn.test(s) ;
+}
+function docheck(){
+	if($.trim($('#sqlfilename').val())==''|| !checkname($.trim($('#sqlfilename').val()))){
+		alert('{lang dbBackupFileNameError}');
+		return false;
+	}else if(isNaN($('#sizelimit').val())==true){
+		alert('{lang dbBackupFileSizeError}');
+		return false;
+	}else if($('#sizelimit').val()<512){
+		alert('{lang dblimitsizeSmall}');
+		return false;
+	}else{
+		return true;
+	}
+}
+
+
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_db-backup" id="current">{lang dbBackup}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table width="100%"  align="center" cellpadding="10" cellspacing="0" >
+  <tr>
+    <td valign="top">
+	<form action="index.php?admin_db-backup" method="post" onsubmit="return docheck();">
+<table width="100%"  cellspacing="0" cellpadding="3" class=table_area>
+<tr>
+    <td><strong>{lang dbBackupType}:</strong></td>
+  </tr>
+  <tr>
+    <td width="50%"><input type="radio" class="box" name="type" value="full" class="radio" checked="checked" onclick="document.getElementById('showtables').style.display='none'">{lang dbBackupAll}</td>
+    <td>{lang dbBackupAllTable}</td>
+  </tr>
+  <tr>
+    <td><input type="radio" class="box" name="type" value="stand" class="radio"  onclick="document.getElementById('showtables').style.display='none'">{lang dbBackupOptical}</td>
+    <td>{lang dbBackupOftenUse}</td>
+  </tr>
+  <tr>
+    <td><input type="radio" class="box" name="type" value="min" class="radio" onclick="document.getElementById('showtables').style.display='none'">{lang dbBackupMin}</td>
+
+    <td>{lang dbBackupDTU}</td>
+  </tr>
+  <tr>
+    <td><input type="radio" class="box" name="type" value="custom" class="radio" onclick="document.getElementById('showtables').style.display=''">{lang dbBackupCustom}</td>
+    <td>{lang dbBackupManual}</td>
+  </tr>
+  <tbody id="showtables" style="display:none">
+  <tr>
+    <td colspan="2">
+      <table  width="80%">
+        <tr>
+          <td colspan="4"><input name="chkall" id="chkall" onClick="selectAll('tip','chkall','tables[]');" type="checkbox"><label id="tip">{lang commonSelectAll}</label></td>
+        </tr>
+        <tr>
+			<tr>
+			<!--{loop $tables $key $value}-->
+			<!--{if $key%4!=0}-->
+			<td><input type="checkbox" value="{$value}" name="tables[]"/>{$value}</td>
+			<!--{else}-->
+			</tr><tr><td><input type="checkbox" value="{$value}" name="tables[]"/>{$value}</td>
+			<!--{/if}-->
+			<!--{/loop}-->
+			</tr>
+	    </tr>
+       </table>
+      </tr>
+   </tbody>
+</tr>
+  <tr>
+    <td><strong>{lang commonOtherOption}:</strong></td>
+  </tr>
+  <tr>
+    <td>{lang dbBackupFileName}</td>
+    <td><input type="text" class="box" id="sqlfilename" name="sqlfilename" value="{$sqlfilename}" size="25">.sql</td>
+  </tr>
+  <tr>
+    <td>{lang dbBackupFileSize}</td>
+    <td><input type="text" class="box" id="sizelimit" name="sizelimit" value="2048" size="15">KB</td>
+  </tr>
+  <tr>
+    <td>{lang dbBackupCompression}</td>
+    <td><input type="radio" class="box" name="compression" value="1" >{lang dbBackupCompressionTrip1}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><input type="radio" class="box" name="compression" value="0" checked>{lang dbBackupCompressionTrip2}</td>
+  </tr>
+</table>
+<br />
+<center><input name="backupsubmit" type="submit" class="btn" value="{lang dbBackup}" /></center>
+</form>
+<table width="100%" cellspacing="0" cellpadding="3" class="table_area">
+<tr><td colspan="4"><strong>{lang dbRestore}:</strong></td></tr>
+<tr class="list_title"><td>SQL{lang commonFile}</td><td>{lang commonFileSize}</td><td>{lang commonModifyDate}</td><td>{lang commonFileImport}</td><td>{lang commonFileDownload}</td><td>{lang commonFileDelete}</td> </tr>
+<!--{loop $filename $key $value}-->
+<!--{if isset($value)=="true"}-->
+<tr>
+<td>{$value['filepath']}</td>
+<td>{$value['filesize']}</td>
+<td>{$value['filectime']}</td>
+<td><a href="#" onclick="cofirmimport('{$value['filename']}')" >{lang baseConfigImportFile}</a></td>
+<td><a href="#" onclick="download('{$value['filename']}')">{lang baseConfigDownloadFile}</a></td>
+<td><a href="#" onclick="removefile('{$value['filename']}')">{lang baseConfigDeletFile}</a></td>
+</tr>
+<!--{else}-->
+ <tr><td>{$lang.dbBackupNoFile}</td></tr>
+<!--{/if}-->
+<!--{/loop}-->
+</table>
+</td>
+</tr>
+</table>
+{template admin_footer}

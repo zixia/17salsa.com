@@ -1,0 +1,141 @@
+{template admin_header}
+<script type="text/javascript">
+function doSubmit(){
+	var name_min_length = $.trim($("input[name*='name_min_length']").val());
+	if ( name_min_length=='' || !/^\d+$/.test(name_min_length) || name_min_length < 1){
+		alert('{lang baseNameMinLengthTip2}');
+		$("input[name*='name_min_length']").focus();
+		return false;
+	}
+	
+	var name_max_length = $.trim($("input[name*='name_max_length']").val());
+	if (name_max_length =='' || (!/^\d+$/.test(name_max_length) || name_max_length > 20)){
+		alert('{lang baseNameMaxLengthTip2}');
+		$("input[name*='name_max_length']").focus();
+		return false;
+	}
+	
+	name_min_length = parseInt(name_min_length);
+	name_max_length = parseInt(name_max_length);
+	if (name_max_length <= name_min_length){
+		alert('{lang baseNameMaxLengthTip3}');
+		$("input[name*='name_max_length']").focus();
+		return false;
+	}
+	
+	var register_least_minute = $.trim($("input[name*='register_least_minute']").val());
+	if (register_least_minute && !/^\d+$/.test(register_least_minute)){
+		alert('{lang RegisterIpControlTip2}');
+		$("input[name*='register_least_minute']").focus();
+		return false;
+	}
+	
+	if(confirm('{lang baseConfigCoverWarn}')==false){
+		return false;
+	}
+}
+
+function showCloseRegister(value){
+	if (value == '1'){
+		$("#baseCloseRegister").hide();
+	}else{
+		$("#baseCloseRegister").show();
+	}
+}
+
+$(document).ready(function(){
+	if ("$basecfginfo['allow_register']" == '0'){
+		$("#baseCloseRegister").show();
+	}
+	
+	$(":radio[name*=allow_register]").click(function(){
+		showCloseRegister(this.value);
+	});
+});
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+    <td><br>
+	<div id="navcontainer">
+	  <ul id="navlist">
+		<li><a href="index.php?admin_setting-baseregister" id="current">{lang siteConfigRegister}</a></li>
+	  </ul>
+	</div>
+    </td>
+</tr>
+</table>
+<table align="left" cellpadding="5" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top">
+	    <form method="POST" action="index.php?admin_setting-baseregister" onsubmit="return doSubmit();">
+	    	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="list">
+	    		<tr>
+                  <td width="5%"></td>
+                  <td width="30%"><strong>{lang commonParameterName}</strong></td>
+                  <td width="30%"><strong>{lang commonParameterValue}</strong></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseAllowRegister}</strong><br/>{lang baseAllowRegisterTip}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[allow_register]" value="1"
+					{if $basecfginfo['allow_register']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="setting[allow_register]" value="0" 
+					{if $basecfginfo['allow_register']=='0'}checked{/if}/>{lang commonNo}</label>
+				  </td>
+                </tr>
+                <tr id="baseCloseRegister" style="display:none">
+                  <td></td>
+                  <td><strong>{lang baseCloseRegister}</strong></td>
+                  <td>
+				  <textarea name="setting[close_register_reason]" style="width:200px;" rows="5">{$basecfginfo['close_register_reason']}</textarea>
+				  </td>
+                </tr>
+				<tr>
+                  <td></td>
+                  <td><strong>{lang baseErrorNames}</strong><br/>{lang baseErrorNamesTip}<br/></td>
+                  <td><textarea name="setting[error_names]" style="width:200px;" rows="3">{$basecfginfo['error_names']}</textarea></td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseRegisterCheck}</strong><br/>{lang baseRegisterCheckTip}</td>
+                  <td>
+                  	<label><input type="radio"  name="setting[register_check]" value="1" {if $basecfginfo['register_check']=='1'}checked{/if}/>{lang commonYes}</label>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<label><input type="radio"  name="setting[register_check]" value="0" {if $basecfginfo['register_check']=='0'}checked{/if}/>{lang commonNo}</label>
+				  </td>
+                </tr>
+                  <td></td>
+                  <td><strong>{lang baseNameMinLength}</strong><br/>{lang baseNameMinLengthTip}</td>
+                  <td>
+				  <input class="box" name="setting[name_min_length]"  type="text" style="width:200px;"  maxlength="2" value="{$basecfginfo['name_min_length']}" />
+				  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td><strong>{lang baseNameMaxLength}</strong><br/>{lang baseNameMaxLengthTip}</td>
+                  <td>
+					<input class="box" name="setting[name_max_length]"  type="text" style="width:200px;"  maxlength="2" value="{$basecfginfo['name_max_length']}" /></td>
+                </tr>
+
+				<tr>
+                  <td></td>
+                  <td><strong>{lang RegisterIpControl}</strong><br/>{lang RegisterIpControlTip}</td>
+                  <td>
+				<input class="box" name="setting[register_least_minute]"  type="text" style="width:200px;" maxlength="4"  value="{$basecfginfo['register_least_minute']}" />
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3" align="center" height="40">
+                  	<input class="btn" name="settingsubmit" type="submit" value="{lang commonSave}" />&nbsp;&nbsp;
+                  	<input class="btn" type="reset" value="{lang commonReset}" />
+                  </td>
+                </tr>
+
+	    	</table>
+	    </from>
+    </td>
+  </tr>
+</table>
+{template admin_footer}

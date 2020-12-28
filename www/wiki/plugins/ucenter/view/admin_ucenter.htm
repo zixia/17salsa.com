@@ -1,0 +1,60 @@
+{template admin_header}
+<script type="text/javascript">
+function importinfo(){
+	if(confirm('说明:新安装的hdwiki系统不用此操作,您继续吗？')==false){
+		return false;
+	}else{
+		window.open('index.php?plugin-ucenter-admin_ucenter-import',"_self","");
+	}
+}
+function updateuser(){
+	if(confirm('确定执行吗？')==false){
+		return false;
+	}else{
+		window.open('index.php?plugin-ucenter-exchange-updateuser',"_self","");
+	}
+}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_plugin-manage-{$pluginid}"  id="current">{lang commonManage}</a></li>
+			<li><a href="index.php?admin_plugin-setvar-{$pluginid}">{lang commonSet}</a></li>
+			<li><a href="index.php?admin_plugin-hook-{$pluginid}">{lang commonHook}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<br/>
+<table align="center" cellpadding="10" cellspacing="0" width="98%" class="list">
+
+  <form method="post" action="index.php?plugin-ucenter-admin_ucenter-feed">
+  <tr>
+    <td valign="top"><strong>
+    将下列哪些行为加入到事件？</strong><br/>
+<input name="feed[]" type="checkbox"  value="create" <!--{if $create}-->checked='checked'<!--{/if}--> />创建词条
+<br/>
+<input name="feed[]" type="checkbox"  value="edit" <!--{if $edit}-->checked='checked'<!--{/if}--> />编辑词条
+<br/>
+<input class="btn" type="submit" name="submit" value="确定" />
+</td>
+</tr>
+</form>
+<tr>
+    <td valign="top"><strong>
+    <!--{if isset($iscon)}--><font color="#FF0000">您还没有设置UCenter，请点击<a href="index.php?admin_plugin-setvar-{$pluginid}">设置</a></font><br/>
+    <!--{elseif isset($isopen)}--><font color="#FF0000">您还没有开通ucenter！</font><br/>
+    <!--{elseif isset($islock)}--><font color="#FF0000">您已经导入过用户!</font><br/><!--{/if}--></strong>
+    <b>将hdwiki用户导入ucenter</b><br/>
+说明:新安装的hdwiki系统不用此操作!
+<br/>
+<a href="#" style="color:red" onclick="importinfo();" ><input class="btn" type="button" value="将hdwiki用户导入ucenter" /></a>
+	</td>
+</tr>
+
+</table>
+
+{template admin_footer}

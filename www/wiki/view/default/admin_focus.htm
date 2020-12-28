@@ -1,0 +1,85 @@
+{template admin_header}
+<script type="text/javascript">
+	function selectALL(obj){
+		$(".box").attr("checked",obj.checked);
+	}
+	function checkdel(){
+		if(confirm('{lang commonConfirmRemove}')){
+			$("form[name='focusdoc']").attr('action','index.php?admin_focus-remove');
+			$("form[name='focusdoc']").submit();
+		}else{
+			return false;
+		}
+	}
+	function updateorder(){
+		if(confirm('{lang focusmanageUpdateOrder}')){
+			$("form[name='focusdoc']").attr('action','index.php?admin_focus-reorder');
+			$("form[name='focusdoc']").submit();
+		}else{
+			return false;
+		}
+	}
+	function checklen(obj){
+		num=obj.value;
+		if(num!=''){
+			if(num>127){
+				alert('{lang focusmanageMaxNum}');
+				obj.value=127;
+			}
+			if(isNaN(num)==true){
+				alert("{lang focusmanagePutNum}");
+				obj.value=0;
+			}
+		}
+	}
+	function checknum(obj){
+		num=obj.value;
+		if(num==''){
+			obj.value=0;
+		}
+	}
+</script>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+	    <td><br>
+		<div id="navcontainer">
+		  <ul id="navlist">
+			<li><a href="index.php?admin_focus-focuslist" id="current">{lang message_commend}</a></li>
+		  </ul>
+		</div>
+	    </td>
+	</tr>
+</table>
+<form name="focusdoc" id="focusdoc"  method="POST">
+	<table width="100%" cellspacing="0" cellpadding="3" class="list">
+		<tr align=center class="list_title" >
+  		  <td align=center width="93">{lang commonSelect}</td>
+		  <td width="132" align=center>{lang magLinkSeq}</td>
+		  <td width="211" align=left>{lang focusmanageTitle}</td>
+		  <td width="211" align=left>{lang doctype}</td>
+          <td width="598">{lang focusmanageSeeImg}</td>
+		  <td align=center width='140' >{lang commonEdit}</td>
+          <td align=center width='187' >{lang focusmanageUpdateImg}</td>
+	  </tr>
+<!--{loop $lists $list}-->
+<tr >
+	  <td align='center'  width="93"><input type="hidden" name="all_focus_did[]" value = "{$list['did']}" />
+      <input type="checkbox" class="box" name="did[]" value="{$list['did']}" /></td>
+	  <td align='center'  width="132"><input type="text" name="order{$list['did']}" value="{$list['displayorder']}" size="2" maxlength="3" onkeyup="checklen(this)" onblur="checknum(this)" /></td>
+	  <td   width="211"><a href='index.php?doc-view-{$list['did']}' target='_blank'>{$list['title']}</a></td>
+	  <td   width="211">{if $list['type'] == 1}<font color="Red">{lang focusmanage}</font>{elseif $list['type'] == 2}<font color="blue">{lang hotdoc}</font>{elseif $list['type'] == 3}<font color="green">{lang wonderdoc}</font>{else}{lang focusmanageNone}{/if}</td>
+	  <td align='center'  width=598><!--{if $list['image']==''}-->{lang focusmanageNone}<!--{else}--><a href="{$list['image']}" rel="gb_page_center[350, 200]" >{lang focusmanageClick}</a><!--{/if}--></td>
+      <td align=center width='140' ><a href="index.php?admin_focus-edit-{$list['did']}" rel="gb_page_center[550, 300]" title="{lang focusmanageEditRmd}" >{lang commonEdit}</a></td>
+      <td align=center width='187' ><a href="index.php?admin_focus-updateimg-{$list['did']}">{lang focusmanageUpdate}</a></td>
+	  </tr>
+ <!--{/loop}-->
+	</table>
+	<table width="100%" cellspacing="0" cellpadding="0">
+		<tr>
+		<td width="76" nowrap="nowrap">  <input name="chkall" class="box" onclick="selectALL(this);"  type="checkbox" /><label id="tip">{lang commonAllSelect}</label> </td>
+		<td  nowrap="nowrap"> <input type="button" class="btn"  value="{lang focusmanageDelete}" onclick="checkdel();"/> <input type="button" class="btn"  value="{lang focusmanageEditOrder}" onclick="updateorder();"/></td>
+		<td id="pagebar">{$departstr}</td>
+	  </tr>
+	</table>
+</form>
+{template admin_footer}

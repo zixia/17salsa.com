@@ -1,0 +1,45 @@
+<!--ad start -->
+
+<!--{if isset($advlist[1])&& isset($setting[advmode]) && '1'==$setting[advmode]}-->
+<div class="ad w-950 c-b" id="advlist_1">
+{$advlist[1][code]}
+</div>
+<!--{elseif isset($advlist[1]) && (!isset($setting[advmode]) || !$setting[advmode])}-->
+<div class="ad w-950 c-b" id="advlist_1">
+</div>
+<!--{/if}-->
+
+<!--ad end -->
+<div class="c-b"></div>
+<div id="footer"  class="w-950">
+<span class="r gray"> {lang footerTip1}<!--{if ($setting[time_offset]>0)}-->+<!--{/if}-->{$setting[time_offset]}  {lang footerTip2} {$timenow} <a href="http://www.miibeian.gov.cn/" target="_blank" class="link_black">{$setting[site_icp]} </a></span>
+
+<ul class="link_blue r" id="nav_bot">
+	<li><a href="{url user-clearcookies}" >{lang clearCookies}</a></li>
+	<li><a href="index.php?doc-innerlink-{eval echo urlencode('{lang contactus}')}">{lang contactus}</a></li>
+	<li <!--{if !$setting[style_user_select]}-->class="bg_no"<!--{/if}--> ><a href="javascript:void(0);" onclick="window.scrollTo(0,0);" title="TOP">TOP</a></li>
+	<!--{if $setting[style_user_select]}-->
+		<li class="bg_no">
+		<select name="style" onchange="javascript:window.location='{$setting['site_url']}/index.php?index-setstyle-'+this.value">
+		<!--{loop $stylelist $style1}-->
+		<option value="{$style1[path]}" <!--{if ($style==$style1[path])}-->selected<!--{/if}--> >{$style1[name]}</option>
+		<!--{/loop}--></select>
+		</li>
+	<!--{/if}-->
+	</ul>
+</div>
+{template adv}
+</body>
+
+<!--  by zixia 201002 admin setting statcode doesn't work, so add here -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-13033101-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</html>

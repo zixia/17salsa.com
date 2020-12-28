@@ -1,0 +1,37 @@
+{template admin_header}
+<style type="text/css">
+.outtable{margin:0.5em auto; width:99%; border: 1px #CCCCCC solid; }
+.table_title{margin:0.5em auto;width:99%;color:#333;font-size:14px;border-bottom:1px #ccc solid;padding:4px;}
+.table_title a {color:#333;text-decoration:none;}
+.outtable td{height:20px;line-height:20px;padding:7px 8px 3px 8px;color:#666;border-bottom:1px #ddd solid;}
+.td_b{ background-color:#eee; font-weight:bold;color:#333;border-bottom:0;}
+</style>
+<h2 class="table_title"><a href="{$setting['seo_prefix']}admin_statistics-stand{$setting['seo_suffix']}" id="current">{lang admin_team}</a></h2>
+<table cellspacing="0" cellpadding="10" class='outtable'>
+  <tr class="td_b">
+    <td width="21%" >{lang usermanageUserNick}</td> 
+    <td width="16%" >{lang admin_title}</td>
+    <td width="14%" >{lang admin_last_login}</td>
+    <td width="14%" >{lang admin_leave_day}</td>
+    <td width="10%" >{lang admin_credit}</td>
+    <td width="10%" >金币数</td>
+    <td width="15%" >{lang admin_provide_doc}</td>
+  </tr>
+    <!--{loop $admin_team  $user}-->
+      <tr class="nei">
+        <td valign="top" ><a href="{$setting['seo_prefix']}user-space-{$user[uid]}{$setting['seo_suffix']}" target="_blank" >{$user[username]}</a></td>
+        <td valign="top" >{$user[groupid]}</td>
+        <td valign="top" >{$user[lasttime]}</td>
+        <td valign="top" >{$user[leave_day]}</td>
+        <td valign="top" >{$user[credit2]}</td>
+        <td valign="top" >{$user[credit1]}</td>
+        <td valign="top" >{$user[num]}</td>
+  </tr>
+  <!--{/loop}-->
+  <!-- {if $departstr != null} -->
+  <tr class="nei">
+    <td colspan="7" align="right">{$departstr}</td>
+  </tr>
+  <!-- {/if} -->
+</table>
+{template admin_footer}

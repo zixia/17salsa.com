@@ -1,0 +1,46 @@
+{template admin_header}
+<script type="text/javascript">
+function docheck(url){
+ 	if(confirm('{lang commonOK}')){
+		window.location=url;
+	}
+}
+</script>
+
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="index.php?admin_plugin-will"  >{lang pluginLayout}</a></li>
+	<li><a href="index.php?admin_plugin-find" id="current">{lang pluginInList}</a></li>
+  </ul>
+</div>
+
+<div id="plug-in" >
+<!--{loop $findplugins $i $plugin}-->
+<div class="plug-in-cell {if $i%2}bg_gray{/if}">	
+	<div class="angle_t">
+		<b class="angle_t_l"></b>
+		<b class="angle_t_r"></b>
+	</div>	
+	<dl>
+	    <dt>
+		{if file_exists('plugins/'.$plugin['identifier'].'/screenshot.jpg')}
+			<img src="plugins/{$plugin[identifier]}/screenshot.jpg" class="plugin_img"/>
+		{else}
+			<img src="style/default/plugin.jpg" class="plugin_img"/>
+		{/if}
+	    </dt>
+		<dd class="link_orange bold">{$plugin[name]}{$plugin[version]}</dd>
+		<dd>{lang pluginWriter}:{$plugin[copyright]} </dd>
+		<dd>{lang suit_edition}:HDWiki{$plugin[suit]} </dd>
+		<dd>{lang pluginInstalls}:{$plugin[install]} &nbsp;&nbsp;&nbsp;&nbsp;<a href="{$plugin[sites]}" target="_blank">{lang pluginInstallSites}</a></dd>
+		<dd>{lang pluginDescript}:{$plugin[description]}</dd>
+	</dl>
+	<a  class="install_plug" href="javascript:docheck('index.php?admin_plugin-install-{$plugin[identifier]}')"><b class="block">{lang pluginInstall}</b></a>
+	<div class="angle_b">
+		<b class="angle_b_l"></b>
+		<b class="angle_b_r"></b>
+	</div>
+</div>
+<!--{/loop}-->
+</div>
+{template admin_footer}

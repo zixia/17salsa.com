@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<theme>
+<author>互动在线</author>
+<authorurl>http://kaiyuan.hudong.com</authorurl>
+<name>数据调用</name>
+<tag>数据调用 js调用</tag>
+<desc>JS数据调用插件能够方便其它系统调用HDWiki的数据。</desc>
+<sitename>HDWiki官方网站</sitename>
+<weburl>http://kaiyuan.hudong.com</weburl>
+<version>1.0</version>
+<hdversion>4.0.4</hdversion>
+<copyright>hudong.com</copyright>
+<charset>UTF-8</charset>
+</theme>

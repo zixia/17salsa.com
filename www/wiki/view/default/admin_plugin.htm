@@ -1,0 +1,33 @@
+{template admin_header}
+<div id="navcontainer"  class="mar-t12">
+  <ul id="navlist">
+	<li><a href="#"  id="current">{lang pluginMange}</a></li>
+  </ul>
+</div>
+
+<!--{loop $pluginlist $plugin}-->
+<div class="plugin_list">
+	{if file_exists('plugins/'.$plugin['identifier'].'/screenshot.jpg')}
+		<img src="plugins/{$plugin[identifier]}/screenshot.jpg" class="plugin_img"/>
+	{else}
+		<img src="style/default/plugin.jpg" class="plugin_img"/>
+	{/if}
+	<dl>
+		<dt><a href="index.php?admin_plugin-manage-{$plugin[pluginid]}" class="h2">{$plugin[name]}</a>{lang pluginVersion} {$plugin[version]}</dt>
+		<dd>{lang pluginWriter}:<a href="{$plugin[homepage]}" target="_blank">{$plugin[copyright]}</a></dd>
+		<dd class="hei48">{lang pluginDescript}:{$plugin[description]}</dd>
+	</dl>
+	<div class="a-c"> 
+		<input type="button" value="{lang pluginShare}" onclick="window.location='index.php?admin_plugin-share-{$plugin[pluginid]}';" class="btn_plug"/>
+		<input type="button" value="{lang commonManage}" onclick="window.location='index.php?admin_plugin-manage-{$plugin[pluginid]}'" class="btn_plug"/>
+		<!--{if $plugin[available]}--><input type="button" value="{lang pluginStop}" onclick="window.location='index.php?admin_plugin-stop-{$plugin[pluginid]}'" class="btn_plug"/><!--{else}--><input type="button" value="{lang pluginStart}" onclick="window.location='index.php?admin_plugin-start-{$plugin[pluginid]}'" class="btn_plug"/><!--{/if}-->
+		<input type="button" value="{lang pluginUninstall}" onclick="window.location='index.php?admin_plugin-uninstall-{$plugin[pluginid]}'" class="btn_plug"/>
+	</div>
+</div>
+<!--{/loop}-->
+
+<!--{if empty($pluginlist)}-->
+{lang pluginNoFind}
+<!--{/if}-->
+ 
+{template admin_footer}
