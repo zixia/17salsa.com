@@ -13,6 +13,8 @@ docker run \
   -v /data/17salsa.com/home/data:/www/home/data \
   -v /data/17salsa.com/home/attachment:/www/home/attachment \
   -v /data/17salsa.com/center/data:/www/center/data \
-  -p 8888:80 \
+  -p 8080:80 \
   --entrypoint bash \
-  ghcr.io/zixia/17salsa.com
+  17salsa.com
+
+  #ghcr.io/zixia/17salsa.com
