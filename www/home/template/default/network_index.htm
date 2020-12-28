@@ -1,0 +1,302 @@
+<!--{eval $_TPL['titles'] = array();}-->
+<!--{template header}-->
+<!--{template network_header}-->
+<div id="content">
+	
+	<div class="topbox">
+		<div class="left_see">
+
+			<div class="showpic">
+				<div class="showflash">
+				<script type="text/javascript">
+					var interval_time = 5;
+					var focus_width = 258;
+					var focus_height = 248;
+					var text_height = 1;
+					var text_mtop = 0;
+					var text_lm = 0;
+					var textmargin = text_mtop+"|"+text_lm;
+					var textcolor = "#ffffff|#ffffff";
+					var text_align= 'center'; 
+					var swf_height = focus_height+text_mtop; 
+					var text_size = 12;
+					var borderStyle="0|0xFFFFFF|100";
+					
+					<!--{eval $linkstr=$imgs=$imglinks=$imgtexts=''}-->
+					<!--{loop $netcache['piclist'] $key $value}-->
+						<!--{eval $title = addslashes(strip_tags($value['title']));}-->
+						<!--{eval $imgs.=$linkstr.$value[pic]}-->
+						<!--{eval $imglinks.=$linkstr."space.php?uid=$value[uid]%26do=album%26picid=$value[picid]"}-->
+						<!--{eval $imgtexts.=$linkstr.$title}-->
+						<!--{eval $linkstr='|'}-->
+					<!--{/loop}-->
+					
+					var pics='$imgs';
+					var links='$imglinks';
+					var texts='$imgtexts';
+					
+					document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="'+ focus_width +'" height="'+ swf_height +'">');
+					document.write('<param name="allowScriptAccess" value="sameDomain"><param name="movie" value="image/slide.swf"> <param name="quality" value="high"><param name="Wmode" value="transparent">');
+					document.write('<param name="menu" value="false"><param name="wmode" value="opaque">');
+					document.write('<param name="FlashVars" value="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'&textmargin='+textmargin+'&textcolor='+textcolor+'&borderstyle='+borderStyle+'&text_align='+text_align+'&interval_time='+interval_time+'&textsize='+text_size+'">');
+					document.write('<embed src="image/slide.swf" wmode="opaque" FlashVars="pics='+pics+'&links='+links+'&texts='+texts+'&borderwidth='+focus_width+'&borderheight='+focus_height+'&textheight='+text_height+'&textmargin='+textmargin+'&textcolor='+textcolor+'&borderstyle='+borderStyle+'&text_align='+text_align+'&interval_time='+interval_time+'&textsize='+text_size+'" menu="false" quality="high" width="'+ focus_width +'" height="'+ swf_height +'" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />');
+					document.write('</object>');
+				</script>
+				</div>
+			</div>
+			
+		</div>
+		<div class="right_see">
+			<div id="scrollbody" style="height: 226px; overflow:hidden;">
+			<ul class="line_list">
+			<!--{loop $feedlist $value}-->
+				<li><a href="space.php?uid=$value[uid]">$value[title_template]</li>
+			<!--{/loop}-->
+			</ul>
+			</div>
+			<div class="r_option" style="padding-top:8px;"><a href="space.php?do=home&view=all">查看更多网站动态</a></div>
+			<script>startMarquee(226, 60, 0, 'scrollbody');</script>
+		</div>
+	</div>
+	
+	
+	<div class="userbox">
+		<h3 class="feed_header">
+			<div class="r_option"><a href="network.php?ac=space&view=show">我要上榜</a></div>
+			榜上有名
+		</h3>
+		<ul class="avatar_list">
+		<!--{loop $showlist $value}-->
+			<li>
+				<div class="avatar48"><a href="space.php?uid=$value[uid]" title="$value[note]"><img src="<!--{avatar($value[uid],small)}-->" /></a></div>
+				<p><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></p>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+	
+	<div class="searchfirend">
+		<div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+			<h3>寻找好友</h3>
+			<form method="get" action="network.php">
+			<p>
+				<input type="radio" name="sex" value="1"> 帅哥
+				<input type="radio" name="sex" value="2"> 美女
+
+				居住地：
+				<script type="text/javascript" src="source/script_city.js"></script>
+				<script type="text/javascript">
+				<!--
+				showprovince('resideprovince', 'residecity', '');
+				showcity('residecity', '');
+				//-->
+				</script>	
+			
+				<input type="hidden" name="ac" value="space" />
+				<input type="hidden" name="searchmode" value="1" />
+				<input type="submit" name="findsubmit" value="找人" class="submit" />
+			</p>
+			<p>我现在已经有了 $space[friendnum] 位朋友，<a href="cp.php?ac=friend&op=find">查找我可能认识的人</a></p>
+			</form>
+			
+			
+	<!--{if $barlist}-->
+		<h3>站长推荐用户</h3>
+		<ul class="avatar_list">
+			<!--{loop $barlist $key $value}-->
+			<li>
+				<div class="avatar48"><a href="space.php?uid=$value[uid]"><img src="<!--{avatar($value[uid],small)}-->" alt="{$_SN[$value[uid]]}" /></a></div>
+				<p><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></p>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	<!--{/if}-->
+	
+		</div></div></div></div>
+	</div>
+	
+	<div class="userbox">
+		<h3 class="feed_header">
+			<div class="r_option"><a href="network.php?ac=blog">查看更多</a></div>
+			日志
+		</h3>
+		<ul class="line_list">
+			<!--{loop $netcache['bloglist'] $value}-->
+			<li>
+				<h6><a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]" title="$value[subject]">$value[subject]</a></h6>
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> <span class="gray">(<!--{date('m-d H:i',$value[dateline],1)}--><!--{if $value[replynum]}-->, $value[replynum] 人评论<!--{/if}-->)</span>
+				<p class="detail" style="padding:5px 0 5px 0;">$value[message]</p>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+
+
+	<div class="m_box">
+		<div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+			<h2 class="atitle">
+				<div class="r_option"><a href="network.php?ac=album">全部</a></div>
+				相册
+			</h2>
+			<ul class="albs2">
+			<!--{loop $netcache['albumlist'] $value}-->
+				<li>
+					<a href="space.php?uid={$value[uid]}&do=album&id={$value[albumid]}" title="$value[albumname]"><img src="$value[pic]" alt="$value[albumname]" style="width: 75px;height:75px;" /></a>
+					<p><a href="space.php?uid={$value[uid]}&do=album&id={$value[albumid]}" title="$value[albumname]">$value[albumname]</a></p>
+				</li>
+			<!--{/loop}-->
+			</ul>
+		</div></div></div></div>
+	</div>
+	
+
+	
+		
+	<div class="m_box">
+		<h3 class="feed_header">
+			<div class="r_option"><a href="network.php?ac=mtag&view=hot">查看更多</a></div>
+			热门群组
+		</h3>
+		<ul class="mtag2_list">
+			<!--{loop $netcache['mtaglist'] $value}-->
+			<li>
+				<div class="threadimg60">
+					<a href="space.php?do=mtag&tagid={$value[tagid]}">
+						<img style="width: 60px;height:60px" src="{$value[pic]}" alt="$value[tagname]" title="$value[tagname]"/>
+					</a>
+				</div>
+				<p><a href="space.php?do=mtag&tagid={$value[tagid]}" title="$value[tagname]">$value[tagname]</a></p>
+				<p><a href="space.php?do=mtag&tagid={$value[tagid]}">$value[membernum]人参与</a></p>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+	
+	<!--{if $myapplist}-->
+	<div class="m_box">
+		<h3 class="feed_header">
+			<div class="r_option"><a href="cp.php?ac=userapp&my_suffix=%2Fapp%2Flist">查看更多</a></div>
+			好玩的应用
+		</h3>
+		<ul class="apps">
+		<!--{loop $myapplist $key $value}-->
+			<li>
+				<a href="userapp.php?id=$value[appid]"><img src="http://appicon.manyou.com/logos/$value[appid]" alt="$value[appname]" /></a>
+				<h4><a href="userapp.php?id=$value[appid]">$value[appname]</a></h4>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+	<!--{/if}-->
+
+	<div class="m_box">
+		<h3 class="feed_header">
+			<div class="r_option"><a href="network.php?ac=space&view=online">查看全部</a></div>
+			在线会员 (共有 $olcount 人在线)
+		</h3>
+		<ul class="avatar_list">
+		<!--{loop $onlinelist $key $value}-->
+			<li>
+				<div class="avatar48"><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}"><img src="<!--{avatar($value[uid],small)}-->" /></a></div>
+				<p><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a></p>
+				<p class="time"><!--{date('H:i',$value[lastactivity],1)}--></p>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+
+</div>
+
+<div id="sidebar">
+	<!--{if $task}-->
+	<div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+		<div class="task_notice2">
+			<h3>$task[name]</h3>
+			<div class="task_content">
+				<img class="icon" alt="" src="image/task/gold.gif"/>
+				<p>$task[note] ...</p>
+				<p style="text-align: center;padding: 20px 0 0;"><a href="cp.php?ac=task&taskid=$task[taskid]"><img alt="" src="image/getred.gif"/></a></p>
+			</div>
+			<!--{if $space['self']}-->
+			<div class="integral">
+				<a href="cp.php?ac=credit" class="r_option">获取更多</a>
+				您目前积分 <span class="num">$space[credit]</span>
+			</div>
+			<!--{/if}-->
+		</div>
+	</div></div></div></div>
+	<!--{/if}-->
+	
+	<div class="sidebox">
+		<h2 class="title">
+			<div class="r_option"><a href="network.php?ac=doing">查看更多</a></div>
+			记录
+		</h2>
+		<ul class="line_list">
+			<!--{loop $netcache['doinglist'] $value}-->
+			<li>
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> $value[message]<span class="gray">(<a href="space.php?uid=$value[uid]&do=doing&doid=$value[doid]&goto=yes"><!--{if $value[replynum]}-->$value[replynum]人<!--{/if}-->回复</a>)</span>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+	
+	<div class="sidebox">
+		<h2 class="title">
+			<p class="r_option">
+				<a href="network.php?ac=space">全部</a>
+			</p>
+			更新的用户
+		</h2>
+		<ul class="avatar_list">
+			<!--{loop $netcache['spacelist'] $key $value}-->
+			<li>
+				<div class="avatar48"><a href="space.php?uid=$value[uid]"><img src="<!--{avatar($value[uid],small)}-->" alt="{$_SN[$value[uid]]}" /></a></div>
+				<p><a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}">{$_SN[$value[uid]]}</a></p>
+				<p class="time"><!--{date('n月j号',$value[updatetime],1)}--></p>
+			</li>
+			<!--{/loop}-->
+		</ul>
+	</div>
+	
+	<div class="sidebox">
+		<h2 class="title">
+			<div class="r_option"><a href="network.php?ac=share">全部</a></div>
+			分享
+		</h2>
+		<ul class="line_list">
+		<!--{loop $netcache['sharelist'] $value}-->
+			<li>
+			<div class="title">
+				<div class="r_option"><a href="space.php?uid=$value[uid]&do=share&id=$value[sid]">评论</a></div>
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> $value[title_template]
+			</div>
+			<div class="feed">
+			<!--{if $value['image']}-->
+			<a href="$value[image_link]"><img src="$value[image]" class="summaryimg image" alt="" width="70" /></a>
+			<!--{/if}-->
+			<div class="detail">
+			$value[body_template]
+			<!--{if 'video' == $value['type']}-->
+			<br />
+			<a href="space.php?uid=$value[uid]&do=share&id=$value[sid]"><img src="image/vd.gif" width="80" alt="点击查看" /></a>
+			<!--{elseif 'music' == $value['type']}-->
+			<br />
+			<a href="space.php?uid=$value[uid]&do=share&id=$value[sid]"><img src="image/music.gif" alt="点击查看" /></a>
+			<!--{elseif 'flash' == $value['type']}-->
+			<br />
+			<a href="space.php?uid=$value[uid]&do=share&id=$value[sid]"><img src="image/flash.gif" alt="点击查看" /></a>
+			<!--{/if}-->
+			</div>
+			<div class="quote"><span id="quote" class="q">$value[body_general]</span></div>
+			</div>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+
+</div>
+
+
+
+<!--{template footer}-->

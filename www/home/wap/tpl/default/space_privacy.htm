@@ -1,0 +1,43 @@
+<!--{template header}-->
+<!--{eval 
+	//是否好友
+	$space['isfriend'] = $space['self'];
+	if(in_array($_SGLOBAL['supe_uid'], $space['friends'])) {
+		$space['isfriend'] = 1;//是好友
+	}
+}-->
+
+<div class="c">
+
+	<h3>{$_SN[$space[uid]]}</h3>
+	<a href="space.php?uid=$space[uid]"><!--{avatar($space[uid],middle)}--></a><br/>
+
+
+	<!--{if $_SGLOBAL['realname_privacy']}-->
+		<p>{$_SN[$space[uid]]} 为实名认证用户，你需要通过实名认证后才能继续访问</p>
+	<!--{else}-->
+		<p>由于 {$_SN[$space[uid]]} 的隐私设置，你不能访问当前内容</p>
+	<!--{/if}-->
+	<!--{if $space[note]}-->
+	<p><span class="gray">心情：</span>$space[note]</p>
+	<!--{/if}-->
+	<!--{if $space[resideprovince] || $space[residecity]}-->
+	<p><span class="gray">地区：</span>$space[resideprovince] $space[residecity]</p>
+	<!--{/if}-->
+
+	<!--{if !$space['isfriend']}-->
+	<p>{$_SN[$space[uid]]} 有 $space[friendnum] 名好友, $space[credit] 个积分, $space[viewnum] 个浏览量</p>
+	<p>与{$_SN[$space[uid]]}成为好友后，您可以第一时间关注到{$_SN[$space[uid]]}的更新信息。</p>
+	<div>
+	<a href="cp.php?ac=friend&op=add&uid=$space[uid]">加为好友</a>
+	<!--{else}-->
+	<a href="cp.php?ac=friend&op=ignore&uid=$space[uid]" >解除好友关系</a>
+	<!--{/if}-->
+	<span class="pipe">|</span>
+	<a href="cp.php?ac=poke&op=send&uid=$space[uid]">打招呼</a>
+	<span class="pipe">|</span>
+	<a href="cp.php?ac=pm&uid=$space[uid]">发短消息</a>
+	</div>
+</div>
+
+<!--{template footer}-->

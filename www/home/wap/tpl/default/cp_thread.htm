@@ -1,0 +1,55 @@
+<!--{template header}-->
+
+
+<!--{if $_GET['op'] == 'add' ||  $_GET['op'] == ''}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<div class="c" >
+		<h3>发新话题</h3>
+		
+		<form method="post" action="cp.php?ac=thread&op=edit&pid=$pid&tagid=$tagid&eventid=$eventid">
+		话题标题：<br/>
+		<input type="text" class="t_input" id="subject" name="subject" value="$thread[subject]" /><br/>
+		话题内容：<br/>
+		<textarea name="message">$post[message]</textarea><br/>
+		<!--{if checkperm('seccode')}-->
+		<!--{if $_SCONFIG['questionmode']}-->
+			请先回答问题:<!--{eval question();}--><br/>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" /><br/>
+		<!--{else}-->
+			验证码:<!--{eval echo wap_seccode();}--><br/>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"/><br/>
+		<!--{/if}-->
+		<!--{/if}-->
+
+		<input type="hidden" name="tid" value="$thread[tid]" />
+		<input type="hidden" name="threadsubmit" value="true" />
+		<input type="submit" id="threadbutton" name="threadbutton" value="提交发布" />
+		<input type="hidden" name="topicid" value="$_GET[topicid]" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		<input type="hidden" name="tagid" value="$tagid" />
+		</form>
+	</div>
+<!--{elseif $_GET['op'] == 'delete'}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>
+	</div>
+	<div class="c" id="__deletepostform_{$pid}">
+	<h3>删除回帖</h3>
+	<form id="deletepostform_{$pid}" name="deletepostform_{$pid}" method="post" action="cp.php?ac=thread&op=delete&pid=$pid&tagid=$tagid&eventid=$eventid">
+		<p>确定删除指定的帖子吗？</p>
+		<p>
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="submit" name="postdeletesubmit" value="提交" class="submit" />&nbsp;
+		</p>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+<!--{/if}-->
+	
+<!--{template footer}-->

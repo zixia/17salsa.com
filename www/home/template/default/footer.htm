@@ -1,0 +1,144 @@
+<!--{if empty($_SGLOBAL['inajax'])}-->
+	<!--{if empty($_TPL['nosidebar'])}-->
+		<!--{if $_SGLOBAL['ad']['contentbottom']}--><br style="line-height:0;clear:both;"/><div id="ad_contentbottom"><!--{ad/contentbottom}--></div><!--{/if}-->
+		</div>
+		
+		<!--/mainarea-->
+		<div id="bottom"></div>
+	</div>
+	<!--/main-->
+	<!--{/if}-->
+
+	<div id="footer">
+		<!--{if $_TPL['templates']}-->
+		<div class="chostlp" title="切换风格"><img id="chostlp" src="{$_TPL['default_template']['icon']}" onmouseover="showMenu(this.id)" alt="{$_TPL['default_template']['name']}" /></div>
+		<ul id="chostlp_menu" class="chostlp_drop" style="display: none">
+		<!--{loop $_TPL['templates'] $value}-->
+			<li><a href="cp.php?ac=common&op=changetpl&name=$value[name]" title="$value[name]"><img src="$value[icon]" alt="$value[name]" /></a></li>
+		<!--{/loop}-->
+		</ul>
+		<!--{/if}-->
+		
+		<p class="r_option">
+			<a href="javascript:;" onclick="window.scrollTo(0,0);" id="a_top" title="TOP"><img src="image/top.gif" alt="" style="padding: 5px 6px 6px;" /></a>
+		</p>
+		
+		<!--{if $_SGLOBAL['ad']['footer']}-->
+		<p style="padding:5px 0 10px 0;"><!--{ad/footer}--></p>
+		<!--{/if}-->
+			
+		<!--{if $_SCONFIG['close']}-->
+		<p style="color:blue;font-weight:bold;">
+			提醒：当前站点处于关闭状态
+		</p>
+		<!--{/if}-->
+		<p>
+			$_SCONFIG[sitename] 
+            - <a href="http://17salsa.net/wiki/" target="_blank">Salsa百科</a>
+            - <a href="http://17salsa.net/site/" target="_blank">Salsa门户</a>
+            - <a href="http://17salsa.net/wiki/doc-view-182" target="_blank">广告合作</a>
+            - <a href="http://17salsa.net/wiki/?doc-view-4.html" target="_blank">关于我们</a>
+            <!-- a href="mailto:$_SCONFIG[adminemail]">联系我们</a -->
+            - <a href="http://17salsa.net/wiki/index.php?doc-view-21" target="_blank">联系我们</a>
+            - <a href="http://17salsa.net/site/index.php/action-site-type-link-salsa-bachata" target="_blank">友情链接</a>
+			<!--{if $_SCONFIG['miibeian']}--> - <a  href="http://www.miibeian.gov.cn" target="_blank">$_SCONFIG[miibeian]</a><!--{/if}-->
+		</p>
+		<!--{if $_SCONFIG['debuginfo']}-->
+		<p><!--{eval echo debuginfo();}--></p>
+		<!--{/if}-->
+	</div>
+</div>
+<!--/wrap-->
+
+<!--{if $_SGLOBAL['appmenu']}-->
+<ul id="ucappmenu_menu" class="dropmenu_drop" style="display:none;">
+	<li><a href="{$_SGLOBAL[appmenu][url]}" title="{$_SGLOBAL[appmenu][name]}" target="_blank">{$_SGLOBAL[appmenu][name]}</a></li>
+	<!--{loop $_SGLOBAL['appmenus'] $value}-->
+	<li><a href="$value[url]" title="$value[name]" target="_blank">$value[name]</a></li>
+	<!--{/loop}-->
+
+				<li> </li> 
+                <li><a href="#" onclick="javascript:window.open ('http://17salsa.com/fm/radio.html', '17salsa_radio', 'height=280, width=420, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no'); return false;" title="salsa收音机">salsa收音机(新!)</a></li>
+                <li><a target="_blank" href="/home/space-mtag-tagid-12.html" title="salsa论坛BBS" target="_blank">论坛BBS(salsa)</a></li>
+                <li><a target="_blank" href="/home/space-0-do-thread-view-new.html" title="论坛BBS" target="_blank">论坛BBS(全部)</a></li>
+                <li><a target="_blank" href="/home/space-home-view-hot.html" title="热门推荐" target="_blank">热门推荐</a></li>
+                <li><a target="_blank" href="/home/space-0-do-doing-view-all.html" title="心情记录" target="_blank">心情记录</a></li>
+                <li><a target="_blank" href="/home/space-0-do-tag-start-0.html" title="salsa标签" target="_blank">标签分类</a></li>
+                <li><a target="_blank" href="/home/space-0-do-blog-view-all.html" title="salsa博客blog" target="_blank">日志Blog</a></li>
+                <li><a target="_blank" href="/home/space-0-do-album-view-all.html" title="salsa相册照片" target="_blank">相册照片</a></li>
+				<li> </li> 
+                <li><a target="_blank" href="/home/search.html" title="salsa搜索" target="_blank">站内搜索</a></li>
+                <li><a href="javascript:;" onclick="window.open('http://translate.google.com/translate_c?hl=zh-CN&sl=zh-CN&tl=en&u='+encodeURIComponent(document.location.href));" title="English Version">English Version</a></li>
+ 
+</ul>
+<!--{/if}-->
+
+<!--{if $_SGLOBAL[supe_uid]}-->
+<ul id="membernotemenu_menu" class="dropmenu_drop" style="display:none;">
+	<!--{eval $member = $_SGLOBAL['member'];}-->
+	<!--{if $member[notenum]}--><li><img src="image/icon/notice.gif" width="16" alt="" /> <a href="space.php?do=notice"><strong>$member[notenum]</strong> 个新通知</a></li><!--{/if}-->
+	<!--{if $member[pokenum]}--><li><img src="image/icon/poke.gif" alt="" /> <a href="cp.php?ac=poke"><strong>$member[pokenum]</strong> 个新招呼</a></li><!--{/if}-->
+	<!--{if $member[addfriendnum]}--><li><img src="image/icon/friend.gif" alt="" /> <a href="cp.php?ac=friend&op=request"><strong>$member[addfriendnum]</strong> 个好友请求</a></li><!--{/if}-->
+	<!--{if $member[mtaginvitenum]}--><li><img src="image/icon/mtag.gif" alt="" /> <a href="cp.php?ac=mtag&op=mtaginvite"><strong>$member[mtaginvitenum]</strong> 个群组邀请</a></li><!--{/if}-->
+	<!--{if $member[eventinvitenum]}--><li><img src="image/icon/event.gif" alt="" /> <a href="cp.php?ac=event&op=eventinvite"><strong>$member[eventinvitenum]</strong> 个活动邀请</a></li><!--{/if}-->
+	<!--{if $member[myinvitenum]}--><li><img src="image/icon/userapp.gif" alt="" /> <a href="space.php?do=notice&view=userapp"><strong>$member[myinvitenum]</strong> 个应用消息</a></li><!--{/if}-->
+</ul>
+<!--{/if}-->
+
+<!--{if $_SGLOBAL[supe_uid]}-->
+<!--{if !isset($_SCOOKIE['checkpm'])}-->
+<script language="javascript"  type="text/javascript" src="cp.php?ac=pm&op=checknewpm&rand=$_SGLOBAL[timestamp]"></script>
+<!--{/if}-->
+<!--{if !isset($_SCOOKIE['synfriend'])}-->
+<script language="javascript"  type="text/javascript" src="cp.php?ac=friend&op=syn&rand=$_SGLOBAL[timestamp]"></script>
+<!--{/if}-->
+<!--{/if}-->
+<!--{if !isset($_SCOOKIE['sendmail'])}-->
+<script language="javascript"  type="text/javascript" src="do.php?ac=sendmail&rand=$_SGLOBAL[timestamp]"></script>
+<!--{/if}-->
+
+<!--{if $_SGLOBAL['ad']['couplet']}-->
+<script language="javascript" type="text/javascript" src="source/script_couplet.js"></script>
+<div id="uch_couplet" style="z-index: 10; position: absolute; display:none">
+	<div id="couplet_left" style="position: absolute; left: 2px; top: 60px; overflow: hidden;">
+		<div style="position: relative; top: 25px; margin:0.5em;" onMouseOver="this.style.cursor='hand'" onClick="closeBanner('uch_couplet');"><img src="image/advclose.gif"></div>
+		<!--{ad/couplet}-->
+	</div>
+	<div id="couplet_rigth" style="position: absolute; right: 2px; top: 60px; overflow: hidden;">
+		<div style="position: relative; top: 25px; margin:0.5em;" onMouseOver="this.style.cursor='hand'" onClick="closeBanner('uch_couplet');"><img src="image/advclose.gif"></div>
+		<!--{ad/couplet}-->
+	</div>
+	<script type="text/javascript">
+		lsfloatdiv('uch_couplet', 0, 0, '', 0).floatIt();
+	</script>
+</div>
+<!--{/if}-->
+<!--{if $_SCOOKIE[reward_log]}-->
+<script type="text/javascript">
+showreward();
+</script>
+<!--{/if}-->
+
+<div align="center">
+<script src="http://static.anquan.org/static/outer/js/official_authen_83x30.js"></script>
+</div>
+
+</body>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-13033101-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F746c5f5ff0c40a4b769d52603854aaac' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</html>
+<!--{/if}-->

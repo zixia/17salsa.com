@@ -1,0 +1,24 @@
+	<!--{if $list}-->
+	<!--{loop $list $day $values}-->
+		<!--{if $_GET['view']!='hot'}-->
+		<h4 class="feedtime">
+			<!--{if $day=='yesterday'}-->昨天
+			<!--{elseif $day=='today'}-->今天
+			<!--{elseif $day=='app'}-->看看大家都在玩什么
+			<!--{else}-->$day
+			<!--{/if}-->
+		</h4>
+		<!--{/if}-->
+		<ul>
+		<!--{loop $values $value}-->
+			<!--{template space_feed_li}-->
+		<!--{/loop}-->
+		</ul>
+	<!--{/loop}-->
+	
+	<!--{else}-->
+		<ul>
+			<li>没有相关动态</li>
+		</ul>
+	<!--{/if}-->
+	

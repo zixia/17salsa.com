@@ -1,0 +1,5 @@
+<!--{if empty($ajax_edit)}--><div id="post_$value[pid]_li"><!--{/if}-->
+
+	<span class="gray">$value[num].</span><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> :$value[message]<span class="gray">(<!--{date('Y-m-d H:i',$value[dateline],1)}-->)</span>
+
+<!--{if empty($ajax_edit)}--></div><!--{/if}-->

@@ -1,0 +1,25 @@
+
+	<!--{if $list}-->
+		<!--{eval $i=0;}-->
+		<!--{loop $list $key $value}-->
+			<!--{eval $i++;}-->
+			 <div class="avatar48"><a href="space.php?uid=$value[uid]"><!--{avatar($value[uid],small)}--></a></div>
+			{$i}.
+			<!--{if $value[username] == ''}-->
+				匿名
+			<!--{else}-->
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> 
+			<!--{/if}-->
+			<!--{eval g_icon($value[groupid]);}-->
+			<!--{if $value[sex]==2}-->美女<!--{elseif $value[sex]==1}-->帅哥<!--{/if}-->		
+			<br/>
+			<a href="cp.php?ac=friend&op=add&uid=$value[uid]" id="a_friend_$key">加为好友</a>
+			&nbsp;|&nbsp;
+			<a href="cp.php?ac=poke&op=send&uid=$value[uid]" id="a_poke_$key">打个招呼</a><br/>
+	
+		<!--{/loop}-->
+	<!--{else}-->
+		暂无好友
+	<!--{/if}-->
+	<div class="page">$multi</div>
+	

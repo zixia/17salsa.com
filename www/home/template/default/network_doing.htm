@@ -1,0 +1,25 @@
+<!--{eval $_TPL['titles'] = array('记录', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+
+	<!--{if $list}-->
+	<div class="doing_list">
+		<ol>
+			<!--{loop $list $value}-->
+			<li id="dl$value[doid]">
+				<div class="avatar48"><a href="space.php?uid=$value[uid]"><img src="<!--{avatar($value[uid],small)}-->" alt="{$_SN[$value[uid]]}" /></a></div>
+				<div class="doingcontent"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>: <span>$value[message]</span> <a href="space.php?uid=$value[uid]&do=doing&doid=$value[doid]" class="re">回复</a></div>
+				<div class="doingtime">(<!--{date('m-d H:i',$value[dateline],1)}-->)</div>
+			</li>
+			<!--{/loop}-->
+		</ol>
+	</div>
+	<div class="page">
+	<!--{if $multi=='networkpage'}-->仅显示最新更新的 $count 个记录<!--{else}-->$multi<!--{/if}-->
+	</div>
+	<!--{else}-->
+	<div class="c_form">没有相应的记录。</div>
+	<!--{/if}-->
+
+<!--{template footer}-->

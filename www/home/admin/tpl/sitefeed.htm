@@ -1,0 +1,110 @@
+<!--{template admin/tpl/header}-->
+
+<div class="mainarea">
+<div class="maininner">
+
+	<div class="bdrcontent">
+		全局动态，就是会在站内任何一个成员的好友动态里面都会出现的动态，每个成员都能第一时间看到。站长可以灵活使用全局动态来发布一些公开的信息。
+	</div>
+	<br>
+	
+<!--{if $_GET['op']=='add' || $_GET['op']=='edit'}-->
+	<form method="post" action="admincp.php?ac=sitefeed">
+
+	<div class="block style4">
+		<table cellspacing="3" cellpadding="3" width="100%">
+
+		<tr><th width="80">动态标题*</th><td><input type="text" name="title_template" value="$feed[title_template]" size="60"> (支持html)</td></tr>
+		<tr><th>动态内容*</th><td>
+			<textarea name="body_template" rows="6" style="width:80%;">$feed[body_template]</textarea><br>支持html
+		</td></tr>
+		<tr><th>动态备注</th><td><input type="text" name="body_general" value="$feed[body_general]" size="60"> (支持html)</td></tr>
+		<tr><th>发布日期时间</th><td><input type="text" name="dateline" value="$feed[dateline]" size="30">
+			<br>填写日期时间格式为 <b><!--{eval echo sgmdate('Y-m-d H:i');}--></b>，为空为当前的日期和时间。
+			<br>您也可以填写一个将来的日期和时间，那么这条动态会在这个将来的日期到来之前，一直显示在第一位。</td></tr>
+		<tbody id="image">
+		<tr><th>第1张图片地址</th><td><input type="text" name="image_1" value="$feed[image_1]" size="60"></td></tr>
+		<tr><th>第1张图片链接</th><td><input type="text" name="image_1_link" value="$feed[image_1_link]" size="60"></td></tr>
+		<tr><th>第2张图片地址</th><td><input type="text" name="image_2" value="$feed[image_2]" size="60"></td></tr>
+		<tr><th>第2张图片链接</th><td><input type="text" name="image_2_link" value="$feed[image_2_link]" size="60"></td></tr>
+		<tr><th>第3张图片地址</th><td><input type="text" name="image_3" value="$feed[image_3]" size="60"></td></tr>
+		<tr><th>第3张图片链接</th><td><input type="text" name="image_3_link" value="$feed[image_3_link]" size="60"></td></tr>
+		<tr><th>第4张图片地址</th><td><input type="text" name="image_4" value="$feed[image_4]" size="60"></td></tr>
+		<tr><th>第4张图片链接</th><td><input type="text" name="image_4_link" value="$feed[image_4_link]" size="60"></td></tr>
+		</tbody>
+
+		<tr><td>&nbsp;</td><td>
+		<input type="hidden" name="feedid" value="$feed[feedid]">
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		<input type="submit" name="feedsubmit" value="提交保存" class="submit">
+		</td>
+		</tr>
+		</table>
+	</div>
+	</form>
+<!--{else}-->
+
+	<form method="post" action="admincp.php?ac=sitefeed">
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	<div class="bdrcontent">
+		<div class="topactions"><a href="admincp.php?ac=sitefeed">浏览</a> | <a href="admincp.php?ac=sitefeed&op=add">发布新动态</a></div>
+		<div class="feed">
+		<div id="feed_div" class="enter-content">
+			<ul>
+			<!--{loop $list $value}-->
+			<li id="feed_$value[feedid]_li">
+				<div style="width:100%;overflow:hidden;">
+					<a class="type" href="space.php?uid=$_GET[uid]&do=feed&view=$_GET[view]&appid=$value[appid]&icon=$value[icon]" title="只看此类动态"><img src="$value[icon_image]" /></a>$value[title_template] 
+					<span class="time"><!--{date('m-d H:i',$value[dateline],1)}--></span>
+					<div class="feedContent">
+						<!--{if $value['image_1']}-->
+						<a href="$value[image_1_link]"><img src="$value[image_1]" class="summaryimg" /></a>
+						<!--{/if}-->
+						<!--{if $value['image_2']}-->
+						<a href="$value[image_2_link]"><img src="$value[image_2]" class="summaryimg" /></a>
+						<!--{/if}-->
+						<!--{if $value['image_3']}-->
+						<a href="$value[image_3_link]"><img src="$value[image_3]" class="summaryimg" /></a>
+						<!--{/if}-->
+						<!--{if $value['image_4']}-->
+						<a href="$value[image_4_link]"><img src="$value[image_4]" class="summaryimg" /></a>
+						<!--{/if}-->
+						<!--{if $value['body_template']}-->
+						<div class="detail" <!--{if $value['image_3']}-->style="clear: both;"<!--{/if}-->>
+							$value[body_template]
+						</div>
+						<!--{/if}-->
+						<!--{if $value['body_general']}-->
+						<div class="quote"><span class="q">$value[body_general]</span></div>
+						<!--{/if}-->
+					</div>
+				</div>
+				<div style="padding:10px 0 0 0;">
+					<input type="checkbox" name="ids[]" value="$value[feedid]"> 删除<span class="pipe">|</span> 
+					<a href="admincp.php?ac=sitefeed&op=edit&feedid=$value[feedid]">编辑</a>
+				</div>
+			</li>
+			<!--{/loop}-->
+			</ul>
+		</div>
+		</div>
+	</div>
+	<div class="footactions">
+		<input type="checkbox" id="chkall" name="chkall" onclick="checkAll(this.form, 'ids')">全选 
+		<input type="hidden" name="mpurl" value="$mpurl">
+		<input type="submit" name="deletesubmit" value="批量删除" onclick="return confirm('本操作不可恢复，确认删除？');" class="submit">
+
+		<div class="pages">$multi</div>
+	</div>
+
+	</form>
+
+<!--{/if}-->
+</div>
+</div>
+
+<div class="side">
+	<!--{template admin/tpl/side}-->
+</div>
+
+<!--{template admin/tpl/footer}-->

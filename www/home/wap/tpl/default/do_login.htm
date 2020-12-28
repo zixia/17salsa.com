@@ -1,0 +1,41 @@
+<!--{eval $_TPL['nosidebar']=1;}-->
+<!--{template header}-->
+<div class="c">
+	<form id="loginform" name="loginform" action="do.php?ac=$_SCONFIG[login_action]&$url_plus&ref" method="post" class="c_form">
+
+	<h3>请登录</h3>
+	<!--{if $_SCONFIG['seccode_login']}-->
+	<!--{if $_SGLOBAL['input_seccode']}-->
+
+		请通过下面的验证后，再提交登录<br/>
+
+	<!--{/if}-->
+	<!--{if $_SCONFIG['questionmode']}-->
+		请先回答问题:<!--{eval question();}--><br/>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" /><br/>
+
+	<!--{else}-->
+		验证码:<!--{eval echo wap_seccode();}--><br/>
+		<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"/><br/>
+	<!--{/if}-->
+	<!--{/if}-->
+	用户名<br/>
+	<input type="text" name="username" id="username" class="t_input" value="$membername" tabindex="2" /><br/>
+	密　码<br/>
+	<input type="password" name="password" id="password" class="t_input" tabindex="3" value="$password" /><br/>
+	<input type="checkbox" id="cookietime" name="cookietime" value="315360000" $cookiecheck style="margin-bottom: -2px;"><label for="cookietime">下次自动登录</label><br/>
+
+	<input type="hidden" name="refer" value="$refer" />
+	<input type="submit" id="loginsubmit" name="loginsubmit" value="登录" class="submit" tabindex="5" />
+	<a href="do.php?ac=lostpasswd">忘记密码?</a>
+
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+</div>
+
+<div class="c">
+		<h3>还没有注册吗？</h3>
+		如果还没有本站的通行帐号，请先注册一个属于自己的帐号吧。<br/>
+		<a href="do.php?ac=$_SCONFIG[register_action]"><strong>立即注册</strong></a>
+</div>
+<!--{template footer}-->

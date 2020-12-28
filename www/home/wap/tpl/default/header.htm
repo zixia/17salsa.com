@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="application/vnd.wap.xhtml+xml;charset=$_SC[charset_wap]" />
+<title><!--{if $_TPL['titles']}--><!--{loop $_TPL['titles'] $value}--><!--{if $value}-->$value - <!--{/if}--><!--{/loop}--><!--{/if}--><!--{if $_SN[$space[uid]]}-->{$_SN[$space[uid]]} - <!--{/if}-->$_SCONFIG[sitename] </title>
+<!--{if !defined('WAP_CONTROL')}-->
+<link href="tpl/$_SCONFIG[template]/css/style.css" rel="stylesheet" type="text/css" />
+<!--{else}-->
+<link href="wap/tpl/$_SCONFIG[template]/css/style.css" rel="stylesheet" type="text/css" />
+<!--{/if}-->
+<!--{if $url_forward}--><meta http-equiv="refresh" content="{$url_second};url={$url_forward}"><!--{/if}-->
+</head>
+<body>
+
+	<div id="header">
+	<div id="logo_panel"><!--{if !defined('WAP_CONTROL')}--><img alt="logo" src="image/logo.gif" /><!--{else}--><img alt="logo" src="wap/image/logo.gif" /><!--{/if}--></div>
+	<div id="nav_panel">
+		<!--{if $_SGLOBAL[supe_uid]}-->
+            <a href="index.php">首页</a>|
+			<a href="space.php">个人主页</a>|
+            <a href="space.php?do=friend">好友</a>|
+			<a href="space.php?do=blog">日志</a>|
+			<a href="space.php?do=album">相册</a>|
+            <a href="space.php?do=mtag">群组</a>|
+			<a href="space.php?do=pm<!--{if !empty($_SGLOBAL['member']['newpm'])}-->&filter=newpm<!--{/if}-->">消息<!--{if $_SGLOBAL['member']['allnotenum'] || !empty($_SGLOBAL['member']['newpm'])}-->
+			<img src="image/icon/notify.gif" alt="新"/>
+			<!--{/if}-->
+			</a>
+		<!--{else}-->
+			<a href="do.php?ac=$_SCONFIG[login_action]">登录</a>|
+			<a href="do.php?ac=$_SCONFIG[register_action]">注册</a>
+		<!--{/if}-->
+	</div>
+	</div>
+	<div id="mainarea">
+		

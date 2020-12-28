@@ -1,0 +1,65 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=$do&view=me"><span>日志</span></a>
+	</div>
+	<div class="title">
+		<h3<!--{if $blog[magiccolor]}--> class="magiccolor$blog[magiccolor]"<!--{/if}-->>$blog[subject]</h3>
+		<!--{if $blog['friend']}-->
+		<span>{$friendsname[$blog[friend]]}</span>
+		<!--{/if}-->
+		<!--{if $blog[hot]}--><span class="hot">热($blog[hot])&nbsp;</span><!--{/if}-->
+		<!--{if $blog[viewnum]}--><span class="gray">阅($blog[viewnum])&nbsp;</span><!--{/if}-->
+		<span class="gray"><!--{date('Y-m-d H:i',$blog[dateline],1)}--></span>
+		<!--{if $blog[tag] && false}-->
+		<br/><a href="space.php?uid=$blog[uid]&do=tag">标签</a>:&nbsp;
+		<!--{loop $blog[tag] $tagid $tagname}-->
+		<a href="space.php?uid=$blog[uid]&do=tag&id=$tagid">$tagname</a>&nbsp;
+		<!--{/loop}-->
+		<!--{/if}-->
+	</div>
+	<div class="content">
+	$blog[message]
+	<!--{if $_SGLOBAL[supe_uid] == $blog[uid] || checkperm('manageblog')}-->
+		<div>
+		<a href="cp.php?ac=blog&blogid=$blog[blogid]&op=edit">编辑</a><span class="pipe">|</span>
+		<a href="cp.php?ac=blog&blogid=$blog[blogid]&op=delete">删除</a>
+		</div>
+	<!--{/if}-->
+	</div>
+	<div class="c" >
+		<h3>评论 ( $blog[replynum]个评论)</h3>
+		<!--{if $list}-->
+			<!--{loop $list $value}-->
+				<!--{template space_comment_li}-->
+			<!--{/loop}-->
+		<!--{else}-->
+			暂无评论
+		<!--{/if}-->
+		<div class="page">$multi</div>
+	
+	<!--{if !$blog[noreply]}-->
+		<form id="quickcommentform_{$id}" name="quickcommentform_{$id}" action="cp.php?ac=comment" method="post" >
+
+		<textarea id="comment_message" name="message"></textarea>
+		<br/>
+		<input type="submit" id="commentsubmit_btn" name="commentsubmit_btn" class="submit" value="评论"/>
+		<input type="submit" id="selectface" name="selectface" class="submit" value="表情"/>
+		<input type="hidden" name="refer" value="space.php?uid=$blog[uid]&do=$do&id=$id" />
+		<input type="hidden" name="id" value="$id">
+		<input type="hidden" name="idtype" value="blogid">
+		<input type="hidden" name="commentsubmit" value="true" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+	<!--{/if}-->
+	</div>
+	<!--{if $newlist}-->
+	<div class="c">
+	<h3>热门日志导读</h2>
+		<!--{loop $newlist $value}-->
+		<a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]">$value[subject]</a><br/>
+		<!--{/loop}-->
+	</div>
+	<!--{/if}-->
+	
+<!--{template footer}-->

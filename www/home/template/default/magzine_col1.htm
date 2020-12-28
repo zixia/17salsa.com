@@ -1,0 +1,51 @@
+<!-- ----- {$_TPL['col_more'][$key]}开始   ----- --->
+<div style="position: relative; overflow: hidden; margin: 0 0 10px;  width: 660px;">
+<div style="w\idth: 656px; overflow: hidden; margin: 0 10px 0 0;  border: 1px solid #DDD; padding: 1px; float: left; width: 660px;">
+
+<h2 style="font-size: 12px; margin: 0; background: #EEE;  line-height: 32px; color: #2C629E; padding: 0 10px; height: 32px;"><span style="font-size: 12px; font-weight: normal;  float: right;"><a href="{$_TPL['col_url'][$key].$_TPL['analytic']}" style="font-weight: normal; font-size: 12px;  color: #2C629E; text-decoration: none;">更多{$_TPL['title_more'][$key]}...</a></span> {$_TPL['col_title'][$key]} 
+»</h2>
+<ul style="he\ight: 96px; overflow: hidden; margin: 0;  line-height: 150%; padding: 10px 0 0 10px; height: 106px;">
+   <li style="margin: 0 15px 15px 0;  list-style: none; float: left; width: 310px;">
+  <h3 style="font-size: 12px; overflow: hidden; margin: 0 0 5px;  padding: 0; height: 20px;"><a href="{$ul1[title_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;">{$ul1[title]}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <a href="{$ul1[user_url]}" style=" color: #FF9900; text-decoration: none;">{$ul1[user]}</a></h3>
+  <div style="margin: 0 10px 0 0; background: url('image/48_avatar_bg.gif') no-repeat;  padding: 5px 0 0 5px; height: 55px; width: 55px; float: left;"><a href="{$ul1[user_url]}" title="{$ul1[user]}" target="_blank" style=" color: #2C629E; text-decoration: none;"><img src="{$ul1[user_avatar]}" alt="{$ul1[user]}" style="border: none; height: 48px; width: 48px;" /></a></div>
+  <p style="overflow: hidden; margin: 0 0 5px;  color: #666; padding: 0; height: 76px; width: 220px;">&nbsp;&nbsp;&nbsp;&nbsp;{$ul1[message]}...</p>
+  </li>
+  <li style="margin: 0 0 15px;  list-style: none; float: left; width: 310px;">
+  <h3 style="font-size: 12px; overflow: hidden; margin: 0 0 5px;  padding: 0; height: 20px;"><a href="{$ul2[title_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;">{$ul2[title]}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+   <a href="{$ul2[user_url]}" style=" color: #FF9900; text-decoration: none;">{$ul2[user]}</a></h3>
+  <div style="margin: 0 10px 0 0; background: url('image/48_avatar_bg.gif') no-repeat;  padding: 5px 0 0 5px; height: 55px; width: 55px; float: left;"><a href="{$ul2[user_url]}" title="{$ul2[username]}" target="_blank" style=" color: #2C629E; text-decoration: none;"><img src="{$ul2[user_avatar]}" alt="{$ul2[user]}" style=" border: none; height: 48px; width: 48px;" /></a></div>
+  <p style="overflow: hidden; margin: 0 0 5px;  color: #666; padding: 0; height: 76px; width: 220px;">&nbsp;&nbsp;&nbsp;{$ul2[message]}...</p>
+  </li> 
+</ul>
+ 
+
+ 
+<div width="660px">
+<table cellspacing="1"  cellpadding="0" with="660px">
+  <tbody >
+  <!--{eval $_CNT = 0;}-->
+  <!--{loop $list $value}-->
+   <!--{eval $_MOD4 = fmod($_CNT,4);$_MOD2 = fmod($_CNT,2);$_CNT +=1;}-->
+   <!--{eval if($_MOD4 == 0)$_BG='bgcolor="f7f7f7"';else $_BG = ''; }-->
+   <!--{eval if(strlen($value[user])>7) $font_size='font-size:7pt';else $font_size='';}-->
+   <!--{if $_MOD2 == 0}-->
+   <tr {$_BG}>
+    <td height="35" style=" font: 12px/1.5em Verdana, Arial; width: 270px;" width="300">&nbsp;&nbsp;
+      <a href="{$value[title_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;">{$value[title]}</a></td>
+    <td style=" font: 12px/1.5em Verdana, Arial;" width="59"><a href="{$value[user_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;"><img src="{$value[user_avatar]}" alt="{$value[user]}"  style=" border: none; height: 16px; vertical-align: middle; width: 16px;" /></a><a href="{$value[user_url]}" target="_blank" style="color: #2C629E; text-decoration: none; {$font_size}">{$value[user]}</a></td>
+   <!--{else}-->
+    <td style=" font: 12px/1.5em Verdana, Arial;" width="279">&nbsp;&nbsp;<a href="{$value[title_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;">{$value[title]}</a></td>
+    <td style=" font: 12px/1.5em Verdana, Arial;" width="81"><a href="{$value[user_url]}" target="_blank" style=" color: #2C629E; text-decoration: none;"><img src="{$value[user_avatar]}" alt="{$value[user]}"  style=" border: none; height: 16px; vertical-align: middle; width: 16px;" /></a><a href="{$value[user_url]}" target="_blank" style="color: #2C629E; text-decoration: none; {$font_size}">{$value[user]}</a></td>
+   </tr>
+   <!--{/if}-->
+  <!--{/loop}-->
+  <!--{if $_MOD2 == 0}-->
+    <td style=" font: 12px/1.5em Verdana, Arial;" width="279"></td>
+    <td style=" font: 12px/1.5em Verdana, Arial;" width="81"></td>
+   </tr>
+  <!--{/if}-->
+</tbody></table>
+<p style="margin: 0;  padding: 0;"></p></div>	</div>
+</div>
+<!-- ----- {$_TPL['col_more'][$key]}结束   ------ -->

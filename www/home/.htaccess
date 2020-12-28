@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /home
+RewriteRule ^(space|network)\-(.+)\.html$ $1.php?rewrite=$2 [L]
+RewriteRule ^(space|network)\.html$ $1.php [L]
+RewriteRule ^([0-9]+)$ space.php?uid=$1 [L]

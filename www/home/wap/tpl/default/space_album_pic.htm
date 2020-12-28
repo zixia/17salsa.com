@@ -1,0 +1,42 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=$do&view=me">相册</a>&gt;
+	$album[albumname]
+	</div>
+	<div class="c" >
+		<h3>$pic[title]</h3>
+		<a href="$theurl&goto=down"><img src="$pic[pic_thumb]" alt="下载中..." /></a><br/>
+		<a href="$pic[pic]">下载($pic[size])</a> 上传于 <!--{date('Y-m-d H:i',$pic[dateline])}--> 
+	</div>
+	<div class="page" >
+		<a href="$theurl&goto=down" id="nextlink">下一张</a>|<a href="$theurl&goto=up">上一张</a>|
+		<!--{if $album[picnum]}-->第 $sequence 张 / 共 $album[picnum] 张<!--{/if}-->
+	</div>
+	
+	<div class="c" >
+		<h3>评论</h3>
+			<!--{if $list}-->
+				<!--{loop $list $value}-->
+					<!--{template space_comment_li}-->
+				<!--{/loop}-->
+			<!--{else}-->
+				暂无评论
+			<!--{/if}-->
+		<div class="page">$multi</div>
+		<form id="quickcommentform_{$id}" name="quickcommentform_{$id}" action="cp.php?ac=comment" method="post" >
+
+		<textarea id="comment_message" name="message"></textarea>
+		<br/>
+		<input type="submit" id="commentsubmit_btn" name="commentsubmit_btn" class="submit" value="评论"/>
+		<input type="submit" id="selectface" name="selectface" class="submit" value="表情"/>
+		<input type="hidden" name="refer" value="$theurl" />
+		<input type="hidden" name="id" value="$picid">
+		<input type="hidden" name="idtype" value="picid">
+		<input type="hidden" name="commentsubmit" value="true">
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+
+	</div>
+	
+<!--{template footer}-->

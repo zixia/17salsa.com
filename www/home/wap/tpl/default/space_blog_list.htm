@@ -1,0 +1,46 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<!--{if $_GET[view]=='we'}-->好友最新日志
+	<!--{elseif $_GET[view]=='all'}-->大家的日志
+	<!--{elseif $_GET[view]=='me'}--> 
+		<!--{if $space[self]}-->
+			我的日志
+		<!--{else}-->
+			<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>的日志
+		<!--{/if}-->
+	<!--{elseif $_GET[view]=='click'}--> 
+		我表过态的日志
+	<!--{/if}-->
+	</div>
+	
+	<!--{if $count}-->
+	<div class="c">
+		<!--{loop $list $value}-->
+				<a href="space.php?uid=$value[uid]&do=$do&id=$value[blogid]" <!--{if $value[magiccolor]}--> class="magiccolor$value[magiccolor]"<!--{/if}-->>$value[subject]</a>($value[replynum]/$value[viewnum])<br/>
+		<!--{/loop}-->
+	</div>
+	<div class="page">$multi</div>
+	
+	<!--{else}-->
+	<div class="c">还没有相关的日志。</div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]}-->
+	<div class="nav">
+		
+		<!--{if $space[friendnum] && $_GET[view]!='we'}-->
+			<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=we">好友最新日志</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='all'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=all">大家的日志</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='me'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=me">我的日志</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='click'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=click">我表过态的日志</a><br/>
+		<!--{/if}-->
+		<a href="cp.php?ac=blog" >写日志</a>
+	</div>
+	<!--{/if}-->
+<!--{template footer}-->

@@ -1,0 +1,75 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<div class="title">
+		<h3<!--{if $thread[magiccolor]}--> class="magiccolor$thread[magiccolor]"<!--{/if}-->>$magicegg $thread[subject] 
+		</h3>
+		<!--{if $thread[hot]>=0}--><span class="hot">热($thread[hot])&nbsp;</span><!--{/if}-->
+		<!--{if $thread[viewnum]>=0}--><span class="gray">阅($thread[viewnum])&nbsp;</span><!--{/if}-->
+		
+		<!--{if $mtag[grade]>=8 || $thread[uid]==$_SGLOBAL[supe_uid] || ($eventid && $userevent[status]>=3)}-->
+			<a href="cp.php?ac=thread&op=edit&pid=$thread[content][pid]&tagid=$thread[tagid]<!--{if $eventid}-->&eventid=$eventid<!--{/if}-->">编辑</a>&nbsp;
+			<a href="cp.php?ac=thread&op=delete&pid=$thread[content][pid]&tagid=$thread[tagid]<!--{if $eventid}-->&eventid=$eventid<!--{/if}-->" id="p_$thread[content][pid]_delete">删除</a>&nbsp;
+		<!--{/if}-->
+		<!--{if $mtag[grade]>=8 && !$eventid}-->
+			<!--{if $thread[displayorder]}-->
+			<a href="cp.php?ac=thread&op=top&tagid=$thread[tagid]&tid=$thread[tid]&cancel" id="t_$thread[tid]_top" >取消置顶</a>&nbsp;
+			<!--{else}-->
+			<a href="cp.php?ac=thread&op=top&tagid=$thread[tagid]&tid=$thread[tid]" id="t_$thread[tid]_top">置顶</a>&nbsp;
+			<!--{/if}-->
+			<!--{if $thread[digest]}-->
+			<a href="cp.php?ac=thread&op=digest&tagid=$thread[tagid]&tid=$thread[tid]&cancel" id="t_$thread[tid]_digest">取消精华</a>
+			<!--{else}-->
+			<a href="cp.php?ac=thread&op=digest&tagid=$thread[tagid]&tid=$thread[tid]" id="t_$thread[tid]_digest">精华</a>
+			<!--{/if}-->
+		<!--{/if}-->
+		<span class="gray"><!--{date('Y-m-d H:i',$thread[dateline],1)}--></span>
+	</div>
+	<div class="content">
+	$thread[content][message]
+	</div>
+	<div class="c" >
+		<h3>回复 ( $thread[replynum]个回复)</h3>
+		<!--{if $list}-->
+			<!--{loop $list $value}-->
+				<!--{template space_post_li}-->
+			<!--{/loop}-->
+		<!--{else}-->
+			暂无回复
+		<!--{/if}-->
+		<div class="page">$multi</div>
+
+		<!--{if (!$eventid && $mtag[allowpost]) || ($eventid && $userevent[status]>1)}-->
+
+			<div class="quickpost" id="postform">
+				<form method="post" action="cp.php?ac=thread<!--{if $eventid}-->&eventid=$eventid<!--{/if}-->" class="quickpost" id="quickpostform_{$thread[tid]}" name="quickpostform_{$thread[tid]}">
+
+					<textarea id="message" name="message"></textarea><br/>
+					<input type="submit" id="postsubmit_btn" name="postsubmit_btn" value="回复" class="submit" />
+
+					<input type="hidden" name="tid" value="$thread[tid]" />
+					<input type="hidden" name="postsubmit" value="true" />
+								
+					<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+				</form>
+			</div>
+			<!--{else}-->
+			<div class="c_form">
+			<!--{if $eventid}-->
+				只有活动成员可以回复活动话题
+			<!--{elseif $mtag[grade]==-1}-->
+				您现在被群主禁言，不能参与讨论。
+			<!--{else}-->
+				你还不是该群组正式成员，不能参与讨论。
+				<!--{if $mtag[grade]==-9}-->
+				<a href="cp.php?ac=mtag&op=join&tagid=$mtag[tagid]">现在就加入</a>。
+				<!--{/if}-->
+			<!--{/if}-->
+			</div>
+		<!--{/if}-->
+	</div>
+<!--{template footer}-->

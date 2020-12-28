@@ -1,0 +1,74 @@
+<!--{template header}-->
+   <div class="c">
+            <h3>更新我的心情</h3>
+            <form method="post" action="cp.php?ac=doing&view=$_GET[view]">
+            <textarea name="message" class="doingtext"></textarea><br/>
+            <input type="hidden" name="addsubmit" value="true" />
+            <input type="submit" id="add" name="add" class="post_button" value="发布"/>
+            <input type="hidden" name="refer" value="$theurl" />
+            <!--{if $_GET[spacenote]}-->
+            <input type="hidden" name="spacenote" value="true" />
+            <!--{else}-->
+            <input type="hidden" name="topicid" value="$topicid" />
+            <!--{/if}-->
+            <input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+            </form>
+    </div>
+	<div class="c">
+    <h3>大家的心情&nbsp; <a href="space.php?do=doing&view=all">更多</a></h3>
+    <!--{loop $dolist $value}-->
+        <a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>:
+                $value[message](<!--{date('H:i',$value[dateline],1)}-->)<br/>
+    <!--{/loop}-->
+    </div>
+	<div class="c">
+	<h3>群组话题&nbsp;<a href="space.php?do=mtag&view=hot" >更多</a></h3>
+	<!--{loop $threadlist $key $value}-->
+			<a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]">$value[subject]<span>($value[hot])</span></a><br/>
+	<!--{/loop}-->
+	</div>
+	<div class="c">
+	<h3>空间日志 &nbsp;<a href="space.php?do=blog&view=all" >更多</a></h3>
+	<!--{loop $bloglist $key $value}-->
+			<a href="space.php?do=blog&uid=$value[uid]&id=$value[blogid]">$value[subject]</a>(<!--{date('m-d H:i',$value[dateline],1)}-->)<br/>
+	<!--{/loop}-->
+	</div>
+	<div class="c">
+	<h3>榜上有名&nbsp; <a href="space.php?do=top">更多</a></h3>
+	<!--{loop $showlist $value}-->
+		<!--{if $value[index]<1}-->
+			<!--{if $star}-->
+				<table>
+					<tr>
+					<!--{loop $star $starvalue}-->
+					<td><a href="space.php?uid=$starvalue[uid]" ><!--{avatar($starvalue[uid],small)}--></a></td>
+					<td><a href="space.php?uid=$starvalue[uid]" >{$_SN[$starvalue[uid]]}</a><br/>
+					访问: $starvalue[viewnum]<br/>
+					好友: $starvalue[friendnum]<br/>
+					</td>
+		
+				<!--{/loop}-->
+					</tr>
+				</table>
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>&nbsp;
+			<!--{else}-->
+			<table>
+				<tr>
+					<td width="50"><a href="space.php?uid=$value[uid]" ><!--{avatar($value[uid],small)}--></a></td>
+					<td><a href="space.php?uid=$value[uid]" >{$_SN[$value[uid]]}</a><br/>
+					访问: $value[viewnum]<br/>
+					好友: $value[friendnum]<br/>
+					</td>
+				</tr>
+			</table>
+			<!--{/if}-->
+		<!--{else}-->
+		<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>&nbsp;
+		<!--{/if}-->
+	<!--{/loop}-->
+	</div>
+
+	
+	
+	
+<!--{template footer}-->

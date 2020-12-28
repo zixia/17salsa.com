@@ -1,0 +1,38 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<div class="c">
+		<h3>
+			成员列表&nbsp;
+		<!--{if $mtag['allowthread']}-->
+		| <a href="cp.php?ac=thread&tagid=$mtag[tagid]">发起新话题</a>
+		<!--{/if}-->
+		</h3>
+		<!--{if $list}-->
+			<!--{loop $list $key $value}-->
+				<a href="space.php?uid=$value[uid]"><!--{avatar($value[uid],small)}--></a><br/>
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}
+				<!--{if $value[grade]==9}-->(群主)
+				<!--{elseif $value[grade]==8}-->(副群主)
+				<!--{elseif $value[grade]==1}-->(明星)
+				<!--{elseif $value[grade]==-1}-->(禁言)
+				<!--{elseif $value[grade]==-2}-->(待审核)<!--{/if}-->
+				</a>
+				<span class="pipe">|</span>
+				<a href="cp.php?ac=friend&op=add&uid=$value[uid]">加为好友</a>
+				<span class="pipe">|</span>
+				<a href="cp.php?ac=pm&uid=$value[uid]" >发短消息</a><br/>
+
+			<!--{/loop}-->
+			<div class="page">$multi</div>
+		<!--{else}-->
+			还没有相关话题。
+		<!--{/if}-->
+
+	</div>
+
+<!--{template footer}-->

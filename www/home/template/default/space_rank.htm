@@ -1,0 +1,207 @@
+<!--{template header}-->
+
+<div class="c_header a_header">
+	<a href="space.php?uid=$space[uid]"><img src="<!--{avatar($space[uid],small)}-->" alt="{$_SN[$space[uid]]}" class="avatar" /></a>
+	<h1>排行榜</h1>
+	<a href="space.php?uid=$space[uid]" class="spacelink">我的主页</a>
+</div>
+
+<div class="tabs_header">
+	<ul class="tabs">
+		<li$actives[show]><a href="space.php?do=rank&view=show">竞价排行榜</a>
+		<li$actives[mm]><a href="space.php?do=rank&view=mm">美女排行榜</a>
+		<li$actives[gg]><a href="space.php?do=rank&view=gg">帅哥排行榜</a>
+		<li$actives[credit]><a href="space.php?do=rank&view=credit">积分总排行榜</a>
+		<li$actives[friendnum]><a href="space.php?do=rank&view=friendnum">好友数总排行榜</a>
+	</ul>
+</div>
+
+<div class="h_status">
+	<!--{if $_GET[view]=='show'}-->
+		按照竞价积分递减排序
+	<!--{else}-->
+		显示48小时内有更新的前50名用户(数据30分钟更新一次)
+	<!--{/if}-->
+</div>
+
+<div class="side_right s_clear">
+	<div class="wide">
+	
+	<!--{if $now_pos}-->
+		<div class="notice">
+		排行榜公告：
+		<!--{if $_GET[view]=='show'}-->
+			<!--{if $space[showcredit]}-->
+			自己当前的竞价积分为：$space[showcredit]，当前排名 <span style="font-size:20px;color:red;">$now_pos</span> ，再接再励！
+			<!--{else}-->
+			您现在还没有上榜。让自己上榜吧，这会大大提升您的主页曝光率。
+			<!--{/if}-->
+		<!--{else}-->
+			<!--{if $_GET[view]=='credit'}-->
+			<a href="cp.php?ac=credit">自己当前的积分：$space[credit]</a>
+			<!--{elseif $_GET[view]=='friendnum'}-->
+			<a href="space.php?do=friend">自己当前的好友数：$space[friendnum]</a>
+			<!--{else}-->
+			<a href="space.php">自己当前的访问量：$space[viewnum]</a>
+			<!--{/if}-->
+			，当前排名 <span style="font-size:20px;color:red;">$now_pos</span> ，再接再励！
+		<!--{/if}-->
+		</div>
+	<!--{/if}-->
+		
+		<!--{if $list}-->
+		<div class="thumb_list" id="friend_ul">
+			<table cellspacing="6" cellpadding="0">
+				<!--{loop $list $key $value}-->
+				<tr>
+					<td id="friend_$value[uid]_li" class="thumb <!--{if $ols[$value[uid]]}-->online<!--{/if}--> rank_$value[i]">
+						<table cellpadding="0" cellspacing="0">
+							<tr>
+								<td class="image"><a href="space.php?uid=$value[uid]" class="avatarlink"><img src="<!--{avatar($value[uid],middle)}-->" alt="{$_SN[$value[uid]]}" /></a></td>
+								<td>
+									<h6>
+										<!--{if $_GET['view']=='credit'}-->
+											<p class="r_option"><img src="image/credit.gif" align="absmiddle"><span class="gray">积分：</span>$value[credit]<span class="pipe">|</span><strong>第 $value[i] 名</strong></p>
+										<!--{elseif $_GET['view']=='friendnum'}-->
+											<p class="r_option"><span class="gray">好友数：</span>$value[friendnum]<span class="pipe">|</span><strong>第 $value[i] 名</strong></p>
+										<!--{elseif $_GET['view']=='show'}-->
+											<p class="r_option"><span class="gray">竞价积分：</span>$value[credit]<span class="pipe">|</span><strong>第 $value[i] 名</strong></p>
+										<!--{else}-->
+											<p class="r_option"><span class="gray">访问量：</span>$value[viewnum]<span class="pipe">|</span><strong>第 $value[i] 名</strong></p>
+										<!--{/if}-->
+										<!--{if $value['sex']==2}-->
+										<img src="image/mm.gif" align="absmiddle">
+										<!--{elseif $value['sex']==1}-->
+										<img src="image/gg.gif" align="absmiddle">
+										<!--{/if}-->
+										<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>
+										<!--{if $value['username'] && $_SN[$value[uid]]!=$value['username']}--><span class="gray">($value[username])</span><!--{/if}-->
+									</h6>
+									<p class="l_status">
+										<!--{if $value['isfriend']}-->
+										<a href="space.php?uid=$value[uid]" target="_blank">好友主页</a>
+										<!--{else}-->
+										<img src="image/add.gif" alt="+" title="加为好友" align="absmiddle"> <a href="cp.php?ac=friend&op=add&uid=$value[uid]" id="a_friend_$key" onclick="ajaxmenu(event, this.id, 99999, '', -1)">加为好友</a>
+										<!--{/if}-->
+										<span class="pipe">|</span><a href="cp.php?ac=pm&uid=$value[uid]" id="a_pm_$key" onclick="ajaxmenu(event, this.id, 99999, '', -1)">发短消息</a>
+										<span class="pipe">|</span><a href="cp.php?ac=poke&op=send&uid=$value[uid]" id="a_poke_$key" onclick="ajaxmenu(event, this.id, 99999, '', -1)">打招呼</a>
+									</p>
+
+									<!--{if $ols[$value[uid]]}-->
+									<p><span class="gray">动作：</span><!--{date('m-d H:i',$ols[$value[uid]],1)}--></p>
+									<!--{/if}-->
+
+									<!--{if $value[resideprovince] || $value[residecity]}-->
+									<p><span class="gray">地区：</span><a href="network.php?ac=space&resideprovince=$value[p]&residecity=&searchmode=1">$value[resideprovince]</a> <a href="network.php?ac=space&resideprovince=$value[p]&residecity=$value[c]&searchmode=1">$value[residecity]</a></p>
+									<!--{/if}-->
+
+									<!--{if $value[note]}-->
+									<div class="quote"><span id="quote" class="q">$value[note]</span></div>
+									<!--{/if}-->
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<!--{/loop}-->
+			</table>
+		</div>
+		<div class="page">$multi</div>
+	
+		<!--{else}-->
+		<div class="article c_form">
+			还没有相关用户列表。
+		</div>
+		<!--{/if}-->
+	</div>
+
+	<div class="narrow">
+		
+<!--{if $_GET[view]=='show'}-->
+		<div>
+			<h2>上榜帮助提示</h2>
+			<ol>
+				<li>竞价积分越多，竞价排名越靠前，您的主页曝光率也会越高；</li>
+				<li>上榜用户的主页被别人有效浏览一次，其竞价积分将减少1个(恶意刷新访问不扣减)。</li>
+			</ol>
+		</div>
+		<div>
+			<h2>帮助好友来上榜</h2>
+			<form method="post" action="cp.php?ac=credit" onsubmit="return checkCredit('stakecredit');">
+			<p>
+				要帮助的好友用户名：<br />
+				<input type="text" name="fusername" value="" size="25" class="t_input" /><br />
+				赠送竞价积分：<br><span class="gray">需小于自己的积分:$space[credit]</span><br />
+				<input type="text" id="stakecredit" name="showcredit" value="100" size="5" class="t_input" onblur="checkCredit('stakecredit');" /> <input type="submit" name="friend_submit" value="赠送" class="submit" />
+			</p>
+			<input type="hidden" name="friendsubmit" value="true" />
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+		</div>
+		<div>
+			<h2>我也要上榜</h2>
+			<form method="post" action="cp.php?ac=credit" onsubmit="return checkCredit('showcredit');">
+			<p>
+				我的上榜宣言：<br>
+				<span class="gray">最多50个汉字，会显示在榜单中，并会覆盖您之前的宣言。</span>
+				<input type="text" name="note" value="" size="35" class="t_input" /><br />
+				增加竞价积分：<br><span class="gray">这会扣除您同样数目的积分，填入的数值需小于自己的积分:$space[credit]</span><br />
+				<input type="text" id="showcredit" name="showcredit" value="100" size="5" class="t_input" onblur="checkCredit('showcredit');" /> <input type="submit" name="show_submit" value="增加" class="submit" />
+			</p>
+			<input type="hidden" name="showsubmit" value="true" />
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+		</div>
+		<script type="text/javascript">
+			function checkCredit(id) {
+				var maxCredit = $space[credit];
+				if($(id).value > maxCredit) {
+					alert("您的当前积分为:"+maxCredit+",请填写一个小于该值的数字");
+					return false;
+				} else if($(id).value < 1) {
+					alert("您所填写的积分值不能小于1");
+					return false;
+				}
+				return true;
+			}
+		</script>
+<!--{else}-->
+		<div>
+			<h2>上榜帮助提示</h2>
+			<p>
+			<!--{if $_GET['view']=='credit'}-->
+				抓紧赚取积分吧。请<a href="cp.php?ac=credit">点这里查看积分规则</a>，了解一下如何赚积分。
+			<!--{elseif $_GET['view']=='friendnum'}-->
+				加一下自己的好友吧。您<a href="cp.php?ac=friend&op=find">寻找好友</a>，也可以<a href="cp.php?ac=invite">邀请自己的好友</a>加入进来。
+			<!--{else}-->
+				自己多活跃点，<a href="cp.php?ac=blog">写个日志</a>、<a href="cp.php?ac=upload">传点图片</a>，多回复一下好友，下次您就能上榜。
+			<!--{/if}-->
+			</p>
+		</div>		
+		<div>
+			<h2>刚刚更新的空间</h2>
+			<table cellspacing="3" cellpadding="3">
+				<!--{loop $updatelist $key $value}-->
+				<tr>
+					<td>
+						<a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank"><img src="<!--{avatar($value[uid],small)}-->" alt="{$_SN[$value[authorid]]}" class="avatar" /></a>
+					</td>
+					<td>
+					<!--{if !$value['isfriend']}-->
+					<a href="cp.php?ac=friend&op=add&uid=$value[uid]" id="add_ppc_friend_$key" onclick="ajaxmenu(event, this.id, 99999, '', -1)" class="addfriend"><img src="image/add.gif" alt="+" title="加为好友" /></a> <a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank">{$_SN[$value[uid]]}</a>
+					<!--{else}-->
+					<a href="space.php?uid=$value[uid]" title="{$_SN[$value[uid]]}" target="_blank">{$_SN[$value[uid]]}</a>
+					<!--{/if}-->
+					<!--{if $value['friendnum']}--><p class="gray">已有 $value[friendnum] 个好友</p><!--{/if}-->
+					<p><!--{date('m-d H:i',$value[updatetime],1)}--></p>
+					</td>
+				</tr>
+				<!--{/loop}-->
+			</table>
+		</div>
+<!--{/if}-->
+	</div>
+</div>
+
+<div class="f_status s_clear">
+	<a href="javascript:;" onclick="window.scrollTo(0,0);" id="a_top" title="TOP">TOP</a>
+</div>
+<!--{template footer}-->

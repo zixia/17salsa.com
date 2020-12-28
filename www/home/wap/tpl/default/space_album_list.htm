@@ -1,0 +1,54 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<!--{if $_GET[view]=='we'}-->好友最新相册
+	<!--{elseif $_GET[view]=='all'}-->大家的相片
+	<!--{elseif $_GET[view]=='me'}--> 
+		<!--{if $space[self]}-->
+			我的相册
+		<!--{else}-->
+			<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>的相册
+		<!--{/if}-->
+	<!--{elseif $_GET[view]=='click'}--> 
+		我表过态的图片
+	<!--{/if}-->
+	</div>
+	
+	<!--{if $count}-->
+	<div class="c">
+		<!--{loop $list $value}-->
+			<!--{if $value[picid]}-->
+				<a href="space.php?uid=$value[uid]&do=$do&id=$value[albumid]"><img src="$value[pic]" alt="$value[title]" /></a><br/>
+				<a href="space.php?uid=$value[uid]&do=$do&id=$value[albumid]"><!--{if $value[albumname]}-->$value[albumname]<!--{else}-->默认相册<!--{/if}--></a>
+			<!--{else}-->
+				<a href="space.php?uid=$value[uid]&do=$do&id=$value[albumid]"><img src="$value[pic]" alt="$value[albumname]" /></a><br/>
+				<a href="space.php?uid=$value[uid]&do=$do&id=$value[albumid]"><!--{if $value[albumname]}-->$value[albumname]<!--{else}-->默认相册<!--{/if}--></a>
+				<!--{if $value[picnum]}-->($value[picnum])<!--{/if}-->
+			<!--{/if}-->
+
+			<!--{if $_GET[view]!='me'}-->[<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>]<!--{/if}--><br/>
+		<!--{/loop}-->
+	</div>
+	<div class="page">$multi</div>
+	
+	<!--{else}-->
+	<div class="c">还没有相关的相片。</div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]}-->
+	<div class="nav">
+		<!--{if $space[friendnum] && $_GET[view]!='we'}-->
+			<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=we">好友最新相册</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='all'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=all">大家的相片</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='me'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=me">我的相册</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='click'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=click">我表过态的图片</a><br/>
+		<!--{/if}-->
+		<a href="cp.php?ac=upload" >传照片</a>
+	</div>
+	<!--{/if}-->
+<!--{template footer}-->

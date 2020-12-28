@@ -1,0 +1,135 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;<!--{if $space[self]}-->
+			我的空间
+		<!--{else}-->
+			{$_SN[$space[uid]]}的空间
+		<!--{/if}-->
+	</div>
+	<div class="c">
+	<table>
+		<tr>
+			<td><!--{avatar($space[uid],small)}--></td>
+			<td>
+			<!--{if $_SCONFIG[realname]}-->
+				<!--{if $space[name]}-->
+					实名: $space[name]<br/>
+				<!--{else}-->
+					实名: 未填写<br/>
+				<!--{/if}-->
+			<!--{else}-->
+				<!--{if $space[name]}-->
+					姓名: $space[name]<br/>
+				<!--{else}-->
+					姓名: 未填写<br/>
+				<!--{/if}-->
+			<!--{/if}-->
+			<!--{if $space[sex]}-->
+				性别:$space[sex]<br/>
+			<!--{else}-->
+				性别:保密<br/>
+			<!--{/if}-->
+			<!--{if $space[birth]}-->
+				生日:$space[birth]<br/>
+			<!--{elseif $space[marry]}-->
+				婚恋:$space[marry]<br/>
+			<!--{/if}-->
+			
+			</td>
+		</tr>
+		</table>
+		
+		<!--{if $space[self]}-->
+			<a href="space.php?uid=$space[uid]&do=friend&view=me">我的好友</a>
+			<a href="space.php?do=pm">我的消息</a>
+			<a href="cp.php?ac=poke">我的招呼</a>
+			<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+			<a href="space.php?do=info&uid=$space[uid]">个人资料</a>
+			<!--{/if}-->
+		<!--{else}-->
+			<!--{if !$space['isfriend']}-->
+			<img src="image/icon/friend.gif"><a href="cp.php?ac=friend&op=add&uid=$space[uid]">加为好友</a>
+			<!--{/if}-->
+			<img src="image/icon/poke.gif"><a href="cp.php?ac=poke&op=send&uid=$space[uid]">打个招呼</a>
+			<img src="image/icon/pm.gif"><a href="cp.php?ac=pm&uid=$space[uid]">发送消息</a>
+			<!--{if $space['isfriend']}-->
+			<img src="image/icon/friend.gif"><a href="cp.php?ac=friend&op=ignore&uid=$space[uid]">解除好友</a>
+			<!--{/if}-->
+			<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+			<img src="image/icon/profile.gif"><a href="space.php?do=info&uid=$space[uid]">个人资料</a>
+			<!--{/if}-->
+		<!--{/if}-->
+	</div>
+	<div class="c">
+		
+		<h3>
+			心情记录 
+			<!--{if $space[spacenote]}-->
+				&nbsp;<a href="space.php?uid=$space[uid]&do=doing&view=me">全部</a>  
+			<!--{/if}-->
+			<!--{if $space[self]}-->
+				&nbsp;<a href="space.php?uid=$space[uid]&do=doing&view=me&spacenote=true" >写心情</a>
+			<!--{/if}-->
+		</h3>
+		<!--{if $space[spacenote]}-->
+		$space[spacenote]
+		<!--{else}-->
+			暂无心情记录
+		<!--{/if}-->
+			
+	</div>
+	
+	<div class="c">
+		<h3>
+			最新日志 
+			<!--{if $bloglist}-->
+				&nbsp;<a href="space.php?uid=$space[uid]&do=blog&view=me" >全部</a> 
+			<!--{/if}-->
+			<!--{if $space[self]}-->
+				&nbsp;<a href="cp.php?ac=blog" >写日志</a>
+			<!--{/if}-->
+		</h3>
+		<!--{if $bloglist}-->
+			<!--{loop $bloglist $value}-->
+						<a href="space.php?uid=$space[uid]&do=blog&id=$value[blogid]">$value[subject]</a>(<!--{date('m-d H:i',$value[dateline],1)}-->)<br/>
+			<!--{/loop}-->
+		<!--{else}-->
+			暂无日志信息
+		<!--{/if}-->
+	</div>
+	
+	<!--{if $albumlist}-->
+		<div class="c">
+			<h3>
+				我的相册 &nbsp; <a href="space.php?uid=$space[uid]&do=album&view=me">全部</a>
+				<!--{if $space[self]}-->
+					&nbsp;<a href="cp.php?ac=upload" >传照片</a>
+				<!--{/if}-->
+			</h3>
+			<!--{loop $albumlist $key $value}-->
+			<table>
+			<tr>
+				
+				<td width="85"><a href="space.php?uid=$space[uid]&do=album&id=$value[albumid]"><img src="$value[pic]" alt="$value[albumname]" width="70" /></a></td>
+				<td>
+					<a href="space.php?uid=$space[uid]&do=album&id=$value[albumid]"
+					 title="$value[albumname]">$value[albumname]</a><br/>
+					$value[picnum] 张照片<br/>
+					更新于 <!--{date('m-d',$value[dateline],1)}--><br/>
+				</td>				
+			</tr>
+			</table>
+			<!--{/loop}-->
+		</div>
+			<!--{else}-->
+		<div class="c">
+			<h3>
+				我的相册
+				<!--{if $space[self]}-->
+					&nbsp;<a href="cp.php?ac=upload" >传照片</a>
+				<!--{/if}-->
+			</h3>
+			 暂无相册信息
+		</div>
+	<!--{/if}-->
+<!--{template footer}-->

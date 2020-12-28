@@ -1,0 +1,30 @@
+<html>
+<body>
+	<!--{if $birthlist}-->
+	<div class="">
+		<div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+			<h3>本周生日提醒</h3>
+			<div class="box">
+			<table cellpadding="2" cellspacing="4">
+			<!--{loop $birthlist $key $values}-->
+			<tr>
+				<td align="right" valign="top" style="padding-left:10px;">
+				{$values[0][birthmonth]}-{$values[0][birthday]}
+				</td>
+				<td style="padding-left:10px;">
+				<ul>
+				<!--{loop $values $value}-->
+				<li><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a></li>
+				<!--{/loop}-->
+				</ul>
+				</td>
+			</tr>
+			<!--{/loop}-->
+			</table>
+			</div>
+		</div></div></div></div>
+	</div>
+	<!--{/if}-->
+
+</body>
+</html>

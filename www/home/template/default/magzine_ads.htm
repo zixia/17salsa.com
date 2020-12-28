@@ -1,0 +1,19 @@
+<!--{if strlen($adlist[$key]['url']) != 0}-->
+<!-- ----- 广告开始   -------->
+<div  style="position: relative; overflow: hidden; margin: 0 0 0px; word-wrap: break-word; width: 660px;">
+<div style="overflow: hidden; margin: 0; word-wrap: break-word; border: 0px solid #DDD; padding: 0px; float: left; width: 660px;">
+ 
+<div id="feed_box" style="background: url('/home/template/default/image/yel_bg.gif') no-repeat right top; word-wrap: break-word; width: 100%;"><div class="ye_l_t" style="background: url('/home/template/default/image/yel_bg.gif') no-repeat left top; word-wrap: break-word; padding: 5px 0 0;"><div class="ye_r_b" style="background: url('/home/template/default/image/yel_bg.gif') no-repeat right bottom; word-wrap: break-word;"><div class="ye_l_b" style="background: url('/home/template/default/image/yel_bg.gif') no-repeat left bottom; word-wrap: break-word; padding: 0 5px 5px;">
+<div style="word-wrap: break-word;">
+<div style="word-wrap: break-word;">
+<a href="{$adlist[$key]['url'].$_TPL['analytic']}" target="_blank" style="word-wrap: break-word; color: #2C629E; text-decoration: none;"><img src="{$adlist[$key]['image']}" border="0" height="60" alt="{$adlist[$key]['alt']}" style="word-wrap: break-word; border: none;" width="650" /></a></div>
+</div>
+</div></div></div></div></div>
+</div>
+<p style="margin: 0;  padding: 0; height: 10px"></p>
+<!-- ----- 广告结束   -------->
+<!--{else}-->
+<div  style="position: relative; overflow: hidden; margin: 0 0 0px; word-wrap: break-word; width: 660px;">
+<p style="margin: 0;  padding: 0; height: 10px"></p>
+</div>
+<!--{/if}-->

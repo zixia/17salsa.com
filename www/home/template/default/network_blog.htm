@@ -1,0 +1,101 @@
+<!--{eval $_TPL['titles'] = array('日志', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+<div id="search" class="h_status">
+	
+		<div id="m_search"<!--{if !empty($gets) || !empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+			<form method="get" action="network.php">
+			<input type="text" name="key" value="$_GET[key]" size="26" class="t_input" />
+			<input type="hidden" name="ac" value="$ac" />
+			<input type="hidden" name="searchmode" value="1" />
+			<input type="submit" name="searchsubmit" value="搜索日志" class="submit" />
+			<a href="javascript:;" onclick="document.getElementById('m_search').style.display='none';document.getElementById('adv_search').style.display='block'">高级搜索</a>
+			</form>
+		</div>
+		<form method="get" action="network.php">
+		<table cellspacing="0" cellpadding="0" class="formtable" id="adv_search"<!--{if empty($gets) && empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+			<tr>
+				<th width="60">关键字*</th>
+				<td>
+					<input type="text" name="key" value="$_GET[key]" size="26" class="t_input" />
+				</td>
+			</tr>
+			<tr>
+				<th>作者名*</th>
+				<td>
+					<input type="text" name="username" value="$_GET[username]" size="26" class="t_input" />
+				</td>
+			</tr>
+			<tr>
+				<th>时间范围</th>
+				<td>
+					<input type="text" name="starttime" value="$_GET[starttime]" size="10" class="t_input" /> ~ <input type="text" name="endtime" value="$_GET[endtime]" size="10" class="t_input" />
+					格式为 YYYY-MM-DD
+				</td>
+			</tr>
+			<tr>
+				<th>搜索方式</th>
+				<td>
+					<label for="subject"><input id="subject" type="radio" value="subject" name="type"$typearr[subject]>搜索标题</label>
+					<label for="fulltext"><input id="fulltext" type="radio" value="fulltext" name="type"$typearr[fulltext]>全文搜索</label>
+				</td>
+			</tr>
+			<tr>
+				<th>结果排序</th>
+				<td>
+					<select name="orderby">
+						<option value="dateline">发布时间</option>
+						<option value="replynum"$orderbyarr[replynum]>回复数量</option>
+						<option value="viewnum"$orderbyarr[viewnum]>浏览次数</option>
+					</select>
+					<select name="ascdesc">
+						<option value="asc">按升序排列</option>
+						<option value="desc"$ascdescarr[desc]>按降序排列</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<input type="hidden" name="ac" value="$ac" />
+				<input type="hidden" name="searchmode" value="1" />
+				<input type="submit" name="searchsubmit" value="搜索" class="submit" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+
+	<!--{if $list}-->
+	<div class="entry_list">
+		<ul>
+		<!--{loop $list $value}-->
+			<li>	
+				<div class="avatar48"><a href="space.php?uid=$value[uid]"><img src="<!--{avatar($value[uid],small)}-->" alt="{$_SN[$value[uid]]}" class="avatar" /></a></div>
+				<div class="title">
+					<div class="r_option"><a href="cp.php?ac=share&type=blog&id=$value[blogid]" id="a_share_$value[blogid]" onclick="ajaxmenu(event, this.id, 99999,'' , -1)" class="a_share">分享</a></div>
+					<h4><a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]">$value[subject]</a></h4>
+					<div><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> <span class="time"><!--{date('Y-m-d H:i',$value[dateline],1)}--></span></div>
+				</div>
+				<div class="detail image_right l_text s_clear" id="blog_article_$value[blogid]">
+					<!--{if $value[pic]}--><p class="image"><a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]"><img src="$value[pic]" alt="$value[subject]" /></a></p><!--{/if}-->
+					$value[message]
+				</div>
+				<div>
+					<!--{if $value[viewnum]}--><a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]">$value[viewnum] 次阅读</a><span class="pipe">|</span><!--{/if}-->
+					<!--{if $value[replynum]}--><a href="space.php?uid=$value[uid]&do=blog&id=$value[blogid]#comment">$value[replynum] 个评论</a><!--{else}-->没有评论<!--{/if}-->
+				</div>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+	<div class="page">
+	<!--{if $multi=='networkpage'}-->仅显示最新发布的 $count 个日志<!--{else}-->$multi<!--{/if}-->
+	</div>
+	<!--{else}-->
+	<div class="c_form">没有相应的日志。</div>
+	<!--{/if}-->
+
+<!--{template footer}-->

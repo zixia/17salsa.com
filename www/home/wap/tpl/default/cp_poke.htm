@@ -1,0 +1,111 @@
+<!--{template header}-->
+<!--{eval 
+$icons = array(
+	1 => '<img src="image/poke/cyx.gif" /> 踩一下',
+	2 => '<img src="image/poke/wgs.gif" /> 握个手',
+	3 => '<img src="image/poke/wx.gif" /> 微笑',
+	4 => '<img src="image/poke/jy.gif" /> 加油',
+	5 => '<img src="image/poke/pmy.gif" /> 抛媚眼',
+	6 => '<img src="image/poke/yb.gif" /> 拥抱',
+	7 => '<img src="image/poke/fw.gif" /> 飞吻',
+	8 => '<img src="image/poke/nyy.gif" /> 挠痒痒',
+	9 => '<img src="image/poke/gyq.gif" /> 给一拳',
+	10 => '<img src="image/poke/dyx.gif" /> 电一下',
+	11 => '<img src="image/poke/yw.gif" /> 依偎',
+	12 => '<img src="image/poke/ppjb.gif" /> 拍拍肩膀',
+	13 => '<img src="image/poke/yyk.gif" /> 咬一口',
+	0 => '不用动作'
+);
+}-->
+<!--{if $op == 'send' || $op == 'reply'}-->
+<style>
+/*并排*/
+.mgs_list { width: 100%; overflow: hidden; clear: both; padding: 0px 0 0px 0; }
+.mgs_list div { float: left; margin: 0; padding: 0; width: 110px; line-height: 20px; }
+.mgs_list img { margin: 0; vertical-align: middle; }
+.mgs_list strong { color: #FF7400; }
+</style>
+
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;打招呼
+	</div>
+
+	<div class="c" id="__pokeform_{$tospace[uid]}">
+	<form method="post" id="pokeform_{$tospace[uid]}" name="pokeform_{$tospace[uid]}" action="cp.php?ac=poke&op=$op&uid=$tospace[uid]">
+
+		<!--{if $tospace[uid]}-->
+			<h3>向 <strong>{$_SN[$tospace[uid]]}</strong> 打招呼</h3>
+		<!--{/if}-->
+		<div class="mgs_list">
+			<!--{loop $icons $k $v}-->
+			<div><input type="radio" name="iconid" id="poke_$k" value="{$k}" /><label for="poke_$k">{$v}</label></div>
+			<!--{/loop}-->
+		</div>
+		<h3>打招呼内容(最多25个汉字)</h3>
+		<input type="text" name="note" id="note" value="" maxlength="25" /><br/>
+
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+		<input type="hidden" name="pokesubmit" value="true" />
+		<input type="submit" name="pokesubmit_btn" id="pokesubmit_btn" value="确定" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+
+	<div class="nav">
+		<a href="cp.php?ac=poke"><span>我的招呼</span></a> <br/>
+		<a href="space.php?do=notice"><span>我的通知</span></a> <br/>
+		<a href="space.php?do=pm"><span>我的消息</span></a>
+	</div>
+
+<!--{else}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;打招呼
+	</div>
+
+<!--{if $list}-->
+
+<div class="c" id="poke_ul">
+	<table cellpadding="0" cellspacing="0" width="100%" class="list_td">
+		<!--{loop $list $key $value}-->
+		<tbody id="poke_$value[uid]">
+		<tr>
+			<td width="50">
+				<div class="avatar48">
+				<a href="space.php?uid=$value[uid]"><!--{avatar($value[uid],small)}--></a>
+				</div>
+			</td>
+			<td>
+				<div style="padding:2px 0 2px 0;"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> 
+				<!--{if $value[iconid]}-->{$icons[$value[iconid]]}<!--{else}-->打个招呼<!--{/if}-->
+				<!--{if $value[note]}-->，并对您说：$value[note]<!--{/if}-->
+				<span class="gray">(<!--{date('m-d H:i',$value[dateline],1)}-->)</span>
+				</div>
+				<div style="padding:2px 0 2px 0;">
+				<a href="cp.php?ac=poke&op=reply&uid=$value[uid]" id="a_p_r_$value[uid]" onclick="ajaxmenu(event, this.id, 1)" class="submit">回打招呼</a> 
+				<!--{if !$value['isfriend']}--><a href="cp.php?ac=friend&op=add&uid=$value[uid]" id="a_friend_$key" onclick="ajaxmenu(event, this.id, 1)" class="submit">加为好友</a> <!--{/if}-->
+				<a href="cp.php?ac=poke&op=ignore&uid=$value[uid]" id="a_p_i_$value[uid]" onclick="ajaxmenu(event, this.id, 0, 2000, 'mypoke')" class="button">忽略</a>
+				</div>
+
+			</td>
+		</tr>
+		</tbody>
+		<!--{/loop}-->
+	</table>
+	<div class="page">$multi</div>
+</div>
+
+<!--{else}-->
+<div class="c_form">
+	还没有新招呼。
+</div>
+<!--{/if}-->
+	<div class="nav">
+		<a href="cp.php?ac=poke&op=ignore" id="a_poke">全部忽略</a>	 <br/>
+		<a href="cp.php?ac=poke"><span>我的招呼</span></a> <br/>
+		<a href="space.php?do=notice"><span>我的通知</span></a> <br/>
+		<a href="space.php?do=pm"><span>我的消息</span></a>
+	</div>
+
+<!--{/if}-->
+
+<!--{template footer}-->

@@ -1,0 +1,91 @@
+<!--{eval $_TPL['titles'] = array('群组', '随便看看');}-->
+<!--{template header}-->
+
+<div class="searchbar">
+	<form method="get" action="network.php">
+		<table cellspacing="2" cellpadding="2" id="adv_search">
+			<tr>
+				<td>
+					<select name="fieldid">
+					<option value="0">选择分类</option>
+					<!--{loop $_SGLOBAL[profield] $fieldid $value}-->
+					<option value="$fieldid"$fieldids[$fieldid]>$value[title]</option>
+					<!--{/loop}-->
+					</select>
+				</td>
+
+				<td>群组名*</td>
+				<td>
+					<input type="text" name="key" value="$_GET[key]" size="15" class="t_input" />
+				</td>
+				<td>
+				<input type="hidden" name="ac" value="mtag" />
+				<input type="hidden" name="searchmode" value="1" />
+				<input type="submit" name="searchsubmit" value="搜索" class="submit" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+<!--{if $_GET['view']=='hot'}-->
+<h2 class="title"><img src="image/app/mtag.gif">群组</h2>
+<div class="tabs_header">
+	<ul class="tabs">
+		<li><a href="space.php?do=mtag"><span>我的群组</span></a></li>
+		<li class="active"><a href="network.php?ac=mtag&view=hot"><span>热门群组</span></a></li>
+		<li><a href="space.php?uid=$space[uid]&do=thread"><span>群组最新话题</span></a></li>
+		<li><a href="space.php?uid=$space[uid]&do=thread&view=me"><span>我发起的话题</span></a></li>
+		<li class="null"><a href="cp.php?ac=mtag">创建我的群组</a></li>
+		<li class="null"><a href="cp.php?ac=thread">发起新话题</a></li>
+	</ul>
+</div>
+<!--{else}-->
+<!--{template network_header}-->
+<!--{/if}-->
+
+<div class="h_status">
+群组分类：
+<a href="space.php?do=mtag" class="active">全部</a>
+<!--{loop $_SGLOBAL['profield'] $value}-->
+<span class="pipe">|</span><a href="space.php?do=mtag&id=$value[fieldid]">$value[title]</a>
+<!--{/loop}-->
+</div>
+
+<div id="content">
+	<div class="box">
+		<ul class="thread_list">
+		<!--{loop $list $value}-->
+			<li>
+				<div class="threadimg60"><a href="space.php?do=mtag&tagid=$value[tagid]"><img src="$value[pic]" style="width:60px;"></a></div>
+				<a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a><br />
+				<span class="thread_cat"><a href="space.php?do=mtag&id=$value[fieldid]">{$_SGLOBAL[profield][$value[fieldid]][title]}</a></span><br />已有 <span class="num">$value[membernum]</span> 人加入
+			</li>
+		<!--{/loop}-->
+		</ul>
+		<div class="page">
+			<!--{if $multi=='networkpage'}-->仅显示最热的 $count 个群组<!--{else}-->$multi<!--{/if}-->
+		</div>
+	</div>
+</div>
+
+
+<div id="sidebar">
+	
+	<!--{if $threadlist}-->
+	<div class="sidebox">
+		<h2 class="title">这些群组的最新话题</h2>
+		<ul class="line_list">
+		<!--{loop $threadlist $value}-->
+			<li>
+				<p><a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]">$value[subject]</a></p>
+				<p class="gray"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> 发表于 <a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a></p>
+			</li>
+		<!--{/loop}-->
+		</ul>
+	</div>
+	<!--{/if}-->
+	
+</div>
+<!--/sidebar-->
+<!--{template footer}-->

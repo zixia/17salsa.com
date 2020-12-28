@@ -1,0 +1,13 @@
+/*
+[name]圣诞[/name]
+Powered by Ucenter Home
+*/
+body { background: url(images/body_bg.gif) fixed repeat left top; color: #666; }
+#wrap { padding: 0 15px; background: url(images/bg.gif) repeat-y center top; }
+#header { margin: 0; width: 100%; background: url(images/top_bg.jpg) repeat-x left top; color: #CCC; }
+.headerwarp { background: none; }
+#header a { color: #2C629E; }
+#header .logo a { width: 82px; height: 40px; background: url(images/logo.gif) no-repeat left center; overflow: hidden; display: block; }
+#header .logo a img { margin: -200px; }
+.login_thumb { background-image: url(images/login_bg.gif); }
+#space_page { padding: 250px 0 0; background: url(images/banner.jpg) no-repeat; }

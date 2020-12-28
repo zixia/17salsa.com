@@ -1,0 +1,41 @@
+<!--{template header}-->
+
+
+<!--{if $_GET['op'] == 'delete'}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=pm">短消息</a>
+	</div>
+	<div class="c">
+	<h3>删除短消息</h3>
+	<form id="pmform" name="pmform" method="post" action="cp.php?ac=pm&op=delete&folder=$folder&pmid=$pmid">
+		 确定删除指定的短消息吗？ 
+		 <br/>
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="deletesubmit" value="true" />
+		<input type="submit" name="deletesubmit" value="确定" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+
+<!--{else}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;发短消息
+	</div>
+
+	<div class="c" id="__pmform_{$pmid}">
+		<form id="pmform_{$pmid}" name="pmform_{$pmid}" method="post" action="cp.php?ac=pm&op=send&touid=$touid&pmid=$pmid">
+		<h3>发短消息</h3>
+		收件人：{$_SN[$touid]}<br/>
+		短消息内容：<br/>
+		<textarea id="message" name="message"></textarea><br/>
+
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="pmsubmit" value="true" />
+		<input type="submit" name="pmsubmit_btn" id="pmsubmit_btn" value="发送" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+
+<!--{/if}-->
+<!--{template footer}-->

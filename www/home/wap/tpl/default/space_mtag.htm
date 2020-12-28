@@ -1,0 +1,65 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;<a href="space.php?do=mtag&view=$_GET[view]&orderby=$_GET[orderby]">热门群组</a>
+	<!--{if $fieldid && $_SGLOBAL['profield'][$fieldid]}-->
+	&gt;$_SGLOBAL['profield'][$fieldid]['title']
+	<!--{/if}-->
+	</div>
+
+	<!--{if $_GET[searchmode]}-->
+	<div class="c">
+	<h3>搜索群组</h3>
+	<form method="post" action="space.php?do=mtag&view=hot&searchmode=1">
+	<input name="searchkey" value="{$searchkey}" size="15" class="t_input" type="text"><br/>
+	<input name="searchsubmit" value="搜索群组" class="submit" type="submit">
+	</form>
+	</div>
+	<!--{if $searchkey}-->
+	<div class="c">以下是搜索群组 <span style="color:red;font-weight:bold;">$searchkey</span> 结果列表</div>
+	<!--{/if}-->
+	<!--{/if}-->
+	<div class="c">
+		<h3>
+			<!--{if $orderbyarr[threadnum]}-->
+				话题数
+				<span class="pipe">|</span>
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=postnum"$orderbyarr[postnum]>回帖数</a><span class="pipe">|</span>
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=membernum"$orderbyarr[membernum]>成员数</a>
+			<!--{elseif $orderbyarr[postnum]}-->
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=threadnum"$orderbyarr[threadnum]>话题数</a><span class="pipe">|</span>
+				回帖数<span class="pipe">|</span>
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=membernum"$orderbyarr[membernum]>成员数</a>
+			<!--{else}-->
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=threadnum"$orderbyarr[threadnum]>话题数</a><span class="pipe">|</span>
+				<a href="space.php?do=mtag&view=$_GET[view]&fieldid=$_GET[fieldid]&orderby=postnum"$orderbyarr[postnum]>回帖数</a><span class="pipe">|</span>
+				成员数
+			<!--{/if}-->
+			
+		</h3>
+		<!--{if $list}-->
+		<!--{loop $list $value}-->
+				<a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a><br />
+				成员: $value[membernum] | 话题: $value[threadnum] | 回帖: $value[postnum]<br />
+		<!--{/loop}-->
+		<div class="page">$multi</div>
+		<!--{else}-->
+		 还没有群组。
+		<!--{/if}-->
+	</div>
+	<!--{if empty($_GET[searchmode])}-->
+	<div class="c">
+		<h3>群组分类</h3>
+		<a href="space.php?do=mtag&view=$_GET[view]&orderby=$_GET[orderby]">全部</a>
+		<!--{loop $_SGLOBAL['profield'] $value}-->
+		<span class="pipe">|</span><a href="space.php?do=mtag&view=$_GET[view]&fieldid=$value[fieldid]&orderby=$_GET[orderby]">$value[title]</a>
+		<!--{/loop}-->
+	</div>
+		<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+		<div class="c">
+		<a href="cp.php?ac=mtag">创建群组 </a>
+		<span class="pipe">|</span>
+		<a href="space.php?searchmode=1&do=mtag&view=hot">搜索群组</a>
+		</div>
+		<!--{/if}-->
+	<!--{/if}-->
+<!--{template footer}-->

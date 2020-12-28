@@ -1,0 +1,78 @@
+<!--{eval $_TPL['titles'] = array('相册', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+<div class="h_status">
+	<div id="m_search"<!--{if !empty($gets) || !empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+		<form method="get" action="network.php">
+			<input type="text" name="key" value="$_GET[key]" size="26" class="t_input" />
+			<input type="hidden" name="ac" value="$ac" />
+			<input type="hidden" name="searchmode" value="1" />
+			<input type="submit" name="searchsubmit" value="搜索相册" class="submit" />
+			<a href="javascript:;" onclick="document.getElementById('m_search').style.display='none';document.getElementById('adv_search').style.display='block'">高级搜索</a>
+		</form>
+	</div>
+	<form method="get" action="network.php">
+		<table cellspacing="0" cellpadding="0" class="formtable" id="adv_search"<!--{if empty($gets) && empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+			<tr>
+				<th>相册名*</th>
+				<td>
+					<input type="text" name="key" value="$_GET[key]" size="26" class="t_input" />
+				</td>
+			</tr>
+			<tr>
+				<th>相册作者</th>
+				<td>
+					<input type="text" name="username" value="$_GET[username]" size="26" />
+				</td>
+			</tr>
+			<tr>
+				<th>时间范围</th>
+				<td>
+					<input type="text" name="starttime" value="$_GET[starttime]" size="10" class="t_input" /> ~ <input type="text" name="endtime" value="$_GET[endtime]" size="10" class="t_input" />
+					格式为 YYYY-MM-DD
+				</td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<input type="hidden" name="ac" value="$ac" />
+				<input type="hidden" name="searchmode" value="1" />
+				<input type="submit" name="searchsubmit" value="搜索" class="submit" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+
+	<!--{if $list}-->
+	<div class="album_list">
+		<table cellspacing="6" cellpadding="0">
+			<tr>
+			<!--{loop $list $key $value}-->
+				<td width="50%" class="album">
+					<table cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="image"><a href="space.php?uid=$value[uid]&do=album&id=$value[albumid]"><img src="$value[pic]" /></a></td>
+							<td>
+								<h6><a href="space.php?uid=$value[uid]&do=album&id=$value[albumid]">$value[albumname]</a></h6>
+								<p><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a><p>
+								<p class="gray">$value[picnum]张照片<span class="pipe">|</span>更新: <!--{date('Y-m-d H:i', $value[updatetime], 1)}--></p>
+							</td>
+						</tr>
+					</table>
+				</td>
+			<!--{if $key%2==1}--></tr><tr><!--{/if}-->
+			<!--{/loop}-->
+		</tr></table>
+	</div>
+	<div class="page">
+	<!--{if $multi=='networkpage'}-->仅显示最新更新的 $count 个相册<!--{else}-->$multi<!--{/if}-->
+	</div>
+	<!--{else}-->
+	<div class="c_form">没有相应的相册。</div>
+	<!--{/if}-->
+
+
+<!--{template footer}-->

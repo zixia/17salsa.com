@@ -1,0 +1,49 @@
+<!--{eval $_TPL['titles'] = array('通知');}-->
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=pm">通知</a>
+	</div>
+
+<!--{if $view=='userapp'}-->
+
+<!--{else}-->
+	<div class="c">		
+		<!--{if $list}-->
+		<!--{eval $i=0;}-->
+		<!--{loop $list $key $value}-->
+					<div style="padding:0px 0 0px 0;$value[style]">
+						<!--{eval $i++;}-->
+						{$i}.
+						<!--{if $value[authorid]}-->
+						<a href="space.php?uid=$value[authorid]">{$_SN[$value[authorid]]}</a>
+						<!--{/if}-->
+						$value[note]
+						(<!--{date('m-d H:i',$value[dateline],1)}-->)
+					</div>
+					
+					<!--{if $value[authorid] && !$value[isfriend]}-->
+					<div>
+						<a href="cp.php?ac=friend&op=add&uid=$value[authorid]">加为好友</a>
+						<span class="pipe">|</span>
+						<a href="cp.php?ac=poke&op=send&uid=$value[authorid]">打个招呼</a>
+					</div>
+					<!--{/if}-->
+		<!--{/loop}-->
+
+		<div class="page">$multi</div>
+		<!--{else}-->
+		没有新的通知。
+		<!--{/if}-->
+	</div>
+
+	<!--{if $newnum}-->
+	<div class="nav">
+		<!--{if $space[notenum]}--><div><a href="space.php?do=notice"><strong>$space[notenum]</strong>条新通知</a></div><!--{/if}-->
+		<!--{if $space[addfriendnum]}--><div><a href="cp.php?ac=friend&op=request"><strong>$space[addfriendnum]</strong>个好友请求</a></div><!--{/if}-->
+		<!--{if $space[mtaginvitenum]}--><div><a href="cp.php?ac=mtag&op=mtaginvite"><strong>$space[mtaginvitenum]</strong>个群组邀请</a></div><!--{/if}-->
+		<!--{if $space[pokenum]}--><div><a href="cp.php?ac=poke"><strong>$space[pokenum]</strong>个新招呼</a></div><!--{/if}-->
+	</div>
+	<!--{/if}-->
+<!--{/if}-->
+<!--{template footer}-->

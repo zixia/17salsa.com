@@ -1,0 +1,14 @@
+<div>
+<!--{if $value[author]}-->
+<a href="space.php?uid=$value[authorid]">{$_SN[$value[authorid]]}</a> 
+<!--{else}-->
+匿名
+<!--{/if}-->
+: $value[message]<br/>
+<!--{if $value[authorid]==$_SGLOBAL[supe_uid]}-->
+	<a href="cp.php?ac=comment&op=edit&cid=$value[cid]" >编辑</a>
+<!--{/if}-->
+<!--{if $value[authorid]==$_SGLOBAL[supe_uid] || $value[uid]==$_SGLOBAL[supe_uid] || checkperm('managecomment')}-->
+	<a href="cp.php?ac=comment&op=delete&cid=$value[cid]">删除</a>
+<!--{/if}-->(回复时间: <!--{date('Y-m-d H:i',$value[dateline],1)}-->)
+</div>

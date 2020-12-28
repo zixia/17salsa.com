@@ -1,0 +1,53 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=friend"><span>我的好友</span></a>
+	</div>
+	
+	<div class="c">
+	<h3>好友列表</h3>
+	<!--{if $list}-->
+		<!--{loop $list $key $value}-->
+			<div class="avatar48"><a href="space.php?uid=$value[uid]"><!--{avatar($value[uid],small)}--></a></div>
+			<!--{if $value[username] == ''}-->
+				匿名
+			<!--{else}-->
+				<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> 
+				<!--{if $value[note]}-->$value[note]<!--{/if}-->
+			<!--{/if}-->
+
+			<!--{if $_GET['view']=='blacklist'}-->
+				<div class="gray"><a href="cp.php?ac=friend&op=blacklist&subop=delete&uid=$value[uid]&start=$_GET[start]">黑名单除名</a></div>
+			<!--{elseif $_GET['view']=='visitor' || $_GET['view'] == 'trace'}-->
+				<div class="gray"><!--{date('n月j号',$value[dateline],1)}--></div>
+			<!--{elseif $_GET['view']=='online'}-->
+				<div class="gray"><!--{date('H:i',$ols[$value[uid]],1)}--></div>
+			<!--{else}-->
+				<div class="gray">
+				<!--{if $value['num']}-->热度(<span id="spannum_$value[uid]">$value[num]</span>)<span class="pipe">|</span><!--{/if}-->
+				<!--{if !$value['isfriend']}-->
+				<a href="cp.php?ac=friend&op=add&uid=$value[uid]" id="a_friend_$key">加为好友</a>
+				<!--{else}-->
+				<a href="cp.php?ac=friend&op=changegroup&uid=$value[uid]" id="friend_group_$value[uid]" onclick="ajaxmenu(event, this.id)">分组</a><span class="pipe">|</span>
+				<a href="cp.php?ac=friend&op=delete&uid=$value[uid]" id="a_ignore_$key">删除</a>
+				<!--{/if}-->
+				</div>
+			<!--{/if}-->
+		<!--{/loop}-->
+	<!--{else}-->
+		暂无好友
+	<!--{/if}-->
+	</div>
+	<div class="page">$multi</div>
+
+	<div class="nav">
+	
+		<a href="space.php?do=top&view=online">在线会员</a><br/>
+		<a href="space.php?do=top&view=mm">美女排行</a><br/>
+		<a href="space.php?do=top&view=gg">帅哥排行</a> <br/>
+		<a href="space.php?do=top&view=updatetime">全部会员</a><br/>
+		<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+		<a href="cp.php?ac=friend&op=search">查找好友</a><br/>
+		<!--{/if}-->
+	</div>
+<!--{template footer}-->

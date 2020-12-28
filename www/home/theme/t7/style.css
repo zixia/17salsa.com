@@ -1,0 +1,40 @@
+/*
+[name]自然深处[/name]
+Powered by Ucenter Home
+*/
+body { background: #CFE1ED url(images/body_bg.jpg); color: #666; }
+a { color: #4371A0; }
+#wrap { width: 990px; }
+#header { margin: 0; width: 100%; background: url(images/top_bg.jpg) repeat-x left top; color: #CCC; }
+#header a { color: #2C629E; }
+.headerwarp { width: 950px; height: 240px; background: url(images/header.jpg) repeat-x 0 40px; }
+#header .logo a { width: 82px; height: 40px; background: url(images/logo.gif) no-repeat left center; overflow: hidden; display: block; }
+#header .logo a img { margin: -200px; }
+.login_thumb { background-image: url(images/login_bg.gif); }
+#space_page { padding: 10px; width: 970px; background: #FFF url(images/ybg.jpg) no-repeat left top; }
+#ubar h2,
+#space_page .feed_header,
+.sidebox h2.title { padding: 0 20px; height: 30px; background-image: url(images/title.gif); color: #000; line-height: 30px; }
+.tabs_header { position: absolute; margin: -50px 0 0 60px; width: 560px; border: none; }
+#space_page .feed li,
+ #space_page .comments_list li,
+ #footer { border-color: #ECF1F3; }
+a#i_rss { color: #FFF; }
+.tabs_header ul.tabs li.active a,
+.tabs_header ul.tabs li a,
+.tabs_header ul.tabs li.active a span,
+.tabs_header ul.tabs li a span { padding: 0; width: 24px; height: 12px; background-image: url(images/menu.gif); line-height: 200px; overflow: hidden; }
+.tabs_header ul.tabs li.active a span,
+.tabs_header ul.tabs li a span { background: none; display: inline; }
+.tabs_header ul.tabs li.myhome a { background-position: 0 0; }
+.tabs_header ul.tabs li.mydoing a { background-position: 0 -100px; }
+.tabs_header ul.tabs li.myblog a { background-position: 0 -200px; }
+.tabs_header ul.tabs li.myalbum a { background-position: 0 -300px; }
+.tabs_header ul.tabs li.myshare a { background-position: 0 -400px; }
+.tabs_header ul.tabs li.mythread a { background-position: 0 -500px; }
+.tabs_header ul.tabs li.mywall a { background-position: 0 -600px; }
+.tabs_header ul.tabs li.myfriend a { background-position: 0 -700px; }
+.tabs_header ul.tabs li { margin: 10px 30px 0 0; }
+.tabs_header { height: 31px; }
+#footer { padding: 20px 20px; border: none; background: url(images/ybg2.jpg) no-repeat 0 0; color: #FFF; }
+#footer a { color: #FFF; }

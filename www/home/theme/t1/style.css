@@ -1,0 +1,74 @@
+/*
+[name]300勇士[/name]
+Powered by Ucenter Home
+*/
+body { background: #000; color: #666; }
+a { color: #999; }
+.line_list li { border-color: #111; }
+.quote { background-image: url(images/q_start.gif); }
+.quote .q, .quote blockquote { background-image: url(images/q_end.gif); }
+.time { color: #333; }
+.avatar48 { padding: 1px; width: 48px; height: 48px; border: 1px solid #333; background: none; overflow: hidden; }
+#header { margin: 0; width: 100%; background: url(images/top_bg.jpg) repeat-x left top; color: #CCC; }
+.headerwarp { background: none; }
+#header a { color: #2C629E; }
+#header .logo a { width: 82px; height: 40px; background: url(images/logo.gif) no-repeat left center; overflow: hidden; display: block; }
+#header .logo a img { margin: -200px; }
+.login_thumb { background-image: url(images/login_bg.gif); }
+#space_page { padding: 300px 0 0; background: url(images/img.gif) no-repeat left top; }
+#ubar h2 { background: url(images/title.gif) no-repeat 0 -100px; }
+.tabs_header { border-color: #222; }
+.tabs_header ul.tabs li a, .tabs_header ul.tabs li a span { background: none; }
+.tabs_header ul.tabs li.active a, .tabs_header ul.tabs li.active a span { background-image: url(images/tab_bg.gif); color: #FFF; }
+a#i_rss { background-image: url(images/rss_icon.gif); }
+.index_name { color: #FFF; }
+.online_icon { background-image: url(images/online_icon.gif); }
+.setting_status { background-image: url(images/spanner_icon.gif); }
+#space_page .feed_header { background: url(images/title.gif) no-repeat 0 0; color: #444; }
+.t_input, textarea { border-color: #222; background: #111; color: #CCC; }
+.submit { border-color: #333; background: #222; }
+.feed .entry-title { color: #444; }
+.feed a:visited { color: #666; }
+.feed .detail { color: #333; }
+.feed li { border-color: #111; }
+.feed .float_cancel { background: none; color: #333; }
+.entry_list .image_right img { border-color: #333; }
+.pipe { color: #333; }
+.ulist { border: 1px solid #222; background: #111; }
+#space_page .album_list { background: #111; }
+#space_page .album_list .album { border: 1px solid #222; background: #000; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

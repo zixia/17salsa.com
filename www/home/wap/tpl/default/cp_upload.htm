@@ -1,0 +1,38 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=album&view=me"><span>相册</span></a>
+	</div>
+<div class="c">
+	<h3>传照片</h3>
+	
+	<form method="post" id="upload" action="cp.php?ac=upload<!--{if $eventid}-->&eventid=$eventid<!--{/if}-->" enctype="multipart/form-data">
+		请选择相册：<br/>
+		<select name="albumid">
+			<!--{if $albums}-->
+			<!--{loop $albums $value}-->
+				<!--{if $value['albumid'] == $_GET['albumid']}-->
+					<option value="$value[albumid]" selected>$value[albumname]</option>
+				<!--{else}-->
+					<option value="$value[albumid]">$value[albumname]</option>
+				<!--{/if}-->
+			<!--{/loop}-->
+			<!--{else}-->
+				<option value="0">我的相册</option>
+			<!--{/if}-->
+			</select><br/>
+		请选择照片文件：<br/>
+		<input type="file" name="attach" style="padding:2px;" /><br/>
+		<input type="submit" name="btnupload" id="btnupload" value="开始上传" class="submit" />
+		<input type="hidden" name="uploadsubmit" id="uploadsubmit" value="true" />
+		<input type="hidden" name="albumname" id="albumname" value="我的相册" />
+		<input type="hidden" name="topicid" id="topicid" value="0" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	<!--{if $haveattachsize}-->
+	<p>	您当前图片空间还剩余容量 <strong>$haveattachsize</strong></p>
+	<!--{/if}-->
+</div>
+	
+<!--{template footer}-->

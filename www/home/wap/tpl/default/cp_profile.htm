@@ -1,0 +1,363 @@
+<!--{template header}-->
+<!--{template cp_header}-->
+<div class="nav">
+<a href="index.php">首页</a>&gt;<!--{if $space[self]}-->
+		<a href="space.php?uid=$space[uid]">我的空间</a>
+	<!--{else}-->
+		<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}的空间</a>
+	<!--{/if}-->
+	&gt;个人资料
+</div>
+
+<div class="c">
+<!--{eval $farr = array(0=>'全用户','1'=>'仅好友','3'=>'仅自己');}-->
+<form method="post" action="$theurl&ref" class="c_form">
+	
+<!--{if $_GET['op'] == 'base'}-->
+	<div class="a"><h3>登录用户名:</h3>
+	<!--{eval echo stripslashes($space['username']);}--> (<a href="cp.php?ac=password">修改登录密码</a>)
+	</div>
+<!--{if !$_SCONFIG['realname']}-->
+
+	<div class="a"><h3>真实姓名: </h3>
+	<input type="text" id="name" name="name" value="<!--{eval echo stripslashes($space['name']);}-->" />
+	</div>
+
+<!--{else}-->
+	<div class="a">
+	<h3>真实姓名:</h3><!--{if $space[name] && empty($_GET['namechange'])}-->
+	<span><!--{eval echo stripslashes($space['name']);}--></span>
+	<!--{if $_SCONFIG['namechange']}-->[<a href="$theurl&namechange=1">修改</a>]<!--{/if}-->
+	<!--{if $space[namestatus]}-->[<font color="red">认证通过</font>]<!--{else}--><br>等待验证中，您目前将只能使用用户名，并且一些操作可能会受到限制<!--{/if}-->
+	<input type="hidden" name="name" value="<!--{eval echo stripslashes($space['name']);}-->" />
+	<!--{else}-->
+	<!--{if $rncredit && $_GET['namechange']}--><img src="image/credit.gif" align="absmiddle"> 本操作需要支付积分 $rncredit 个，您现在的积分 $space[credit] 个。<br><!--{/if}-->
+	<!--{if empty($_SCONFIG['namechange'])}-->您的真实姓名一经确认，将不再允许再次修改，请真实填写。<br><!--{/if}-->
+	<!--{if $_SCONFIG['namecheck']}-->您填写/修改真实姓名后，需要等待我们认证后才能有效，在认证通过之前，您将只能使用用户名，并且一些操作可能会受到限制。<br><!--{/if}-->
+	<input type="text" id="name" name="name" value="<!--{eval echo stripslashes($space['name']);}-->" class="t_input" /> (请输入2～5个汉字)
+	<!--{/if}-->
+	</div>
+<!--{/if}-->
+	<div class="a"><h3>性别:</h3>
+	<!--{if empty($space[sex])}-->
+		<label for="sexm"><input id="sexm" type="radio" value="1" name="sex"$sexarr[1] />男</label> 
+		<label for="sexw"><input id="sexw" type="radio" value="2" name="sex"$sexarr[2] />女</label>
+		<span style="font-weight:bold;color:red;">(性别选择确定后，将不能再次修改)</span>
+	<!--{else}-->
+		<!--{if $space[sex]==1}-->男<!--{else}-->女<!--{/if}-->
+	<!--{/if}-->
+	</div>
+	<div class="a">
+	<h3>婚恋状态:<select name="friend[marry]">
+			<option value="0"{$friendarr[marry][0]}>全用户</option>
+			<option value="1"{$friendarr[marry][1]}>仅好友</option>
+			<option value="3"{$friendarr[marry][3]}>仅自己</option>
+		</select></h3>
+		<select id="marry" name="marry">
+			<option value="0">保密</option>
+			<option value="1"$marryarr[1]>单身</option>
+			<option value="2"$marryarr[2]>非单身</option>
+		</select>
+		
+	</div>
+	<div class="a">
+	<h3>生日:<select name="friend[birth]">
+			<option value="0"{$friendarr[birth][0]}>全用户</option>
+			<option value="1"{$friendarr[birth][1]}>仅好友</option>
+			<option value="3"{$friendarr[birth][3]}>仅自己</option>
+		</select></h3>
+	
+	<select id="birthyear" name="birthyear" onchange="showbirthday();">
+			<option value="0">&nbsp;</option>
+			$birthyeayhtml
+		</select> 年 
+		<select id="birthmonth" name="birthmonth" onchange="showbirthday();">
+			<option value="0">&nbsp;</option>
+			$birthmonthhtml
+		</select> 月 
+		<select id="birthday" name="birthday">
+			<option value="0">&nbsp;</option>
+			$birthdayhtml
+		</select> 日
+	</div>
+	<div class="a">
+	<h3>血型:<select name="friend[blood]">
+			<option value="0"{$friendarr[blood][0]}>全用户</option>
+			<option value="1"{$friendarr[blood][1]}>仅好友</option>
+			<option value="3"{$friendarr[blood][3]}>仅自己</option>
+		</select></h3>
+	
+		<select id="blood" name="blood">
+			<option value="">&nbsp;</option>
+			$bloodhtml
+		</select>
+	</div>
+	<div class="a">
+	<h3>
+	家乡:<select name="friend[birthcity]">
+			<option value="0"{$friendarr[birthcity][0]}>全用户</option>
+			<option value="1"{$friendarr[birthcity][1]}>仅好友</option>
+			<option value="3"{$friendarr[birthcity][3]}>仅自己</option>
+		</select></h3>
+		<!--{if $birthprovince}-->
+		{$birthprovince}
+		<input type="hidden" name="birthprovince" value="{$birthprovince}">
+		<input type="hidden" name="birthtype" value="birthprovince">
+		<input type="submit" name="birthchangesubmit" value="切换" class="submit">
+		<select id="birthcity" name="birthcity">
+		<option value="">选择城市</option>
+		{$birthcityhtml}
+		</select>
+		<!--{else}-->
+		<select id="birthprovince" name="birthprovince">
+		<option value="">选择省份</option>
+		{$birthprovincehtml}
+		</select>
+		<input type="hidden" name="birthtype" value="birthcity">
+		<input type="submit" name="birthchangesubmit" value="确定切换" class="submit">
+		<!--{/if}-->	
+	</div>
+	<div class="a">
+	<h3>
+	居住地:<select name="friend[residecity]">
+			<option value="0"{$friendarr[residecity][0]}>全用户</option>
+			<option value="1"{$friendarr[residecity][1]}>仅好友</option>
+			<option value="3"{$friendarr[residecity][3]}>仅自己</option>
+		</select> </h3>
+		<!--{if $resideprovince}-->
+		{$resideprovince}
+		<input type="hidden" name="resideprovince" value="{$resideprovince}">
+		<input type="hidden" name="residetype" value="resideprovince">
+		<input type="submit" name="residechangesubmit" value="切换" class="submit">
+		<select id="residecity" name="residecity">
+		<option value="">选择城市</option>
+		{$residecityhtml}
+		</select>
+		<!--{else}-->
+		<select id="resideprovince" name="resideprovince">
+		<option value="">选择省份</option>
+		{$resideprovincehtml}
+		</select>
+		<input type="hidden" name="residetype" value="residecity">
+		<input type="submit" name="residechangesubmit" value="确定切换" class="submit">
+		<!--{/if}-->	
+
+	</div>
+<!--{loop $profilefields $value}-->
+	<div class="a">
+	<h3>$value[title]<!--{if $value[required]}-->*<!--{/if}-->:<select name="friend[field_{$value[fieldid]}]">
+		<!--{eval $field_friendarr = $friendarr["field_$value[fieldid]"];}-->
+			<option value="0"{$field_friendarr[0]}>全用户</option>
+			<option value="1"{$field_friendarr[1]}>仅好友</option>
+			<option value="3"{$field_friendarr[3]}>仅自己</option>
+		</select></h3>
+	 
+		$value[formhtml]
+		<!--{if $value[note]}--> <span class="gray">$value[note]</span><!--{/if}-->
+	</div>
+<!--{/loop}-->
+
+	<input type="submit" name="nextsubmit" value="继续下一项" class="submit" />
+	<input type="submit" name="profilesubmit" value="保存" class="submit" />
+
+<!--{elseif $_GET['op'] == 'contact'}-->
+
+
+<!--{if $_GET[editemail]}-->
+	<div class="a">
+	<h3>登录密码:</h3>
+		<input type="password" id="password" name="password" value="" class="t_input" />
+		<br>为了您的账号安全，更换新邮箱的时候，需要输入您在本网站的密码。
+	</div>
+	<div class="a">
+	<h3>新邮箱:</h3>
+		<input type="text" id="email" class="t_input" name="email" value="$space[email]" />
+		<!--{if $space['emailcheck']}-->
+		<br>注意：新填写的邮箱只有在验证激活之后，才可以生效。
+		<!--{/if}-->
+	</div>
+<!--{else}-->
+<!--{if !$space[email]}-->
+	<div class="a">
+	<h3>登录密码:</h3>
+		<input type="password" id="password" name="password" value="" class="t_input" />
+		<br>为了您的账号安全，填写邮箱的时候，需要输入您在本网站的密码。
+	</div>
+<!--{/if}-->
+	<div class="a">
+		<h3>常用邮箱:</h3>
+		<!--{if $space[email]}-->
+			$space[email]<br>
+			<!--{if $space['emailcheck']}-->
+				当前邮箱已经验证激活 (<a href="$theurl&editemail=1">更换</a>)
+			<!--{else}-->
+				邮箱等待验证中...<br>
+				系统已经向该邮箱发送了一封验证激活邮件，请查收邮件，进行验证激活。<br>
+				如果没有收到验证邮件，您可以<a href="$theurl&editemail=1">更换一个邮箱</a>，或者<a href="$theurl&resend=1">重新接收验证邮件</a>
+			<!--{/if}-->
+		<!--{else}-->
+			<input type="text" id="email" class="t_input" name="email" value="" />
+			<br>请准确填写，取回密码、获取通知的时候都会发送到该邮箱。
+			<br>系统同时会向该邮箱发送一封验证激活邮件，请注意查收。<br>
+		<!--{/if}-->
+		<!--{if $space[newemail]}-->
+			<p>您要更换的新邮箱：<strong>$space[newemail]</strong> 需要激活后才能替换当前邮箱并生效。<br>
+			如果没有收到验证邮件，您可以<a href="$theurl&resend=1">重新接收验证邮件</a></p>
+		<!--{/if}-->
+	</div>
+<!--{/if}-->
+	<div class="a">
+		<h3>手机:<select name="friend[mobile]">
+			<option value="0"{$friendarr[mobile][0]}>全用户</option>
+			<option value="1"{$friendarr[mobile][1]}>仅好友</option>
+			<option value="3"{$friendarr[mobile][3]}>仅自己</option>
+		</select></h3>
+		<input type="text" class="t_input" name="mobile" value="$space[mobile]" /> 
+	</div>
+	<div class="a">
+		<h3>QQ:<select name="friend[qq]">
+			<option value="0"{$friendarr[qq][0]}>全用户</option>
+			<option value="1"{$friendarr[qq][1]}>仅好友</option>
+			<option value="3"{$friendarr[qq][3]}>仅自己</option>
+		</select></h3>
+		<input type="text" class="t_input" name="qq" value="$space[qq]" /> 
+	</div>
+	<div class="a">
+		<h3>MSN:<select name="friend[msn]">
+			<option value="0"{$friendarr[msn][0]}>全用户</option>
+			<option value="1"{$friendarr[msn][1]}>仅好友</option>
+			<option value="3"{$friendarr[msn][3]}>仅自己</option>
+		</select></h3>
+		<input type="text" class="t_input" name="msn" value="$space[msn]" /> 
+	</div>
+	<input type="submit" name="nextsubmit" value="继续下一项" class="submit" />
+	<input type="submit" name="profilesubmit" value="保存" class="submit" />
+
+<!--{elseif $_GET['op'] == 'edu'}-->
+
+	<!--{if $list}-->
+	<div class="a">
+	<h3>教育情况</h3>
+	<!--{loop $list $key $value}-->
+	<!--{eval echo $key+1;}-->. $value[title] $value[subtitle]($value[startyear]年) {$farr[$value[friend]]}<br/>
+	<a href="$theurl&subop=delete&infoid=$value[infoid]">删除信息</a> | <a href="cp.php?ac=friend&op=search&searchmode=1&type=edu&title=$value[title_s]">寻找同学</a> <br/>
+
+	<!--{/loop}-->
+	</div>
+	<!--{/if}-->
+	<div class="a">
+
+
+		<h3>添加新学校</h3>
+
+		学校名称: <br/><input type="text" name="title[]" value="" class="t_input"><br/>
+		 班级或院系: <br/><input type="text" name="subtitle[]" value="" class="t_input"><br/>
+		 入学年份: <br/>
+			<select name="startyear[]">
+			$yearhtml
+			</select> 年<br/>
+		隐私设置: <br/>
+			<select name="friend[]">
+				<option value="0">全用户</option>
+				<option value="1">仅好友</option>
+				<option value="3">仅自己</option>
+			</select>
+
+	</div>
+
+	<input type="submit" name="nextsubmit" value="继续下一项" class="submit" />
+	<input type="submit" name="profilesubmit" value="保存" class="submit" />
+
+<!--{elseif $_GET['op'] == 'work'}-->
+
+
+	<!--{if $list}-->
+	<div class="a">
+		<h3>工作情况</h3>
+	<!--{loop $list $key $value}-->
+	<!--{eval echo $key+1;}-->. $value[title] $value[subtitle] 
+			{$value[startyear]}年{$value[startmonth]}月 ~ 
+			<!--{if $value[endyear]}-->{$value[endyear]}年<!--{/if}-->
+			<!--{if $value[endmonth]}-->{$value[endmonth]}月<!--{/if}-->
+			<!--{if !$value[endyear] && !$value[endmonth]}-->现在<!--{/if}-->
+		 {$farr[$value[friend]]} 
+		<br/><a href="$theurl&subop=delete&infoid=$value[infoid]">删除信息</a> | <a href="cp.php?ac=friend&op=search&searchmode=1&type=work&title=$value[title_s]" >寻找同事</a><br/>
+	<!--{/loop}-->
+		</div>
+	<!--{/if}-->
+
+	<div class="a">
+		<h3>添加新公司或机构</h3>
+
+	公司或机构: <br/><input type="text" name="title[]" value="" class="t_input"><br/>
+	部门: <br/><input type="text" name="subtitle[]" value="" class="t_input"><br/>
+	开始时间: <br/>
+		<select name="startyear[]">
+		$yearhtml
+		</select> 年
+		<select name="startmonth[]">
+		$monthhtml
+		</select> 月 <br/>
+	结束时间: <br/>
+		<select name="endyear[]">
+		<option value="">现在</option>
+		$yearhtml
+		</select> 年
+		<select name="endmonth[]">
+		<option value=""></option>
+		$monthhtml
+		</select>月<br/>
+	隐私设置:<br/> <select name="friend[]">
+			<option value="0">全用户</option>
+			<option value="1">仅好友</option>
+			<option value="3">仅自己</option>
+		</select>
+	</div>
+		<input type="submit" name="nextsubmit" value="继续下一项" class="submit" />
+		<input type="submit" name="profilesubmit" value="保存" class="submit" /> 
+<!--{elseif $_GET['op'] == 'info'}-->
+
+<!--{eval 
+$infoarr = array(
+	'trainwith' => '我想结交',
+	'interest' => '兴趣爱好',
+	'book' => '喜欢的书籍',
+	'movie' => '喜欢的电影',
+	'tv' => '喜欢的电视',
+	'music' => '喜欢的音乐',
+	'game' => '喜欢的游戏',
+	'sport' => '喜欢的运动',
+	'idol' => '偶像',
+	'motto' => '座右铭',
+	'wish' => '最近心愿',
+	'intro' => '我的简介'
+);
+}-->
+<!--{loop $infoarr $key $value}-->
+	<div class="a">
+		<h3>{$value}:<select name="info_friend[$key]">
+			<option value="0"{$friends[$key][0]}>全用户</option>
+			<option value="1"{$friends[$key][1]}>仅好友</option>
+			<option value="3"{$friends[$key][3]}>仅自己</option>
+		</select></h3>
+		<textarea name="info[$key]">{$list[$key][title]}</textarea>
+	</div>
+<!--{/loop}-->
+
+	 <input type="submit" name="profilesubmit" value="保存" class="submit" /> 
+<!--{/if}-->
+
+
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</div> 
+
+<div class="c">
+	<h3>信息分类</h3>
+	<a href="cp.php?ac=profile&op=base"$cat_actives[base]>基本资料</a><span class="pipe">|</span>
+	<a href="cp.php?ac=profile&op=contact"$cat_actives[contact]>联系方式</a><span class="pipe">|</span>
+	<a href="cp.php?ac=profile&op=edu"$cat_actives[edu]>教育情况</a><span class="pipe">|</span>
+	<a href="cp.php?ac=profile&op=work"$cat_actives[work]>工作情况</a><span class="pipe">|</span>
+	<a href="cp.php?ac=profile&op=info"$cat_actives[info]>个人信息</a>
+</div>
+
+<!--{template footer}-->

@@ -1,0 +1,239 @@
+<!--{eval $_TPL['titles'] = array('成员', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+<div id="content" style="width:640px;">
+
+	<div class="c_mgs"><div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+		<div id="m_search"<!--{if !empty($gets)}--> style="display:none;"<!--{/if}-->>
+			<form method="get" action="network.php">
+			用户名 <input type="text" name="username" value="$_GET[username]" class="t_input" />
+			<input type="hidden" name="ac" value="$ac" />
+			<input type="hidden" name="searchmode" value="1" />
+			<input type="submit" name="findsubmit" value="找人" class="submit" />
+			<a href="javascript:;" onclick="document.getElementById('m_search').style.display='none';document.getElementById('adv_search').style.display='block'">高级搜索</a>
+			</form>
+		</div>
+		<form method="get" action="network.php">
+			<table cellspacing="0" cellpadding="0" class="formtable" id="adv_search"<!--{if empty($gets)}--> style="display:none;"<!--{/if}-->>
+				<caption>
+					<h2>高级搜索</h2>
+					<p>您可以自己设置搜索条件，寻找与自己志同道合的好友</p>
+				</caption>
+				<tr>
+					<th>用户名</th>
+					<td>
+						<input type="text" class="t_input" name="username" value="$_GET[username]" />
+						&nbsp; 姓名 <input type="text" class="t_input" name="name" value="$_GET[name]" />
+					</td>
+				</tr>
+				<tr>
+					<th>性别</th>
+					<td>
+						<select id="sex" name="sex">
+							<option value="0">任意</option>
+							<option value="1"$sexarr[1]>男</option>
+							<option value="2"$sexarr[2]>女</option>
+						</select>
+						&nbsp; 生日 
+						<select id="birthyear" name="birthyear">
+							<option value="0">年</option>
+							$birthyeayhtml
+						</select> 
+						<select id="birthmonth" name="birthmonth">
+							<option value="0">月</option>
+							$birthmonthhtml
+						</select> 
+						<select id="birthday" name="birthday">
+							<option value="0">日</option>
+							$birthdayhtml
+						</select> 
+					</td>
+				</tr>
+				
+				<tr>
+					<th>血型</th>
+					<td>
+						<select id="blood" name="blood">
+							<option value="">任意</option>
+							$bloodhtml
+						</select>
+						&nbsp; 婚恋 
+						<select id="marry" name="marry">
+							<option value="0">任意</option>
+							<option value="1"$marryarr[1]>单身</option>
+							<option value="2"$marryarr[2]>非单身</option>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>出生地</th>
+					<td>
+						<script type="text/javascript" src="source/script_city.js"></script>
+						<script type="text/javascript">
+						<!--
+						showprovince('birthprovince', 'birthcity', '$_GET[birthprovince]');
+						showcity('birthcity', '$_GET[birthcity]');
+						//-->
+						</script>
+						&nbsp; 居住地 
+						<script type="text/javascript">
+						<!--
+						showprovince('resideprovince', 'residecity', '$_GET[resideprovince]');
+						showcity('residecity', '$_GET[residecity]');
+						//-->
+						</script>
+					</td>
+				</tr>
+				<tr>
+					<th>QQ</th>
+					<td>
+						<input type="text" name="qq" value="$_GET[qq]" class="t_input" />
+						&nbsp; MSN 
+						<input type="text" name="msn" value="$_GET[msn]" class="t_input" />
+					</td>
+				</tr>
+				<tr>
+					<th>年龄段</th>
+					<td>
+						<input type="text" name="startage" value="$_GET[startage]" size="10" class="t_input" /> ~ <input type="text" name="endage" value="$_GET[endage]" size="10" class="t_input" />
+					</td>
+				</tr>
+	
+				<tr>
+					<th>群组</th>
+					<td>
+					<select name="fieldid">
+						<option value="0">请选择</option>
+						<!--{loop $_SGLOBAL[profield] $fieldid $value}-->
+						<option value="$fieldid"$fieldids[$fieldid]>$value[title]</option>
+						<!--{/loop}-->
+					</select>
+					<input type="text" name="fieldname" value="$_GET[fieldname]" class="t_input" />
+					</td>
+				</tr>
+				
+				<!--{loop $fields $fkey $fvalue}-->
+				<!--{if $fvalue[allowsearch]}-->
+				<tr>
+					<th>$fvalue[title]</th>
+					<td>
+						$fvalue[html]
+					</td>
+				</tr>
+				<!--{/if}-->
+				<!--{/loop}-->
+				
+	
+				<tr>
+					<th>&nbsp;</th>
+					<td>
+					<input type="hidden" name="ac" value="space" />
+					<input type="hidden" name="searchmode" value="1" />
+					<input type="submit" name="findsubmit" value="找人" class="submit" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div></div></div></div></div>
+	
+	<!--{if $now_pos >= 0}-->
+	<div class="c_mgs"><div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+		排行榜公告：<br>
+		<!--{if $_GET[view]=='show'}-->
+			<!--{if $space[showcredit]}-->
+			自己当前的竞价积分为：$space[showcredit]，当前排名 <span style="font-size:20px;color:red;">$now_pos</span> ，再接再励！
+			<!--{else}-->
+			您现在还没有上榜。让自己上榜吧，这会大大提升您的主页曝光率。
+			<!--{/if}-->
+			<br>竞价积分越多，竞价排名越靠前，您的主页曝光率也会越高；
+			<br>上榜用户的主页被别人有效浏览一次，其竞价积分将减少1个(恶意刷新访问不扣减)。
+		<!--{else}-->
+			<!--{if $_GET[view]=='credit'}-->
+			<a href="cp.php?ac=credit">自己当前的积分：$space[credit]</a>
+			<!--{elseif $_GET[view]=='friendnum'}-->
+			<a href="space.php?do=friend">自己当前的好友数：$space[friendnum]</a>
+			<!--{else}-->
+			<a href="space.php">自己当前的访问量：$space[viewnum]</a>
+			<!--{/if}-->
+			，当前排名 <span style="font-size:20px;color:red;">$now_pos</span> ，再接再励！
+		<!--{/if}-->
+		<!--{if $cache_mode}-->
+		<p>下面列出的为前100名排行，数据每 $cache_time 分钟更新一次。</p>
+		<!--{/if}-->
+	</div></div></div></div></div>
+	<!--{/if}-->
+	
+	<!--{if $_GET['view']=='show'}-->
+	<div class="c_mgs"><div class="ye_r_t"><div class="ye_l_t"><div class="ye_r_b"><div class="ye_l_b">
+		<table width="100%">
+			<tr><td width="50%" valign="top">
+			<div class="l_status"><strong>帮助好友来上榜</strong></div>
+			<div class="content">
+				<form method="post" action="cp.php?ac=credit" onsubmit="return checkCredit('stakecredit');">
+				<p>
+					要帮助的好友用户名<br />
+					<input type="text" name="fusername" value="" size="20" class="t_input" /><br />
+					赠送竞价积分(<span class="gray">不要超过自己的积分:$space[credit]</span>)<br />
+					<input type="text" id="stakecredit" name="stakecredit" value="100" size="5" class="t_input" onblur="checkCredit('stakecredit');" /> <input type="submit" name="friend_submit" value="赠送" class="submit" />
+				</p>
+				<input type="hidden" name="friendsubmit" value="true" />
+				<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+				</form>
+			</div>
+			</td>
+			<td width="50%" valign="top">
+			<div class="l_status"><strong>我也要上榜</strong></div>
+			<div class="content">
+				<form method="post" action="cp.php?ac=credit" onsubmit="return checkCredit('showcredit');">
+				<p>
+					我的上榜宣言(<span class="gray">最多50个汉字，会显示在榜单中</span>)
+					<br />
+					<input type="text" name="note" value="" size="35" class="t_input" /><br />
+					增加竞价积分(<span class="gray">不要超过自己的积分:$space[credit]</span>)<br />
+					<input type="text" id="showcredit" name="showcredit" value="100" size="5" class="t_input" onblur="checkCredit('showcredit');" /> <input type="submit" name="show_submit" value="增加" class="submit" />
+				</p>
+				<input type="hidden" name="showsubmit" value="true" />
+				<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" /></form>
+			</div>
+			</td>
+		</tr></table>
+		<script type="text/javascript">
+			function checkCredit(id) {
+				var maxCredit = parseInt($space[credit]);
+				var idval = parseInt($(id).value);
+				if(idval > maxCredit) {
+					alert("您的当前积分为:"+maxCredit+",请填写一个小于该值的数字");
+					return false;
+				} else if(idval < 1) {
+					alert("您所填写的积分值不能小于1");
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</div></div></div></div></div>
+	<!--{/if}-->
+
+	<!--{template space_list}-->
+	
+</div>
+
+<div id="sidebar" style="width:150px;">
+	<div class="cat">
+	<h3>分类查看</h3>
+	<ul class="post_list line_list">
+		<li$sub_actives[all]><a href="network.php?ac=space" title="按照最新更新排序"><span>全部成员</span></a>
+		<li$sub_actives[online]><a href="network.php?ac=space&view=online"><span>在线成员</span></a>
+		<li$sub_actives[show]><a href="network.php?ac=space&view=show"><span>竞价排行</span></a>
+		<li$sub_actives[mm]><a href="network.php?ac=space&view=mm"><span>美女排行</span></a>
+		<li$sub_actives[gg]><a href="network.php?ac=space&view=gg"><span>帅哥排行</span></a>
+		<li$sub_actives[credit]><a href="network.php?ac=space&view=credit"><span>积分排行</span></a>
+		<li$sub_actives[friendnum]><a href="network.php?ac=space&view=friendnum"><span>好友数排行</span></a>
+		<li$sub_actives[viewnum]><a href="network.php?ac=space&view=viewnum"><span>访问量排行</span></a>
+	</ul>
+	</div>
+</div>
+
+<!--{template footer}-->

@@ -1,0 +1,17 @@
+<!--{template header}-->
+<div class="c">
+<h3>密码验证</h3>
+<form method="post" action="do.php?ac=inputpwd" class="c_form">	
+您需要正确输入密码后才能继续查看<br/>
+输入密码:<br/>
+<input type="password" name="viewpwd" value="" class="t_input" /><br/>
+<input type="submit" name="submit" value="提交" class="submit" />
+
+<input type="hidden" name="refer" value="$_SERVER[REQUEST_URI]" />
+<input type="hidden" name="blogid" value="$invalue[blogid]" />
+<input type="hidden" name="albumid" value="$invalue[albumid]" />
+<input type="hidden" name="pwdsubmit" value="true" />
+<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{template footer}-->

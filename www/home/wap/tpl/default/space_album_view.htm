@@ -1,0 +1,20 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=$do&view=me">相册</a>&gt;
+	$album[albumname]
+	</div>
+	<!--{if $list}-->
+	<div class="c">
+		<!--{loop $list $key $value}-->
+			<a href="space.php?uid=$value[uid]&do=$do&picid=$value[picid]"><img src="$value[pic]" alt="$value[title]" /></a><br/>
+			<a href="space.php?uid=$value[uid]&do=$do&picid=$value[picid]">$value[title]</a>
+			<br/>
+		<!--{/loop}-->
+	</div>
+	<div class="page">$multi</div>
+	<!--{else}-->
+	<div class="c">该相册下还没有图片。</div>
+	<!--{/if}-->
+<!--{template footer}-->

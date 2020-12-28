@@ -1,0 +1,129 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=pm">消息</a>&gt;
+	<!--{if $_GET[filter]=='newpm'}-->未读消息
+	<!--{elseif $_GET[filter]=='privatepm'}--> 私人消息
+	<!--{elseif $_GET[filter]=='systempm'}-->系统消息
+	<!--{elseif $_GET[filter]=='announcepm'}-->公共消息
+	<!--{elseif $_GET[subop]=='view' && $touid}-->
+	跟{$_SN[$touid]}的消息历史
+	<!--{/if}-->
+	</div>
+	
+<!--{if $_GET['subop'] == 'view'}-->
+
+	<!--{if $list}-->
+	<div class="c">
+		<!--{if $_GET[subop]=='view' && $touid}-->
+			<!--{if $touid}-->
+				<!--{if $_GET[daterange]=='1'}-->
+				<h3>最近一天的消息</h3>
+				<!--{elseif $_GET[daterange]=='2'}-->
+				<h3>最近两天的消息</h3>
+				<!--{elseif $_GET[daterange]=='3'}-->
+				<h3>最近三天的消息</h3>
+				<!--{elseif $_GET[daterange]=='4'}-->
+				<h3>本周消息</h3>
+				<!--{else}-->
+				<h3>全部消息</h3>
+				<!--{/if}-->
+			<!--{/if}-->
+		<!--{/if}-->
+
+		<!--{eval $i=0;}-->
+		<!--{loop $list $key $value}-->
+			<!--{eval $i++;}-->
+			{$i}.
+			<!--{if $value[msgfromid]}-->
+				<a href="space.php?uid=$value[msgfromid]">{$_SN[$value[msgfromid]]}</a> :
+			<!--{/if}-->
+			<span class="gray"><!--{date('Y-m-d H:i',$value[dateline],1)}--></span>	<br/>
+				$value[message]<br/>
+		<!--{/loop}-->
+	</div>
+	<!--{else}-->
+	<div class="c">
+		当前没有相应的短消息。
+	</div>
+	<!--{/if}-->
+	
+	<!--{if $touid && $list}-->
+	<div class="c">
+		<h3>回复{$_SN[$space[uid]]}</h3>
+		<form id="pmform" name="pmform" method="post" action="cp.php?ac=pm&op=send&touid=$touid&pmid=$pmid&daterange=$daterange">
+		<textarea id="pm_message" name="message"></textarea><br>
+			<input type="submit" name="pmsubmit" id="pmsubmit" value="回复" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+	<!--{/if}-->
+
+<!--{else}-->
+	
+	<!--{if $count}-->
+		<div class="c">
+		<!--{eval $i=0;}-->
+		<!--{loop $list $key $value}-->
+				<!--{eval $i++;}-->
+				{$i}.
+				<!--{if $value[touid]}-->
+				<a href="space.php?uid=$value[touid]">{$_SN[$value[touid]]}</a> :
+				<!--{/if}-->
+				$value[message]<br/>
+				<!--{if $value[touid]}-->
+				<a href="space.php?do=pm&subop=view&pmid=$value[pmid]&touid=$value[touid]&daterange=$value[daterange]">查看详情</a>
+				<!--{else}-->
+				<a href="space.php?do=pm&subop=view&pmid=$value[pmid]">查看详情</a>
+				<!--{/if}-->
+				<a href="cp.php?ac=pm&op=delete&folder=inbox&pmid=$value[pmid]" id="a_delete_$value[pmid]" class="float_del" onclick="ajaxmenu(event, this.id)">删除</a>
+
+				<span class="gray"><!--{date('n-j H:i',$value[dateline],1)}--></span>
+				<br/>
+		<!--{/loop}-->
+		</div>
+		<div class="page">$multi</div>
+		
+	<!--{else}-->
+		<div class="c">
+		当前没有相应的短消息。
+		</div>
+	<!--{/if}-->
+	
+<!--{/if}-->
+
+	<!--{if $newnum}-->
+	<div class="nav">
+		<!--{if $space[notenum]}--><div><a href="space.php?do=notice"><strong>$space[notenum]</strong>条新通知</a></div><!--{/if}-->
+		<!--{if $space[addfriendnum]}--><div><a href="cp.php?ac=friend&op=request"><strong>$space[addfriendnum]</strong>个好友请求</a></div><!--{/if}-->
+		<!--{if $space[mtaginvitenum]}--><div><a href="cp.php?ac=mtag&op=mtaginvite"><strong>$space[mtaginvitenum]</strong>个群组邀请</a></div><!--{/if}-->
+		<!--{if $space[pokenum]}--><div><a href="cp.php?ac=poke"><strong>$space[pokenum]</strong>个新招呼</a></div><!--{/if}-->
+	</div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid] && !empty($_GET[filter])}-->
+	<div class="nav">
+		<a href="space.php?do=notice">最新通知</a><br/>
+		<!--{if $_GET[filter]!='newpm'}-->
+			<a href="space.php?do=pm&filter=newpm">未读消息</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[filter]!='privatepm'}-->
+			<a href="space.php?do=pm&filter=privatepm">私人消息</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[filter]!='systempm'}-->
+			<a href="space.php?do=pm&filter=systempm">系统消息</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[filter]!='announcepm'}-->
+			<a href="space.php?do=pm&filter=announcepm">公共消息</a>
+		<!--{/if}-->
+	</div>
+	<!--{/if}-->
+	<!--{if $_GET[subop]=='view' && $touid}-->
+	<div class="nav">
+		<a href="space.php?do=pm&subop=view&touid=$touid&daterange=1"$actives[1]>最近一天</a> <br/> 
+		<a href="space.php?do=pm&subop=view&touid=$touid&daterange=2"$actives[2]>最近两天</a> <br/> 
+		<a href="space.php?do=pm&subop=view&touid=$touid&daterange=3"$actives[3]>最近三天</a> <br/> 
+		<a href="space.php?do=pm&subop=view&touid=$touid&daterange=4"$actives[4]>本周</a> <br/> 
+		<a href="space.php?do=pm&subop=view&touid=$touid&daterange=5"$actives[5]>全部</a>
+	</div>
+	<!--{/if}-->
+<!--{template footer}-->

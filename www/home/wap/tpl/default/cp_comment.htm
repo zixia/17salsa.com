@@ -1,0 +1,72 @@
+<!--{template header}-->
+
+<!--{if $_GET['op'] == 'add'}-->
+<div class="c">
+<h3>添加回复</h3>
+<form method="post" action="cp.php?ac=comment">
+	<textarea id="message_{$cid}" name="message" >$message</textarea><br/>
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+	<input type="hidden" name="commentsubmit" value="true" />
+	<input type="hidden" name="id" value="$id">
+	<input type="hidden" name="idtype" value="$idtype">
+	<input type="submit" name="commentsubmit_btn" id="commentsubmit_btn" value="提交" class="submit" />
+	<input type="submit" id="selectface" name="selectface" class="submit" value="表情"/>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+</div>
+<div class="nav">
+<a href="$_SGLOBAL[refer]">返回上一级</a>
+</div>
+<!--{elseif $_GET['op'] == 'edit'}-->
+<div class="c">
+<h3>编辑回复</h3>
+<form method="post" action="cp.php?ac=comment&op=edit&cid=$cid">
+	<textarea id="message_{$cid}" name="message" >$comment[message]</textarea><br/>
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+	<input type="hidden" name="editsubmit" value="true" />
+	<input type="submit" name="editsubmit_btn" id="editsubmit_btn" value="提交" class="submit" />
+	<input type="submit" id="selectface" name="selectface" class="submit" value="表情"/>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+</div>
+<div class="nav">
+<a href="$_SGLOBAL[refer]">返回上一级</a>
+</div>
+<!--{elseif $_GET['op'] == 'delete'}-->
+<div class="c">
+<h3>删除回复</h3>
+<form method="post" action="cp.php?ac=comment&op=delete&cid=$cid">
+	<p>确定删除指定的回复吗？</p>
+	<p class="btn_line">
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="submit" name="deletesubmit" value="确定" class="submit" />
+	</p>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<div class="nav">
+<a href="$_SGLOBAL[refer]">返回上一级</a>
+</div>
+<!--{elseif $_GET['op'] == 'face'}-->
+<div class="c">
+<h3>添加表情说明</h3>
+在内容中输入相对应的表情符号即可。<br/>
+手机版开心网目前支持以下20个表情:<br/>
+<form method="post" action="cp.php?ac=comment&cid=$cid">
+	<div>
+	<!--{eval for($i=1;$i<31;$i++){ }-->
+	<span><input type="radio" name="faceid" id="face_{$i}" value="{$i}"><label for="face_{$i}"><img src="image/face/{$i}.gif" alt="[em:{$i}:]" />[em:{$i}:]</label></span>
+	<!--{if $i%2==0 }--><br/><!--{/if}-->
+	<!--{eval } }-->
+	</div>
+	<input type="hidden" name="message" value="$message" />
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+	<input type="hidden" name="facesubmit" value="true" />
+	<input type="hidden" name="id" value="$id">
+	<input type="hidden" name="idtype" value="$idtype">
+	<input type="submit" name="facesubmit_btn" id="facesubmit_btn" value="提交" class="submit" />
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+</div>
+<!--{/if}-->
+<!--{template footer}-->

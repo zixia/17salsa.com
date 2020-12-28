@@ -1,0 +1,254 @@
+<!--{template header}-->
+<!--{if $_GET[op]=='manage'}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<form id="manageform" name="manageform" method="post" action="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=$_GET[subop]&uid=$_GET[uid]&grade=$_GET[grade]&group=$_GET[group]&page=$_GET[page]&start=$_GET[start]">
+	<!--{if $_GET['subop'] == 'base'}-->
+	<div class="c">
+		<h3>基本设置</h3>
+
+		群组名：$mtag[tagname]<br/>
+		群组公告:<br/>
+		<textarea id="announcement" name="announcement">$mtag[announcement]</textarea><br/>
+	
+	<!--{if $mtag[grade]==9}-->
+	<!--{if $field['manualmember']}-->
+		加入权限:<br/>
+			<select name="joinperm">
+			<option value="0"$joinperms[0]>公开(允许所有人可加入)</option>
+			<option value="1"$joinperms[1]>审核(需要经批准后才可加入)</option>
+			<option value="2"$joinperms[2]>私密(只允许群主邀请加入)</option>
+			</select>
+		<br/>
+	<!--{else}-->
+	加入权限:公开(允许所有人可加入)<br/>
+	<!--{/if}-->
+	浏览权限:<br/>
+			<select name="viewperm">
+			<option value="0"$viewperms[0]>公开(所有人可浏览)</option>
+			<option value="1"$viewperms[1]>封闭(只对会员可见)</option>
+			</select>
+			<br>
+	发新话题权限:<br/>
+		<select name="threadperm">
+			<option value="0"$threadperms[0]>需成为会员才可发话题</option>
+			<option value="1"$threadperms[1]>所有人可发话题</option>
+			</select><br/>
+	回帖权限:<br/>
+			<select name="postperm">
+			<option value="0"$postperms[0]>需成为会员才可回帖</option>
+			<option value="1"$postperms[1]>所有人可回帖</option>
+			</select><br/>
+	招纳群主:<br/>
+			<input type="radio" name="closeapply" value="0" $closeapply[0]/> 开启
+			<input type="radio" name="closeapply" value="1" $closeapply[1]/> 关闭<br/>
+	<!--{/if}-->
+		<input type="submit" name="basesubmit" value="提交保存" class="submit" />&nbsp;
+	
+	<!--{elseif $_GET['subop'] == 'invite'}-->
+	
+	<div class="c">
+		您可以给未加入本群组的好友们发送邀请。
+	</div>
+	
+	<!--{if $list}-->
+		<div class="c">
+			<!--{loop $list $value}-->
+				<div class="avatar48"><a href="space.php?uid=$value[fuid]" title="{$_SN[$value[fuid]]}"><!--{avatar($value[fuid],small)}--></a></div>
+				<div><a href="space.php?uid=$value[fuid]" title="{$_SN[$value[fuid]]}">{$_SN[$value[fuid]]}</a> <!--{if empty($joins[$value[fuid]])}--><input type="checkbox" name="ids[]" value="$value[fuid]">选定<!--{else}-->已邀请<!--{/if}--></div>
+			<!--{/loop}-->
+			<div class="page">$multi</div>
+			<input type="submit" name="invitesubmit" value="邀请" class="submit" />
+		</div>
+	<!--{else}-->
+		<div class="c">还没有好友。</div>
+	<!--{/if}-->
+	<div class="c">
+		<h3>好友分类</h3>
+			<a <!--{if $_GET[group]==-1}--> class="current"<!--{/if}--> href="cp.php?ac=mtag&tagid=$mtag[tagid]&op=manage&subop=invite&group=-1">全部好友</a>
+			<!--{loop $groups $key $value}-->
+			| <a <!--{if $_GET[group]==$key}--> class="current"<!--{/if}--> href="cp.php?ac=mtag&tagid=$mtag[tagid]&op=manage&subop=invite&group=$key">$value</a>
+			<!--{/loop}-->
+	</div>
+
+	<!--{elseif $_GET['subop'] == 'members'}-->
+	<div class="c">
+		选择相应的用户进行用户等级变更。
+	</div>
+	
+	<div class="c">
+		<h3>成员列表</h3>
+		<!--{if $list}-->
+		<!--{loop $list $value}-->
+			<div class="avatar48"><a href="space.php?uid=$value[uid]" ><!--{avatar($value[uid],small)}--></a></div>
+			<input type="checkbox" name="ids[]" value="$value[uid]"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a> 
+			
+		<!--{/loop}-->
+		<div class="page">$multi</div>
+		<div class="c_form">
+		设为	<select name="newgrade">
+			<!--{if $mtag[grade]==9}-->
+			<option value="9">主群主</option>
+			<option value="8">副群主</option>
+			<!--{/if}-->
+			<option value="1">明星成员</option>
+			<option value="0">普通成员</option>
+			<option value="-1">禁止发言</option>
+			<option value="-2">待审核成员</option>
+			<option value="-9">踢出群组</option>
+		</select>&nbsp;
+		<input type="submit" name="memberssubmit" value="提交" class="submit" /></div>
+		<!--{else}-->
+		<div class="c_form">还没有相关成员。</div>
+		<!--{/if}-->
+	</div>
+	
+	<div class="c">
+		<h3>成员级别</h3>
+			<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=-2"<!--{if $_GET[grade]==-2}--> class="current"<!--{/if}--> >待审核</a><br/>
+			<a  href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=0"<!--{if $_GET[grade]==0}--> class="current"<!--{/if}-->>普通成员</a><br/>
+			<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=9"<!--{if $_GET[grade]==9}--> class="current"<!--{/if}--> >群主</a><br/>
+			<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=8"<!--{if $_GET[grade]==8}--> class="current"<!--{/if}--> >副群主</a><br/>
+			<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=1"<!--{if $_GET[grade]==1}--> class="current"<!--{/if}--> >明星成员</a><br/>
+			<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members&grade=-1"<!--{if $_GET[grade]==-1}--> class="current"<!--{/if}--> >禁言成员</a><br/>
+	</div>
+	<!--{/if}-->
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+<!--{elseif $_GET[op]=='join'}-->
+	
+	<div class="c">
+	<h3>加入群组</h3>
+	<form method="post" action="cp.php?ac=mtag&op=join&tagid=$tagid">
+		<p>确定加入该群组吗？</p>
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="submit" name="joinsubmit" value="加入" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+	<div class="nav">
+	<a href="$_SGLOBAL[refer]">返回上一级</a>
+	</div>
+<!--{elseif $_GET[op]=='out'}-->
+	
+	<div class="c">
+	<h3>退出群组</h3>
+	<form id="outform" name="outform" method="post" action="cp.php?ac=mtag&op=out&tagid=$mtag[tagid]">
+		<p>确定要退出该群组吗？</p>
+			<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+			<input type="submit" name="outsubmit" value="退出" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+	<div class="nav">
+	<a href="$_SGLOBAL[refer]">返回上一级</a>
+	</div>
+<!--{elseif $_GET[op]=='menu'}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<div class="c">
+		<h3>群组菜单</h3>
+		<!--{if $mtag['allowthread']}-->
+		<a href="cp.php?ac=thread&tagid=$mtag[tagid]">发起话题</a><br/>
+		<!--{/if}-->
+		<!--{if empty($mtag['ismember']) && $mtag['joinperm'] < 2}-->
+		<a href="cp.php?ac=mtag&op=join&tagid=$mtag[tagid]" >加入群组</a><br/>
+		<!--{/if}-->
+		
+		<!--{if $mtag['grade'] >= 8}-->
+		<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=base">群组设置</a><br/>
+		<!--{/if}-->
+		<!--{if $mtag['grade'] >= 8}-->
+		<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=members">成员管理</a><br/>
+		<!--{elseif $mtag['ismember'] && !$mtag['closeapply']}-->
+		<a href="cp.php?ac=mtag&op=apply&tagid=$mtag[tagid]" id="a_apply" >群主申请</a><br/>
+		<!--{/if}-->
+		<!--{if $mtag['allowinvite']}-->
+		<a href="cp.php?ac=mtag&op=manage&tagid=$mtag[tagid]&subop=invite">邀请好友</a><br/>
+		<!--{/if}-->
+		<!--{if $mtag['ismember']}-->
+		<a href="cp.php?ac=mtag&op=out&tagid=$mtag[tagid]" id="a_ignore_top" >退出群组</a><br/>
+		<!--{/if}-->
+	</div>
+<!--{elseif $_GET[op]=='confirm'}-->
+
+		<!--{if $findmtag}-->
+	
+		<div class="c">
+		<h3>创建新群组</h3>
+			<div class="threadimg60"><img src="$findmtag[pic]" width="60" height="60"></div>
+			<div>
+			群组 <a href="space.php?do=mtag&tagid=$findmtag[tagid]" target="_blank">$findmtag[tagname]</a> 已经存在
+				<br>已有 $findmtag[membernum] 人参与
+				<br><a href="space.php?do=mtag&tagid=$findmtag[tagid]" class="submit">访问群组</a>
+			</div>
+		</div>
+		<!--{else}-->
+			
+			<!--{if $likemtags}-->
+			<div class="c">
+			<h3>相似热门群组推荐</h3>
+			<!--{eval $i = 0;}-->
+			<!--{loop $likemtags $value}-->
+				<!--{eval $i++;}-->
+				{$i}.<a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a> $value[membernum] 位成员 <br/>
+				<a href="space.php?do=mtag&tagid=$value[tagid]" target="_blank">立即访问</a>
+				<span class="pipe">|</span>
+				<!--{if $value['joinperm'] < 2}-->
+				<a href="cp.php?ac=mtag&op=join&tagid=$value[tagid]">加入该群组</a>
+				<!--{else}-->
+				<strong>本群组需要群主邀请才可加入</strong>
+				<!--{/if}-->
+				<br/>
+			<!--{/loop}-->
+			</div>
+			<!--{/if}-->
+		<div class="c">
+		<form method="post" action="cp.php?ac=mtag" class="c_form">
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		<h3>确认创建新群组吗？</h3>
+
+		群组名称: $newtagname <br/>
+		群组分类: $profield[title]<br/>
+
+		<input type="hidden" name="tagname" value="$newtagname">
+		<input type="hidden" name="fieldid" value="$fieldid">
+		<input type="hidden" name="joinmode" value="1">
+		<input type="submit" id="textsubmit" name="textsubmit" value="创建群组" class="submit">
+		</form>
+		</div>
+		<!--{/if}-->
+<!--{else}-->
+	<!--{if $textarr}-->
+	<div class="c">
+	<h3>创建自己的新群组</h3>
+		<form method="post" action="cp.php?ac=mtag" class="c_form">
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		
+			
+		要创建的群组名<br/>
+		<input type="text" name="tagname" value="" class="t_input"><br/>
+		选择一个合适的分类<br/>
+		
+			<select name="fieldid">
+			<!--{loop $textarr $value}-->
+			<option value="$value[fieldid]">$value[title]</option>
+			<!--{/loop}-->
+			</select><br/>
+		
+		<input type="submit" name="textsubmit" value="创建群组" class="submit">
+		<p>您可以自由创建一个属于自己的群组，并邀请好友，前来进行交流讨论。</p>
+		</form>
+	</div>
+	<!--{/if}-->
+<!--{/if}-->
+	
+<!--{template footer}-->

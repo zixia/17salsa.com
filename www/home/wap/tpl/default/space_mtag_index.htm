@@ -1,0 +1,44 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot">群组</a>&gt;
+	<a href="space.php?do=mtag&id=$mtag[fieldid]">$mtag[title]</a>&gt;
+	<a href="space.php?do=mtag&tagid=$mtag[tagid]">$mtag[tagname]</a>
+	</div>
+	<div class="c">
+		<h3>公告 &nbsp; <a href="space.php?do=mtag&tagid=$mtag[tagid]&view=member">成员列表</a>
+		<!--{if empty($mtag['ismember']) && $mtag['joinperm'] < 2}-->
+		| <a href="cp.php?ac=mtag&op=join&tagid=$mtag[tagid]">加入该群组</a>	
+		<!--{elseif $mtag['ismember']}-->
+		| <a href="cp.php?ac=mtag&op=out&tagid=$mtag[tagid]">退出群组</a>
+		<!--{/if}-->
+		<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+		| <a href="cp.php?ac=mtag&tagid=$mtag[tagid]&op=menu">群组菜单</a> 
+		<!--{/if}-->
+		</h3>
+		<!--{if $mtag[announcement]}-->$mtag[announcement]<!--{else}-->还没有公告<!--{/if}-->
+	</div>
+	<div class="c">
+		<h3>讨论区 &nbsp; <a href="space.php?do=mtag&tagid=$mtag[tagid]&view=digest"><span>精华区</span></a>
+		<!--{if $mtag['allowthread']}-->
+		| <a href="cp.php?ac=thread&tagid=$mtag[tagid]">发起新话题</a>
+		<!--{/if}-->
+		</h3>
+	
+		<!--{loop $list $key $value}-->
+			<!--{if $value[displayorder]}--> [顶] <!--{/if}-->
+			<!--{if $value[digest]}--> [精] <!--{/if}-->
+			<!--{if $value[eventid]}--> [活] <!--{/if}-->
+			<a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]" <!--{if $value[magiccolor]}--> class="magiccolor$value[magiccolor]"<!--{/if}-->>$value[subject]</a>(
+			<!--{if $value[hot]}-->
+			 热:$value[hot]
+			<!--{/if}-->
+			|回:$value[replynum]
+			|阅:$value[viewnum])<br>
+			发起人：<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>
+			跟帖人：<a href="space.php?uid=$value[lastauthorid]" title="{$_SN[$value[lastauthorid]]}">{$_SN[$value[lastauthorid]]}</a>(<!--{date('m-d H:i',$value[lastpost],1)}-->)<br>
+
+		<!--{/loop}-->
+	</div>
+
+<!--{template footer}-->

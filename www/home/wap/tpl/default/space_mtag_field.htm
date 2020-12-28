@@ -1,0 +1,37 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?do=mtag&view=hot"{$sub_actives[0]}>群组</a>&gt;
+	<!--{if $id && $_SGLOBAL['profield'][$id]}-->
+	$_SGLOBAL['profield'][$id]['title']
+	<!--{else}-->
+		群组列表 
+	<!--{/if}-->
+	</div>
+	<div class="c">
+		<!--{if $list}-->
+		<!--{loop $list $value}-->
+				<a href="space.php?do=mtag&tagid=$value[tagid]">$value[tagname]</a><br />
+				成员: $value[membernum] | 话题: $value[threadnum] | 回帖: $value[postnum]<br />
+		<!--{/loop}-->
+		<div class="page">$multi</div>
+		<!--{else}-->
+		 还没有群组。
+		<!--{/if}-->
+	</div>
+
+	<div class="c">
+		<h3>群组分类</h3>
+		<a href="space.php?do=mtag&view=hot"{$sub_actives[0]}>全部</a>
+		<!--{loop $_SGLOBAL['profield'] $value}-->
+		<span class="pipe">|</span><a href="space.php?do=mtag&id=$value[fieldid]"{$sub_actives[$value[fieldid]]}>$value[title]</a>
+		<!--{/loop}-->
+	</div>
+	<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+		<div class="c">
+		<a href="cp.php?ac=mtag">创建群组 </a>
+		<span class="pipe">|</span>
+		<a href="space.php?searchmode=1&do=mtag&view=hot">搜索群组</a>
+		</div>
+	<!--{/if}-->
+<!--{template footer}-->

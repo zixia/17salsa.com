@@ -1,0 +1,38 @@
+<!--{eval $_TPL['titles'] = array('分享', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+
+
+<div class="h_status">
+按分享类型查看：
+<a href="network.php?ac=share"$sub_actives[type_all]>全部</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=link"$sub_actives[type_link]>网址</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=video"$sub_actives[type_video]>视频</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=music"$sub_actives[type_music]>音乐</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=flash"$sub_actives[type_flash]>Flash</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=blog"$sub_actives[type_blog]>日志</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=album"$sub_actives[type_album]>相册</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=pic"$sub_actives[type_pic]>图片</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=mtag"$sub_actives[type_mtag]>群组</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=thread"$sub_actives[type_thread]>话题</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=space"$sub_actives[type_space]>用户</a><span class="pipe">|</span>
+<a href="network.php?ac=share&type=tag"$sub_actives[type_tag]>TAG</a>
+</div>
+
+<!--{if $list}-->
+<div class="post_list">
+	<ul id="share_ul">
+		<!--{loop $list $value}-->
+		<!--{template space_share_li}-->
+		<!--{/loop}-->
+	</ul>
+</div>
+<div class="page">
+<!--{if $multi=='networkpage'}-->仅显示最新更新的 $count 个分享<!--{else}-->$multi<!--{/if}-->
+</div>
+<!--{else}-->
+<div class="c_form">没有相应的分享。</div>
+	<!--{/if}-->
+
+<!--{template footer}-->

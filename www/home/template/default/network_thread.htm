@@ -1,0 +1,93 @@
+<!--{eval $_TPL['titles'] = array('话题', '随便看看');}-->
+<!--{template header}-->
+<!--{template network_header}-->
+
+<div class="h_status">
+	<div id="m_search"<!--{if !empty($gets) || !empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+		<form method="get" action="network.php">
+			<input type="text" name="key" value="$_GET[key]" size="26" />
+			<input type="hidden" name="ac" value="$ac" />
+			<input type="hidden" name="searchmode" value="1" />
+			<input type="submit" name="searchsubmit" value="搜索话题" class="submit" />
+			<a href="javascript:;" onclick="document.getElementById('m_search').style.display='none';document.getElementById('adv_search').style.display='block'">高级搜索</a>
+		</form>
+	</div>
+	<form method="get" action="network.php">
+		<table cellspacing="0" cellpadding="0" class="formtable" id="adv_search"<!--{if empty($gets) && empty($_GET['view'])}--> style="display:none;"<!--{/if}-->>
+			<tr>
+				<th>话题标题*</th>
+				<td>
+					<input type="text" name="key" value="$_GET[key]" size="26" />
+				</td>
+			</tr>
+			<tr>
+				<th>话题作者</th>
+				<td>
+					<input type="text" name="username" value="$_GET[username]" size="26" />
+				</td>
+			</tr>
+			<tr>
+				<th>群组ID</th>
+				<td>
+					<input type="text" name="tagid" value="$_GET[tagid]" size="26" />
+				</td>
+			</tr>
+			<tr>
+				<th>时间范围</th>
+				<td>
+					<input type="text" name="starttime" value="$_GET[starttime]" size="10"> ~ <input type="text" name="endtime" value="$_GET[endtime]" size="10">
+					格式为 YYYY-MM-DD
+				</td>
+			</tr>
+			<tr>
+				<th>&nbsp;</th>
+				<td>
+				<input type="hidden" name="ac" value="$ac" />
+				<input type="hidden" name="searchmode" value="1" />
+				<input type="submit" name="searchsubmit" value="搜索" class="submit" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>
+
+
+<!--{if $list}-->
+<div class="topic_list">
+	<table cellspacing="0" cellpadding="0">
+		<thead>
+			<tr>
+				<td class="subject">主题</td>
+				<!--{if !$mtag}--><td class="mtag">群组</td><!--{/if}-->
+				<td class="author">作者<em>(回复/阅读)</em></td>
+				<td class="lastpost">最后更新</td>
+			</tr>
+		</thead>
+		<!--{loop $list $key $value}-->
+		<!--{if !empty($mtags[$value[tagid]][viewperm])}-->
+		<tr<!--{if $key%2==1}--> class="alt"<!--{/if}-->>
+			<td class="subject"><a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]">该话题没有公开</a></td>
+			<td class="mtag"><a href="space.php?do=mtag&tagid=$value[tagid]"><!--{if $value[tagname]}-->$value[tagname]<!--{else}-->{$mtags[$value[tagid]][tagname]}<!--{/if}--></a></td>
+			<td class="author">-<em>-</em></td>
+			<td class="lastpost">-</td>
+		</tr>
+		<!--{else}-->
+		<tr<!--{if $key%2==1}--> class="alt"<!--{/if}-->>
+			<td class="subject"><a href="space.php?uid=$value[uid]&do=thread&id=$value[tid]">$value[subject]</a></td>
+			<td class="mtag"><a href="space.php?do=mtag&tagid=$value[tagid]"><!--{if $value[tagname]}-->$value[tagname]<!--{else}-->{$mtags[$value[tagid]][tagname]}<!--{/if}--></a></td>
+			<td class="author"><a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a><br>$value[replynum]/$value[viewnum]</td>
+			<td class="lastpost"><a href="space.php?uid=$value[lastauthorid]" title="{$_SN[$value[lastauthorid]]}">{$_SN[$value[lastauthorid]]}</a><br><!--{date('m-d H:i',$value[lastpost],1)}--></td>
+		</tr>
+		<!--{/if}-->
+		<!--{/loop}-->
+	</table>
+</div>
+<div class="page">
+<!--{if $multi=='networkpage'}-->仅显示最新发起的 $count 个话题<!--{else}-->$multi<!--{/if}-->
+</div>
+<!--{else}-->
+<div class="c_form">没有相应的话题。</div>
+<!--{/if}-->
+
+
+<!--{template footer}-->

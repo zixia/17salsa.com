@@ -1,0 +1,56 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=blog&view=me"><span>日志</span></a>
+	</div>
+
+<!--{if $_GET['op'] == 'add' ||  $_GET['op'] == 'edit'}-->
+	<div class="c" >
+		<h3>发新日志</h3>
+		
+		<form method="post" action="cp.php?ac=blog&blogid=$blog[blogid]">
+		日志标题：<br/>
+		<input type="text" class="t_input" id="subject" name="subject" value="$blog[subject]" /><br/>
+		日志内容：<br/>
+		<textarea name="message">$blog[message]</textarea><br/>
+		隐私设置：<br/>
+		<select name="friend">
+			<option value="0"$friendarr[0]>全站用户可见</option>
+			<option value="1"$friendarr[1]>全好友可见</option>
+			<option value="3"$friendarr[3]>仅自己可见</option>
+		</select><br/>
+		<!--{if checkperm('seccode')}-->
+		<!--{if $_SCONFIG['questionmode']}-->
+			请先回答问题:<!--{eval question();}--><br/>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" /><br/>
+		<!--{else}-->
+			验证码:<!--{eval echo wap_seccode();}--><br/>
+			<input type="text" id="seccode" name="seccode" value="" tabindex="1" class="t_input"/><br/>
+		<!--{/if}-->
+		<!--{/if}-->
+
+		<input type="hidden" name="blogsubmit" value="true" />
+		<input type="submit" id="blogbutton" name="blogbutton" value="提交发布" />
+		<input type="hidden" name="topicid" value="$_GET[topicid]" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+<!--{elseif $_GET['op'] == 'delete'}-->
+
+	<div class="c" >
+		<h3>删除日志</h3>
+		<form method="post" action="cp.php?ac=blog&op=delete&blogid=$blogid">
+			<p>确定删除指定的日志吗？</p>
+			<p class="btn_line">
+				<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+				<input type="hidden" name="deletesubmit" value="true" />
+				<input type="submit" name="btnsubmit" value="确定" class="submit" />
+			</p>
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+		</form>
+	</div>
+
+<!--{/if}-->
+	
+<!--{template footer}-->

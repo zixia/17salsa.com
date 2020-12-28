@@ -1,0 +1,58 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<!--{if $_GET[view]=='we'}-->最新好友记录
+	<!--{elseif $_GET[view]=='all'}-->大家的记录
+	<!--{elseif $_GET[view]=='me'}--> 
+		<!--{if $space[self]}-->
+			我的记录
+		<!--{else}-->
+			<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>的记录
+		<!--{/if}-->
+	<!--{/if}-->
+	</div>
+	<!--{if $space[self]}-->
+		<div class="c">
+			<h3>更新我的心情记录</h3>
+			<form method="post" action="cp.php?ac=doing&view=$_GET[view]">
+			<textarea name="message"></textarea><br/>
+			<input type="hidden" name="addsubmit" value="true" />
+			<input type="submit" id="add" name="add" class="post_button" value="发布"/>
+			<input type="hidden" name="refer" value="$theurl" />
+			<!--{if $_GET[spacenote]}-->
+			<input type="hidden" name="spacenote" value="true" />
+			<!--{else}-->
+			<input type="hidden" name="topicid" value="$topicid" />
+			<!--{/if}-->
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+
+		</div>
+	<!--{/if}-->
+	<!--{if $dolist}-->
+	<div class="c">
+		<!--{loop $dolist $dv}-->
+		<!--{eval $doid = $dv[doid];}-->
+			<a href="space.php?uid=$dv[uid]">{$_SN[$dv[uid]]}</a>: <span>$dv[message]</span>
+			<span class="gray">(<!--{date('m-d H:i',$dv[dateline],1)}-->)</span><br/>
+		<!--{/loop}-->
+	</div>
+	<div class="page">$multi</div>
+	
+	<!--{else}-->
+	<div class="c">还没有相关的心情记录。</div>
+	<!--{/if}-->
+	<!--{if $_SGLOBAL[supe_uid]}-->
+	<div class="nav">
+		<!--{if $space[friendnum] && $_GET[view]!='we'}-->
+			<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=we">最新好友记录</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='all'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=all">大家的记录</a><br/>
+		<!--{/if}-->
+		<!--{if $_GET[view]!='me'}-->
+		<a href="space.php?uid=$_SGLOBAL[supe_uid]&do=$do&view=me">我的记录</a><br/>
+		<!--{/if}-->
+	</div>
+	<!--{/if}-->
+<!--{template footer}-->

@@ -1,0 +1,20 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=friend"><span>我的好友</span></a>
+	</div>
+	<div class="c">
+	<h3>好友列表</h3>
+	<!--{template friend_list}-->
+	</div>
+	<div class="nav">
+	
+		<a href="space.php?do=top&view=online">在线会员</a><br/>
+		<a href="space.php?do=top&view=mm">美女排行</a><br/>
+		<a href="space.php?do=top&view=gg">帅哥排行</a> <br/>
+		<a href="space.php?do=top&view=updatetime">全部会员</a><br/>
+		<!--{if $_SGLOBAL['supe_auth']!='t1'}-->
+		<a href="cp.php?ac=friend&op=search">查找好友</a><br/>
+		<!--{/if}-->
+	</div>
+<!--{template footer}-->

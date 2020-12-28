@@ -1,0 +1,281 @@
+<!--{template header}-->
+	<div class="nav">
+	<a href="index.php">首页</a>&gt;
+	<a href="space.php?uid=$space[uid]">{$_SN[$space[uid]]}</a>&gt;
+	<a href="space.php?uid=$space[uid]&do=friend"><span>好友</span></a>
+	</div>
+
+<!--{if $op=='add'}-->
+	<div class="c">
+
+	<h3>加好友</h3>
+	<form method="post" action="cp.php?ac=friend&op=add&uid=$tospace[uid]">
+		加 <strong>{$_SN[$tospace[uid]]}</strong> 为好友，附言：<br />
+		<input type="text" name="note" value="" /><br />
+		(附言为可选，{$_SN[$tospace[uid]]} 会看到这条附言，最多50个字符)<br />
+		分组: <select name="gid">
+		<!--{loop $groups $key $value}-->
+		<option value="$key">$value</option>
+		<!--{/loop}-->
+		</select><br />
+		<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+		<input type="hidden" name="addsubmit" value="true" />
+		<input type="submit" name="addsubmit_btn" id="addsubmit_btn" value="确定" class="submit" />
+		<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+	</form>
+	</div>
+<!--{elseif $op == 'search'}-->
+	<!--{if !empty($_REQUEST['searchsubmit'])}-->
+	
+		<!--{if empty($list)}-->
+			<div class="c">没有找到相关用户。<a href="cp.php?ac=friend&op=search">换个搜索条件试试</a></div>
+		<!--{else}-->
+			<div class="c">以下是查找到的用户列表(最多显示500个)。<a href="cp.php?ac=friend&op=search">换个搜索条件试试</a></div>
+			<div class="c">
+			<!--{template friend_list}-->
+			</div>
+		<!--{/if}-->
+	
+	<!--{elseif empty($_GET['searchby'])}-->
+	<div class="c">
+		<h3>查找好友</h3>
+		<a href="cp.php?ac=friend&op=search&searchby=1"><span>查找男女朋友</span></a><br/>
+		<a href="cp.php?ac=friend&op=search&searchby=2"><span>查找同城的人</span></a><br/>
+		<a href="cp.php?ac=friend&op=search&searchby=3"><span>查找老乡</span></a><br/>
+		<a href="cp.php?ac=friend&op=search&searchby=4"><span>查找同年同月同日生的人</span></a><br/>
+		<a href="cp.php?ac=friend&op=search&searchby=5"><span>查找你的同学</span></a><br/>
+		<a href="cp.php?ac=friend&op=search&searchby=6"><span>查找你的同事</span></a><br/>
+	</div>
+	<!--{else}-->
+	
+		<!--{if $_GET['searchby']==1}-->
+		<div class="c">
+		<h3>查找男女朋友</h3>
+		<form action="cp.php?ac=friend&op=search&type=base" method="post">
+			性别： <select id="sex" name="sex">
+					<option value="0">任意</option>
+					<option value="1"$sexarr[1]>男</option>
+					<option value="2"$sexarr[2]>女</option>
+					</select><br/>
+			婚恋： <select id="marry" name="marry">
+					<option value="0">任意</option>
+					<option value="1"$marryarr[1]>单身</option>
+					<option value="2"$marryarr[2]>非单身</option>
+				</select><br/>
+			 年龄段：<br/><input type="text" name="startage" value="" size="5" class="t_input" /> ~ <input type="text" name="endage" value="" size="5" class="t_input" />
+			 <br/>
+		<!--{if $_SCONFIG['videophoto']}-->
+			视频认证：<input type="checkbox" name="videostatus" value="1">通过视频认证<br/>
+		<!--{/if}-->
+			上传头像：<input type="checkbox" name="avatar" value="1">已经上传头像<br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			</form>
+		</div>
+		<!--{elseif $_GET['searchby']==2}-->
+		<div class="c">
+		<h3>查找同城的人</h3>
+		<form action="cp.php?ac=friend&op=search&type=base&searchby=2" method="post">
+			居住地：<!--{if $resideprovince}-->
+					{$resideprovince}
+					<input type="hidden" name="resideprovince" value="{$resideprovince}">
+					<input type="submit" name="changeprovince" value="切换" class="submit">
+					<select id="residecity" name="residecity">
+					<option value="">选择城市</option>
+					{$residecityhtml}
+					</select>
+					<!--{else}-->
+					<select id="resideprovince" name="resideprovince">
+					<option value="">选择省份</option>
+					{$resideprovincehtml}
+					</select>
+					<input type="submit" name="changecity" value="确定切换" class="submit">
+					<!--{/if}-->					
+					<br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+		</div>
+		<!--{elseif $_GET['searchby']==3}-->
+		<div class="c">
+		<h3>查找老乡</h3>
+		<form action="cp.php?ac=friend&op=search&type=base&searchby=3" method="post">
+			出生地：<!--{if $birthprovince}-->
+					{$birthprovince}
+					<input type="hidden" name="birthprovince" value="{$birthprovince}">
+					<input type="submit" name="changeprovince" value="切换" class="submit">
+					<select id="birthcity" name="birthcity">
+					<option value="">选择城市</option>
+					{$birthcityhtml}
+					</select>
+					<!--{else}-->
+					<select id="birthprovince" name="birthprovince">
+					<option value="">选择省份</option>
+					{$birthprovincehtml}
+					</select>
+					<input type="submit" name="changecity" value="确定切换" class="submit">
+					<!--{/if}-->					
+					<br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+		</div>
+		<!--{elseif $_GET['searchby']==4}-->
+		<div class="c">
+		<h3>查找同年同月同日生的人</h3>
+		<form action="cp.php?ac=friend&op=search&type=base" method="post">
+			生日：<br/><select id="birthyear" name="birthyear">
+				<option value="0">&nbsp;</option>
+				$birthyeayhtml
+			</select> 年 
+			<select id="birthmonth" name="birthmonth">
+				<option value="0">&nbsp;</option>
+				$birthmonthhtml
+			</select> 月 
+			<select id="birthday" name="birthday">
+				<option value="0">&nbsp;</option>
+				$birthdayhtml
+			</select> 日				
+					<br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+		</div>
+		<!--{elseif $_GET['searchby']==5}-->
+		<div class="c">
+		<h3>查找你的同学</h3>
+		<form action="cp.php?ac=friend&op=search&type=base" method="post">
+			 学校：<br/>
+			<input type="text" name="title" value="" class="t_input"><br/>
+			入学年份：<br/>
+			<select name="startyear">
+				<option value="">入学年份</option>
+				$yearhtml
+				</select><br/>
+			班级或院系：<br/><input type="text" name="subtitle" value="" class="t_input">
+					<br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+		</div>
+		<!--{elseif $_GET['searchby']==6}-->
+		<div class="c">
+		<h3>查找你的同事</h3>
+		<form action="cp.php?ac=friend&op=search&type=base" method="post">
+			公司或机构：<br/><input type="text" name="title" value="" class="t_input"><br/>
+			部门：<br/><input type="text" name="subtitle" value="" class="t_input"><br/>
+			姓名：<br/><input type="text" name="name" value="" class="t_input"><br/>
+			用户名：<br/><input type="text" name="username" value="" class="t_input"><br/>
+			<input type="submit" name="searchsubmit" value="查找" class="submit">
+			<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+			</form>
+		</div>
+		<!--{/if}-->
+		<div class="c">
+		<a href="cp.php?ac=friend&op=search">换个搜索条件试试</a>
+		</div>
+	<!--{/if}-->
+<!--{elseif $op=='request'}-->
+
+	<!--{if $list}-->
+	<div class="c" id="friend_ul">
+	<!--{eval $i=0;}-->
+	<!--{loop $list $key $value}-->
+			<table cellpadding="0" cellspacing="0">
+				<tr>
+					<td class="image">
+					<!--{eval $i++;}-->
+					{$i}.
+					<a href="space.php?uid=$value[uid]" class="avatarlink"><!--{avatar($value[uid],small)}--></a>
+					</td>
+					<td>
+						<div>
+							<a href="space.php?uid=$value[uid]">{$_SN[$value[uid]]}</a>
+							<!--{if $value[note]}--><span>$value[note]</span><!--{/if}-->
+							(<!--{date('m-d H:i',$value[dateline],1)}-->)
+
+						</div>
+						<div>
+							<a href="cp.php?ac=friend&op=add&uid=$value[uid]">批准申请</a>
+							<a href="cp.php?ac=friend&op=ignore&uid=$value[uid]&confirm=1">忽略</a>
+						</div>
+					</td>
+				</tr>
+			</table>
+	<!--{/loop}-->
+	</div>
+	<div class="page">$multi</div>
+	<!--{else}-->
+	<div class="c">
+		没有新的好友请求。
+	</div>
+	<!--{/if}-->
+	<div class="nav">
+		<a href="cp.php?ac=friend&op=ignore&confirm=1&key=$space[key]">忽略所有好友申请(慎用)</a><br/>
+		<a href="cp.php?ac=friend&op=addconfirm&key=$space[key]">批准全部申请</a>
+	</div>
+<!--{elseif $op=='add2'}-->
+<div class="c">
+<h3>批准请求</h3>
+<form method="post" action="cp.php?ac=friend&op=add&uid=$tospace[uid]">
+	批准 <strong>{$_SN[$tospace[uid]]}</strong> 的好友请求，并分组：<br />
+	<!--{eval $i=0;}-->
+	<!--{loop $groups $key $value}-->
+	<input type="radio" name="gid" id="group_$key" value="$key"$groupselect[$key]> <label for="group_$key">$value</label><br />
+	<!--{eval $i++;}-->
+	<!--{/loop}-->
+	
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]" />
+	<input type="submit" name="add2submit" value="批准" class="submit" />
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{elseif $op=='changegroup'}-->
+<div class="c">
+<h3>设置好友分组</h3>
+<form method="post" action="cp.php?ac=friend&op=changegroup&uid=$uid">
+	<!--{eval $i=0;}-->
+	<!--{loop $groups $key $value}-->
+	<input type="radio" name="group" value="$key"$groupselect[$key]> $value<br/>
+	<!--{eval $i++;}-->
+	<!--{/loop}-->
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+	<button name="changegroupsubmit" type="submit" class="submit" value="true">确定</button>	
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{elseif $op =='ignore'}-->
+<div class="c">
+
+<h3>忽略好友</h3>
+<form method="post" action="cp.php?ac=friend&op=ignore&uid=$uid&confirm=1">
+	<p>确定忽略好友关系吗？</p>
+	
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+	<button name="friendsubmit" type="submit" class="submit" value="true">确定</button>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{elseif $op =='delete'}-->
+<div class="c">
+
+<h3>删除好友</h3>
+<form method="post" action="cp.php?ac=friend&op=delete&uid=$uid&confirm=1">
+	<p>确定删除好友关系吗？</p>
+	<input type="hidden" name="refer" value="$_SGLOBAL[refer]">
+	<button name="friendsubmit" type="submit" class="submit" value="true">确定</button>
+	<input type="hidden" name="formhash" value="<!--{eval echo formhash();}-->" />
+</form>
+</div>
+<!--{/if}-->
+	
+<!--{template footer}-->

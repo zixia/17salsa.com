@@ -1,0 +1,24 @@
+body{margin:0; background-color:#FFFFFF;}
+form{padding:0;margin:0}
+a{color:#EA3500;	text-decoration:none}
+a img{border:none;} 
+
+.submit{background:#EA3500;	color:#fff;	border:1px solid #EA3500; }
+.post_button{background:#EA3500;	color:#fff;	border:1px solid #EA3500; }
+/*头部*/
+#header{ width:100%; background-color:#FFFFFF;border-bottom:solid 1px #FF8E00;padding-bottom:2px;}
+#logo_panel{  background-color:#FF8E00;padding-bottom:0px;} 
+/* 尾部 */
+#footer{ width:100%; background-color:#FFFFFF;}
+/*中部*/
+.a{ width:100%;	background-color:#FFFFFF;border-bottom:solid 1px #FF8E00;padding-bottom:2px;}
+.c{ background-color:#FFFFFF; 	border-bottom:solid 1px #FF8E00;padding-bottom:2px; }
+.nav{ margin-top:2px; margin-left:0px; border-bottom:solid 1px #FF8E00;padding-bottom:2px;}
+h3{ margin:2px 0; padding-top:3px; line-height:18px; font-weight: bold;}
+h3 a{font-family: "宋体";font-style: normal;	line-height: 18px;	font-weight: normal;color: #333333;}
+.title{ width:100%;	background-color:#FFFFFF;padding-bottom:2px;}
+.content{ width:100%;	background-color:#FFFFFF;border-bottom:solid 1px #FF8E00;padding-bottom:2px;}
+.active{ color: #FF0000; font-weight: bold;}
+.page{ padding-bottom:2px;}
+.gray{ color: #999; font-size:12px; font-weight:normal; }
+.doingtext { width:200px;height:40px }
