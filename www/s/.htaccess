@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteBase /s
+RewriteRule ^([^.]*)$ index.php?s=$1 [L]
+
