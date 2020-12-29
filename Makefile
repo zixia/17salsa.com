@@ -15,6 +15,7 @@ run:
 
 .PHONY: pull
 pull:
+	docker pull ghcr.io/zixia/apache-php56:onbuild
 	docker pull ghcr.io/zixia/17salsa.com
 
 .PHONY: clean
