@@ -13,22 +13,22 @@ GracefulShutdownTimeout 3
   ServerName 17salsa.com
   ServerAlias *.17salsa.com
 
-  DocumentRoot /www
+  DocumentRoot /webroot
   ErrorDocument 404 /404.php
 
   # for maintain
-  #DocumentRoot /www/maintain
+  #DocumentRoot /webroot/maintain
   #ErrorDocument 404 /index.html
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 
   <Location />
           Require all granted
   </Location>
 
-  <Directory /www>
+  <Directory /webroot>
           Options FollowSymLinks
           AllowOverride All
   </Directory>
@@ -43,65 +43,64 @@ GracefulShutdownTimeout 3
 <VirtualHost *:80>
   ServerName mail.17salsa.org
 	ServerAlias mail.17salsa.org *.mail.17salsa.org mail.17salsa.net *.mail.17salsa.net mail.17salsa.com *.mail.17salsa.com
-  DocumentRoot /www/vhost/mail
+  DocumentRoot /webroot/vhost/mail
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 
 </VirtualHost>
 
 <VirtualHost *:80>
   ServerName m.17salsa.com
 	ServerAlias *.m.17salsa.com
-  DocumentRoot /www/vhost/m
+  DocumentRoot /webroot/vhost/m
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 
-	<Directory /www/vhost/m>
-		Options FollowSymLinks
-		AllowOverride All
-	</Directory>
+  <Directory /webroot/vhost/m>
+    Options FollowSymLinks
+    AllowOverride All
+  </Directory>
 </VirtualHost>
 
 
 <VirtualHost *:80>
   ServerName 17salsa.org
-	ServerAlias www.17salsa.org
-  DocumentRoot /www/vhost/org
+  ServerAlias www.17salsa.org
+  DocumentRoot /webroot/vhost/org
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 
-	RewriteEngine On
-	RewriteRule ^/(.+)$ http://17salsa.org/ [R=302,L]
+  RewriteEngine On
+  RewriteRule ^/(.+)$ http://17salsa.org/ [R=302,L]
 </VirtualHost>
 
 <VirtualHost *:80>
   ServerName 17salsa.net
-	ServerAlias *.17salsa.net 17latin.net
-  DocumentRoot /www/vhost/
+  ServerAlias *.17salsa.net 17latin.net
+  DocumentRoot /webroot/vhost/
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 
-	RewriteEngine 	On
-	RewriteRule 	^(.+)$	%{HTTP_HOST}$1	[C]
-	RewriteRule		^(.+?)\.net(.+)$		http://$1\.com$2	[R=302,L]
+  RewriteEngine 	On
+  RewriteRule 	^(.+)$	%{HTTP_HOST}$1	[C]
+  RewriteRule		^(.+?)\.net(.+)$		http://$1\.com$2	[R=302,L]
 </VirtualHost>
 
 <VirtualHost *:80>
   ServerName hotsalsaclub.com.cn
-	ServerAlias *.hotsalsaclub.com.cn hotsalsaclub.cn *.hotsalsaclub.cn
-  DocumentRoot /www/vhost/hotsalsaclub.com.cn/
+  ServerAlias *.hotsalsaclub.com.cn hotsalsaclub.cn *.hotsalsaclub.cn
+  DocumentRoot /webroot/vhost/hotsalsaclub.com.cn/
 
   ServerAdmin abu@17salsa.com
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
+  ErrorLog /dev/stdout
+  CustomLog /dev/stdout combined
 </VirtualHost>
-
 
