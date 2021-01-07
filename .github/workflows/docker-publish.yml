@@ -74,15 +74,3 @@ jobs:
             docker tag $IMAGE_NAME $IMAGE_TAG_BRANCH
             docker push $IMAGE_TAG_BRANCH
           fi
-
-      - name: Build & Push image:onbuild
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          IMAGE_ID=$(./scripts/image_id.sh ${{ github.repository }})
-          sed -i "s/FROM .*$/FROM $IMAGE_NAME/" Dockerfile.onbuild
-
-          echo IMAGE_ID=$IMAGE_ID
-          cat Dockerfile.onbuild
-
-          docker build . --file Dockerfile.onbuild --tag $IMAGE_ID:onbuild
-          docker push $IMAGE_ID:onbuild
