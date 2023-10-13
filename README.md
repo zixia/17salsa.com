@@ -4,7 +4,7 @@
 
 ![17SALSA.com](docs/images/17salsa-website.webp)
 
-17SALSA is a salsa social network for salsa, bachata, merengue dancers
+17SALSA is a salsa social network for salsa, bachata, and merengue dancers
 
 ## Resources
 
