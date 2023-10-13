@@ -6,6 +6,16 @@
 
 17SALSA is a salsa social network for salsa, bachata, and merengue dancers
 
+## Milestones
+
+### 17salsa online blog post
+
+![Hong Kong Salsa Congress - 17SALSA.com](docs/images/17salsa-online-2008-09-12.webp)
+
+### Hong Kong Salsa Congress
+
+![Hong Kong Salsa Congress - 17SALSA.com](docs/images/hongkong-salsa-festival-2012-17salsa-speech.webp)
+
 ## Resources
 
 - [简单两步解决UCenter忘记创始人UCenter Administrator密码](https://blog.csdn.net/wwppp987/article/details/96651185)
