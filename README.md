@@ -33,6 +33,10 @@ In this journey, we invite you to delve into the rich tapestry of 17SALSA's jour
 
 ## History
 
+### v0.3 (Oct 25, 2023)
+
+Add 17SALSA Article, Report, and meeting notes.
+
 ### v0.20 (Dec 28, 2020)
 
 Website online again.
