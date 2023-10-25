@@ -18,7 +18,7 @@ In this journey, we invite you to delve into the rich tapestry of 17SALSA's jour
 
 ## Article & Report
 
-1. [17salsa Founding Report, Abu, Oct 2008](docs/17salsa Founding Report, Abu, Oct 2008.pdf)
+1. [17salsa Founding Report, Abu, Oct 2008](docs/17salsa%20Founding%20Report,%20Abu,%20Oct%202008.pdf)
 1. [17salsa Article 4th Edition, Abu, Oct 2010](docs/17salsa Article 4th Edition, Abu, Oct 2010.pdf)
 1. [17salsa Anniversary Report Slides, Abu, Sep 2009](docs/17salsa Anniversary Report Slides, Abu, Sep 2009.pdf)
 1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009](docs/Salsa Enthusiast Research Report Slides, Ava, Sep 2009.pdf)
