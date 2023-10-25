@@ -18,16 +18,16 @@ In this journey, we invite you to delve into the rich tapestry of 17SALSA's jour
 
 ## Article & Report
 
-1. [17salsa Founding Report, Abu, Oct 2008](docs/17salsa%20Founding%20Report,%20Abu,%20Oct%202008.pdf)
-1. [17salsa Article 4th Edition, Abu, Oct 2010](docs/17salsa20%Article20%4th20%Edition,20%Abu,20%Oct20%2010.pdf)
-1. [17salsa Anniversary Report Slides, Abu, Sep 2009](docs/17salsa20%Anniversary20%Report20%Slides,20%Abu,20%Sep20%2009.pdf)
-1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009](docs/Salsa20%Enthusiast20%Research20%Report20%Slides,20%Ava,20%Sep20%2009.pdf)
+1. [17salsa Founding Report, Abu, Oct 2008](https://zixia.github.io/17salsa.com/17salsa%20Founding%20Report,%20Abu,%20Oct%202008.pdf)
+1. [17salsa Article 4th Edition, Abu, Oct 2010](https://zixia.github.io/17salsa.com/17salsa20%Article20%4th20%Edition,20%Abu,20%Oct20%2010.pdf)
+1. [17salsa Anniversary Report Slides, Abu, Sep 2009](https://zixia.github.io/17salsa.com/17salsa20%Anniversary20%Report20%Slides,20%Abu,20%Sep20%2009.pdf)
+1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009](https://zixia.github.io/17salsa.com/Salsa20%Enthusiast20%Research20%Report20%Slides,20%Ava,20%Sep20%2009.pdf)
 
 ## Meetings
 
-1. [17salsa Committee 2nd Meeting, Abu, Mar 2010](docs/17salsa20%Committee20%2nd20%Meeting,20%Abu,20%Mar20%2010.pdf)[^1]
-1. [17salsa Committee 3nd Meeting, Abu, Oct 2010](docs/17salsa20%Committee20%3nd20%Meeting,20%Abu,20%Oct20%2010.pdf)[^1]
-1. [17salsa Advisors and Committees Address Book, Nov 2011](docs/17salsa20%Advisors20%and20%Committees20%Address20%Book,20%Nov20%2011.xls)[^1]
+1. [17salsa Committee 2nd Meeting, Abu, Mar 2010](https://zixia.github.io/17salsa.com/17salsa20%Committee20%2nd20%Meeting,20%Abu,20%Mar20%2010.pdf)[^1]
+1. [17salsa Committee 3nd Meeting, Abu, Oct 2010](https://zixia.github.io/17salsa.com/17salsa20%Committee20%3nd20%Meeting,20%Abu,20%Oct20%2010.pdf)[^1]
+1. [17salsa Advisors and Committees Address Book, Nov 2011](https://zixia.github.io/17salsa.com/17salsa20%Advisors20%and20%Committees20%Address20%Book,20%Nov20%2011.xls)[^1]
 
 [^1]: Password Protected
 
