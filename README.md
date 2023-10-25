@@ -16,10 +16,6 @@ In this journey, we invite you to delve into the rich tapestry of 17SALSA's jour
 | --- | --- | --- |
 | ![Hong Kong Salsa Congress - 17SALSA.com](docs/images/hongkong-salsa-festival-2012-17salsa-speech.webp) | ![Hong Kong Salsa Congress - 17SALSA.com](docs/images/17salsa-online-2008-09-12.webp) | ![17SALSA.com](docs/images/17salsa-website.webp) |
 
-## Resources
-
-- [简单两步解决UCenter忘记创始人UCenter Administrator密码](https://blog.csdn.net/wwppp987/article/details/96651185)
-
 ## Article & Report
 
 1. [17salsa Founding Report, Abu, Oct 2008]()
@@ -57,14 +53,18 @@ Website online again.
 
 1. [一起Salsa社区上线内部测试啦！](https://17salsa.com/home/space-1-do-blog-id-1.html)
 
+## Resources
+
+- [简单两步解决UCenter忘记创始人UCenter Administrator密码](https://blog.csdn.net/wwppp987/article/details/96651185)
+
 ## Maintainer
 
 [Huan](https://github.com/huan) [(阿布)](https://abu.17salsa.com), Chairman of [17SALSA](https://www.17salsa.com), <abu@17salsa.com>
 
-[![Profile of Huan LI (李卓桓) on StackOverflow](https://stackoverflow.com/users/flair/1123955.png)](https://stackoverflow.com/users/1123955/huan)
+[![Profile of Huan on StackOverflow](https://stackoverflow.com/users/flair/1123955.png)](https://stackoverflow.com/users/1123955/huan)
 
 ## Copyright & License
 
-- Code & Docs © 2010-2021 17SALSA.com
+- Code & Docs © 2010-now 17SALSA.com
 - Code released under the Apache-2.0 License
 - Docs released under Creative Commons
