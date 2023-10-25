@@ -18,16 +18,16 @@ In this journey, we invite you to delve into the rich tapestry of 17SALSA's jour
 
 ## Article & Report
 
-1. [17salsa Founding Report, Abu, Oct 2008](blob/main/docs/17salsa%20Founding%20Report,%20Abu,%20Oct%202008.pdf)
-1. [17salsa Article 4th Edition, Abu, Oct 2010](blob/main/docs/17salsa%20Article%204th%20Edition,%20Abu,%20Oct%202010.pdf)
-1. [17salsa Anniversary Report Slides, Abu, Sep 2009](blob/main/docs/17salsa%20Anniversary%20Report%20Slides,%20Abu,%20Sep%202009.pdf)
-1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009](blob/main/docs/Salsa%20Enthusiast%20Research%20Report%20Slides,%20Ava,%20Sep%202009.pdf)
+1. [17salsa Founding Report, Abu, Oct 2008](docs/17salsa%20Founding%20Report,%20Abu,%20Oct%202008.pdf)
+1. [17salsa Article 4th Edition, Abu, Oct 2010](docs/17salsa%20Article%204th%20Edition,%20Abu,%20Oct%202010.pdf)
+1. [17salsa Anniversary Report Slides, Abu, Sep 2009](docs/17salsa%20Anniversary%20Report%20Slides,%20Abu,%20Sep%202009.pdf)
+1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009](docs/Salsa%20Enthusiast%20Research%20Report%20Slides,%20Ava,%20Sep%202009.pdf)
 
 ## Meetings
 
-1. [17salsa Committee 2nd Meeting, Abu, Mar 2010](blob/main/docs/17salsa%20Committee%202nd%20Meeting,%20Abu,%20Mar%202010.pdf)[^1]
-1. [17salsa Committee 3nd Meeting, Abu, Oct 2010](blob/main/docs/17salsa%20Committee%203nd%20Meeting,%20Abu,%20Oct%202010.pdf)[^1]
-1. [17salsa Advisors and Committees Address Book, Nov 2011](blob/main/docs/17salsa%20Advisors%20and%20Committees%20Address%20Book,%20Nov%202011.xls)[^1]
+1. [17salsa Committee 2nd Meeting, Abu, Mar 2010](docs/17salsa%20Committee%202nd%20Meeting,%20Abu,%20Mar%202010.pdf)[^1]
+1. [17salsa Committee 3nd Meeting, Abu, Oct 2010](docs/17salsa%20Committee%203nd%20Meeting,%20Abu,%20Oct%202010.pdf)[^1]
+1. [17salsa Advisors and Committees Address Book, Nov 2011](docs/17salsa%20Advisors%20and%20Committees%20Address%20Book,%20Nov%202011.xls)[^1]
 
 [^1]: Password Protected
 
