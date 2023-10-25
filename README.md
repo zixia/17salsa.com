@@ -10,23 +10,30 @@ With an impressive history of fostering SALSA's growth, 17SALSA has curated a sp
 
 In this journey, we invite you to delve into the rich tapestry of 17SALSA's journey, exploring its unwavering commitment to professionalism, neutrality, and equality. Join us as we uncover how 17SALSA has transformed into a global community, redefining the way SALSA is celebrated and cherished worldwide.
 
-![17SALSA.com](docs/images/17salsa-website.webp)
+## Screenshots
 
-17SALSA is a salsa social network for salsa, bachata, and merengue dancers
-
-## Milestones
-
-### 17salsa online blog post
-
-![Hong Kong Salsa Congress - 17SALSA.com](docs/images/17salsa-online-2008-09-12.webp)
-
-### Hong Kong Salsa Congress
-
-![Hong Kong Salsa Congress - 17SALSA.com](docs/images/hongkong-salsa-festival-2012-17salsa-speech.webp)
+| Salsa Congress | Blog | Portal |
+| --- | --- | --- |
+| ![Hong Kong Salsa Congress - 17SALSA.com](docs/images/hongkong-salsa-festival-2012-17salsa-speech.webp) | ![Hong Kong Salsa Congress - 17SALSA.com](docs/images/17salsa-online-2008-09-12.webp) | ![17SALSA.com](docs/images/17salsa-website.webp) |
 
 ## Resources
 
 - [简单两步解决UCenter忘记创始人UCenter Administrator密码](https://blog.csdn.net/wwppp987/article/details/96651185)
+
+## Article & Report
+
+1. [17salsa Founding Report, Abu, Oct 2008]()
+1. [17salsa Article 4th Edition, Abu, Oct 2010]()
+1. [17salsa Anniversary Report Slides, Abu, Sep 2009]()
+1. [Salsa Enthusiast Research Report Slides, Ava, Sep 2009]()
+
+## Meetings
+
+1. [17salsa Committee 2nd Meeting, Abu, Mar 2010]()[^1]
+1. [17salsa Committee 3nd Meeting, Abu, Oct 2010]()[^1]
+1. [17salsa Advisors and Committees Address Book, Nov 2011]()[^1]
+
+[^1]: Password Protected
 
 ## History
 
